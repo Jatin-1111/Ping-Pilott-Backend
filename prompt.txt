@@ -1,1 +1,151 @@
-i want to shift the backend to express node fully on server. like this is currently serverless. even want to create cron job running on server. so take reference from current project and build a seprate backend for this. no need of firebase shift to mongo db. Make the best optimised approach for this backend i want fully optimised backend and create a package.json file and strucutre where explain what dependencies are being used and why. write the code in es6+ format (import and export format not require). use latext syntaxes search web if needed
+i want to shift the backend to express node fully on server. like this is currently serverless. even want to create cron job running on server. so take reference from current project and build a seprate backend for this. no need of firebase shift to mongo db. Make the best optimised approach for this backend i want fully optimised backend and create a package.json file and strucutre where explain what dependencies are being used and why. write the code in es6+ format (import and export format not require). use latext syntaxes search web if needed.
+
+
+# Backend Architecture for Ping Pilot
+
+## Overview
+
+This document outlines the architecture for migrating the Ping Pilot application from a serverless Next.js implementation to a dedicated Express.js backend with MongoDB. The new architecture follows modern best practices for scalability, maintainability, and performance.
+
+## Directory Structure
+
+```
+ping-pilot-backend/
+├── config/                  # Configuration files
+│   ├── db.js                # MongoDB connection configuration
+│   ├── cron.js              # Cron job configuration
+│   └── index.js             # Exports all configs
+│
+├── controllers/             # Request handlers
+│   ├── authController.js    # Authentication controllers
+│   ├── serverController.js  # Server monitoring controllers
+│   └── userController.js    # User management controllers
+│
+├── middleware/              # Express middleware
+│   ├── auth.js              # Authentication middleware
+│   ├── error.js             # Error handling middleware
+│   ├── validator.js         # Request validation middleware
+│   └── rateLimiter.js       # Rate limiting middleware
+│
+├── models/                  # MongoDB schema models
+│   ├── Server.js            # Server model
+│   ├── User.js              # User model
+│   ├── CronJob.js           # Cron job log model
+│   └── ServerDailySummary.js # Daily summary model
+│
+├── routes/                  # API routes
+│   ├── authRoutes.js        # Authentication routes
+│   ├── serverRoutes.js      # Server monitoring routes
+│   └── userRoutes.js        # User management routes
+│
+├── services/                # Business logic and external service wrappers
+│   ├── authService.js       # Authentication logic
+│   ├── emailService.js      # Email service for notifications
+│   ├── monitoringService.js # Server monitoring service
+│   └── dataRetentionService.js # Data retention service
+│
+├── tasks/                   # Cron job tasks
+│   ├── checkServers.js      # Main server checking task
+│   ├── dataRetention.js     # Clean up old data
+│   └── generateReports.js   # Generate periodic reports
+│
+├── utils/                   # Utility functions
+│   ├── asyncHandler.js      # Async error handler
+│   ├── logger.js            # Logging utility
+│   ├── httpClient.js        # HTTP client for external requests
+│   └── responseFormatter.js # API response formatter
+│
+├── .env                     # Environment variables
+├── .env.example             # Example environment file
+├── .eslintrc.js             # ESLint configuration
+├── .gitignore               # Git ignore file
+├── index.js                 # Application entry point
+├── package.json             # Project dependencies
+└── README.md                # Project documentation
+```
+
+## Core Technologies
+
+### Primary Dependencies
+
+- **Express.js**: Web server framework
+- **Mongoose**: MongoDB ODM for data modeling
+- **Node-cron**: For scheduling recurring tasks
+- **Bcrypt**: For password hashing
+- **Jsonwebtoken**: For JWT authentication
+- **Dotenv**: For environment variables
+- **Winston**: For logging
+- **Joi**: For validation
+- **PM2**: For process management and monitoring
+- **Helmet**: For securing HTTP headers
+- **Express-rate-limit**: For API rate limiting
+- **Nodemailer**: For sending email notifications
+- **Axios**: For HTTP requests to external services
+
+## Key Features and Implementation Details
+
+### Database Connection
+
+The application uses Mongoose to connect to MongoDB with a connection pool to efficiently manage database connections. The connection is established once during startup and reused throughout the application lifecycle.
+
+### Authentication
+
+Authentication uses JWT (JSON Web Tokens) with refresh token rotation for enhanced security. Passwords are hashed using bcrypt with appropriate salt rounds.
+
+### Server Monitoring
+
+The core functionality of server checking is implemented using a combination of HTTP requests (for websites/APIs) and TCP socket connections (for server ports) with appropriate timeouts.
+
+### Cron Jobs
+
+Server monitoring tasks run on scheduled intervals using node-cron. The architecture includes a cron job manager that:
+
+1. Prevents overlapping job executions
+2. Logs job execution status
+3. Handles errors gracefully
+4. Respects rate limits and time windows
+
+### Error Handling
+
+A centralized error handling mechanism catches and processes all errors. The system logs errors appropriately and returns standardized error responses to clients.
+
+### Data Retention
+
+To manage database growth, a data retention service automatically archives old data and cleans up logs based on configurable retention policies.
+
+### Logging
+
+A structured logging system captures application events with appropriate severity levels. Logs can be configured to output to console, files, or external logging services.
+
+### API Documentation
+
+API routes are documented using Swagger/OpenAPI specification, providing an interactive documentation interface for API consumers.
+
+## Deployment Considerations
+
+The application is designed to be deployed in various environments:
+
+1. **Development**: Local environment with hot reloading
+2. **Staging**: Testing environment that mirrors production
+3. **Production**: Optimized for performance and reliability
+
+Production deployment should use PM2 for process management, including:
+- Process clustering for better resource utilization
+- Auto-restart on failure
+- Log rotation
+- Load balancing across available CPU cores
+
+## Monitoring and Maintenance
+
+The application includes built-in monitoring features:
+- Health check endpoints
+- Prometheus metrics for system monitoring
+- Automated error alerting
+
+## Performance Optimization
+
+- Connection pooling for database operations
+- Caching for frequent operations
+- Proper indexing on MongoDB collections
+- Compression for API responses
+- Rate limiting to prevent abuse
