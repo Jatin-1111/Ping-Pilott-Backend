@@ -1,0 +1,66 @@
+2025-05-18 00:00:17:017 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 00:00:17:017 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m
+2025-05-18 00:02:05:25 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 00:02:05:25 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m
+2025-05-18 00:03:41:341 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 00:03:41:341 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m
+2025-05-18 00:04:44:444 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 00:04:44:444 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m
+2025-05-18 00:04:50:450 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 00:04:50:450 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m
+2025-05-18 00:05:00:50 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 00:05:00:50 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m
+2025-05-18 00:06:15:615 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 00:06:16:616 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-18 00:06:30:630 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 00:06:30:630 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-18 14:27:29:2729 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 14:27:30:2730 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-18 14:32:42:3242 [32minfo[39m: [32mEmail transporter initialized[39m
+2025-05-18 14:32:49:3249 [32minfo[39m: [32mVerification email sent to contactjatin0111@gmail.com: <ebce37da-e9b5-e6b2-5929-ef65a94bab36@gmail.com>[39m
+2025-05-18 17:57:36:5736 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-18 17:57:36:5736 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-18 17:57:46:5746 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-18 17:57:47:5747 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-18 17:58:16:5816 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-18 17:58:26:5826 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-18 17:58:52:5852 [32minfo[39m: [32mVerification email sent to valideluxury@gmail.com: <9305416c-c955-d957-aae3-87b7bcbc23aa@gmail.com>[39m
+2025-05-18 18:09:21:921 [32minfo[39m: [32mVerification email sent to valideluxury@gmail.com: <adf2e17f-876c-295b-4494-c2d24e16e777@gmail.com>[39m
+2025-05-18 18:13:02:132 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:13:03:133 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-18 18:13:28:1328 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:13:30:1330 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-18 18:16:05:165 [32minfo[39m: [32mEmail transporter initialized[39m
+2025-05-18 18:16:12:1612 [32minfo[39m: [32mVerification email sent to valideluxury@gmail.com: <c1a0ca68-7087-82ae-cbd4-313726ae6127@gmail.com>[39m
+2025-05-18 18:17:20:1720 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:17:21:1721 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-18 18:17:51:1751 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:17:52:1752 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-18 18:20:05:205 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:20:06:206 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-18 18:23:33:2333 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:23:35:2335 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-18 18:24:06:246 [32minfo[39m: [32mEmail transporter initialized[39m
+2025-05-18 18:24:13:2413 [32minfo[39m: [32mVerification email sent to valideluxury@gmail.com: <380a6c69-c1c5-197e-4f30-d5292351ed05@gmail.com>[39m
+2025-05-18 18:26:52:2652 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:26:53:2653 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-18 18:30:28:3028 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:30:29:3029 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-18 18:32:02:322 [32minfo[39m: [32mEmail transporter initialized[39m
+2025-05-18 18:32:10:3210 [32minfo[39m: [32mVerification email sent to off.jatin111@gmail.com: <4d92e47a-8426-ae8b-8850-34ef25a6b1f1@gmail.com>[39m
+2025-05-18 18:36:57:3657 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:36:58:3658 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-18 18:37:10:3710 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:37:11:3711 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-18 18:37:26:3726 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:38:14:3814 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:38:15:3815 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-18 18:38:25:3825 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:38:26:3826 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-18 18:45:52:4552 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:45:53:4553 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-18 18:49:08:498 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-18 18:49:09:499 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-18 18:49:47:4947 [32minfo[39m: [32mInitial admin user off.jatin1111@gmail.com created during system setup[39m
+2025-05-18 18:59:29:5929 [32minfo[39m: [32mEmail transporter initialized[39m
+2025-05-18 18:59:35:5935 [32minfo[39m: [32mPassword reset email sent to off.jatin1111@gmail.com: <e007a245-2376-c415-e8ee-fffa656fb521@gmail.com>[39m

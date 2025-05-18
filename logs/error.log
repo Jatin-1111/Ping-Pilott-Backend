@@ -1,0 +1,6 @@
+2025-05-18 00:00:17:017 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m
+2025-05-18 00:02:05:25 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m
+2025-05-18 00:03:41:341 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m
+2025-05-18 00:04:44:444 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m
+2025-05-18 00:04:50:450 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m
+2025-05-18 00:05:00:50 [31merror[39m: [31mError connecting to MongoDB: querySrv ENOTFOUND _mongodb._tcp.09524[39m

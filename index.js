@@ -20,6 +20,7 @@ import errorMiddleware from './middleware/error.js';
 import authRoutes from './routes/authRoutes.js';
 import serverRoutes from './routes/serverRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 // Get __dirname equivalent in ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -58,6 +59,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/servers', serverRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Handle 404 routes
 app.use('*', (req, res) => {
