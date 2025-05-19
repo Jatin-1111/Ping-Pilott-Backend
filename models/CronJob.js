@@ -49,7 +49,7 @@ cronJobSchema.index({ name: 1, startedAt: -1 });
 cronJobSchema.index({ status: 1 });
 
 // Create TTL index to automatically delete old records after 30 days
-cronJobSchema.index({ startedAt: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 });
+// cronJobSchema.index({ startedAt: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 });
 
 // Create and export the model
 const CronJob = mongoose.model('CronJob', cronJobSchema);
