@@ -3173,3 +3173,219 @@
 2025-05-20 21:06:01:61 [32minfo[39m: [32mJob 'checkServers' completed in 735ms[39m
 2025-05-20 21:06:01:61 [32minfo[39m: [32mJob checkServers completed successfully[39m
 2025-05-20 21:06:01:61 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-21 02:36:22:3622 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 02:36:22:3622 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 21:06:22:622 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 21:06:22:622 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 21:06:23:623 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-20 21:06:23:623 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 21:06:23:623 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 21:06:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 21:06:23:623 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 21:05:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 21:06:23:623 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 21:04:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 21:06:23:623 [32minfo[39m: [32mJob: checkServers, Status: running, Started: Tue May 20 2025 21:01:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 21:06:23:623 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 20:59:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 21:06:23:623 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 21:07:00:70 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:37:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:07:00:70 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:07:00:70 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:07:00.904Z[39m
+2025-05-20 21:07:00:70 [32minfo[39m: [32mFound 2 servers to check in 66ms[39m
+2025-05-20 21:07:00:70 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:07:00:70 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:07:00:70 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:07:01:71 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:07:01:71 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:07:01:71 [32minfo[39m: [32mServer check process completed in 708ms[39m
+2025-05-20 21:07:01:71 [32minfo[39m: [32mJob 'checkServers' completed in 710ms[39m
+2025-05-20 21:07:01:71 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:07:01:71 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:08:00:80 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:38:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:08:00:80 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:08:00:80 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:08:00.291Z[39m
+2025-05-20 21:08:00:80 [32minfo[39m: [32mFound 2 servers to check in 66ms[39m
+2025-05-20 21:08:00:80 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:08:00:80 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:08:00:80 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:08:00:80 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:08:01:81 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:08:01:81 [32minfo[39m: [32mServer check process completed in 1007ms[39m
+2025-05-20 21:08:01:81 [32minfo[39m: [32mJob 'checkServers' completed in 1008ms[39m
+2025-05-20 21:08:01:81 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:08:01:81 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:09:00:90 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:39:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:09:00:90 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:09:00:90 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:09:00.615Z[39m
+2025-05-20 21:09:00:90 [32minfo[39m: [32mFound 2 servers to check in 67ms[39m
+2025-05-20 21:09:00:90 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:09:00:90 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:09:00:90 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:09:01:91 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:09:01:91 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:09:01:91 [32minfo[39m: [32mServer check process completed in 755ms[39m
+2025-05-20 21:09:01:91 [32minfo[39m: [32mJob 'checkServers' completed in 756ms[39m
+2025-05-20 21:09:01:91 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:09:01:91 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:10:00:100 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:40:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:10:00:100 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:10:00:100 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:10:00.998Z[39m
+2025-05-20 21:10:01:101 [32minfo[39m: [32mFound 2 servers to check in 67ms[39m
+2025-05-20 21:10:01:101 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:10:01:101 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:10:01:101 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:10:01:101 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:10:01:101 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:10:01:101 [32minfo[39m: [32mServer check process completed in 778ms[39m
+2025-05-20 21:10:01:101 [32minfo[39m: [32mJob 'checkServers' completed in 778ms[39m
+2025-05-20 21:10:01:101 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:10:01:101 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:11:00:110 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:41:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:11:00:110 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:11:00:110 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:11:00.467Z[39m
+2025-05-20 21:11:00:110 [32minfo[39m: [32mFound 2 servers to check in 61ms[39m
+2025-05-20 21:11:00:110 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:11:00:110 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:11:00:110 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:11:01:111 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:11:01:111 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:11:01:111 [32minfo[39m: [32mServer check process completed in 789ms[39m
+2025-05-20 21:11:01:111 [32minfo[39m: [32mJob 'checkServers' completed in 789ms[39m
+2025-05-20 21:11:01:111 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:11:01:111 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:12:00:120 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:42:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:12:00:120 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:12:00:120 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:12:00.855Z[39m
+2025-05-20 21:12:00:120 [32minfo[39m: [32mFound 1 servers to check in 61ms[39m
+2025-05-20 21:12:00:120 [32minfo[39m: [32mProcessing batch 1/1 (1 servers)[39m
+2025-05-20 21:12:00:120 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:12:01:121 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:12:01:121 [32minfo[39m: [32mServer check process completed in 560ms[39m
+2025-05-20 21:12:01:121 [32minfo[39m: [32mJob 'checkServers' completed in 560ms[39m
+2025-05-20 21:12:01:121 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:12:01:121 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:13:00:130 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:43:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:13:00:130 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:13:00:130 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:13:00.249Z[39m
+2025-05-20 21:13:00:130 [32minfo[39m: [32mFound 2 servers to check in 64ms[39m
+2025-05-20 21:13:00:130 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:13:00:130 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:13:00:130 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:13:00:130 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:13:01:131 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-20 21:13:01:131 [32minfo[39m: [32mEmail transporter initialized[39m
+2025-05-20 21:13:01:131 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:13:01:131 [32minfo[39m: [32mServer check process completed in 1343ms[39m
+2025-05-20 21:13:01:131 [32minfo[39m: [32mJob 'checkServers' completed in 1343ms[39m
+2025-05-20 21:13:01:131 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:13:01:131 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:13:08:138 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <0b6208ac-1bb6-fce8-06b2-b64f913d4645@gmail.com>[39m
+2025-05-20 21:14:00:140 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:44:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:14:00:140 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:14:00:140 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:14:00.724Z[39m
+2025-05-20 21:14:00:140 [32minfo[39m: [32mFound 2 servers to check in 90ms[39m
+2025-05-20 21:14:00:140 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:14:00:140 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:14:00:140 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:14:01:141 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:14:01:141 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:14:01:141 [32minfo[39m: [32mServer check process completed in 845ms[39m
+2025-05-20 21:14:01:141 [32minfo[39m: [32mJob 'checkServers' completed in 845ms[39m
+2025-05-20 21:14:01:141 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:14:01:141 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:15:00:150 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:45:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:15:01:151 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:15:01:151 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:15:01.062Z[39m
+2025-05-20 21:15:01:151 [32minfo[39m: [32mFound 0 servers to check in 63ms[39m
+2025-05-20 21:15:01:151 [32minfo[39m: [32mServer check process completed in 63ms[39m
+2025-05-20 21:15:01:151 [32minfo[39m: [32mJob 'checkServers' completed in 64ms[39m
+2025-05-20 21:15:01:151 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:15:01:151 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:16:00:160 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:46:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:16:00:160 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:16:00:160 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:16:00.363Z[39m
+2025-05-20 21:16:00:160 [32minfo[39m: [32mFound 2 servers to check in 89ms[39m
+2025-05-20 21:16:00:160 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:16:00:160 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:16:00:160 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:16:01:161 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:16:01:161 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:16:01:161 [32minfo[39m: [32mServer check process completed in 719ms[39m
+2025-05-20 21:16:01:161 [32minfo[39m: [32mJob 'checkServers' completed in 719ms[39m
+2025-05-20 21:16:01:161 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:16:01:161 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:17:00:170 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:47:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:17:00:170 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:17:00:170 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:17:00.785Z[39m
+2025-05-20 21:17:00:170 [32minfo[39m: [32mFound 2 servers to check in 81ms[39m
+2025-05-20 21:17:00:170 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:17:00:170 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:17:00:170 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:17:01:171 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:17:01:171 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:17:01:171 [32minfo[39m: [32mServer check process completed in 715ms[39m
+2025-05-20 21:17:01:171 [32minfo[39m: [32mJob 'checkServers' completed in 715ms[39m
+2025-05-20 21:17:01:171 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:17:01:171 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:18:00:180 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:48:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:18:00:180 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:18:00:180 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:18:00.180Z[39m
+2025-05-20 21:18:00:180 [32minfo[39m: [32mFound 2 servers to check in 69ms[39m
+2025-05-20 21:18:00:180 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:18:00:180 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:18:00:180 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:18:00:180 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:18:01:181 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-20 21:18:01:181 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:18:01:181 [32minfo[39m: [32mServer check process completed in 1536ms[39m
+2025-05-20 21:18:01:181 [32minfo[39m: [32mJob 'checkServers' completed in 1537ms[39m
+2025-05-20 21:18:01:181 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:18:01:181 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:18:08:188 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <7e9dcebb-cd7c-2912-4be1-d7ba72f73459@gmail.com>[39m
+2025-05-20 21:19:00:190 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:49:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:19:00:190 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:19:00:190 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:19:00.566Z[39m
+2025-05-20 21:19:00:190 [32minfo[39m: [32mFound 2 servers to check in 56ms[39m
+2025-05-20 21:19:00:190 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:19:00:190 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:19:00:190 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:19:01:191 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:19:01:191 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:19:01:191 [32minfo[39m: [32mServer check process completed in 784ms[39m
+2025-05-20 21:19:01:191 [32minfo[39m: [32mJob 'checkServers' completed in 784ms[39m
+2025-05-20 21:19:01:191 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:19:01:191 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:20:00:200 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:50:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:20:00:200 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:20:00:200 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:20:00.930Z[39m
+2025-05-20 21:20:01:201 [32minfo[39m: [32mFound 1 servers to check in 111ms[39m
+2025-05-20 21:20:01:201 [32minfo[39m: [32mProcessing batch 1/1 (1 servers)[39m
+2025-05-20 21:20:01:201 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:20:01:201 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:20:01:201 [32minfo[39m: [32mServer check process completed in 569ms[39m
+2025-05-20 21:20:01:201 [32minfo[39m: [32mJob 'checkServers' completed in 570ms[39m
+2025-05-20 21:20:01:201 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:20:01:201 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:21:00:210 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:51:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:21:00:210 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:21:00:210 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:21:00.415Z[39m
+2025-05-20 21:21:00:210 [32minfo[39m: [32mFound 2 servers to check in 60ms[39m
+2025-05-20 21:21:00:210 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:21:00:210 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:21:00:210 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:21:00:210 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:21:01:211 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:21:01:211 [32minfo[39m: [32mServer check process completed in 744ms[39m
+2025-05-20 21:21:01:211 [32minfo[39m: [32mJob 'checkServers' completed in 744ms[39m
+2025-05-20 21:21:01:211 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:21:01:211 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:22:00:220 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:52:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:22:00:220 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:22:00:220 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:22:00.805Z[39m
+2025-05-20 21:22:00:220 [32minfo[39m: [32mFound 2 servers to check in 76ms[39m
+2025-05-20 21:22:00:220 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:22:00:220 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:22:00:220 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:22:01:221 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:22:01:221 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:22:01:221 [32minfo[39m: [32mServer check process completed in 702ms[39m
+2025-05-20 21:22:01:221 [32minfo[39m: [32mJob 'checkServers' completed in 703ms[39m
+2025-05-20 21:22:01:221 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:22:01:221 [32minfo[39m: [32mJob checkServers record saved successfully[39m

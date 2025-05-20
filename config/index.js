@@ -45,7 +45,7 @@ const config = {
     },
 
     // Frontend URL (for email links)
-    frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
+    frontendUrl: process.env.FRONTEND_URL || 'http://pingpilott.vercel.app',
 
     // Rate limiting
     rateLimit: {

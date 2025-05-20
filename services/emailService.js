@@ -9,39 +9,39 @@ let transporter = null;
  * @returns {Object} Email transporter
  */
 export const initTransporter = () => {
-    if (transporter) return transporter;
+  if (transporter) return transporter;
 
-    // Check for required environment variables
-    if (
-        !process.env.SMTP_HOST ||
-        !process.env.SMTP_PORT ||
-        !process.env.SMTP_USER ||
-        !process.env.SMTP_PASSWORD
-    ) {
-        logger.warn('Email configuration incomplete. Email features will be disabled.');
-        return null;
-    }
+  // Check for required environment variables
+  if (
+    !process.env.SMTP_HOST ||
+    !process.env.SMTP_PORT ||
+    !process.env.SMTP_USER ||
+    !process.env.SMTP_PASSWORD
+  ) {
+    logger.warn('Email configuration incomplete. Email features will be disabled.');
+    return null;
+  }
 
-    transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: parseInt(process.env.SMTP_PORT || '587'),
-        secure: process.env.SMTP_PORT === '465',
-        auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASSWORD,
-        },
-        // Pool connections for better performance
-        pool: true,
-        // Max number of connections to make at once
-        maxConnections: 5,
-        // Max number of messages to send per connection
-        maxMessages: 100,
-        // Number of milliseconds to wait for sending a message
-        socketTimeout: 30000,
-    });
+  transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: process.env.SMTP_PORT === '465',
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD,
+    },
+    // Pool connections for better performance
+    pool: true,
+    // Max number of connections to make at once
+    maxConnections: 5,
+    // Max number of messages to send per connection
+    maxMessages: 100,
+    // Number of milliseconds to wait for sending a message
+    socketTimeout: 30000,
+  });
 
-    logger.info('Email transporter initialized');
-    return transporter;
+  logger.info('Email transporter initialized');
+  return transporter;
 };
 
 /**
@@ -53,40 +53,40 @@ export const initTransporter = () => {
  * @returns {Boolean} Whether the email was sent
  */
 export const sendAlertEmail = async (server, alertType, oldStatus, newStatus) => {
-    // Get or initialize transporter
-    const mailer = initTransporter();
-    if (!mailer) {
-        logger.warn('Cannot send alert email: email service not configured');
-        return false;
+  // Get or initialize transporter
+  const mailer = initTransporter();
+  if (!mailer) {
+    logger.warn('Cannot send alert email: email service not configured');
+    return false;
+  }
+
+  try {
+    // Verify SMTP connection
+    await mailer.verify();
+
+    // Prepare email content
+    const { subject, html } = getAlertEmailContent(server, alertType, oldStatus, newStatus);
+
+    // Get from email or use default
+    const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
+
+    // Send email to all contacts
+    for (const email of server.contactEmails) {
+      const info = await mailer.sendMail({
+        from: `"Ping Pilot" <${fromEmail}>`,
+        to: email,
+        subject,
+        html,
+      });
+
+      logger.info(`Alert email sent to ${email}: ${info.messageId}`);
     }
 
-    try {
-        // Verify SMTP connection
-        await mailer.verify();
-
-        // Prepare email content
-        const { subject, html } = getAlertEmailContent(server, alertType, oldStatus, newStatus);
-
-        // Get from email or use default
-        const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
-
-        // Send email to all contacts
-        for (const email of server.contactEmails) {
-            const info = await mailer.sendMail({
-                from: `"Ping Pilot" <${fromEmail}>`,
-                to: email,
-                subject,
-                html,
-            });
-
-            logger.info(`Alert email sent to ${email}: ${info.messageId}`);
-        }
-
-        return true;
-    } catch (error) {
-        logger.error(`Error sending alert email for ${server.name}: ${error.message}`);
-        return false;
-    }
+    return true;
+  } catch (error) {
+    logger.error(`Error sending alert email for ${server.name}: ${error.message}`);
+    return false;
+  }
 };
 
 /**
@@ -98,20 +98,20 @@ export const sendAlertEmail = async (server, alertType, oldStatus, newStatus) =>
  * @returns {Object} Email subject and HTML content
  */
 const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
-    const serverName = server.name;
-    const serverUrl = server.url;
-    const currentTime = new Date().toLocaleString();
-    const responseTime = server.responseTime ? `${server.responseTime}ms` : 'Unknown';
-    const responseThreshold = server.monitoring?.alerts?.responseThreshold || 1000;
-    const errorMessage = server.error || 'Unknown error';
+  const serverName = server.name;
+  const serverUrl = server.url;
+  const currentTime = new Date().toLocaleString();
+  const responseTime = server.responseTime ? `${server.responseTime}ms` : 'Unknown';
+  const responseThreshold = server.monitoring?.alerts?.responseThreshold || 1000;
+  const errorMessage = server.error || 'Unknown error';
 
-    let subject;
-    let html;
+  let subject;
+  let html;
 
-    switch (alertType) {
-        case 'server_down':
-            subject = `🚨 ALERT: ${serverName} is DOWN`;
-            html = `
+  switch (alertType) {
+    case 'server_down':
+      subject = `🚨 ALERT: ${serverName} is DOWN`;
+      html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #f44336; color: white; padding: 15px; text-align: center;">
             <h1 style="margin: 0;">Server Down Alert</h1>
@@ -128,11 +128,11 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
           </div>
         </div>
       `;
-            break;
+      break;
 
-        case 'server_recovery':
-            subject = `✅ RESOLVED: ${serverName} is back UP`;
-            html = `
+    case 'server_recovery':
+      subject = `✅ RESOLVED: ${serverName} is back UP`;
+      html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #4CAF50; color: white; padding: 15px; text-align: center;">
             <h1 style="margin: 0;">Server Recovery Alert</h1>
@@ -148,11 +148,11 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
           </div>
         </div>
       `;
-            break;
+      break;
 
-        case 'slow_response':
-            subject = `⚠️ WARNING: ${serverName} is responding slowly`;
-            html = `
+    case 'slow_response':
+      subject = `⚠️ WARNING: ${serverName} is responding slowly`;
+      html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #ff9800; color: white; padding: 15px; text-align: center;">
             <h1 style="margin: 0;">Server Performance Warning</h1>
@@ -168,11 +168,11 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
           </div>
         </div>
       `;
-            break;
+      break;
 
-        default:
-            subject = `🔔 NOTIFICATION: ${serverName} status update`;
-            html = `
+    default:
+      subject = `🔔 NOTIFICATION: ${serverName} status update`;
+      html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #2196F3; color: white; padding: 15px; text-align: center;">
             <h1 style="margin: 0;">Server Status Update</h1>
@@ -188,9 +188,9 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
           </div>
         </div>
       `;
-    }
+  }
 
-    return { subject, html };
+  return { subject, html };
 };
 
 /**
@@ -200,28 +200,28 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
  * @returns {Boolean} Whether the email was sent
  */
 export const sendVerificationEmail = async (user, verificationToken) => {
-    // Get or initialize transporter
-    const mailer = initTransporter();
-    if (!mailer) {
-        logger.warn('Cannot send verification email: email service not configured');
-        return false;
-    }
+  // Get or initialize transporter
+  const mailer = initTransporter();
+  if (!mailer) {
+    logger.warn('Cannot send verification email: email service not configured');
+    return false;
+  }
 
-    try {
-        // Verify SMTP connection
-        await mailer.verify();
+  try {
+    // Verify SMTP connection
+    await mailer.verify();
 
-        // Get from email or use default
-        const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
+    // Get from email or use default
+    const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
 
-        // Create verification link
-        const verificationLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/auth/verify-email?token=${verificationToken}&userId=${user.id}`;
+    // Create verification link
+    const verificationLink = `${process.env.FRONTEND_URL || 'http://pingpilott.vercel.app'}/auth/verify-email?token=${verificationToken}&userId=${user.id}`;
 
-        const info = await mailer.sendMail({
-            from: `"Ping Pilot" <${fromEmail}>`,
-            to: user.email,
-            subject: 'Verify Your Email - Ping Pilot',
-            html: `
+    const info = await mailer.sendMail({
+      from: `"Ping Pilot" <${fromEmail}>`,
+      to: user.email,
+      subject: 'Verify Your Email - Ping Pilot',
+      html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #2196F3; color: white; padding: 15px; text-align: center;">
             <h1 style="margin: 0;">Email Verification</h1>
@@ -240,14 +240,14 @@ export const sendVerificationEmail = async (user, verificationToken) => {
           </div>
         </div>
       `,
-        });
+    });
 
-        logger.info(`Verification email sent to ${user.email}: ${info.messageId}`);
-        return true;
-    } catch (error) {
-        logger.error(`Error sending verification email for ${user.email}: ${error.message}`);
-        return false;
-    }
+    logger.info(`Verification email sent to ${user.email}: ${info.messageId}`);
+    return true;
+  } catch (error) {
+    logger.error(`Error sending verification email for ${user.email}: ${error.message}`);
+    return false;
+  }
 };
 
 /**
@@ -257,28 +257,28 @@ export const sendVerificationEmail = async (user, verificationToken) => {
  * @returns {Boolean} Whether the email was sent
  */
 export const sendPasswordResetEmail = async (user, resetToken) => {
-    // Get or initialize transporter
-    const mailer = initTransporter();
-    if (!mailer) {
-        logger.warn('Cannot send password reset email: email service not configured');
-        return false;
-    }
+  // Get or initialize transporter
+  const mailer = initTransporter();
+  if (!mailer) {
+    logger.warn('Cannot send password reset email: email service not configured');
+    return false;
+  }
 
-    try {
-        // Verify SMTP connection
-        await mailer.verify();
+  try {
+    // Verify SMTP connection
+    await mailer.verify();
 
-        // Get from email or use default
-        const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
+    // Get from email or use default
+    const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
 
-        // Create reset link
-        const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/auth/reset-password?token=${resetToken}&userId=${user.id}`;
+    // Create reset link
+    const resetLink = `${process.env.FRONTEND_URL || 'http://pingpilott.vercel.app'}/auth/reset-password?token=${resetToken}&userId=${user.id}`;
 
-        const info = await mailer.sendMail({
-            from: `"Ping Pilot" <${fromEmail}>`,
-            to: user.email,
-            subject: 'Reset Your Password - Ping Pilot',
-            html: `
+    const info = await mailer.sendMail({
+      from: `"Ping Pilot" <${fromEmail}>`,
+      to: user.email,
+      subject: 'Reset Your Password - Ping Pilot',
+      html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #2196F3; color: white; padding: 15px; text-align: center;">
             <h1 style="margin: 0;">Password Reset</h1>
@@ -297,19 +297,19 @@ export const sendPasswordResetEmail = async (user, resetToken) => {
           </div>
         </div>
       `,
-        });
+    });
 
-        logger.info(`Password reset email sent to ${user.email}: ${info.messageId}`);
-        return true;
-    } catch (error) {
-        logger.error(`Error sending password reset email for ${user.email}: ${error.message}`);
-        return false;
-    }
+    logger.info(`Password reset email sent to ${user.email}: ${info.messageId}`);
+    return true;
+  } catch (error) {
+    logger.error(`Error sending password reset email for ${user.email}: ${error.message}`);
+    return false;
+  }
 };
 
 export default {
-    initTransporter,
-    sendAlertEmail,
-    sendVerificationEmail,
-    sendPasswordResetEmail
+  initTransporter,
+  sendAlertEmail,
+  sendVerificationEmail,
+  sendPasswordResetEmail
 };
