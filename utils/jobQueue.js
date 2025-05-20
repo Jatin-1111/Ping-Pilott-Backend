@@ -1,4 +1,6 @@
 // utils/jobQueue.js
+import logger from './logger.js';
+
 class JobQueue {
     constructor() {
         this.jobs = new Map();

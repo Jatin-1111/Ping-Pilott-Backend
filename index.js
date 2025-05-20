@@ -30,7 +30,7 @@ const __dirname = path.dirname(__filename);
 
 // Initialize Express app
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB
 connectDB();
@@ -77,7 +77,8 @@ app.use(errorMiddleware);
 // Start server
 const server = app.listen(PORT, () => {
     logger.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-
+    
+    // Initialize cron jobs after server starts
     initCronJobs();
 });
 

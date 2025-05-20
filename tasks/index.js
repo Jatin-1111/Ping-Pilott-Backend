@@ -1,9 +1,9 @@
 // tasks/index.js
 import cron from 'node-cron';
 import logger from '../utils/logger.js';
-import { cleanupOldData } from './dataRetention.js';
-import { checkAllServers } from './checkServers.js';
-import { generateDailyReports } from './generateReports.js';
+import dataRetentionService from './dataRetention.js';
+import checkServersService from './checkServers.js';
+import reportsService from './generateReports.js';
 import jobQueue from '../utils/jobQueue.js';
 
 /**
@@ -14,9 +14,9 @@ export const initCronJobs = async () => {
         logger.info('Initializing cron jobs');
 
         // Initialize queue with all jobs
-        jobQueue.add('checkServers', checkAllServers, 1);
-        jobQueue.add('dataRetention', cleanupOldData, 2);
-        jobQueue.add('generateReports', generateDailyReports, 2);
+        jobQueue.add('checkServers', checkServersService.checkAllServers, 1);
+        jobQueue.add('dataRetention', dataRetentionService.runDataRetention, 2);
+        jobQueue.add('generateReports', reportsService.generateDailyReports, 2);
 
         // Server check job - run every minute
         cron.schedule('* * * * *', async () => {

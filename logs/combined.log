@@ -209,3 +209,19 @@
 2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
 2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
 2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 22:58:17:5817 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 22:58:17:5817 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 22:58:17:5817 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 22:58:18:5818 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 22:59:00:590 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 22:59:00:590 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 22:59:00:590 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 22:59:00:590 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 22:59:38:5938 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 22:59:38:5938 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 22:59:38:5938 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 22:59:39:5939 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 23:00:00:00 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:00:00:00 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:00:00:00 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:00:00:00 [32minfo[39m: [32mJob checkServers completed successfully[39m
