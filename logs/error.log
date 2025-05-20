@@ -1,0 +1,29 @@
+2025-05-21 00:08:00:80 [31merror[39m: [31mError in getServersToCheck: formatTime is not defined[39m
+2025-05-21 00:08:00:80 [31merror[39m: [31mError in checkAllServers: formatTime is not defined[39m
+2025-05-21 00:08:00:80 [31merror[39m: [31mError executing job 'checkServers' (3ms): formatTime is not defined[39m
+2025-05-21 00:08:00:80 [31merror[39m: [31mError in job checkServers: formatTime is not defined[39m
+2025-05-20 19:03:12:312 [31merror[39m: [31mError in job checkServers: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:03:14:314 [31merror[39m: [31mAuth error: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:03:17:317 [31merror[39m: [31mError saving cron job record: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:03:19:319 [31merror[39m: [31mError refreshing token: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:04:05:45 [31merror[39m: [31mError in job checkServers: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:04:10:410 [31merror[39m: [31mError saving cron job record: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:05:05:55 [31merror[39m: [31mError in job checkServers: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:05:10:510 [31merror[39m: [31mError saving cron job record: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:06:05:65 [31merror[39m: [31mError in job checkServers: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:06:10:610 [31merror[39m: [31mError saving cron job record: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:11:01:111 [31merror[39m: [31mError checking server 6829ed28b7394cdebd69af33: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:11:01:111 [31merror[39m: [31mError checking server 682a075e8fe4961312838fbb: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:11:01:111 [31merror[39m: [31mError checking server 682a07e28fe4961312838fe9: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:12:01:121 [31merror[39m: [31mError checking server 682a075e8fe4961312838fbb: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:12:01:121 [31merror[39m: [31mError checking server 6829ed28b7394cdebd69af33: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:12:01:121 [31merror[39m: [31mError checking server 682a07e28fe4961312838fe9: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:20:01:201 [31merror[39m: [31mError checking server 682a075e8fe4961312838fbb: server.save is not a function[39m
+2025-05-20 19:20:01:201 [31merror[39m: [31mError checking server 6829ed28b7394cdebd69af33: server.save is not a function[39m
+2025-05-20 19:20:01:201 [31merror[39m: [31mError checking server 682a07e28fe4961312838fe9: server.save is not a function[39m
+2025-05-20 19:21:01:211 [31merror[39m: [31mError checking server 682a075e8fe4961312838fbb: server.save is not a function[39m
+2025-05-20 19:21:01:211 [31merror[39m: [31mError checking server 6829ed28b7394cdebd69af33: server.save is not a function[39m
+2025-05-20 19:21:01:211 [31merror[39m: [31mError checking server 682a07e28fe4961312838fe9: server.save is not a function[39m
+2025-05-20 19:22:01:221 [31merror[39m: [31mError checking server 682a075e8fe4961312838fbb: server.save is not a function[39m
+2025-05-20 19:22:01:221 [31merror[39m: [31mError checking server 6829ed28b7394cdebd69af33: server.save is not a function[39m
+2025-05-20 19:22:01:221 [31merror[39m: [31mError checking server 682a07e28fe4961312838fe9: server.save is not a function[39m

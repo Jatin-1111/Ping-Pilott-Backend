@@ -85,10 +85,19 @@ export const getServerById = asyncHandler(async (req, res) => {
         });
     }
 
+    // Get timezone-adjusted data for the UI
+    const timezone = server.timezone || 'Asia/Kolkata';
+    const lastCheckedLocal = server.lastChecked ?
+        moment(server.lastChecked).tz(timezone).format() : null;
+
     res.status(200).json({
         status: 'success',
         data: {
-            server
+            server: {
+                ...server.toObject(),
+                lastCheckedLocal, // Add timezone-adjusted time
+                timezone // Include the timezone
+            }
         }
     });
 });

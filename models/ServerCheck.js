@@ -25,19 +25,22 @@ const serverCheckSchema = new mongoose.Schema({
         default: Date.now,
         index: true
     },
-    // Additional fields for time-based queries and aggregations
-    date: {
-        type: String, // YYYY-MM-DD format
-        required: true,
-        index: true
+    timezone: {
+        type: String,
+        default: 'Asia/Kolkata',
+        required: true
     },
-    hour: {
-        type: Number, // 0-23
-        required: true,
-        index: true
+    // Add timezone-specific fields
+    localDate: {
+        type: String, // Store as YYYY-MM-DD in server's timezone
+        required: true
     },
-    minute: {
-        type: Number, // 0-59
+    localHour: {
+        type: Number, // 0-23 in server's timezone
+        required: true
+    },
+    localMinute: {
+        type: Number, // 0-59 in server's timezone
         required: true
     },
     timeSlot: {
@@ -45,6 +48,17 @@ const serverCheckSchema = new mongoose.Schema({
         required: true,
         index: true
     }
+});
+
+serverCheckSchema.pre('save', function (next) {
+    if (this.isNew || this.isModified('timestamp') || this.isModified('timezone')) {
+        const m = moment(this.timestamp).tz(this.timezone);
+        this.localDate = m.format('YYYY-MM-DD');
+        this.localHour = m.hour();
+        this.localMinute = m.minute();
+        this.timeSlot = Math.floor(m.minute() / 15); // 0-3 for 15-minute slots
+    }
+    next();
 });
 
 // Create compound indexes for efficient querying

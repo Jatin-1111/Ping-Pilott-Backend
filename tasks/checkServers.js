@@ -5,6 +5,7 @@ import logger from '../utils/logger.js';
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
 import { sendAlertEmail } from '../services/emailService.js';
+import moment from 'moment-timezone';
 
 // Create a map to track in-progress checks
 const inProgressChecks = new Map();
@@ -15,20 +16,34 @@ const HTTP_TIMEOUT = 10000;
 // Maximum concurrent checks
 const MAX_CONCURRENT_CHECKS = 20;
 
+// Time buffer in milliseconds to ensure we don't miss checks
+// This ensures we check slightly earlier than exactly frequency minutes
+const TIME_BUFFER_MS = 5000; // 5 seconds buffer
+
+const formatTime = (date) => {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+};
+
+const formatTimeInTimezone = (date, timezone) => {
+    return moment(date).tz(timezone || 'Asia/Kolkata').format('HH:mm');
+};
+
 /**
  * Check all servers that are due for a check
  * @returns {Object} Result statistics
  */
 export const checkAllServers = async () => {
     try {
-        logger.info('Starting server check process');
-        console.log('[TROUBLESHOOTING] Starting server check process at', new Date().toISOString());
+        const startTime = Date.now();
+        logger.info(`Starting server check process at ${new Date(startTime).toISOString()}`);
+        console.log(`[TIMING] Starting check process at ${new Date(startTime).toISOString()}`);
 
         // Get all servers that need to be checked
-        console.log('[TROUBLESHOOTING] Fetching servers that need to be checked');
         const servers = await getServersToCheck();
-        logger.info(`Found ${servers.length} servers to check`);
-        console.log(`[TROUBLESHOOTING] Found ${servers.length} servers to check`);
+        logger.info(`Found ${servers.length} servers to check in ${Date.now() - startTime}ms`);
+        console.log(`[TIMING] Found ${servers.length} servers in ${Date.now() - startTime}ms`);
 
         // Log server IDs for troubleshooting
         if (servers.length > 0) {
@@ -51,28 +66,29 @@ export const checkAllServers = async () => {
         const batches = Math.ceil(servers.length / batchSize);
 
         for (let i = 0; i < batches; i++) {
+            const batchStartTime = Date.now();
             const start = i * batchSize;
             const end = Math.min(start + batchSize, servers.length);
             const batch = servers.slice(start, end);
 
             logger.info(`Processing batch ${i + 1}/${batches} (${batch.length} servers)`);
-            console.log(`[TROUBLESHOOTING] Processing batch ${i + 1}/${batches} (${batch.length} servers)`);
+            console.log(`[TIMING] Starting batch ${i + 1} at ${new Date().toISOString()}`);
 
             // Process this batch in parallel
             const promises = batch.map(server => processServer(server, stats));
             await Promise.all(promises);
 
+            console.log(`[TIMING] Batch ${i + 1} completed in ${Date.now() - batchStartTime}ms`);
+
             // Short sleep between batches to avoid resource spikes
             if (i < batches - 1) {
                 await sleep(1000);
             }
-
-            // Log intermediate stats
-            console.log(`[TROUBLESHOOTING] Batch ${i + 1} completed. Current stats:`, JSON.stringify(stats));
         }
 
-        logger.info('Server check process completed', { stats });
-        console.log('[TROUBLESHOOTING] Server check process completed', JSON.stringify(stats));
+        const totalDuration = Date.now() - startTime;
+        logger.info(`Server check process completed in ${totalDuration}ms`, { stats });
+        console.log(`[TIMING] Check process completed in ${totalDuration}ms`, JSON.stringify(stats));
         return stats;
 
     } catch (error) {
@@ -89,77 +105,64 @@ export const checkAllServers = async () => {
  */
 const getServersToCheck = async () => {
     try {
+        const queryStart = Date.now();
         const now = new Date();
-        console.log(`[TROUBLESHOOTING] Current time for checking: ${now.toISOString()}`);
-        console.log(`[TROUBLESHOOTING] Day of week: ${now.getDay()}, Time: ${formatTime(now)}`);
 
-        // Find servers that:
-        // 1. Have never been checked, OR
-        // 2. Are due for a check based on frequency setting
+        // Base query for servers due for checking
         const query = {
             $or: [
                 { lastChecked: null },
                 {
                     $expr: {
-                        $gt: [
+                        $gte: [
                             { $subtract: [now, '$lastChecked'] },
-                            { $multiply: ['$monitoring.frequency', 60 * 1000] } // frequency in minutes to ms
+                            {
+                                $subtract: [
+                                    { $multiply: ['$monitoring.frequency', 60 * 1000] },
+                                    TIME_BUFFER_MS
+                                ]
+                            }
                         ]
                     }
                 }
             ]
         };
 
-        // Only check servers within their monitoring days and time windows
-        query.$and = [
-            // Check if today is a monitoring day
-            {
-                $or: [
-                    { 'monitoring.daysOfWeek': { $exists: false } },
-                    { 'monitoring.daysOfWeek': { $size: 0 } },
-                    { 'monitoring.daysOfWeek': now.getDay() }
-                ]
-            },
-            // Check if current time is within the monitoring time window
-            {
-                $or: [
-                    { 'monitoring.timeWindows': { $exists: false } },
-                    { 'monitoring.timeWindows': { $size: 0 } },
-                    {
-                        'monitoring.timeWindows': {
-                            $elemMatch: {
-                                start: { $lte: formatTime(now) },
-                                end: { $gte: formatTime(now) }
-                            }
-                        }
-                    }
-                ]
+        // Get all potential servers
+        const potentialServers = await Server.find(query).lean();
+
+        // Filter servers based on their own timezone settings
+        const serversToCheck = potentialServers.filter(server => {
+            const serverTimezone = server.timezone || 'Asia/Kolkata';
+            const serverNow = moment().tz(serverTimezone);
+            const serverDay = serverNow.day(); // 0-6, where 0 is Sunday
+            const serverTime = serverNow.format('HH:mm');
+
+            // Check if today is a monitoring day in server's timezone
+            const isDayMatch = !server.monitoring?.daysOfWeek?.length ||
+                server.monitoring.daysOfWeek.includes(serverDay);
+
+            // Check if current time is within the monitoring window in server's timezone
+            let isTimeMatch = true;
+            if (server.monitoring?.timeWindows?.length) {
+                // Special case: If start time equals end time (00:00 to 00:00), treat as 24/7 monitoring
+                const has24x7Window = server.monitoring.timeWindows.some(window =>
+                    window.start === "00:00" && window.end === "00:00");
+
+                if (!has24x7Window) {
+                    isTimeMatch = server.monitoring.timeWindows.some(window =>
+                        serverTime >= window.start && serverTime <= window.end);
+                }
             }
-        ];
 
-        console.log(`[TROUBLESHOOTING] Query for getServersToCheck:`, JSON.stringify(query));
+            return isDayMatch && isTimeMatch;
+        });
 
-        const servers = await Server.find(query).sort({ lastChecked: 1 });
-        console.log(`[TROUBLESHOOTING] Found ${servers.length} servers matching query`);
-
-        return servers;
+        return serversToCheck;
     } catch (error) {
         logger.error(`Error in getServersToCheck: ${error.message}`);
-        console.error(`[TROUBLESHOOTING] Error in getServersToCheck: ${error.message}`);
-        console.error('[TROUBLESHOOTING] Error stack:', error.stack);
         throw error;
     }
-};
-
-/**
- * Format time as HH:MM
- * @param {Date} date - Date object
- * @returns {String} Time in HH:MM format
- */
-const formatTime = (date) => {
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
 };
 
 /**
@@ -168,17 +171,26 @@ const formatTime = (date) => {
  * @param {Object} stats - Statistics object to update
  */
 const processServer = async (server, stats) => {
+    const serverId = server._id || server.id;
+    const serverStart = Date.now();
+
     // Skip if server is already being checked
-    if (inProgressChecks.get(server.id)) {
-        logger.warn(`Server ${server.id} check already in progress, skipping`);
-        console.log(`[TROUBLESHOOTING] Server ${server.id} (${server.name}) check already in progress, skipping`);
+    if (inProgressChecks.get(serverId)) {
+        logger.warn(`Server ${serverId} check already in progress, skipping`);
+        console.log(`[TROUBLESHOOTING] Server ${serverId} (${server.name}) check already in progress, skipping`);
         stats.skipped++;
         return;
     }
 
+    // Track how long since it was last checked
+    const lastCheckedAgoMs = server.lastChecked
+        ? Date.now() - new Date(server.lastChecked).getTime()
+        : null;
+    console.log(`[TIMING] Processing server ${serverId} (${server.name}), last check: ${lastCheckedAgoMs ? Math.floor(lastCheckedAgoMs / 1000) + 's ago' : 'never'
+        }`);
+
     // Mark as in progress
-    inProgressChecks.set(server.id, true);
-    console.log(`[TROUBLESHOOTING] Starting check for server ${server.id} (${server.name}) at ${new Date().toISOString()}`);
+    inProgressChecks.set(serverId, true);
 
     try {
         logger.debug(`Checking server ${server.name} (${server.url})`);
@@ -188,6 +200,7 @@ const processServer = async (server, stats) => {
             logger.debug(`Skipping check for server ${server.name} due to subscription constraints`);
             console.log(`[TROUBLESHOOTING] Skipping check for server ${server.name} due to subscription constraints`);
             stats.skipped++;
+            inProgressChecks.set(serverId, false); // Important: always clear the in-progress flag
             return;
         }
 
@@ -196,17 +209,17 @@ const processServer = async (server, stats) => {
         console.log(`[TROUBLESHOOTING] Server ${server.name} previous status: ${oldStatus}`);
 
         // Check the server status
-        const startTime = Date.now();
+        const checkStart = Date.now();
         const checkResult = await checkServerStatus(server);
-        const checkDuration = Date.now() - startTime;
+        const checkDuration = Date.now() - checkStart;
 
-        console.log(`[TROUBLESHOOTING] Server ${server.name} check result: ${JSON.stringify(checkResult)} (took ${checkDuration}ms)`);
+        console.log(`[TIMING] Server ${server.name} check took ${checkDuration}ms, result: ${JSON.stringify(checkResult)}`);
 
         // Update server with check results
         server.status = checkResult.status;
         server.responseTime = checkResult.responseTime;
         server.error = checkResult.error;
-        server.lastChecked = new Date();
+        server.lastChecked = new Date(); // Use precise timestamp for when the check completed
 
         // If status changed, record the change time
         if (oldStatus !== checkResult.status) {
@@ -215,23 +228,29 @@ const processServer = async (server, stats) => {
         }
 
         // Save server updates
-        console.log(`[TROUBLESHOOTING] Saving updated server ${server.id} (${server.name})`);
+        const saveStart = Date.now();
+        console.log(`[TIMING] Saving server ${serverId} (${server.name})`);
         await server.save();
-        console.log(`[TROUBLESHOOTING] Server ${server.id} (${server.name}) saved successfully`);
+        console.log(`[TIMING] Server ${serverId} save took ${Date.now() - saveStart}ms`);
 
         // Record check history
-        console.log(`[TROUBLESHOOTING] Recording check history for server ${server.id} (${server.name})`);
+        const historyStart = Date.now();
+        console.log(`[TIMING] Recording check history for ${serverId}`);
         await recordCheckHistory(server, checkResult);
-        console.log(`[TROUBLESHOOTING] Check history recorded successfully for server ${server.id} (${server.name})`);
+        console.log(`[TIMING] Check history recorded in ${Date.now() - historyStart}ms`);
 
         // Update stats
         stats.checked++;
-        stats[checkResult.status]++;
+        if (checkResult.status === 'up') stats.up++;
+        else if (checkResult.status === 'down') stats.down++;
 
         // Send alerts if necessary
         if (shouldSendAlert(server, oldStatus, checkResult.status)) {
             console.log(`[TROUBLESHOOTING] Sending alert for server ${server.name}`);
+            const alertStart = Date.now();
             const alertSent = await sendAlert(server, oldStatus, checkResult.status);
+            console.log(`[TIMING] Alert sending took ${Date.now() - alertStart}ms`);
+
             if (alertSent) {
                 stats.alertsSent++;
                 console.log(`[TROUBLESHOOTING] Alert sent successfully for server ${server.name}`);
@@ -241,17 +260,17 @@ const processServer = async (server, stats) => {
         }
 
         logger.debug(`Server ${server.name} check completed: ${checkResult.status}`);
-        console.log(`[TROUBLESHOOTING] Server ${server.name} check completed: ${checkResult.status}`);
+        console.log(`[TIMING] Server ${server.name} processing completed in ${Date.now() - serverStart}ms`);
 
     } catch (error) {
-        logger.error(`Error checking server ${server.id}: ${error.message}`);
-        console.error(`[TROUBLESHOOTING] Error checking server ${server.id} (${server.name}): ${error.message}`);
+        logger.error(`Error checking server ${serverId}: ${error.message}`);
+        console.error(`[TROUBLESHOOTING] Error checking server ${serverId} (${server.name}): ${error.message}`);
         console.error('[TROUBLESHOOTING] Error stack:', error.stack);
         stats.error++;
     } finally {
-        // Mark as no longer in progress
-        inProgressChecks.set(server.id, false);
-        console.log(`[TROUBLESHOOTING] Completed processing server ${server.id} (${server.name})`);
+        // CRITICAL: Always mark as no longer in progress, even in error scenarios
+        inProgressChecks.set(serverId, false);
+        console.log(`[TIMING] Completed processing server ${serverId} (${server.name}) in ${Date.now() - serverStart}ms`);
     }
 };
 

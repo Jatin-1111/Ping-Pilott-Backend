@@ -162,3 +162,921 @@
 2025-05-20 23:47:00:470 [32minfo[39m: [32mServer check process completed[39m
 2025-05-20 23:47:00:470 [32minfo[39m: [32mJob 'checkServers' completed in 96ms[39m
 2025-05-20 23:47:00:470 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:47:20:4720 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:47:20:4720 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:47:20:4720 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 23:47:20:4720 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 23:47:21:4721 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 23:47:21:4721 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 23:47:21:4721 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:47:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:47:21:4721 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:46:12 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:47:21:4721 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:46:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:47:21:4721 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:45:44 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:47:21:4721 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:45:27 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:47:21:4721 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:48:00:480 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:18:00.712Z[39m
+2025-05-20 23:48:00:480 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:48:00:480 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:48:00:480 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:48:00:480 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:48:00:480 [32minfo[39m: [32mJob 'checkServers' completed in 102ms[39m
+2025-05-20 23:48:00:480 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:48:49:4849 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:48:49:4849 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:48:49:4849 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 23:48:49:4849 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 23:48:50:4850 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 23:48:50:4850 [32minfo[39m: [32mNo recent job records found in database[39m
+2025-05-20 23:48:50:4850 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:49:00:490 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:19:00.983Z[39m
+2025-05-20 23:49:01:491 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:49:01:491 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:49:01:491 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:49:01:491 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:49:01:491 [32minfo[39m: [32mJob 'checkServers' completed in 106ms[39m
+2025-05-20 23:49:01:491 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:50:00:500 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:20:00.446Z[39m
+2025-05-20 23:50:00:500 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:50:00:500 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:50:00:500 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:50:00:500 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:50:00:500 [32minfo[39m: [32mJob 'checkServers' completed in 104ms[39m
+2025-05-20 23:50:00:500 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:51:00:510 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:21:00.767Z[39m
+2025-05-20 23:51:00:510 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:51:00:510 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:51:00:510 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:51:00:510 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:51:00:510 [32minfo[39m: [32mJob 'checkServers' completed in 105ms[39m
+2025-05-20 23:51:00:510 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:51:34:5134 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:51:34:5134 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:51:34:5134 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 23:51:34:5134 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 23:51:35:5135 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 23:51:35:5135 [32minfo[39m: [32mFound 3 recent job records in database[39m
+2025-05-20 23:51:35:5135 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:51:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:51:35:5135 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:50:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:51:35:5135 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:49:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:51:35:5135 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:52:00:520 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:22:00.129Z[39m
+2025-05-20 23:52:00:520 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:52:00:520 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:52:00:520 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:52:00:520 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:52:00:520 [32minfo[39m: [32mJob 'checkServers' completed in 105ms[39m
+2025-05-20 23:52:00:520 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:53:00:530 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:23:00.523Z[39m
+2025-05-20 23:53:00:530 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:53:00:530 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:53:00:530 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:53:00:530 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:53:00:530 [32minfo[39m: [32mJob 'checkServers' completed in 102ms[39m
+2025-05-20 23:53:00:530 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:54:00:540 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:24:00.919Z[39m
+2025-05-20 23:54:01:541 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:54:01:541 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:54:01:541 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:54:01:541 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:54:01:541 [32minfo[39m: [32mJob 'checkServers' completed in 104ms[39m
+2025-05-20 23:54:01:541 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:55:00:550 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:25:00.292Z[39m
+2025-05-20 23:55:00:550 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:55:00:550 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:55:00:550 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:55:00:550 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:55:00:550 [32minfo[39m: [32mJob 'checkServers' completed in 62ms[39m
+2025-05-20 23:55:00:550 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:56:00:560 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:26:00.617Z[39m
+2025-05-20 23:56:00:560 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:56:00:560 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:56:00:560 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:56:00:560 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:56:00:560 [32minfo[39m: [32mJob 'checkServers' completed in 105ms[39m
+2025-05-20 23:56:00:560 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:57:00:570 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:27:00.971Z[39m
+2025-05-20 23:57:01:571 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:57:01:571 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:57:01:571 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:57:01:571 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:57:01:571 [32minfo[39m: [32mJob 'checkServers' completed in 103ms[39m
+2025-05-20 23:57:01:571 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:58:00:580 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:28:00.450Z[39m
+2025-05-20 23:58:00:580 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:58:00:580 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:58:00:580 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:58:00:580 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:58:00:580 [32minfo[39m: [32mJob 'checkServers' completed in 86ms[39m
+2025-05-20 23:58:00:580 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:59:00:590 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:29:00.848Z[39m
+2025-05-20 23:59:00:590 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:59:00:590 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:59:01:591 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:59:01:591 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:59:01:591 [32minfo[39m: [32mJob 'checkServers' completed in 84ms[39m
+2025-05-20 23:59:01:591 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:00:00:00 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:30:00.229Z[39m
+2025-05-21 00:00:00:00 [32minfo[39m: [32mStarting job dataRetention at 2025-05-20T18:30:00.231Z[39m
+2025-05-21 00:00:00:00 [32minfo[39m: [32mExecuting job 'dataRetention'[39m
+2025-05-21 00:00:00:00 [32minfo[39m: [32mStarting data retention process[39m
+2025-05-21 00:00:00:00 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:00:00:00 [32minfo[39m: [32mStarting server check process[39m
+2025-05-21 00:00:00:00 [32minfo[39m: [32mFound 3 servers to check[39m
+2025-05-21 00:00:00:00 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:00:00:00 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:00:00:00 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:00:00:00 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:00:00:00 [32minfo[39m: [32mDeleting all check data for date: 2025-05-19[39m
+2025-05-21 00:00:00:00 [32minfo[39m: [32mDeleted 6 checks from previous days[39m
+2025-05-21 00:00:00:00 [32minfo[39m: [32mDeleted 0 old cron job logs[39m
+2025-05-21 00:00:01:01 [32minfo[39m: [32mData retention process completed successfully[39m
+2025-05-21 00:00:01:01 [32minfo[39m: [32mJob 'dataRetention' completed in 823ms[39m
+2025-05-21 00:00:01:01 [32minfo[39m: [32mJob dataRetention completed successfully[39m
+2025-05-21 00:00:01:01 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:00:01:01 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:00:10:010 [34mdebug[39m: [34mServer Shopino check completed: down[39m
+2025-05-21 00:00:10:010 [32minfo[39m: [32mServer check process completed[39m
+2025-05-21 00:00:10:010 [32minfo[39m: [32mJob 'checkServers' completed in 10643ms[39m
+2025-05-21 00:00:10:010 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:01:00:10 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:31:00.629Z[39m
+2025-05-21 00:01:00:10 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:01:00:10 [32minfo[39m: [32mStarting server check process[39m
+2025-05-21 00:01:00:10 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-21 00:01:00:10 [32minfo[39m: [32mServer check process completed[39m
+2025-05-21 00:01:00:10 [32minfo[39m: [32mJob 'checkServers' completed in 104ms[39m
+2025-05-21 00:01:00:10 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:02:00:20 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:32:00.117Z[39m
+2025-05-21 00:02:00:20 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:02:00:20 [32minfo[39m: [32mStarting server check process[39m
+2025-05-21 00:02:00:20 [32minfo[39m: [32mFound 3 servers to check[39m
+2025-05-21 00:02:00:20 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:02:00:20 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:02:00:20 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:02:00:20 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:02:01:21 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:02:01:21 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:02:02:22 [32minfo[39m: [32mSending alert for server Shopino: down -> up[39m
+2025-05-21 00:02:02:22 [32minfo[39m: [32mEmail transporter initialized[39m
+2025-05-21 00:02:09:29 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <88ee1bc4-2f27-7d35-3cb3-05216f9d93b5@gmail.com>[39m
+2025-05-21 00:02:09:29 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:02:09:29 [32minfo[39m: [32mServer check process completed[39m
+2025-05-21 00:02:09:29 [32minfo[39m: [32mJob 'checkServers' completed in 8929ms[39m
+2025-05-21 00:02:09:29 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:03:00:30 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:33:00.483Z[39m
+2025-05-21 00:03:00:30 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:03:00:30 [32minfo[39m: [32mStarting server check process[39m
+2025-05-21 00:03:00:30 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-21 00:03:00:30 [32minfo[39m: [32mServer check process completed[39m
+2025-05-21 00:03:00:30 [32minfo[39m: [32mJob 'checkServers' completed in 101ms[39m
+2025-05-21 00:03:00:30 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:04:00:40 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:34:00.859Z[39m
+2025-05-21 00:04:00:40 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:04:00:40 [32minfo[39m: [32mStarting server check process[39m
+2025-05-21 00:04:01:41 [32minfo[39m: [32mFound 3 servers to check[39m
+2025-05-21 00:04:01:41 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:04:01:41 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:04:01:41 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:04:01:41 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:04:01:41 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:04:01:41 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:04:01:41 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:04:01:41 [32minfo[39m: [32mServer check process completed[39m
+2025-05-21 00:04:01:41 [32minfo[39m: [32mJob 'checkServers' completed in 896ms[39m
+2025-05-21 00:04:01:41 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:05:00:50 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:35:00.192Z[39m
+2025-05-21 00:05:00:50 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:05:00:50 [32minfo[39m: [32mStarting server check process[39m
+2025-05-21 00:05:00:50 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-21 00:05:00:50 [32minfo[39m: [32mServer check process completed[39m
+2025-05-21 00:05:00:50 [32minfo[39m: [32mJob 'checkServers' completed in 59ms[39m
+2025-05-21 00:05:00:50 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:06:00:60 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:36:00.475Z[39m
+2025-05-21 00:06:00:60 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:06:00:60 [32minfo[39m: [32mStarting server check process[39m
+2025-05-21 00:06:00:60 [32minfo[39m: [32mFound 3 servers to check[39m
+2025-05-21 00:06:00:60 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:06:00:60 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:06:00:60 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:06:00:60 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:06:01:61 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:06:01:61 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:06:01:61 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:06:01:61 [32minfo[39m: [32mServer check process completed[39m
+2025-05-21 00:06:01:61 [32minfo[39m: [32mJob 'checkServers' completed in 1123ms[39m
+2025-05-21 00:06:01:61 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:07:00:70 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:37:00.870Z[39m
+2025-05-21 00:07:01:71 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:07:01:71 [32minfo[39m: [32mStarting server check process[39m
+2025-05-21 00:07:01:71 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-21 00:07:01:71 [32minfo[39m: [32mServer check process completed[39m
+2025-05-21 00:07:01:71 [32minfo[39m: [32mJob 'checkServers' completed in 102ms[39m
+2025-05-21 00:07:01:71 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:07:20:720 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:07:20:720 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-21 00:07:20:720 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-21 00:07:20:720 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-21 00:07:21:721 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-21 00:07:21:721 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-21 00:07:21:721 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:07:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:07:21:721 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:06:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:07:21:721 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:05:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:07:21:721 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:04:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:07:21:721 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:03:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:07:21:721 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 00:08:00:80 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:38:00.462Z[39m
+2025-05-21 00:08:00:80 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:08:00:80 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:38:00.556Z[39m
+2025-05-21 00:08:00:80 [31merror[39m: [31mError in getServersToCheck: formatTime is not defined[39m
+2025-05-21 00:08:00:80 [31merror[39m: [31mError in checkAllServers: formatTime is not defined[39m
+2025-05-21 00:08:00:80 [31merror[39m: [31mError executing job 'checkServers' (3ms): formatTime is not defined[39m
+2025-05-21 00:08:00:80 [31merror[39m: [31mError in job checkServers: formatTime is not defined[39m
+2025-05-21 00:08:22:822 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:08:22:822 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-21 00:08:22:822 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-21 00:08:22:822 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-21 00:08:23:823 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:08:23:823 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-21 00:08:23:823 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-21 00:08:23:823 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-21 00:08:24:824 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-21 00:08:24:824 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-21 00:08:24:824 [32minfo[39m: [32mJob: checkServers, Status: failed, Started: Wed May 21 2025 00:08:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:24:824 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:07:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:24:824 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:06:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:24:824 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:05:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:24:824 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:04:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:24:824 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 00:08:40:840 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:08:40:840 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-21 00:08:40:840 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-21 00:08:40:840 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-21 00:08:41:841 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-21 00:08:41:841 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-21 00:08:41:841 [32minfo[39m: [32mJob: checkServers, Status: failed, Started: Wed May 21 2025 00:08:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:41:841 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:07:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:41:841 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:06:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:41:841 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:05:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:41:841 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:04:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:41:841 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mJob: checkServers, Status: failed, Started: Wed May 21 2025 00:08:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:07:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:06:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:05:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:04:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:43:843 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 00:08:48:848 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:08:48:848 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-21 00:08:48:848 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-21 00:08:48:848 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-21 00:08:49:849 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-21 00:08:49:849 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-21 00:08:49:849 [32minfo[39m: [32mJob: checkServers, Status: failed, Started: Wed May 21 2025 00:08:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:49:849 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:07:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:49:849 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:06:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:49:849 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:05:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:49:849 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 00:04:00 GMT+0530 (India Standard Time)[39m
+2025-05-21 00:08:49:849 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 00:09:00:90 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:39:00.252Z[39m
+2025-05-21 00:09:00:90 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:09:00:90 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:39:00.357Z[39m
+2025-05-21 00:09:00:90 [32minfo[39m: [32mFound 3 servers to check in 102ms[39m
+2025-05-21 00:09:00:90 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:09:00:90 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:09:00:90 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:09:00:90 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:09:01:91 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:09:01:91 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:09:02:92 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-21 00:09:02:92 [32minfo[39m: [32mEmail transporter initialized[39m
+2025-05-21 00:09:09:99 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <b2543b17-150a-12fa-cb50-173f5b296fd7@gmail.com>[39m
+2025-05-21 00:09:09:99 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:09:09:99 [32minfo[39m: [32mServer check process completed in 8916ms[39m
+2025-05-21 00:09:09:99 [32minfo[39m: [32mJob 'checkServers' completed in 8918ms[39m
+2025-05-21 00:09:09:99 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:10:00:100 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:40:00.685Z[39m
+2025-05-21 00:10:00:100 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:10:00:100 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:40:00.771Z[39m
+2025-05-21 00:10:00:100 [32minfo[39m: [32mFound 3 servers to check in 101ms[39m
+2025-05-21 00:10:00:100 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:10:00:100 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:10:00:100 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:10:00:100 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:10:01:101 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:10:01:101 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:10:01:101 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:10:01:101 [32minfo[39m: [32mServer check process completed in 1020ms[39m
+2025-05-21 00:10:01:101 [32minfo[39m: [32mJob 'checkServers' completed in 1022ms[39m
+2025-05-21 00:10:01:101 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:11:00:110 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:41:00.108Z[39m
+2025-05-21 00:11:00:110 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:11:00:110 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:41:00.269Z[39m
+2025-05-21 00:11:00:110 [32minfo[39m: [32mFound 3 servers to check in 99ms[39m
+2025-05-21 00:11:00:110 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:11:00:110 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:11:00:110 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:11:00:110 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:11:01:111 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:11:01:111 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:11:01:111 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:11:01:111 [32minfo[39m: [32mServer check process completed in 1324ms[39m
+2025-05-21 00:11:01:111 [32minfo[39m: [32mJob 'checkServers' completed in 1325ms[39m
+2025-05-21 00:11:01:111 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:12:00:120 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:42:00.553Z[39m
+2025-05-21 00:12:00:120 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:12:00:120 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:42:00.679Z[39m
+2025-05-21 00:12:00:120 [32minfo[39m: [32mFound 3 servers to check in 100ms[39m
+2025-05-21 00:12:00:120 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:12:00:120 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:12:00:120 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:12:00:120 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:12:01:121 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:12:02:122 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:12:02:122 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-21 00:12:10:1210 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <f52d8b24-51ac-c2c0-5e2e-0396add5aa30@gmail.com>[39m
+2025-05-21 00:12:10:1210 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:12:10:1210 [32minfo[39m: [32mServer check process completed in 9936ms[39m
+2025-05-21 00:12:10:1210 [32minfo[39m: [32mJob 'checkServers' completed in 9937ms[39m
+2025-05-21 00:12:10:1210 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:13:00:130 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:43:00.920Z[39m
+2025-05-21 00:13:01:131 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:13:01:131 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:43:01.092Z[39m
+2025-05-21 00:13:01:131 [32minfo[39m: [32mFound 3 servers to check in 104ms[39m
+2025-05-21 00:13:01:131 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:13:01:131 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:13:01:131 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:13:01:131 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:13:01:131 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:13:02:132 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:13:02:132 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-21 00:13:11:1311 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <11877320-3082-2d00-29da-d5c2e0eacb06@gmail.com>[39m
+2025-05-21 00:13:11:1311 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:13:11:1311 [32minfo[39m: [32mServer check process completed in 10142ms[39m
+2025-05-21 00:13:11:1311 [32minfo[39m: [32mJob 'checkServers' completed in 10143ms[39m
+2025-05-21 00:13:11:1311 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:14:00:140 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:44:00.364Z[39m
+2025-05-21 00:14:00:140 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:14:00:140 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:44:00.484Z[39m
+2025-05-21 00:14:00:140 [32minfo[39m: [32mFound 3 servers to check in 103ms[39m
+2025-05-21 00:14:00:140 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:14:00:140 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:14:00:140 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:14:00:140 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:14:01:141 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:14:01:141 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:14:01:141 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:14:01:141 [32minfo[39m: [32mServer check process completed in 936ms[39m
+2025-05-21 00:14:01:141 [32minfo[39m: [32mJob 'checkServers' completed in 937ms[39m
+2025-05-21 00:14:01:141 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:15:00:150 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:45:00.838Z[39m
+2025-05-21 00:15:00:150 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:15:00:150 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:45:00.910Z[39m
+2025-05-21 00:15:00:150 [32minfo[39m: [32mFound 3 servers to check in 58ms[39m
+2025-05-21 00:15:00:150 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:15:00:150 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:15:00:150 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:15:00:150 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:15:01:151 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:15:01:151 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:15:02:152 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-21 00:15:08:158 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <e4ffda73-da40-e968-c653-82d947229ba0@gmail.com>[39m
+2025-05-21 00:15:08:158 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:15:08:158 [32minfo[39m: [32mServer check process completed in 7409ms[39m
+2025-05-21 00:15:08:158 [32minfo[39m: [32mJob 'checkServers' completed in 7410ms[39m
+2025-05-21 00:15:08:158 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:16:00:160 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:46:00.157Z[39m
+2025-05-21 00:16:00:160 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:16:00:160 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:46:00.226Z[39m
+2025-05-21 00:16:00:160 [32minfo[39m: [32mFound 3 servers to check in 62ms[39m
+2025-05-21 00:16:00:160 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:16:00:160 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:16:00:160 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:16:00:160 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:16:00:160 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:16:00:160 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:16:01:161 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:16:01:161 [32minfo[39m: [32mServer check process completed in 814ms[39m
+2025-05-21 00:16:01:161 [32minfo[39m: [32mJob 'checkServers' completed in 814ms[39m
+2025-05-21 00:16:01:161 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:17:00:170 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:47:00.546Z[39m
+2025-05-21 00:17:00:170 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:17:00:170 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:47:00.609Z[39m
+2025-05-21 00:17:00:170 [32minfo[39m: [32mFound 3 servers to check in 64ms[39m
+2025-05-21 00:17:00:170 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:17:00:170 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:17:00:170 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:17:00:170 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:17:01:171 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:17:01:171 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:17:01:171 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:17:01:171 [32minfo[39m: [32mServer check process completed in 987ms[39m
+2025-05-21 00:17:01:171 [32minfo[39m: [32mJob 'checkServers' completed in 988ms[39m
+2025-05-21 00:17:01:171 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:18:00:180 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:48:00.975Z[39m
+2025-05-21 00:18:01:181 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:18:01:181 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:48:01.057Z[39m
+2025-05-21 00:18:01:181 [32minfo[39m: [32mFound 3 servers to check in 58ms[39m
+2025-05-21 00:18:01:181 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:18:01:181 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:18:01:181 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:18:01:181 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:18:01:181 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:18:01:181 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:18:01:181 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:18:01:181 [32minfo[39m: [32mServer check process completed in 757ms[39m
+2025-05-21 00:18:01:181 [32minfo[39m: [32mJob 'checkServers' completed in 759ms[39m
+2025-05-21 00:18:01:181 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:19:00:190 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:49:00.333Z[39m
+2025-05-21 00:19:00:190 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:19:00:190 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:49:00.396Z[39m
+2025-05-21 00:19:00:190 [32minfo[39m: [32mFound 3 servers to check in 64ms[39m
+2025-05-21 00:19:00:190 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:19:00:190 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:19:00:190 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:19:00:190 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:19:00:190 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:19:01:191 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:19:01:191 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:19:01:191 [32minfo[39m: [32mServer check process completed in 807ms[39m
+2025-05-21 00:19:01:191 [32minfo[39m: [32mJob 'checkServers' completed in 807ms[39m
+2025-05-21 00:19:01:191 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:20:00:200 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:50:00.682Z[39m
+2025-05-21 00:20:00:200 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:20:00:200 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:50:00.759Z[39m
+2025-05-21 00:20:00:200 [32minfo[39m: [32mFound 3 servers to check in 65ms[39m
+2025-05-21 00:20:00:200 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:20:00:200 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:20:00:200 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:20:00:200 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:20:01:201 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:20:01:201 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:20:01:201 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:20:01:201 [32minfo[39m: [32mServer check process completed in 802ms[39m
+2025-05-21 00:20:01:201 [32minfo[39m: [32mJob 'checkServers' completed in 802ms[39m
+2025-05-21 00:20:01:201 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:21:00:210 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:51:00.131Z[39m
+2025-05-21 00:21:00:210 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:21:00:210 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:51:00.204Z[39m
+2025-05-21 00:21:00:210 [32minfo[39m: [32mFound 3 servers to check in 59ms[39m
+2025-05-21 00:21:00:210 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:21:00:210 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:21:00:210 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:21:00:210 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:21:00:210 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:21:00:210 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:21:01:211 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:21:01:211 [32minfo[39m: [32mServer check process completed in 870ms[39m
+2025-05-21 00:21:01:211 [32minfo[39m: [32mJob 'checkServers' completed in 870ms[39m
+2025-05-21 00:21:01:211 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:22:00:220 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:52:00.495Z[39m
+2025-05-21 00:22:00:220 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:22:00:220 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:52:00.559Z[39m
+2025-05-21 00:22:00:220 [32minfo[39m: [32mFound 3 servers to check in 60ms[39m
+2025-05-21 00:22:00:220 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:22:00:220 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:22:00:220 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:22:00:220 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:22:01:221 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:22:01:221 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:22:01:221 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-21 00:22:08:228 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <41402976-dbae-1c74-49a1-79af5a3f4c57@gmail.com>[39m
+2025-05-21 00:22:08:228 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:22:08:228 [32minfo[39m: [32mServer check process completed in 7507ms[39m
+2025-05-21 00:22:08:228 [32minfo[39m: [32mJob 'checkServers' completed in 7507ms[39m
+2025-05-21 00:22:08:228 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:23:00:230 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:53:00.905Z[39m
+2025-05-21 00:23:01:231 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 00:23:01:231 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:53:01.010Z[39m
+2025-05-21 00:23:01:231 [32minfo[39m: [32mFound 3 servers to check in 79ms[39m
+2025-05-21 00:23:01:231 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-21 00:23:01:231 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-21 00:23:01:231 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-21 00:23:01:231 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-21 00:23:01:231 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-21 00:23:01:231 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-21 00:23:01:231 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-21 00:23:01:231 [32minfo[39m: [32mServer check process completed in 915ms[39m
+2025-05-21 00:23:01:231 [32minfo[39m: [32mJob 'checkServers' completed in 916ms[39m
+2025-05-21 00:23:01:231 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:23:41:2341 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:23:41:2341 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 18:53:41:5341 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 18:53:41:5341 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 18:53:42:5342 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-20 18:53:42:5342 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 18:53:42:5342 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 18:53:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 18:53:42:5342 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 18:52:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 18:53:42:5342 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 18:51:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 18:53:42:5342 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 18:50:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 18:53:42:5342 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 18:49:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 18:53:42:5342 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 18:54:00:540 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:54:00.874Z[39m
+2025-05-20 18:54:01:541 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 18:54:01:541 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:54:01.016Z[39m
+2025-05-20 18:54:01:541 [32minfo[39m: [32mFound 3 servers to check in 72ms[39m
+2025-05-20 18:54:01:541 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 18:54:01:541 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 18:54:01:541 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 18:54:01:541 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 18:54:01:541 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 18:54:01:541 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 18:54:01:541 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 18:54:01:541 [32minfo[39m: [32mServer check process completed in 868ms[39m
+2025-05-20 18:54:01:541 [32minfo[39m: [32mJob 'checkServers' completed in 870ms[39m
+2025-05-20 18:54:01:541 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:24:05:245 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:24:05:245 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 18:54:05:545 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 18:54:05:545 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 18:54:06:546 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 18:54:06:546 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 18:54:06:546 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 18:54:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 18:54:06:546 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 18:53:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 18:54:06:546 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 18:52:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 18:54:06:546 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 18:51:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 18:54:06:546 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 18:50:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 18:54:06:546 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 18:55:00:550 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:55:00.077Z[39m
+2025-05-20 18:55:00:550 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 18:55:00:550 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:55:00.204Z[39m
+2025-05-20 18:55:00:550 [32minfo[39m: [32mFound 3 servers to check in 65ms[39m
+2025-05-20 18:55:00:550 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 18:55:00:550 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 18:55:00:550 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 18:55:00:550 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 18:55:00:550 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 18:55:00:550 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 18:55:01:551 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 18:55:01:551 [32minfo[39m: [32mServer check process completed in 944ms[39m
+2025-05-20 18:55:01:551 [32minfo[39m: [32mJob 'checkServers' completed in 946ms[39m
+2025-05-20 18:55:01:551 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 18:56:00:560 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:56:00.502Z[39m
+2025-05-20 18:56:00:560 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 18:56:00:560 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:56:00.636Z[39m
+2025-05-20 18:56:00:560 [32minfo[39m: [32mFound 3 servers to check in 76ms[39m
+2025-05-20 18:56:00:560 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 18:56:00:560 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 18:56:00:560 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 18:56:00:560 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 18:56:01:561 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 18:56:01:561 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 18:56:02:562 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-20 18:56:02:562 [32minfo[39m: [32mEmail transporter initialized[39m
+2025-05-20 18:56:08:568 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <f688d133-f6cb-37df-ad8b-a6fa917d58fb@gmail.com>[39m
+2025-05-20 18:56:08:568 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 18:56:08:568 [32minfo[39m: [32mServer check process completed in 7656ms[39m
+2025-05-20 18:56:08:568 [32minfo[39m: [32mJob 'checkServers' completed in 7657ms[39m
+2025-05-20 18:56:08:568 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 18:57:00:570 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:57:00.882Z[39m
+2025-05-20 18:57:01:571 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 18:57:01:571 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:57:01.023Z[39m
+2025-05-20 18:57:01:571 [32minfo[39m: [32mFound 3 servers to check in 62ms[39m
+2025-05-20 18:57:01:571 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 18:57:01:571 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 18:57:01:571 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 18:57:01:571 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 18:57:01:571 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 18:57:01:571 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 18:57:02:572 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-20 18:57:08:578 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <348d97b7-a535-cd53-ddc7-fcfb0a8755dc@gmail.com>[39m
+2025-05-20 18:57:08:578 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 18:57:08:578 [32minfo[39m: [32mServer check process completed in 7710ms[39m
+2025-05-20 18:57:08:578 [32minfo[39m: [32mJob 'checkServers' completed in 7710ms[39m
+2025-05-20 18:57:08:578 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 18:58:00:580 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:58:00.213Z[39m
+2025-05-20 18:58:00:580 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 18:58:00:580 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:58:00.349Z[39m
+2025-05-20 18:58:00:580 [32minfo[39m: [32mFound 3 servers to check in 67ms[39m
+2025-05-20 18:58:00:580 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 18:58:00:580 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 18:58:00:580 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 18:58:00:580 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 18:58:00:580 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 18:58:00:580 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 18:58:01:581 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 18:58:01:581 [32minfo[39m: [32mServer check process completed in 862ms[39m
+2025-05-20 18:58:01:581 [32minfo[39m: [32mJob 'checkServers' completed in 862ms[39m
+2025-05-20 18:58:01:581 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 18:59:00:590 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:59:00.526Z[39m
+2025-05-20 18:59:00:590 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 18:59:00:590 [32minfo[39m: [32mStarting server check process at 2025-05-20T18:59:00.661Z[39m
+2025-05-20 18:59:00:590 [32minfo[39m: [32mFound 3 servers to check in 57ms[39m
+2025-05-20 18:59:00:590 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 18:59:00:590 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 18:59:00:590 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 18:59:00:590 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 18:59:01:591 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 18:59:01:591 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 18:59:01:591 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-20 18:59:07:597 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <66c6d9a8-d180-01a0-5432-ce519abe688e@gmail.com>[39m
+2025-05-20 18:59:07:597 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 18:59:07:597 [32minfo[39m: [32mServer check process completed in 7202ms[39m
+2025-05-20 18:59:07:597 [32minfo[39m: [32mJob 'checkServers' completed in 7202ms[39m
+2025-05-20 18:59:07:597 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 19:00:00:00 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:00:00.809Z[39m
+2025-05-20 19:00:00:00 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:00:00:00 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:00:00.926Z[39m
+2025-05-20 19:00:00:00 [32minfo[39m: [32mFound 3 servers to check in 61ms[39m
+2025-05-20 19:00:00:00 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:00:00:00 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:00:00:00 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:00:00:00 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:00:01:01 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 19:00:01:01 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 19:00:01:01 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 19:00:01:01 [32minfo[39m: [32mServer check process completed in 843ms[39m
+2025-05-20 19:00:01:01 [32minfo[39m: [32mJob 'checkServers' completed in 843ms[39m
+2025-05-20 19:00:01:01 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 19:01:00:10 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:01:00.069Z[39m
+2025-05-20 19:01:00:10 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:01:00:10 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:01:00.214Z[39m
+2025-05-20 19:01:00:10 [32minfo[39m: [32mFound 3 servers to check in 71ms[39m
+2025-05-20 19:01:00:10 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:01:00:10 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:01:00:10 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:01:00:10 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:01:00:10 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 19:01:00:10 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 19:01:01:11 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-20 19:01:08:18 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <96cbaccf-56b0-7968-6906-11c8c55e4bff@gmail.com>[39m
+2025-05-20 19:01:08:18 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 19:01:08:18 [32minfo[39m: [32mServer check process completed in 8564ms[39m
+2025-05-20 19:01:08:18 [32minfo[39m: [32mJob 'checkServers' completed in 8564ms[39m
+2025-05-20 19:01:08:18 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 19:02:00:20 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:02:00.392Z[39m
+2025-05-20 19:02:00:20 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:02:00:20 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:02:00.556Z[39m
+2025-05-20 19:02:00:20 [32minfo[39m: [32mFound 3 servers to check in 55ms[39m
+2025-05-20 19:02:00:20 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:02:00:20 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:02:00:20 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:02:00:20 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:02:01:21 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 19:02:01:21 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 19:02:01:21 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 19:02:01:21 [32minfo[39m: [32mServer check process completed in 939ms[39m
+2025-05-20 19:02:01:21 [32minfo[39m: [32mJob 'checkServers' completed in 939ms[39m
+2025-05-20 19:02:01:21 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 19:03:00:30 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:03:00.641Z[39m
+2025-05-20 19:03:07:37 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 19:03:12:312 [31merror[39m: [31mError in job checkServers: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:03:14:314 [31merror[39m: [31mAuth error: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:03:17:317 [31merror[39m: [31mError saving cron job record: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:03:19:319 [31merror[39m: [31mError refreshing token: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:04:00:40 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:04:00.912Z[39m
+2025-05-20 19:04:05:45 [31merror[39m: [31mError in job checkServers: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:04:10:410 [31merror[39m: [31mError saving cron job record: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:05:00:50 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:05:00.105Z[39m
+2025-05-20 19:05:05:55 [31merror[39m: [31mError in job checkServers: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:05:10:510 [31merror[39m: [31mError saving cron job record: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:06:00:60 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:06:00.340Z[39m
+2025-05-20 19:06:05:65 [31merror[39m: [31mError in job checkServers: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:06:10:610 [31merror[39m: [31mError saving cron job record: getaddrinfo ENOTFOUND ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:06:30:630 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 19:07:00:70 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:07:00.529Z[39m
+2025-05-20 19:07:00:70 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:07:00:70 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:07:00.673Z[39m
+2025-05-20 19:07:00:70 [32minfo[39m: [32mFound 3 servers to check in 65ms[39m
+2025-05-20 19:07:00:70 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:07:00:70 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:07:00:70 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:07:00:70 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:07:01:71 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 19:07:01:71 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 19:07:01:71 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 19:07:01:71 [32minfo[39m: [32mServer check process completed in 1005ms[39m
+2025-05-20 19:07:01:71 [32minfo[39m: [32mJob 'checkServers' completed in 1007ms[39m
+2025-05-20 19:07:01:71 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 19:08:00:80 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:08:00.877Z[39m
+2025-05-20 19:08:01:81 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:08:01:81 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:08:01.035Z[39m
+2025-05-20 19:08:01:81 [32minfo[39m: [32mFound 3 servers to check in 65ms[39m
+2025-05-20 19:08:01:81 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:08:01:81 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:08:01:81 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:08:01:81 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:08:01:81 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 19:08:01:81 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 19:08:02:82 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-20 19:08:10:810 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <6ad792c2-9564-88af-a85a-42f6f415cfa1@gmail.com>[39m
+2025-05-20 19:08:10:810 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 19:08:10:810 [32minfo[39m: [32mServer check process completed in 9716ms[39m
+2025-05-20 19:08:10:810 [32minfo[39m: [32mJob 'checkServers' completed in 9716ms[39m
+2025-05-20 19:08:10:810 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 19:09:00:90 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:09:00.091Z[39m
+2025-05-20 19:09:00:90 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:09:00:90 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:09:00.225Z[39m
+2025-05-20 19:09:00:90 [32minfo[39m: [32mFound 3 servers to check in 93ms[39m
+2025-05-20 19:09:00:90 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:09:00:90 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:09:00:90 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:09:00:90 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:09:00:90 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 19:09:00:90 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 19:09:01:91 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 19:09:01:91 [32minfo[39m: [32mServer check process completed in 1384ms[39m
+2025-05-20 19:09:01:91 [32minfo[39m: [32mJob 'checkServers' completed in 1385ms[39m
+2025-05-20 19:09:01:91 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 19:10:00:100 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:10:00.322Z[39m
+2025-05-20 19:10:00:100 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:10:00:100 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:10:00.456Z[39m
+2025-05-20 19:10:00:100 [32minfo[39m: [32mFound 3 servers to check in 59ms[39m
+2025-05-20 19:10:00:100 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:10:00:100 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:10:00:100 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:10:00:100 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:10:01:101 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 19:10:01:101 [34mdebug[39m: [34mServer Ananya check completed: down[39m
+2025-05-20 19:10:01:101 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-20 19:10:07:107 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <77ec68d6-3243-6e60-bd5a-ff31c7db1111@gmail.com>[39m
+2025-05-20 19:10:07:107 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 19:10:07:107 [32minfo[39m: [32mServer check process completed in 7502ms[39m
+2025-05-20 19:10:07:107 [32minfo[39m: [32mJob 'checkServers' completed in 7502ms[39m
+2025-05-20 19:10:07:107 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:40:14:4014 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:40:14:4014 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 19:10:14:1014 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 19:10:14:1014 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 19:10:15:1015 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-20 19:10:15:1015 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 19:10:15:1015 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:10:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:15:1015 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:09:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:15:1015 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:08:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:15:1015 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:07:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:15:1015 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:02:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:15:1015 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 00:40:46:4046 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:40:46:4046 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 19:10:46:1046 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 19:10:46:1046 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 19:10:47:1047 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 19:10:47:1047 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 19:10:47:1047 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:10:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:47:1047 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:09:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:47:1047 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:08:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:47:1047 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:07:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:47:1047 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:02:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:47:1047 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 00:40:51:4051 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:40:51:4051 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 19:10:51:1051 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 19:10:51:1051 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 19:10:52:1052 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 19:10:52:1052 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 19:10:52:1052 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:10:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:52:1052 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:09:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:52:1052 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:08:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:52:1052 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:07:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:52:1052 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:02:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:10:52:1052 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 19:11:00:110 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:11:00.577Z[39m
+2025-05-20 19:11:00:110 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:11:00:110 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:11:00.733Z[39m
+2025-05-20 19:11:00:110 [32minfo[39m: [32mFound 3 servers to check in 88ms[39m
+2025-05-20 19:11:00:110 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:11:00:110 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:11:00:110 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:11:00:110 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:11:01:111 [31merror[39m: [31mError checking server 6829ed28b7394cdebd69af33: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:11:01:111 [31merror[39m: [31mError checking server 682a075e8fe4961312838fbb: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:11:01:111 [31merror[39m: [31mError checking server 682a07e28fe4961312838fe9: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:11:01:111 [32minfo[39m: [32mServer check process completed in 1199ms[39m
+2025-05-20 19:11:01:111 [32minfo[39m: [32mJob 'checkServers' completed in 1201ms[39m
+2025-05-20 19:11:01:111 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:41:23:4123 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:41:23:4123 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 19:11:23:1123 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 19:11:23:1123 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 19:11:24:1124 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 19:11:24:1124 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 19:11:24:1124 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:11:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:11:24:1124 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:10:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:11:24:1124 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:09:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:11:24:1124 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:08:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:11:24:1124 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:07:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:11:24:1124 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 00:41:52:4152 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:41:52:4152 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 19:11:52:1152 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 19:11:52:1152 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 19:11:53:1153 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-20 19:11:53:1153 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 19:11:53:1153 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:11:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:11:53:1153 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:10:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:11:53:1153 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:09:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:11:53:1153 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:08:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:11:53:1153 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:07:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:11:53:1153 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 19:12:00:120 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T19:12:00.785Z[39m
+2025-05-20 19:12:00:120 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:12:00:120 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:12:00.935Z[39m
+2025-05-20 19:12:01:121 [32minfo[39m: [32mFound 3 servers to check in 75ms[39m
+2025-05-20 19:12:01:121 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:12:01:121 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:12:01:121 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:12:01:121 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:12:01:121 [31merror[39m: [31mError checking server 682a075e8fe4961312838fbb: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:12:01:121 [31merror[39m: [31mError checking server 6829ed28b7394cdebd69af33: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:12:01:121 [31merror[39m: [31mError checking server 682a07e28fe4961312838fe9: Server validation failed: timezone: moment is not defined[39m
+2025-05-20 19:12:01:121 [32minfo[39m: [32mServer check process completed in 545ms[39m
+2025-05-20 19:12:01:121 [32minfo[39m: [32mJob 'checkServers' completed in 547ms[39m
+2025-05-20 19:12:01:121 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:49:30:4930 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:49:30:4930 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 19:19:30:1930 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 19:19:30:1930 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 19:19:31:1931 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 19:19:31:1931 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 19:19:31:1931 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:12:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:19:31:1931 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:11:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:19:31:1931 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:10:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:19:31:1931 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:09:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:19:31:1931 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:08:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:19:31:1931 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 19:20:00:200 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T00:50:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 19:20:00:200 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:20:00:200 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:20:00.603Z[39m
+2025-05-20 19:20:00:200 [32minfo[39m: [32mFound 3 servers to check in 60ms[39m
+2025-05-20 19:20:00:200 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:20:00:200 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:20:00:200 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:20:00:200 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:20:01:201 [31merror[39m: [31mError checking server 682a075e8fe4961312838fbb: server.save is not a function[39m
+2025-05-20 19:20:01:201 [31merror[39m: [31mError checking server 6829ed28b7394cdebd69af33: server.save is not a function[39m
+2025-05-20 19:20:01:201 [31merror[39m: [31mError checking server 682a07e28fe4961312838fe9: server.save is not a function[39m
+2025-05-20 19:20:01:201 [32minfo[39m: [32mServer check process completed in 735ms[39m
+2025-05-20 19:20:01:201 [32minfo[39m: [32mJob 'checkServers' completed in 737ms[39m
+2025-05-20 19:20:01:201 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 19:21:00:210 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T00:51:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 19:21:00:210 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:21:00:210 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:21:00.859Z[39m
+2025-05-20 19:21:00:210 [32minfo[39m: [32mFound 3 servers to check in 63ms[39m
+2025-05-20 19:21:00:210 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:21:00:210 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:21:00:210 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:21:00:210 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:21:01:211 [31merror[39m: [31mError checking server 682a075e8fe4961312838fbb: server.save is not a function[39m
+2025-05-20 19:21:01:211 [31merror[39m: [31mError checking server 6829ed28b7394cdebd69af33: server.save is not a function[39m
+2025-05-20 19:21:01:211 [31merror[39m: [31mError checking server 682a07e28fe4961312838fe9: server.save is not a function[39m
+2025-05-20 19:21:01:211 [32minfo[39m: [32mServer check process completed in 742ms[39m
+2025-05-20 19:21:01:211 [32minfo[39m: [32mJob 'checkServers' completed in 742ms[39m
+2025-05-20 19:21:01:211 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 00:51:14:5114 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:51:14:5114 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 19:21:14:2114 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 19:21:14:2114 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 19:21:15:2115 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-20 19:21:15:2115 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 19:21:15:2115 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:21:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:15:2115 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:20:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:15:2115 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:12:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:15:2115 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:11:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:15:2115 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:10:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:15:2115 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 00:51:20:5120 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:51:20:5120 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 19:21:20:2120 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 19:21:20:2120 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 19:21:20:2120 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-20 19:21:21:2121 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 19:21:21:2121 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:21:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:21:2121 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:20:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:21:2121 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:12:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:21:2121 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:11:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:21:2121 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:10:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:21:2121 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 00:51:29:5129 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:51:29:5129 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 19:21:29:2129 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 19:21:29:2129 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-21 00:51:30:5130 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 00:51:30:5130 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 19:21:30:2130 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 19:21:30:2130 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 19:21:31:2131 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 19:21:31:2131 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 19:21:31:2131 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:21:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:31:2131 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:20:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:31:2131 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:12:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:31:2131 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:11:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:31:2131 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 19:10:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 19:21:31:2131 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 19:22:00:220 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T00:52:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 19:22:00:220 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 19:22:00:220 [32minfo[39m: [32mStarting server check process at 2025-05-20T19:22:00.736Z[39m
+2025-05-20 19:22:00:220 [32minfo[39m: [32mFound 3 servers to check in 76ms[39m
+2025-05-20 19:22:00:220 [32minfo[39m: [32mProcessing batch 1/1 (3 servers)[39m
+2025-05-20 19:22:00:220 [34mdebug[39m: [34mChecking server Ananya (http://ananyatest.finpage.net)[39m
+2025-05-20 19:22:00:220 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 19:22:00:220 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 19:22:01:221 [31merror[39m: [31mError checking server 682a075e8fe4961312838fbb: server.save is not a function[39m
+2025-05-20 19:22:01:221 [31merror[39m: [31mError checking server 6829ed28b7394cdebd69af33: server.save is not a function[39m
+2025-05-20 19:22:01:221 [31merror[39m: [31mError checking server 682a07e28fe4961312838fe9: server.save is not a function[39m
+2025-05-20 19:22:01:221 [32minfo[39m: [32mServer check process completed in 1127ms[39m
+2025-05-20 19:22:01:221 [32minfo[39m: [32mJob 'checkServers' completed in 1128ms[39m
+2025-05-20 19:22:01:221 [32minfo[39m: [32mJob checkServers completed successfully[39m

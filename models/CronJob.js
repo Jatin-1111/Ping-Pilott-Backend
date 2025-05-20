@@ -1,3 +1,5 @@
+// models/CronJob.js - With date handling fixes
+
 import mongoose from 'mongoose';
 
 const cronJobSchema = new mongoose.Schema({
@@ -8,26 +10,36 @@ const cronJobSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'running', 'completed', 'failed'],
+        enum: ['pending', 'running', 'completed', 'failed', 'skipped'],
         default: 'pending'
+    },
+    timezone: {
+        type: String,
+        default: 'Asia/Kolkata', // Default to Indian timezone
+        required: true
     },
     startedAt: {
         type: Date,
         required: [true, 'Start time is required'],
-        index: true
+        index: true,
+        // Force to current date if a string is provided
+        set: function (val) {
+            return val instanceof Date ? val : new Date();
+        }
     },
     completedAt: {
         type: Date,
-        default: null
+        default: null,
+        // Force to current date if a string is provided
+        set: function (val) {
+            return val instanceof Date ? val : val ? new Date() : null;
+        }
     },
     duration: {
         type: Number, // In milliseconds
         get: function () {
             if (!this.completedAt) return null;
-            return this.completedAt - this.startedAt;
-        },
-        set: function (v) {
-            return v; // This is a virtual property calculated on the fly
+            return new Date(this.completedAt) - new Date(this.startedAt);
         }
     },
     result: {
@@ -44,12 +56,18 @@ const cronJobSchema = new mongoose.Schema({
     toObject: { virtuals: true, getters: true }
 });
 
+// Pre-save hook to ensure dates are valid
+cronJobSchema.methods.getLocalStartTime = function () {
+    return moment(this.startedAt).tz(this.timezone).format();
+};
+
+cronJobSchema.methods.getLocalCompletedTime = function () {
+    return this.completedAt ? moment(this.completedAt).tz(this.timezone).format() : null;
+};
+
 // Create indexes for better performance
 cronJobSchema.index({ name: 1, startedAt: -1 });
 cronJobSchema.index({ status: 1 });
-
-// Create TTL index to automatically delete old records after 30 days
-// cronJobSchema.index({ startedAt: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 });
 
 // Create and export the model
 const CronJob = mongoose.model('CronJob', cronJobSchema);
