@@ -22,10 +22,18 @@ const MAX_CONCURRENT_CHECKS = 20;
 export const checkAllServers = async () => {
     try {
         logger.info('Starting server check process');
+        console.log('[TROUBLESHOOTING] Starting server check process at', new Date().toISOString());
 
         // Get all servers that need to be checked
-        const servers = getServersToCheck();
+        console.log('[TROUBLESHOOTING] Fetching servers that need to be checked');
+        const servers = await getServersToCheck();
         logger.info(`Found ${servers.length} servers to check`);
+        console.log(`[TROUBLESHOOTING] Found ${servers.length} servers to check`);
+
+        // Log server IDs for troubleshooting
+        if (servers.length > 0) {
+            console.log('[TROUBLESHOOTING] Server IDs:', servers.map(s => s._id).join(', '));
+        }
 
         // Initialize stats object
         const stats = {
@@ -48,6 +56,7 @@ export const checkAllServers = async () => {
             const batch = servers.slice(start, end);
 
             logger.info(`Processing batch ${i + 1}/${batches} (${batch.length} servers)`);
+            console.log(`[TROUBLESHOOTING] Processing batch ${i + 1}/${batches} (${batch.length} servers)`);
 
             // Process this batch in parallel
             const promises = batch.map(server => processServer(server, stats));
@@ -57,13 +66,19 @@ export const checkAllServers = async () => {
             if (i < batches - 1) {
                 await sleep(1000);
             }
+
+            // Log intermediate stats
+            console.log(`[TROUBLESHOOTING] Batch ${i + 1} completed. Current stats:`, JSON.stringify(stats));
         }
 
         logger.info('Server check process completed', { stats });
+        console.log('[TROUBLESHOOTING] Server check process completed', JSON.stringify(stats));
         return stats;
 
     } catch (error) {
         logger.error(`Error in checkAllServers: ${error.message}`);
+        console.error(`[TROUBLESHOOTING] Error in checkAllServers: ${error.message}`);
+        console.error('[TROUBLESHOOTING] Error stack:', error.stack);
         throw error;
     }
 };
@@ -75,6 +90,8 @@ export const checkAllServers = async () => {
 const getServersToCheck = async () => {
     try {
         const now = new Date();
+        console.log(`[TROUBLESHOOTING] Current time for checking: ${now.toISOString()}`);
+        console.log(`[TROUBLESHOOTING] Day of week: ${now.getDay()}, Time: ${formatTime(now)}`);
 
         // Find servers that:
         // 1. Have never been checked, OR
@@ -120,9 +137,16 @@ const getServersToCheck = async () => {
             }
         ];
 
-        return await Server.find(query).sort({ lastChecked: 1 });
+        console.log(`[TROUBLESHOOTING] Query for getServersToCheck:`, JSON.stringify(query));
+
+        const servers = await Server.find(query).sort({ lastChecked: 1 });
+        console.log(`[TROUBLESHOOTING] Found ${servers.length} servers matching query`);
+
+        return servers;
     } catch (error) {
         logger.error(`Error in getServersToCheck: ${error.message}`);
+        console.error(`[TROUBLESHOOTING] Error in getServersToCheck: ${error.message}`);
+        console.error('[TROUBLESHOOTING] Error stack:', error.stack);
         throw error;
     }
 };
@@ -147,12 +171,14 @@ const processServer = async (server, stats) => {
     // Skip if server is already being checked
     if (inProgressChecks.get(server.id)) {
         logger.warn(`Server ${server.id} check already in progress, skipping`);
+        console.log(`[TROUBLESHOOTING] Server ${server.id} (${server.name}) check already in progress, skipping`);
         stats.skipped++;
         return;
     }
 
     // Mark as in progress
     inProgressChecks.set(server.id, true);
+    console.log(`[TROUBLESHOOTING] Starting check for server ${server.id} (${server.name}) at ${new Date().toISOString()}`);
 
     try {
         logger.debug(`Checking server ${server.name} (${server.url})`);
@@ -160,15 +186,21 @@ const processServer = async (server, stats) => {
         // Check if server meets subscription requirements
         if (!shouldMonitorServer(server)) {
             logger.debug(`Skipping check for server ${server.name} due to subscription constraints`);
+            console.log(`[TROUBLESHOOTING] Skipping check for server ${server.name} due to subscription constraints`);
             stats.skipped++;
             return;
         }
 
         // Store the previous status for comparison
         const oldStatus = server.status;
+        console.log(`[TROUBLESHOOTING] Server ${server.name} previous status: ${oldStatus}`);
 
         // Check the server status
+        const startTime = Date.now();
         const checkResult = await checkServerStatus(server);
+        const checkDuration = Date.now() - startTime;
+
+        console.log(`[TROUBLESHOOTING] Server ${server.name} check result: ${JSON.stringify(checkResult)} (took ${checkDuration}ms)`);
 
         // Update server with check results
         server.status = checkResult.status;
@@ -179,13 +211,18 @@ const processServer = async (server, stats) => {
         // If status changed, record the change time
         if (oldStatus !== checkResult.status) {
             server.lastStatusChange = new Date();
+            console.log(`[TROUBLESHOOTING] Server ${server.name} status changed from ${oldStatus} to ${checkResult.status}`);
         }
 
         // Save server updates
+        console.log(`[TROUBLESHOOTING] Saving updated server ${server.id} (${server.name})`);
         await server.save();
+        console.log(`[TROUBLESHOOTING] Server ${server.id} (${server.name}) saved successfully`);
 
         // Record check history
+        console.log(`[TROUBLESHOOTING] Recording check history for server ${server.id} (${server.name})`);
         await recordCheckHistory(server, checkResult);
+        console.log(`[TROUBLESHOOTING] Check history recorded successfully for server ${server.id} (${server.name})`);
 
         // Update stats
         stats.checked++;
@@ -193,20 +230,28 @@ const processServer = async (server, stats) => {
 
         // Send alerts if necessary
         if (shouldSendAlert(server, oldStatus, checkResult.status)) {
+            console.log(`[TROUBLESHOOTING] Sending alert for server ${server.name}`);
             const alertSent = await sendAlert(server, oldStatus, checkResult.status);
             if (alertSent) {
                 stats.alertsSent++;
+                console.log(`[TROUBLESHOOTING] Alert sent successfully for server ${server.name}`);
+            } else {
+                console.log(`[TROUBLESHOOTING] Failed to send alert for server ${server.name}`);
             }
         }
 
         logger.debug(`Server ${server.name} check completed: ${checkResult.status}`);
+        console.log(`[TROUBLESHOOTING] Server ${server.name} check completed: ${checkResult.status}`);
 
     } catch (error) {
         logger.error(`Error checking server ${server.id}: ${error.message}`);
+        console.error(`[TROUBLESHOOTING] Error checking server ${server.id} (${server.name}): ${error.message}`);
+        console.error('[TROUBLESHOOTING] Error stack:', error.stack);
         stats.error++;
     } finally {
         // Mark as no longer in progress
         inProgressChecks.set(server.id, false);
+        console.log(`[TROUBLESHOOTING] Completed processing server ${server.id} (${server.name})`);
     }
 };
 
@@ -377,9 +422,12 @@ const checkHttpServer = async (url, threshold) => {
  * @param {Object} server - Server object
  * @param {Object} checkResult - Check result
  */
+// Modified recordCheckHistory function from tasks/checkServers.js
+
 const recordCheckHistory = async (server, checkResult) => {
     try {
         const now = new Date();
+        console.log(`[TROUBLESHOOTING] Creating check history record for server ${server.id} (${server.name}) at ${now.toISOString()}`);
 
         // Create new check record
         const check = new ServerCheck({
@@ -394,10 +442,47 @@ const recordCheckHistory = async (server, checkResult) => {
             timeSlot: Math.floor(now.getMinutes() / 15), // 15-minute slots (0-3)
         });
 
+        console.log(`[TROUBLESHOOTING] ServerCheck object created: ${JSON.stringify(check)}`);
+
+        // Save the check record
         await check.save();
+        console.log(`[TROUBLESHOOTING] ServerCheck saved successfully with ID: ${check._id}`);
+
+        // Verify the record was created by retrieving it
+        try {
+            const savedCheck = await ServerCheck.findById(check._id);
+            if (savedCheck) {
+                console.log(`[TROUBLESHOOTING] Successfully verified ServerCheck record creation: ${savedCheck._id}`);
+            } else {
+                console.log(`[TROUBLESHOOTING] WARNING: Could not verify ServerCheck record creation for ID: ${check._id}`);
+            }
+        } catch (verifyError) {
+            console.error(`[TROUBLESHOOTING] Error verifying ServerCheck record: ${verifyError.message}`);
+        }
+
+        // Count total records for this server for troubleshooting
+        try {
+            const count = await ServerCheck.countDocuments({ serverId: server.id });
+            console.log(`[TROUBLESHOOTING] Total check records for server ${server.id} (${server.name}): ${count}`);
+        } catch (countError) {
+            console.error(`[TROUBLESHOOTING] Error counting ServerCheck records: ${countError.message}`);
+        }
+
+        return check._id;
     } catch (error) {
         logger.error(`Error recording check history for server ${server.id}: ${error.message}`);
-        // Non-critical error, don't throw
+        console.error(`[TROUBLESHOOTING] Error recording check history for server ${server.id} (${server.name}): ${error.message}`);
+        console.error('[TROUBLESHOOTING] Error stack:', error.stack);
+
+        // Attempt to get more details about the error
+        if (error.name === 'ValidationError') {
+            for (const field in error.errors) {
+                console.error(`[TROUBLESHOOTING] Validation error for field ${field}: ${error.errors[field].message}`);
+            }
+        }
+
+        // Non-critical error, don't throw to allow the process to continue
+        return null;
     }
 };
 

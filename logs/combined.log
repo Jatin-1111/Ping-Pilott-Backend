@@ -1,3 +1,164 @@
 2025-05-20 23:32:00:320 [32minfo[39m: [32mServer running in development mode on port 5000[39m
 2025-05-20 23:32:00:320 [32minfo[39m: [32mInitializing cron jobs[39m
 2025-05-20 23:32:00:320 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:32:01:321 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 23:33:00:330 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:33:00:330 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:33:00:330 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:33:00:330 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:34:00:340 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:34:00:340 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:34:00:340 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:34:00:340 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:35:00:350 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:35:00:350 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:35:00:350 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:35:00:350 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:36:00:360 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:36:00:360 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:36:00:360 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:36:00:360 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:37:00:370 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:37:00:370 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:37:00:370 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:37:00:370 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:38:00:380 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:38:00:380 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:38:00:380 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:38:00:380 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:39:00:390 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:39:00:390 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:39:00:390 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:39:00:390 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:40:00:400 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:40:00:400 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:40:00:400 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:40:00:400 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:41:00:410 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:41:00:410 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:41:00:410 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:41:00:410 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:42:00:420 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:42:00:420 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:42:00:420 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:42:00:420 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:42:55:4255 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:42:55:4255 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:42:56:4256 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-20 23:42:56:4256 [32minfo[39m: [32mNo recent job records found in database[39m
+2025-05-20 23:42:57:4257 [32minfo[39m: [32mSuccessfully created test record in CronJob collection[39m
+2025-05-20 23:42:57:4257 [32minfo[39m: [32mSuccessfully retrieved test record: 682cc62858c76d15eb8d56ce[39m
+2025-05-20 23:42:57:4257 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:43:00:430 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:13:00.973Z[39m
+2025-05-20 23:43:01:431 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:43:01:431 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:43:01:431 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:43:01:431 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:43:18:4318 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:43:18:4318 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:43:18:4318 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 23:43:18:4318 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 23:43:19:4319 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-20 23:43:19:4319 [32minfo[39m: [32mFound 2 recent job records in database[39m
+2025-05-20 23:43:19:4319 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:43:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:43:19:4319 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:42:56 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:43:19:4319 [32minfo[39m: [32mSuccessfully created test record in CronJob collection[39m
+2025-05-20 23:43:19:4319 [32minfo[39m: [32mSuccessfully retrieved test record: 682cc63f72942592da990fcf[39m
+2025-05-20 23:43:19:4319 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:44:00:440 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:14:00.979Z[39m
+2025-05-20 23:44:01:441 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:44:01:441 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:44:01:441 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:44:01:441 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:44:01:441 [32minfo[39m: [32mJob 'checkServers' completed in 3ms[39m
+2025-05-20 23:44:01:441 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:44:43:4443 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:44:43:4443 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:44:43:4443 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 23:44:43:4443 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 23:44:44:4444 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 23:44:45:4445 [32minfo[39m: [32mFound 4 recent job records in database[39m
+2025-05-20 23:44:45:4445 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:44:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:44:45:4445 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:43:19 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:44:45:4445 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:43:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:44:45:4445 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:42:56 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:44:45:4445 [32minfo[39m: [32mSuccessfully created test record in CronJob collection[39m
+2025-05-20 23:44:45:4445 [32minfo[39m: [32mSuccessfully retrieved test record: 682cc69538a4b251810cc92d[39m
+2025-05-20 23:44:45:4445 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:45:00:450 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:15:00.125Z[39m
+2025-05-20 23:45:00:450 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:45:00:450 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:45:00:450 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:45:00:450 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:45:00:450 [32minfo[39m: [32mJob 'checkServers' completed in 102ms[39m
+2025-05-20 23:45:00:450 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:45:07:457 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:45:07:457 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:45:07:457 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 23:45:07:457 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 23:45:08:458 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 23:45:08:458 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 23:45:08:458 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:45:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:08:458 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:44:45 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:08:458 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:44:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:08:458 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:43:19 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:08:458 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:43:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:08:458 [32minfo[39m: [32mSuccessfully created test record in CronJob collection[39m
+2025-05-20 23:45:08:458 [32minfo[39m: [32mSuccessfully retrieved test record: 682cc6acd782ff35fd33348e[39m
+2025-05-20 23:45:08:458 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:45:26:4526 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:45:26:4526 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:45:26:4526 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 23:45:26:4526 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 23:45:27:4527 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 23:45:27:4527 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 23:45:27:4527 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:45:08 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:27:4527 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:45:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:27:4527 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:44:45 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:27:4527 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:44:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:27:4527 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:43:19 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:27:4527 [32minfo[39m: [32mSuccessfully created test record in CronJob collection[39m
+2025-05-20 23:45:27:4527 [32minfo[39m: [32mSuccessfully retrieved test record: 682cc6bfd68d9b7c414b60a1[39m
+2025-05-20 23:45:27:4527 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:45:43:4543 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:45:43:4543 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:45:43:4543 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 23:45:43:4543 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 23:45:44:4544 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 23:45:44:4544 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 23:45:44:4544 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:45:27 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:44:4544 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:45:08 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:44:4544 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:45:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:44:4544 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:44:45 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:44:4544 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:44:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:45:44:4544 [32minfo[39m: [32mSuccessfully created test record in CronJob collection[39m
+2025-05-20 23:45:44:4544 [32minfo[39m: [32mSuccessfully retrieved test record: 682cc6d0eb3f8e76938e5b4e[39m
+2025-05-20 23:45:44:4544 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:46:00:460 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:16:00.391Z[39m
+2025-05-20 23:46:00:460 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:46:00:460 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:46:00:460 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:46:00:460 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:46:00:460 [32minfo[39m: [32mJob 'checkServers' completed in 99ms[39m
+2025-05-20 23:46:00:460 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:46:11:4611 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:46:11:4611 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:46:11:4611 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 23:46:11:4611 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 23:46:12:4612 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 23:46:12:4612 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 23:46:12:4612 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:46:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:46:12:4612 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:45:44 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:46:12:4612 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:45:27 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:46:12:4612 [32minfo[39m: [32mJob: database_connection_test, Status: completed, Started: Tue May 20 2025 23:45:08 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:46:12:4612 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 23:45:00 GMT+0530 (India Standard Time)[39m
+2025-05-20 23:46:12:4612 [32minfo[39m: [32mSuccessfully created test record in CronJob collection[39m
+2025-05-20 23:46:13:4613 [32minfo[39m: [32mSuccessfully retrieved test record: 682cc6ecf7c253fae17ac7eb[39m
+2025-05-20 23:46:13:4613 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:47:00:470 [32minfo[39m: [32mStarting job checkServers at 2025-05-20T18:17:00.233Z[39m
+2025-05-20 23:47:00:470 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 23:47:00:470 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:47:00:470 [32minfo[39m: [32mFound 0 servers to check[39m
+2025-05-20 23:47:00:470 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:47:00:470 [32minfo[39m: [32mJob 'checkServers' completed in 96ms[39m
+2025-05-20 23:47:00:470 [32minfo[39m: [32mJob checkServers completed successfully[39m
