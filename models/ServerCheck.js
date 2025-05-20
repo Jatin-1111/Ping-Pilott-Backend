@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import moment from 'moment-timezone'; // Add missing import
 
 const serverCheckSchema = new mongoose.Schema({
     serverId: {
@@ -30,7 +31,7 @@ const serverCheckSchema = new mongoose.Schema({
         default: 'Asia/Kolkata',
         required: true
     },
-    // Add timezone-specific fields
+    // These timezone-specific fields help with faster querying
     localDate: {
         type: String, // Store as YYYY-MM-DD in server's timezone
         required: true
@@ -50,6 +51,7 @@ const serverCheckSchema = new mongoose.Schema({
     }
 });
 
+// Fix: Properly calculate timezone-specific fields before saving
 serverCheckSchema.pre('save', function (next) {
     if (this.isNew || this.isModified('timestamp') || this.isModified('timezone')) {
         const m = moment(this.timestamp).tz(this.timezone);
@@ -62,13 +64,9 @@ serverCheckSchema.pre('save', function (next) {
 });
 
 // Create compound indexes for efficient querying
-serverCheckSchema.index({ serverId: 1, date: 1 });
+serverCheckSchema.index({ serverId: 1, localDate: 1 });
 serverCheckSchema.index({ serverId: 1, timestamp: -1 });
-serverCheckSchema.index({ date: 1, hour: 1 });
-
-// Create TTL index to automatically delete old checks (optional)
-// This is a backup to our manual data retention process
-// serverCheckSchema.index({ timestamp: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 }); // 30 days
+serverCheckSchema.index({ localDate: 1, localHour: 1 });
 
 // Create and export the model
 const ServerCheck = mongoose.model('ServerCheck', serverCheckSchema);

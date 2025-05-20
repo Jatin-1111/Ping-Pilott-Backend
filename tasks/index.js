@@ -17,12 +17,16 @@ export const initCronJobs = async () => {
         logger.info('Initializing cron jobs');
         console.log('[TROUBLESHOOTING] Initializing cron jobs');
 
-        // Force timezone to UTC to ensure consistency
+        // Force timezone to UTC for consistency
         process.env.TZ = 'UTC';
+        // Also set moment's default timezone
+        moment.tz.setDefault('UTC');
 
         // Log actual current time for verification
         const currentTime = new Date();
+        const currentMoment = moment();
         console.log(`[TIMESTAMP] Current system time: ${currentTime.toISOString()}`);
+        console.log(`[TIMESTAMP] Current moment time: ${currentMoment.format()}`);
         console.log(`[TIMESTAMP] Current timestamp: ${Date.now()}`);
 
         // Initialize queue with all jobs

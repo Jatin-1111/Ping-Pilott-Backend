@@ -129,7 +129,7 @@ const getServersToCheck = async () => {
         };
 
         // Get all potential servers
-        const potentialServers = await Server.find(query).lean();
+        const potentialServers = await Server.find(query);
 
         // Filter servers based on their own timezone settings
         const serversToCheck = potentialServers.filter(server => {
@@ -441,24 +441,30 @@ const checkHttpServer = async (url, threshold) => {
  * @param {Object} server - Server object
  * @param {Object} checkResult - Check result
  */
-// Modified recordCheckHistory function from tasks/checkServers.js
 
 const recordCheckHistory = async (server, checkResult) => {
     try {
         const now = new Date();
         console.log(`[TROUBLESHOOTING] Creating check history record for server ${server.id} (${server.name}) at ${now.toISOString()}`);
 
-        // Create new check record
+        // Get server's timezone
+        const timezone = server.timezone || 'Asia/Kolkata';
+
+        // Convert to server's timezone for storage
+        const localTime = moment(now).tz(timezone);
+
+        // Create new check record with proper timezone data
         const check = new ServerCheck({
             serverId: server.id,
             status: checkResult.status,
             responseTime: checkResult.responseTime,
             error: checkResult.error,
             timestamp: now,
-            date: now.toISOString().split('T')[0], // YYYY-MM-DD
-            hour: now.getHours(),
-            minute: now.getMinutes(),
-            timeSlot: Math.floor(now.getMinutes() / 15), // 15-minute slots (0-3)
+            timezone: timezone,
+            localDate: localTime.format('YYYY-MM-DD'),
+            localHour: localTime.hour(),
+            localMinute: localTime.minute(),
+            timeSlot: Math.floor(localTime.minute() / 15) // 15-minute slots (0-3)
         });
 
         console.log(`[TROUBLESHOOTING] ServerCheck object created: ${JSON.stringify(check)}`);
@@ -479,26 +485,11 @@ const recordCheckHistory = async (server, checkResult) => {
             console.error(`[TROUBLESHOOTING] Error verifying ServerCheck record: ${verifyError.message}`);
         }
 
-        // Count total records for this server for troubleshooting
-        try {
-            const count = await ServerCheck.countDocuments({ serverId: server.id });
-            console.log(`[TROUBLESHOOTING] Total check records for server ${server.id} (${server.name}): ${count}`);
-        } catch (countError) {
-            console.error(`[TROUBLESHOOTING] Error counting ServerCheck records: ${countError.message}`);
-        }
-
         return check._id;
     } catch (error) {
         logger.error(`Error recording check history for server ${server.id}: ${error.message}`);
         console.error(`[TROUBLESHOOTING] Error recording check history for server ${server.id} (${server.name}): ${error.message}`);
         console.error('[TROUBLESHOOTING] Error stack:', error.stack);
-
-        // Attempt to get more details about the error
-        if (error.name === 'ValidationError') {
-            for (const field in error.errors) {
-                console.error(`[TROUBLESHOOTING] Validation error for field ${field}: ${error.errors[field].message}`);
-            }
-        }
 
         // Non-critical error, don't throw to allow the process to continue
         return null;

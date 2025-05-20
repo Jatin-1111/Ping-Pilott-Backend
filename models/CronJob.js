@@ -1,6 +1,5 @@
-// models/CronJob.js - With date handling fixes
-
 import mongoose from 'mongoose';
+import moment from 'moment-timezone'; // Add missing import
 
 const cronJobSchema = new mongoose.Schema({
     name: {
@@ -56,7 +55,7 @@ const cronJobSchema = new mongoose.Schema({
     toObject: { virtuals: true, getters: true }
 });
 
-// Pre-save hook to ensure dates are valid
+// Add methods for timezone-specific formatting
 cronJobSchema.methods.getLocalStartTime = function () {
     return moment(this.startedAt).tz(this.timezone).format();
 };
