@@ -3113,3 +3113,63 @@
 2025-05-20 21:03:00:30 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 20:57:00 GMT+0000 (Coordinated Universal Time)[39m
 2025-05-20 21:03:00:30 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 20:56:00 GMT+0000 (Coordinated Universal Time)[39m
 2025-05-20 21:03:00:30 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 02:33:05:335 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 02:33:05:335 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 21:03:05:35 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-20 21:03:05:35 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-20 21:03:06:36 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 21:03:06:36 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-20 21:03:06:36 [32minfo[39m: [32mJob: checkServers, Status: running, Started: Tue May 20 2025 21:01:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 21:03:06:36 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 20:59:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 21:03:06:36 [32minfo[39m: [32mJob: checkServers, Status: running, Started: Tue May 20 2025 20:58:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 21:03:06:36 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 20:57:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 21:03:06:36 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Tue May 20 2025 20:56:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-20 21:03:06:36 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 21:04:00:40 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:34:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:04:00:40 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:04:00:40 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:04:00.365Z[39m
+2025-05-20 21:04:00:40 [32minfo[39m: [32mFound 2 servers to check in 65ms[39m
+2025-05-20 21:04:00:40 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:04:00:40 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:04:00:40 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:04:00:40 [31merror[39m: [31mError recording check history for server 682cdbfa27eb0af5637efcab: now is not defined[39m
+2025-05-20 21:04:00:40 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:04:01:41 [31merror[39m: [31mError recording check history for server 682cdfa486bc8f9d1a1beba0: now is not defined[39m
+2025-05-20 21:04:01:41 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:04:01:41 [32minfo[39m: [32mServer check process completed in 767ms[39m
+2025-05-20 21:04:01:41 [32minfo[39m: [32mJob 'checkServers' completed in 768ms[39m
+2025-05-20 21:04:01:41 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:04:01:41 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:05:00:50 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:35:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:05:00:50 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:05:00:50 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:05:00.757Z[39m
+2025-05-20 21:05:00:50 [32minfo[39m: [32mFound 2 servers to check in 59ms[39m
+2025-05-20 21:05:00:50 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:05:00:50 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:05:00:50 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:05:01:51 [31merror[39m: [31mError recording check history for server 682cdbfa27eb0af5637efcab: now is not defined[39m
+2025-05-20 21:05:01:51 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:05:01:51 [31merror[39m: [31mError recording check history for server 682cdfa486bc8f9d1a1beba0: now is not defined[39m
+2025-05-20 21:05:01:51 [32minfo[39m: [32mSending alert for server Shopino: up -> up[39m
+2025-05-20 21:05:01:51 [32minfo[39m: [32mEmail transporter initialized[39m
+2025-05-20 21:05:01:51 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:05:01:51 [32minfo[39m: [32mServer check process completed in 1157ms[39m
+2025-05-20 21:05:01:51 [32minfo[39m: [32mJob 'checkServers' completed in 1159ms[39m
+2025-05-20 21:05:01:51 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:05:01:51 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-20 21:05:10:510 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <69ece69e-8c25-357b-1fb5-10d0f8bbdde8@gmail.com>[39m
+2025-05-20 21:06:00:60 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T02:36:00+05:30 (Asia/Kolkata)[39m
+2025-05-20 21:06:01:61 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-20 21:06:01:61 [32minfo[39m: [32mStarting server check process at 2025-05-20T21:06:01.009Z[39m
+2025-05-20 21:06:01:61 [32minfo[39m: [32mFound 2 servers to check in 52ms[39m
+2025-05-20 21:06:01:61 [32minfo[39m: [32mProcessing batch 1/1 (2 servers)[39m
+2025-05-20 21:06:01:61 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 21:06:01:61 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 21:06:01:61 [31merror[39m: [31mError recording check history for server 682cdbfa27eb0af5637efcab: now is not defined[39m
+2025-05-20 21:06:01:61 [34mdebug[39m: [34mServer Jatin check completed: up[39m
+2025-05-20 21:06:01:61 [31merror[39m: [31mError recording check history for server 682cdfa486bc8f9d1a1beba0: now is not defined[39m
+2025-05-20 21:06:01:61 [34mdebug[39m: [34mServer Shopino check completed: up[39m
+2025-05-20 21:06:01:61 [32minfo[39m: [32mServer check process completed in 734ms[39m
+2025-05-20 21:06:01:61 [32minfo[39m: [32mJob 'checkServers' completed in 735ms[39m
+2025-05-20 21:06:01:61 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 21:06:01:61 [32minfo[39m: [32mJob checkServers record saved successfully[39m

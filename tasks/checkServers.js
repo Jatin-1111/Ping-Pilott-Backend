@@ -404,8 +404,11 @@ const checkHttpServer = async (url, threshold) => {
  * @param {Object} checkResult - Check result
  */
 
+// Fixed recordCheckHistory function
 const recordCheckHistory = async (server, checkResult) => {
     try {
+        // Define the current time
+        const now = new Date();
 
         // Get server's timezone
         const timezone = server.timezone || 'Asia/Kolkata';
@@ -426,7 +429,6 @@ const recordCheckHistory = async (server, checkResult) => {
             localMinute: localTime.minute(),
             timeSlot: Math.floor(localTime.minute() / 15) // 15-minute slots (0-3)
         });
-
 
         // Save the check record
         await check.save();
