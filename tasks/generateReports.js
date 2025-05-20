@@ -2,7 +2,7 @@ import logger from '../utils/logger.js';
 import User from '../models/User.js';
 import Server from '../models/Server.js';
 import ServerDailySummary from '../models/ServerDailySummary.js';
-import { sendEmailReport } from '../services/emailService.js';
+// import { sendEmailReport } from '../services/emailService.js';
 
 /**
  * Generate and send daily reports to users
@@ -66,7 +66,7 @@ export const generateDailyReports = async () => {
 
                 // Send email report if user has an email
                 if (user.email) {
-                    await sendEmailReport(user, reportData, yesterdayStr);
+                    // await sendEmailReport(user, reportData, yesterdayStr);
                     stats.reportsSent++;
                     logger.info(`Report sent to user ${user.id} (${user.email})`);
                 }

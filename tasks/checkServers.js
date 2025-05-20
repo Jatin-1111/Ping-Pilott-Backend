@@ -24,7 +24,7 @@ export const checkAllServers = async () => {
         logger.info('Starting server check process');
 
         // Get all servers that need to be checked
-        const servers = await getServersToCheck();
+        const servers = getServersToCheck();
         logger.info(`Found ${servers.length} servers to check`);
 
         // Initialize stats object

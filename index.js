@@ -22,6 +22,8 @@ import serverRoutes from './routes/serverRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 
+import { initCronJobs } from './tasks/index.js';
+
 // Get __dirname equivalent in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -75,6 +77,8 @@ app.use(errorMiddleware);
 // Start server
 const server = app.listen(PORT, () => {
     logger.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+
+    initCronJobs();
 });
 
 // Handle unhandled promise rejections

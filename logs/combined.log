@@ -64,3 +64,148 @@
 2025-05-18 18:49:47:4947 [32minfo[39m: [32mInitial admin user off.jatin1111@gmail.com created during system setup[39m
 2025-05-18 18:59:29:5929 [32minfo[39m: [32mEmail transporter initialized[39m
 2025-05-18 18:59:35:5935 [32minfo[39m: [32mPassword reset email sent to off.jatin1111@gmail.com: <e007a245-2376-c415-e8ee-fffa656fb521@gmail.com>[39m
+2025-05-19 14:20:08:208 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:08:208 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:09:209 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:09:209 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-19 14:20:09:209 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:09:209 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:09:209 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-19 14:20:09:209 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-19 14:20:10:2010 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:10:2010 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:10:2010 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-19 14:20:10:2010 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-19 14:20:10:2010 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:10:2010 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:11:2011 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:11:2011 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:11:2011 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-19 14:20:11:2011 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-19 14:20:11:2011 [32minfo[39m: [32mServer running in production mode on port 5000[39m
+2025-05-19 14:20:11:2011 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-19 14:20:11:2011 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-19 14:20:12:2012 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-19 14:20:12:2012 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-19 14:20:12:2012 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-19 14:24:00:240 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:01:241 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:01:241 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:01:241 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:01:241 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:01:241 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:01:241 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:01:241 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:01:241 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:02:242 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:02:242 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:02:242 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:10:2410 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 14:24:10:2410 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:10:2410 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 14:24:10:2410 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:11:2411 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 14:24:11:2411 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:11:2411 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 14:24:11:2411 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:12:2412 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 14:24:12:2412 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:12:2412 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 14:24:12:2412 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 14:24:13:2413 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 14:24:13:2413 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 14:24:13:2413 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:13:2413 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:13:2413 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 14:24:13:2413 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:13:2413 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:13:2413 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 14:24:13:2413 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 14:24:13:2413 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:06:566 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:56:5656 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 21:56:56:5656 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 21:56:56:5656 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 21:56:56:5656 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 21:56:57:5657 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 21:56:57:5657 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 21:56:57:5657 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 21:56:57:5657 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:57:5657 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:57:5657 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 21:56:57:5657 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 21:56:57:5657 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:57:5657 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:57:5657 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:57:5657 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:57:5657 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-19 21:56:57:5657 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:57:5657 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:57:5657 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-19 21:56:58:5658 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:08:39:839 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:12:20:1220 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:12:20:1220 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:12:20:1220 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:12:20:1220 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:12:20:1220 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:12:20:1220 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:12:20:1220 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:12:20:1220 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:12:20:1220 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:12:20:1220 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:12:20:1220 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:12:20:1220 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:12:20:1220 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:12:20:1220 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:12:20:1220 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:12:20:1220 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 01:23:50:2350 [32minfo[39m: [32mMongoDB reconnected[39m

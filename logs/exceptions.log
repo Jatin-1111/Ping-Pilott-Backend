@@ -16,3 +16,43 @@
 [31m    at ModuleJob.run (node:internal/modules/esm/module_job:272:25)[39m
 [31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:580:26)[39m
 [31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)[39m
+2025-05-19 14:23:38:2338 [31merror[39m: [31muncaughtException: listen EADDRINUSE: address already in use :::5000[39m
+[31mError: listen EADDRINUSE: address already in use :::5000[39m
+[31m    at Server.setupListenHandle [as _listen2] (node:net:1937:16)[39m
+[31m    at listenInCluster (node:net:1994:12)[39m
+[31m    at Server.listen (node:net:2099:7)[39m
+[31m    at Function.listen (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\application.js:635:24)[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/index.js:76:20[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:272:25)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:580:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)[39m
+2025-05-19 14:24:19:2419 [31merror[39m: [31muncaughtException: listen EADDRINUSE: address already in use :::5000[39m
+[31mError: listen EADDRINUSE: address already in use :::5000[39m
+[31m    at Server.setupListenHandle [as _listen2] (node:net:1937:16)[39m
+[31m    at listenInCluster (node:net:1994:12)[39m
+[31m    at Server.listen (node:net:2099:7)[39m
+[31m    at Function.listen (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\application.js:635:24)[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/index.js:76:20[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:272:25)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:580:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)[39m
+2025-05-19 14:28:01:281 [31merror[39m: [31muncaughtException: listen EADDRINUSE: address already in use :::5000[39m
+[31mError: listen EADDRINUSE: address already in use :::5000[39m
+[31m    at Server.setupListenHandle [as _listen2] (node:net:1937:16)[39m
+[31m    at listenInCluster (node:net:1994:12)[39m
+[31m    at Server.listen (node:net:2099:7)[39m
+[31m    at Function.listen (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\application.js:635:24)[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/index.js:76:20[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:272:25)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:580:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)[39m
+2025-05-19 14:28:04:284 [31merror[39m: [31muncaughtException: listen EADDRINUSE: address already in use :::5000[39m
+[31mError: listen EADDRINUSE: address already in use :::5000[39m
+[31m    at Server.setupListenHandle [as _listen2] (node:net:1937:16)[39m
+[31m    at listenInCluster (node:net:1994:12)[39m
+[31m    at Server.listen (node:net:2099:7)[39m
+[31m    at Function.listen (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\application.js:635:24)[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/index.js:76:20[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:272:25)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:580:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)[39m
