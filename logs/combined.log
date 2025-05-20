@@ -225,3 +225,166 @@
 2025-05-20 23:00:00:00 [32minfo[39m: [32mFound undefined servers to check[39m
 2025-05-20 23:00:00:00 [32minfo[39m: [32mServer check process completed[39m
 2025-05-20 23:00:00:00 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:00:31:031 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:00:31:031 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:00:31:031 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:00:32:032 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-20 23:01:00:10 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:01:00:10 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:01:00:10 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:01:00:10 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:02:00:20 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:02:00:20 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:02:00:20 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:02:00:20 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:03:00:30 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:03:00:30 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:03:00:30 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:03:00:30 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:04:00:40 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:04:00:40 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:04:00:40 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:04:00:40 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:05:00:50 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:05:00:50 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:05:00:50 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:05:00:50 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:06:00:60 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:06:00:60 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:06:00:60 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:06:00:60 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:07:00:70 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:07:00:70 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:07:00:70 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:07:00:70 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:08:00:80 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:08:00:80 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:08:00:80 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:08:00:80 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:09:00:90 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:09:00:90 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:09:00:90 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:09:00:90 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:10:00:100 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:10:00:100 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:10:00:100 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:10:00:100 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:11:00:110 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:11:00:110 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:11:00:110 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:11:00:110 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:12:00:120 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:12:00:120 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:12:00:120 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:12:00:120 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:13:00:130 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:13:00:130 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:13:00:130 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:13:00:130 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:14:00:140 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:14:00:140 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:14:00:140 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:14:00:140 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:15:00:150 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:15:00:150 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:15:00:150 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:15:00:150 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:15:26:1526 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:15:26:1526 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:15:26:1526 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:15:27:1527 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 23:16:00:160 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:16:00:160 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:16:00:160 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:16:00:160 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:16:03:163 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:16:03:163 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:16:03:163 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:16:04:164 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-01.yivtxy9.mongodb.net[39m
+2025-05-20 23:17:00:170 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:17:00:170 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:17:00:170 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:17:00:170 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:18:00:180 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:18:00:180 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:18:00:180 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:18:00:180 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:18:41:1841 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-20 23:18:41:1841 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-20 23:19:00:190 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:19:00:190 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:19:00:190 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:19:00:190 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:20:00:200 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:20:00:200 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:20:00:200 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:20:00:200 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:21:00:210 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:21:00:210 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:21:00:210 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:21:00:210 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:22:00:220 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:22:00:220 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:22:00:220 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:22:00:220 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:23:00:230 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:23:00:230 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:23:00:230 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:23:00:230 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:24:00:240 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:24:00:240 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:24:00:240 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:24:00:240 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:25:00:250 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:25:00:250 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:25:00:250 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:25:00:250 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:25:57:2557 [34mdebug[39m: [34mChecking server Shopino (https://shopinobackend.onrender.com/api)[39m
+2025-05-20 23:26:00:260 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:26:00:260 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:26:00:260 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:26:00:260 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:26:07:267 [34mdebug[39m: [34mCheck result for Shopino: down, 10018ms, No response received: timeout of 10000ms exceeded[39m
+2025-05-20 23:26:11:2611 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 23:26:12:2612 [34mdebug[39m: [34mCheck result for Jatin: up, 1041ms, Slow response: 1041ms exceeds threshold of 1000ms[39m
+2025-05-20 23:26:15:2615 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 23:26:15:2615 [34mdebug[39m: [34mCheck result for Jatin: up, 523ms[39m
+2025-05-20 23:26:21:2621 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 23:26:22:2622 [34mdebug[39m: [34mCheck result for Jatin: up, 721ms[39m
+2025-05-20 23:26:33:2633 [34mdebug[39m: [34mChecking server Jatin (https://jatin0111.vercel.app/)[39m
+2025-05-20 23:26:33:2633 [34mdebug[39m: [34mCheck result for Jatin: up, 635ms[39m
+2025-05-20 23:27:00:270 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:27:00:270 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:27:00:270 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:27:00:270 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:27:09:279 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:27:09:279 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:27:09:279 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:27:10:2710 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-20 23:27:32:2732 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:27:32:2732 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:27:32:2732 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:27:33:2733 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-20 23:28:00:280 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:28:00:280 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:28:00:280 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:28:00:280 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:28:08:288 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:28:08:288 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:28:08:288 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:28:10:2810 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:28:10:2810 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:28:10:2810 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:28:11:2811 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 23:28:33:2833 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:28:33:2833 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:28:33:2833 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-20 23:28:34:2834 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-20 23:29:00:290 [32minfo[39m: [32mStarting server check process[39m
+2025-05-20 23:29:00:290 [32minfo[39m: [32mFound undefined servers to check[39m
+2025-05-20 23:29:00:290 [32minfo[39m: [32mServer check process completed[39m
+2025-05-20 23:29:00:290 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-20 23:30:45:3045 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-20 23:30:45:3045 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-20 23:30:45:3045 [31merror[39m: [31mError initializing cron jobs: reportsService is not defined[39m
+2025-05-20 23:30:46:3046 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m

@@ -1,6 +1,5 @@
 import logger from '../utils/logger.js';
 import ServerCheck from '../models/ServerCheck.js';
-import ServerDailySummary from '../models/ServerDailySummary.js';
 import CronJob from '../models/CronJob.js';
 
 /**
@@ -12,20 +11,22 @@ export const runDataRetention = async () => {
     logger.info('Starting data retention process');
 
     const stats = {
-        checksArchived: 0,
-        checksDeleted: 0,
-        jobLogsDeleted: 0
+        checksDeleted: 0
     };
 
     try {
-        // Archive yesterday's checks
-        await archiveYesterdayChecks(stats);
+        // Calculate yesterday's date
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toISOString().split('T')[0];
 
-        // Delete old check data (older than 7 days)
-        await deleteOldCheckData(stats);
+        logger.info(`Deleting all check data for date: ${yesterdayStr}`);
 
-        // Delete old cron job logs (older than 30 days)
-        await deleteOldCronJobLogs(stats);
+        // Delete all of yesterday's checks
+        const result = await ServerCheck.deleteMany({ date: { $lte: yesterdayStr } });
+
+        stats.checksDeleted = result.deletedCount;
+        logger.info(`Deleted ${result.deletedCount} checks from previous days`);
 
         logger.info('Data retention process completed successfully', { stats });
         return stats;
@@ -35,91 +36,6 @@ export const runDataRetention = async () => {
     }
 };
 
-/**
- * Archive yesterday's check data into daily summaries
- * @param {Object} stats - Statistics object to update
- */
-const archiveYesterdayChecks = async (stats) => {
-    try {
-        // Calculate yesterday's date
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        const yesterdayStr = yesterday.toISOString().split('T')[0];
-
-        logger.info(`Archiving check data for date: ${yesterdayStr}`);
-
-        // Get all server IDs that had checks yesterday
-        const serverIds = await ServerCheck.distinct('serverId', { date: yesterdayStr });
-
-        logger.info(`Found ${serverIds.length} servers with checks from yesterday`);
-
-        // For each server, create a daily summary
-        for (const serverId of serverIds) {
-            // Get all checks for this server from yesterday
-            const checks = await ServerCheck.find({
-                serverId,
-                date: yesterdayStr
-            });
-
-            if (checks.length === 0) continue;
-
-            // Calculate daily statistics
-            let totalResponseTime = 0;
-            let totalChecks = 0;
-            let upChecks = 0;
-            let maxResponseTime = 0;
-            let minResponseTime = Number.MAX_SAFE_INTEGER;
-
-            checks.forEach(check => {
-                if (check.responseTime) {
-                    totalResponseTime += check.responseTime;
-                    maxResponseTime = Math.max(maxResponseTime, check.responseTime);
-                    minResponseTime = Math.min(minResponseTime, check.responseTime);
-                    totalChecks++;
-
-                    if (check.status === 'up') {
-                        upChecks++;
-                    }
-                }
-            });
-
-            // Create or update the daily summary
-            const existingSummary = await ServerDailySummary.findOne({
-                serverId,
-                date: yesterdayStr
-            });
-
-            if (existingSummary) {
-                existingSummary.totalChecks = totalChecks;
-                existingSummary.upChecks = upChecks;
-                existingSummary.uptime = totalChecks > 0 ? (upChecks / totalChecks) * 100 : 0;
-                existingSummary.avgResponseTime = totalChecks > 0 ? totalResponseTime / totalChecks : 0;
-                existingSummary.maxResponseTime = maxResponseTime !== 0 ? maxResponseTime : null;
-                existingSummary.minResponseTime = minResponseTime !== Number.MAX_SAFE_INTEGER ? minResponseTime : null;
-                await existingSummary.save();
-            } else {
-                await ServerDailySummary.create({
-                    serverId,
-                    date: yesterdayStr,
-                    totalChecks,
-                    upChecks,
-                    uptime: totalChecks > 0 ? (upChecks / totalChecks) * 100 : 0,
-                    avgResponseTime: totalChecks > 0 ? totalResponseTime / totalChecks : 0,
-                    maxResponseTime: maxResponseTime !== 0 ? maxResponseTime : null,
-                    minResponseTime: minResponseTime !== Number.MAX_SAFE_INTEGER ? minResponseTime : null,
-                    createdAt: new Date()
-                });
-            }
-
-            stats.checksArchived += checks.length;
-        }
-
-        logger.info(`Archived ${stats.checksArchived} checks into daily summaries`);
-    } catch (error) {
-        logger.error(`Error archiving yesterday's checks: ${error.message}`);
-        throw error;
-    }
-};
 
 /**
  * Delete old check data

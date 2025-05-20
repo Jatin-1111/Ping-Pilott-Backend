@@ -56,3 +56,27 @@
 [31m    at ModuleJob.run (node:internal/modules/esm/module_job:272:25)[39m
 [31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:580:26)[39m
 [31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)[39m
+2025-05-20 23:29:03:293 [31merror[39m: [31muncaughtException: ServerDailySummary is not defined[39m
+[31mReferenceError: ServerDailySummary is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/models/ServerDailySummary.js:52:16[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:272:25)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:580:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)[39m
+2025-05-20 23:29:23:2923 [31merror[39m: [31muncaughtException: ServerDailySummary is not defined[39m
+[31mReferenceError: ServerDailySummary is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/models/ServerDailySummary.js:52:16[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:272:25)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:580:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)[39m
+2025-05-20 23:30:01:301 [31merror[39m: [31muncaughtException: ServerDailySummary is not defined[39m
+[31mReferenceError: ServerDailySummary is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/models/ServerDailySummary.js:52:16[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:272:25)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:580:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)[39m
+2025-05-20 23:30:07:307 [31merror[39m: [31muncaughtException: ServerDailySummary is not defined[39m
+[31mReferenceError: ServerDailySummary is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/models/ServerDailySummary.js:52:16[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:272:25)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:580:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)[39m

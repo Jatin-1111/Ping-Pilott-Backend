@@ -1,6 +1,5 @@
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
-import ServerDailySummary from '../models/ServerDailySummary.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { checkServerStatus } from '../services/monitoringService.js';
 import logger from '../utils/logger.js';
@@ -403,6 +402,7 @@ export const getServerHistory = asyncHandler(async (req, res) => {
     const now = new Date();
     let startTime;
 
+    // Only allow periods up to 24h since we only keep current day's data
     switch (period) {
         case '1h':
             startTime = new Date(now.getTime() - 1 * 60 * 60 * 1000);
@@ -414,52 +414,13 @@ export const getServerHistory = asyncHandler(async (req, res) => {
             startTime = new Date(now.getTime() - 12 * 60 * 60 * 1000);
             break;
         case '24h':
-            startTime = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-            break;
-        case '7d':
-            startTime = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-            break;
-        case '30d':
-            startTime = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-            break;
         default:
-            startTime = new Date(now.getTime() - 24 * 60 * 60 * 1000); // Default to 24h
+            // Get start of today
+            startTime = new Date();
+            startTime.setHours(0, 0, 0, 0);
     }
 
-    // For periods longer than 24h, use daily summaries for better performance
-    if (['7d', '30d'].includes(period)) {
-        const startDate = startTime.toISOString().split('T')[0];
-
-        const summaries = await ServerDailySummary.find({
-            serverId,
-            date: { $gte: startDate }
-        }).sort({ date: 1 });
-
-        // Calculate stats
-        const uptimePercent = summaries.length > 0
-            ? summaries.reduce((sum, day) => sum + day.uptime, 0) / summaries.length
-            : 0;
-
-        const avgResponseTime = summaries.length > 0
-            ? summaries.reduce((sum, day) => sum + (day.avgResponseTime || 0), 0) / summaries.length
-            : 0;
-
-        return res.status(200).json({
-            status: 'success',
-            data: {
-                period,
-                history: summaries,
-                stats: {
-                    uptimePercent: parseFloat(uptimePercent.toFixed(2)),
-                    avgResponseTime: Math.round(avgResponseTime),
-                    totalChecks: summaries.reduce((sum, day) => sum + day.totalChecks, 0),
-                    downChecks: summaries.reduce((sum, day) => sum + (day.totalChecks - day.upChecks), 0)
-                }
-            }
-        });
-    }
-
-    // For shorter periods, get detailed check history
+    // Get detailed check history
     const checks = await ServerCheck.find({
         serverId,
         timestamp: { $gte: startTime }

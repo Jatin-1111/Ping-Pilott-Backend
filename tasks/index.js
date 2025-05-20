@@ -3,7 +3,6 @@ import cron from 'node-cron';
 import logger from '../utils/logger.js';
 import dataRetentionService from './dataRetention.js';
 import checkServersService from './checkServers.js';
-import reportsService from './generateReports.js';
 import jobQueue from '../utils/jobQueue.js';
 
 /**
@@ -16,7 +15,6 @@ export const initCronJobs = async () => {
         // Initialize queue with all jobs
         jobQueue.add('checkServers', checkServersService.checkAllServers, 1);
         jobQueue.add('dataRetention', dataRetentionService.runDataRetention, 2);
-        jobQueue.add('generateReports', reportsService.generateDailyReports, 2);
 
         // Server check job - run every minute
         cron.schedule('* * * * *', async () => {
