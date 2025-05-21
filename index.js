@@ -22,6 +22,7 @@ import serverRoutes from './routes/serverRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import adminAnalyticsRoutes from './routes/adminAnalyticsRoutes.js';
+import supportRoutes from './routes/supportRoutes.js';
 
 import { initCronJobs } from './tasks/index.js';
 
@@ -64,6 +65,7 @@ app.use('/api/servers', serverRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/analytics', adminAnalyticsRoutes);
+app.use('/api/support', supportRoutes);
 
 // Handle 404 routes
 app.use('*', (req, res) => {
@@ -79,7 +81,7 @@ app.use(errorMiddleware);
 // Start server
 const server = app.listen(PORT, () => {
     logger.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-    
+
     // Initialize cron jobs after server starts
     initCronJobs();
 });

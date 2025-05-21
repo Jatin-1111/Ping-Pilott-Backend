@@ -3421,3 +3421,22 @@
 2025-05-21 05:16:34:1634 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 05:13:00 GMT+0000 (Coordinated Universal Time)[39m
 2025-05-21 05:16:34:1634 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 05:12:00 GMT+0000 (Coordinated Universal Time)[39m
 2025-05-21 05:16:34:1634 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 17:42:52:4252 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 17:42:52:4252 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-21 12:12:52:1252 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-21 12:12:52:1252 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-21 12:12:53:1253 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-02.yivtxy9.mongodb.net[39m
+2025-05-21 12:12:53:1253 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-21 12:12:53:1253 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 12:12:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-21 12:12:53:1253 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 12:11:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-21 12:12:53:1253 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 12:10:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-21 12:12:53:1253 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 12:09:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-21 12:12:53:1253 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 12:08:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-21 12:12:53:1253 [32minfo[39m: [32mAll cron jobs initialized successfully[39m
+2025-05-21 12:13:00:130 [32minfo[39m: [32mStarting job checkServers at 2025-05-21T17:43:00+05:30 (Asia/Kolkata)[39m
+2025-05-21 12:13:00:130 [32minfo[39m: [32mExecuting job 'checkServers'[39m
+2025-05-21 12:13:00:130 [32minfo[39m: [32mStarting server check process at 2025-05-21T12:13:00.977Z[39m
+2025-05-21 12:13:01:131 [32minfo[39m: [32mNo servers due for check, skipping process[39m
+2025-05-21 12:13:01:131 [32minfo[39m: [32mJob 'checkServers' completed in 60ms[39m
+2025-05-21 12:13:01:131 [32minfo[39m: [32mJob checkServers completed successfully[39m
+2025-05-21 12:13:01:131 [32minfo[39m: [32mJob checkServers record saved successfully[39m
