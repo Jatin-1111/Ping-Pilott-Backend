@@ -21,6 +21,7 @@ import authRoutes from './routes/authRoutes.js';
 import serverRoutes from './routes/serverRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import adminAnalyticsRoutes from './routes/adminAnalyticsRoutes.js';
 
 import { initCronJobs } from './tasks/index.js';
 
@@ -62,6 +63,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/servers', serverRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/admin/analytics', adminAnalyticsRoutes);
 
 // Handle 404 routes
 app.use('*', (req, res) => {
