@@ -1,7 +1,6 @@
 // controllers/analyticsController.js - Optimized for performance
 
 import moment from 'moment-timezone';
-import mongoose from 'mongoose';
 import User from '../models/User.js';
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';

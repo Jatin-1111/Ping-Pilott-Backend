@@ -4,6 +4,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { checkServerStatus } from '../services/monitoringService.js';
 import logger from '../utils/logger.js';
 import moment from 'moment-timezone';
+import mongoose from 'mongoose';
 
 // Server cache with TTL for frequently accessed data
 const serverCache = new Map();
