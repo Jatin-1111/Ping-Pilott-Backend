@@ -3409,3 +3409,15 @@
 2025-05-21 04:56:00:560 [32minfo[39m: [32mJob 'checkServers' completed in 79ms[39m
 2025-05-21 04:56:00:560 [32minfo[39m: [32mJob checkServers completed successfully[39m
 2025-05-21 04:56:00:560 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-21 10:46:33:4633 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-21 10:46:33:4633 [32minfo[39m: [32mInitializing cron jobs[39m
+2025-05-21 05:16:33:1633 [32minfo[39m: [32mJob 'checkServers' added to queue with priority 1[39m
+2025-05-21 05:16:33:1633 [32minfo[39m: [32mJob 'dataRetention' added to queue with priority 2[39m
+2025-05-21 05:16:34:1634 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-21 05:16:34:1634 [32minfo[39m: [32mFound 5 recent job records in database[39m
+2025-05-21 05:16:34:1634 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 05:16:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-21 05:16:34:1634 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 05:15:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-21 05:16:34:1634 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 05:14:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-21 05:16:34:1634 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 05:13:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-21 05:16:34:1634 [32minfo[39m: [32mJob: checkServers, Status: completed, Started: Wed May 21 2025 05:12:00 GMT+0000 (Coordinated Universal Time)[39m
+2025-05-21 05:16:34:1634 [32minfo[39m: [32mAll cron jobs initialized successfully[39m

@@ -6,29 +6,55 @@ import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
 import { sendAlertEmail } from '../services/emailService.js';
 import moment from 'moment-timezone';
+import dns from 'dns';
+import { promisify } from 'util';
 
-// Create a map to track in-progress checks
+// DNS cache to improve connection times
+const dnsCache = new Map();
+const dnsLookup = promisify(dns.lookup);
+
+// Enhanced connection pool for HTTP requests
+const axiosInstance = axios.create({
+    timeout: 10000,
+    maxRedirects: 2, // Limit redirects to prevent long chains
+    headers: {
+        'User-Agent': 'PingPilot-Monitoring/1.0',
+        'Connection': 'keep-alive'
+    }
+});
+
+// In-progress tracking with automatic cleanup (prevent memory leaks)
 const inProgressChecks = new Map();
+// Auto-cleanup for in-progress checks after 60 seconds (safety net)
+setInterval(() => {
+    const now = Date.now();
+    for (const [key, value] of inProgressChecks.entries()) {
+        if (now - value.timestamp > 60000) { // 60 seconds
+            inProgressChecks.delete(key);
+            logger.warn(`Force-cleared stale in-progress check for server ${key}`);
+        }
+    }
+}, 30000);
 
-// HTTP timeout in milliseconds (10 seconds)
+// Constants
 const HTTP_TIMEOUT = 10000;
+const MAX_CONCURRENT_CHECKS = 25; // Increased slightly for better throughput
+const TIME_BUFFER_MS = 5000;
+const CHECK_BATCH_INTERVAL = 500; // Reduced for faster overall processing
 
-// Maximum concurrent checks
-const MAX_CONCURRENT_CHECKS = 20;
+// Server status cache - minimize redundant database operations
+const serverStatusCache = new Map();
+const SERVER_CACHE_TTL = 60000; // 1 minute
 
-// Time buffer in milliseconds to ensure we don't miss checks
-// This ensures we check slightly earlier than exactly frequency minutes
-const TIME_BUFFER_MS = 5000; // 5 seconds buffer
-
+// Optimize time formatting functions
 const formatTime = (date) => {
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
+    return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 };
 
-const formatTimeInTimezone = (date, timezone) => {
-    return moment(date).tz(timezone || 'Asia/Kolkata').format('HH:mm');
-};
+// Pre-initialize moment timezones to avoid initialization cost during checks
+moment.tz.setDefault('UTC');
+const commonTimezones = ['Asia/Kolkata', 'UTC', 'America/New_York', 'Europe/London'];
+commonTimezones.forEach(tz => moment().tz(tz)); // Warm up timezone data
 
 /**
  * Check all servers that are due for a check
@@ -41,6 +67,13 @@ export const checkAllServers = async () => {
 
         // Get all servers that need to be checked
         const servers = await getServersToCheck();
+
+        // Skip if no servers to check
+        if (!servers || servers.length === 0) {
+            logger.info('No servers due for check, skipping process');
+            return { total: 0, checked: 0, skipped: 0 };
+        }
+
         logger.info(`Found ${servers.length} servers to check in ${Date.now() - startTime}ms`);
 
         // Initialize stats object
@@ -51,35 +84,42 @@ export const checkAllServers = async () => {
             down: 0,
             error: 0,
             skipped: 0,
-            alertsSent: 0
+            alertsSent: 0,
+            avgResponseTime: 0,
+            totalResponseTime: 0
         };
 
-        // Check servers in batches to avoid overwhelming resources
+        // Prioritize servers for checking
+        const prioritizedServers = prioritizeServers(servers);
+
+        // Check servers in batches for controlled concurrency
         const batchSize = MAX_CONCURRENT_CHECKS;
-        const batches = Math.ceil(servers.length / batchSize);
+        const batches = Math.ceil(prioritizedServers.length / batchSize);
 
         for (let i = 0; i < batches; i++) {
-            const batchStartTime = Date.now();
             const start = i * batchSize;
-            const end = Math.min(start + batchSize, servers.length);
-            const batch = servers.slice(start, end);
+            const end = Math.min(start + batchSize, prioritizedServers.length);
+            const batch = prioritizedServers.slice(start, end);
 
-            logger.info(`Processing batch ${i + 1}/${batches} (${batch.length} servers)`);
-
-            // Process this batch in parallel
+            // Process this batch in parallel using Promise.all for maximum efficiency
             const promises = batch.map(server => processServer(server, stats));
             await Promise.all(promises);
 
             // Short sleep between batches to avoid resource spikes
-            if (i < batches - 1) {
-                await sleep(1000);
+            if (i < batches - 1 && batch.length >= batchSize) {
+                await sleep(CHECK_BATCH_INTERVAL);
             }
+        }
+
+        // Calculate average response time
+        if (stats.checked > 0 && stats.totalResponseTime > 0) {
+            stats.avgResponseTime = Math.round(stats.totalResponseTime / stats.checked);
         }
 
         const totalDuration = Date.now() - startTime;
         logger.info(`Server check process completed in ${totalDuration}ms`, { stats });
-        return stats;
 
+        return stats;
     } catch (error) {
         logger.error(`Error in checkAllServers: ${error.message}`);
         throw error;
@@ -87,15 +127,49 @@ export const checkAllServers = async () => {
 };
 
 /**
- * Get servers that are due for a check
+ * Prioritize servers for checking based on criteria
+ * @param {Array} servers - List of servers to check
+ * @returns {Array} Prioritized server list
+ */
+const prioritizeServers = (servers) => {
+    // Prioritize servers:
+    // 1. Servers currently down (higher priority to check if they've recovered)
+    // 2. Servers with recent downtime
+    // 3. Servers that haven't been checked in a long time
+    // 4. Everything else
+
+    return [...servers].sort((a, b) => {
+        // Down servers get highest priority
+        if (a.status === 'down' && b.status !== 'down') return -1;
+        if (a.status !== 'down' && b.status === 'down') return 1;
+
+        // Recently changed status servers get next priority
+        if (a.lastStatusChange && b.lastStatusChange) {
+            return b.lastStatusChange.getTime() - a.lastStatusChange.getTime();
+        }
+
+        // Then sort by last checked time (oldest first)
+        if (a.lastChecked && b.lastChecked) {
+            return a.lastChecked.getTime() - b.lastChecked.getTime();
+        }
+
+        // Never checked servers go first
+        if (!a.lastChecked) return -1;
+        if (!b.lastChecked) return 1;
+
+        return 0;
+    });
+};
+
+/**
+ * Get servers that are due for a check with optimized query
  * @returns {Array} Servers to check
  */
 const getServersToCheck = async () => {
     try {
-        const queryStart = Date.now();
         const now = new Date();
 
-        // Base query for servers due for checking
+        // Use lean query for better performance
         const query = {
             $or: [
                 { lastChecked: null },
@@ -115,34 +189,62 @@ const getServersToCheck = async () => {
             ]
         };
 
-        // Get all potential servers
-        const potentialServers = await Server.find(query);
+        // Only get needed fields to minimize data transfer
+        const fields = {
+            name: 1,
+            url: 1,
+            type: 1,
+            status: 1,
+            uploadedRole: 1,
+            uploadedPlan: 1,
+            lastChecked: 1,
+            lastStatusChange: 1,
+            monitoring: 1,
+            timezone: 1,
+            error: 1,
+            contactEmails: 1,
+            responseTime: 1
+        };
 
-        // Filter servers based on their own timezone settings
+        // Get all potential servers with efficient query
+        const potentialServers = await Server.find(query, fields).lean();
+
+        // Use faster filtering based on timezone using a single loop
+        const currentTimeByZone = {};
+        const currentDayByZone = {};
+
+        // Filter servers with efficient in-memory checks
         const serversToCheck = potentialServers.filter(server => {
-            const serverTimezone = server.timezone || 'Asia/Kolkata';
-            const serverNow = moment().tz(serverTimezone);
-            const serverDay = serverNow.day(); // 0-6, where 0 is Sunday
-            const serverTime = serverNow.format('HH:mm');
+            const timezone = server.timezone || 'Asia/Kolkata';
+
+            // Cache timezone lookup for reuse
+            if (!currentTimeByZone[timezone]) {
+                const now = moment().tz(timezone);
+                currentTimeByZone[timezone] = now.format('HH:mm');
+                currentDayByZone[timezone] = now.day();
+            }
+
+            const serverTime = currentTimeByZone[timezone];
+            const serverDay = currentDayByZone[timezone];
 
             // Check if today is a monitoring day in server's timezone
             const isDayMatch = !server.monitoring?.daysOfWeek?.length ||
                 server.monitoring.daysOfWeek.includes(serverDay);
 
-            // Check if current time is within the monitoring window in server's timezone
-            let isTimeMatch = true;
-            if (server.monitoring?.timeWindows?.length) {
-                // Special case: If start time equals end time (00:00 to 00:00), treat as 24/7 monitoring
-                const has24x7Window = server.monitoring.timeWindows.some(window =>
-                    window.start === "00:00" && window.end === "00:00");
+            if (!isDayMatch) return false;
 
-                if (!has24x7Window) {
-                    isTimeMatch = server.monitoring.timeWindows.some(window =>
-                        serverTime >= window.start && serverTime <= window.end);
-                }
+            // Check if current time is within monitoring window
+            if (!server.monitoring?.timeWindows?.length) return true;
+
+            // Special case: If any window is 00:00 to 00:00, treat as 24/7 monitoring
+            if (server.monitoring.timeWindows.some(window =>
+                window.start === "00:00" && window.end === "00:00")) {
+                return true;
             }
 
-            return isDayMatch && isTimeMatch;
+            // Check if current time falls within any time window
+            return server.monitoring.timeWindows.some(window =>
+                serverTime >= window.start && serverTime <= window.end);
         });
 
         return serversToCheck;
@@ -153,114 +255,138 @@ const getServersToCheck = async () => {
 };
 
 /**
- * Process an individual server
+ * Process an individual server check
  * @param {Object} server - Server to check
  * @param {Object} stats - Statistics object to update
  */
 const processServer = async (server, stats) => {
-    const serverId = server._id || server.id;
-    const serverStart = Date.now();
+    const serverId = server._id.toString();
 
     // Skip if server is already being checked
-    if (inProgressChecks.get(serverId)) {
-        logger.warn(`Server ${serverId} check already in progress, skipping`);
+    if (inProgressChecks.has(serverId)) {
         stats.skipped++;
         return;
     }
 
-    // Mark as in progress
-    inProgressChecks.set(serverId, true);
+    // Mark as in progress with timestamp
+    inProgressChecks.set(serverId, { timestamp: Date.now() });
 
     try {
-        logger.debug(`Checking server ${server.name} (${server.url})`);
-
         // Check if server meets subscription requirements
         if (!shouldMonitorServer(server)) {
-            logger.debug(`Skipping check for server ${server.name} due to subscription constraints`);
             stats.skipped++;
-            inProgressChecks.set(serverId, false); // Important: always clear the in-progress flag
+            inProgressChecks.delete(serverId);
             return;
         }
 
         // Store the previous status for comparison
         const oldStatus = server.status;
 
-        // Check the server status
-        const checkStart = Date.now();
+        // Check the server status - the core operation
         const checkResult = await checkServerStatus(server);
-        const checkDuration = Date.now() - checkStart;
 
-        // Update server with check results
-        server.status = checkResult.status;
-        server.responseTime = checkResult.responseTime;
-        server.error = checkResult.error;
-        server.lastChecked = new Date(); // Use precise timestamp for when the check completed
-
-        // If status changed, record the change time
-        if (oldStatus !== checkResult.status) {
-            server.lastStatusChange = new Date();
-        }
-
-        // Save server updates
-        const saveStart = Date.now();
-        await server.save();
-
-        // Record check history
-        const historyStart = Date.now();
-        await recordCheckHistory(server, checkResult);
-
-        // Update stats
+        // Update statistics
         stats.checked++;
         if (checkResult.status === 'up') stats.up++;
         else if (checkResult.status === 'down') stats.down++;
 
-        // Send alerts if necessary
-        if (shouldSendAlert(server, oldStatus, checkResult.status)) {
-            const alertStart = Date.now();
-            const alertSent = await sendAlert(server, oldStatus, checkResult.status);
-
-            if (alertSent) {
-                stats.alertsSent++;
-            } else {
-            }
+        if (checkResult.responseTime) {
+            stats.totalResponseTime += checkResult.responseTime;
         }
 
-        logger.debug(`Server ${server.name} check completed: ${checkResult.status}`);
+        // Batch update operations for efficiency
+        const now = new Date();
+        const updateData = {
+            status: checkResult.status,
+            responseTime: checkResult.responseTime,
+            error: checkResult.error,
+            lastChecked: now
+        };
 
+        // Only set lastStatusChange if status changed
+        if (oldStatus !== checkResult.status) {
+            updateData.lastStatusChange = now;
+        }
+
+        // Create check history document
+        const checkDoc = createCheckHistoryDocument(server, checkResult, now);
+
+        // Execute database operations in parallel
+        await Promise.all([
+            // Update server with one operation
+            Server.updateOne({ _id: serverId }, updateData),
+
+            // Save check record
+            ServerCheck.create(checkDoc)
+        ]);
+
+        // Update server cache
+        serverStatusCache.set(serverId, {
+            status: checkResult.status,
+            timestamp: Date.now()
+        });
+
+        // Send alerts if necessary - non-blocking
+        if (shouldSendAlert(server, oldStatus, checkResult.status)) {
+            // Don't await the alert sending to avoid blocking check process
+            sendAlert(server, oldStatus, checkResult.status)
+                .then(sent => {
+                    if (sent) stats.alertsSent++;
+                })
+                .catch(err => {
+                    logger.error(`Error sending alert for ${server.name}: ${err.message}`);
+                });
+        }
     } catch (error) {
         logger.error(`Error checking server ${serverId}: ${error.message}`);
         stats.error++;
     } finally {
-        // CRITICAL: Always mark as no longer in progress, even in error scenarios
-        inProgressChecks.set(serverId, false);
+        // Always clear the in-progress flag, even in error scenarios
+        inProgressChecks.delete(serverId);
     }
 };
 
 /**
  * Check if a server should be monitored based on subscription status
- * @param {Object} server - Server to check
- * @returns {Boolean} Whether to monitor this server
+ * Optimized with early returns
  */
 const shouldMonitorServer = (server) => {
-    // If server was added by admin or with an admin plan, always monitor
+    // Early return for admin servers
     if (server.uploadedRole === 'admin' || server.uploadedPlan === 'admin') {
         return true;
     }
 
-    // Check if trial has ended for free users
-    if (
+    // Check trial status for free users
+    return !(
+        server.uploadedPlan === 'free' &&
         server.monitoring?.trialEndsAt &&
-        server.monitoring.trialEndsAt < Date.now() &&
-        server.uploadedPlan === 'free'
-    ) {
-        return false;
-    }
-
-    return true;
+        server.monitoring.trialEndsAt < Date.now()
+    );
 };
 
 /**
- * Check the status of a server
+ * Optimized function to create a check history document
+ */
+const createCheckHistoryDocument = (server, checkResult, timestamp) => {
+    const timezone = server.timezone || 'Asia/Kolkata';
+    const localTime = moment(timestamp).tz(timezone);
+
+    return {
+        serverId: server._id,
+        status: checkResult.status,
+        responseTime: checkResult.responseTime,
+        error: checkResult.error,
+        timestamp: timestamp,
+        timezone: timezone,
+        localDate: localTime.format('YYYY-MM-DD'),
+        localHour: localTime.hour(),
+        localMinute: localTime.minute(),
+        timeSlot: Math.floor(localTime.minute() / 15)
+    };
+};
+
+/**
+ * Check the status of a server with optimized connection handling
  * @param {Object} server - Server to check
  * @returns {Object} Check result
  */
@@ -276,11 +402,9 @@ const checkServerStatus = async (server) => {
     try {
         // Different check methods based on server type
         if (server.type === 'tcp') {
-            // For TCP servers, use socket connection
-            status = await checkTcpServer(server.url, responseThreshold);
+            status = await checkTcpServerWithCache(server.url);
         } else {
-            // For HTTP/HTTPS resources, use axios
-            status = await checkHttpServer(server.url, responseThreshold);
+            status = await checkHttpServerWithCache(server.url);
         }
 
         // Calculate response time
@@ -290,7 +414,6 @@ const checkServerStatus = async (server) => {
         if (status === 'up' && responseTime > responseThreshold) {
             error = `Slow response: ${responseTime}ms exceeds threshold of ${responseThreshold}ms`;
         }
-
     } catch (err) {
         status = 'down';
         error = err.message;
@@ -305,91 +428,124 @@ const checkServerStatus = async (server) => {
 };
 
 /**
- * Check a TCP server
- * @param {String} url - TCP server address (host:port)
- * @param {Number} threshold - Response time threshold
- * @returns {String} Status ('up' or 'down')
+ * DNS-cached TCP server check
  */
-const checkTcpServer = (url, threshold) => {
-    return new Promise((resolve, reject) => {
-        try {
-            // Parse host and port from URL
-            const [host, portStr] = url.split(':');
-            const port = parseInt(portStr, 10) || 80;
+const checkTcpServerWithCache = async (url) => {
+    // Parse host and port from URL
+    const [host, portStr] = url.split(':');
+    const port = parseInt(portStr, 10) || 80;
 
-            if (!host) {
-                return reject(new Error('Invalid TCP address format (expected host:port)'));
-            }
+    if (!host) {
+        throw new Error('Invalid TCP address format (expected host:port)');
+    }
 
-            const socket = new net.Socket();
-            let resolved = false;
-
-            // Set timeout
-            socket.setTimeout(HTTP_TIMEOUT);
-
-            socket.on('connect', () => {
-                socket.end();
-                if (!resolved) {
-                    resolved = true;
-                    resolve('up');
-                }
-            });
-
-            socket.on('timeout', () => {
-                socket.destroy();
-                if (!resolved) {
-                    resolved = true;
-                    reject(new Error('Connection timeout'));
-                }
-            });
-
-            socket.on('error', (err) => {
-                if (!resolved) {
-                    resolved = true;
-                    reject(err);
-                }
-            });
-
-            // Attempt connection
-            socket.connect(port, host);
-
-        } catch (err) {
-            reject(err);
+    // Use DNS cache to speed up lookups
+    let ipAddress;
+    if (dnsCache.has(host)) {
+        const cacheEntry = dnsCache.get(host);
+        // Reuse cache if less than 5 minutes old
+        if (Date.now() - cacheEntry.timestamp < 5 * 60 * 1000) {
+            ipAddress = cacheEntry.ip;
         }
+    }
+
+    // Lookup if not in cache
+    if (!ipAddress) {
+        try {
+            const dnsResult = await dnsLookup(host);
+            ipAddress = dnsResult.address;
+            dnsCache.set(host, { ip: ipAddress, timestamp: Date.now() });
+        } catch (err) {
+            throw new Error(`DNS lookup failed: ${err.message}`);
+        }
+    }
+
+    // Now connect using IP (faster than hostname resolution)
+    return new Promise((resolve, reject) => {
+        const socket = new net.Socket();
+        let resolved = false;
+
+        // Use closures to avoid memory leaks
+        const cleanup = () => {
+            if (!resolved) {
+                socket.removeAllListeners();
+                socket.destroy();
+            }
+        };
+
+        // Set timeout
+        socket.setTimeout(HTTP_TIMEOUT);
+
+        socket.on('connect', () => {
+            cleanup();
+            resolved = true;
+            resolve('up');
+        });
+
+        socket.on('timeout', () => {
+            cleanup();
+            resolved = true;
+            reject(new Error('Connection timeout'));
+        });
+
+        socket.on('error', (err) => {
+            cleanup();
+            resolved = true;
+            reject(err);
+        });
+
+        // Attempt connection to the resolved IP
+        socket.connect(port, ipAddress || host);
     });
 };
 
 /**
- * Check an HTTP/HTTPS server
- * @param {String} url - HTTP server URL
- * @param {Number} threshold - Response time threshold
- * @returns {String} Status ('up' or 'down')
+ * Optimized HTTP server check with connection pooling
  */
-const checkHttpServer = async (url, threshold) => {
+const checkHttpServerWithCache = async (url) => {
+    // Add protocol if missing
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = `https://${url}`;
+    }
+
     try {
-        // Add protocol if missing
-        if (!url.startsWith('http://') && !url.startsWith('https://')) {
-            url = `https://${url}`;
-        }
+        // Use HEAD request for faster checks where possible
+        // Fall back to GET if HEAD fails
+        try {
+            const response = await axiosInstance.head(url, {
+                validateStatus: false, // Don't throw on non-2xx responses
+            });
 
-        // Make HTTP request
-        const response = await axios.get(url, {
-            timeout: HTTP_TIMEOUT,
-            headers: {
-                'User-Agent': 'PingPilot-Monitoring/1.0'
-            },
-            validateStatus: false // Don't throw on non-2xx responses
-        });
+            // Return success for 2xx and 3xx responses
+            if (response.status >= 200 && response.status < 400) {
+                return 'up';
+            }
 
-        // Consider 2xx and 3xx responses as up
-        if (response.status >= 200 && response.status < 400) {
-            return 'up';
-        } else {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            // If we get 405 Method Not Allowed, try GET
+            if (response.status === 405) {
+                throw new Error('HEAD method not allowed');
+            }
+
+            throw new Error(`HTTP ${response.status}: ${response.statusText || 'Error'}`);
+        } catch (headError) {
+            // Fall back to GET if HEAD fails or is not supported
+            const response = await axiosInstance.get(url, {
+                validateStatus: false, // Don't throw on non-2xx responses
+                // Don't download whole content, just headers
+                maxContentLength: 1024,
+                transformResponse: [(data) => { return {} }]
+            });
+
+            // Return success for 2xx and 3xx responses
+            if (response.status >= 200 && response.status < 400) {
+                return 'up';
+            }
+
+            throw new Error(`HTTP ${response.status}: ${response.statusText || 'Error'}`);
         }
     } catch (error) {
         if (error.response) {
-            throw new Error(`HTTP ${error.response.status}: ${error.response.statusText}`);
+            throw new Error(`HTTP ${error.response.status}: ${error.response.statusText || 'Error'}`);
         } else if (error.request) {
             throw new Error(`No response received: ${error.message}`);
         } else {
@@ -399,103 +555,36 @@ const checkHttpServer = async (url, threshold) => {
 };
 
 /**
- * Record server check history in database
- * @param {Object} server - Server object
- * @param {Object} checkResult - Check result
- */
-
-// Fixed recordCheckHistory function
-const recordCheckHistory = async (server, checkResult) => {
-    try {
-        // Define the current time
-        const now = new Date();
-
-        // Get server's timezone
-        const timezone = server.timezone || 'Asia/Kolkata';
-
-        // Convert to server's timezone for storage
-        const localTime = moment(now).tz(timezone);
-
-        // Create new check record with proper timezone data
-        const check = new ServerCheck({
-            serverId: server.id,
-            status: checkResult.status,
-            responseTime: checkResult.responseTime,
-            error: checkResult.error,
-            timestamp: now,
-            timezone: timezone,
-            localDate: localTime.format('YYYY-MM-DD'),
-            localHour: localTime.hour(),
-            localMinute: localTime.minute(),
-            timeSlot: Math.floor(localTime.minute() / 15) // 15-minute slots (0-3)
-        });
-
-        // Save the check record
-        await check.save();
-
-        // Verify the record was created by retrieving it
-        try {
-            const savedCheck = await ServerCheck.findById(check._id);
-        } catch (verifyError) {
-            console.error(`[TROUBLESHOOTING] Error verifying ServerCheck record: ${verifyError.message}`);
-        }
-
-        return check._id;
-    } catch (error) {
-        logger.error(`Error recording check history for server ${server.id}: ${error.message}`);
-
-        // Non-critical error, don't throw to allow the process to continue
-        return null;
-    }
-};
-
-/**
- * Determine if an alert should be sent
- * @param {Object} server - Server object
- * @param {String} oldStatus - Previous status
- * @param {String} newStatus - New status
- * @returns {Boolean} Whether to send an alert
+ * Fast check if an alert should be sent
  */
 const shouldSendAlert = (server, oldStatus, newStatus) => {
-    // Skip if alerts are disabled
-    if (!server.monitoring?.alerts?.enabled) {
-        return false;
-    }
+    // Early returns for common cases
+    if (!server.monitoring?.alerts?.enabled) return false;
 
-    // Check if we're within the alert time window
+    // Check status change first - most common trigger
+    const statusChanged = oldStatus !== newStatus;
+    const hasSlowResponse = newStatus === 'up' && server.error &&
+        server.error.includes('Slow response');
+
+    if (!statusChanged && !hasSlowResponse) return false;
+
+    // Check time window if needed
+    const alertTimeWindow = server.monitoring?.alerts?.timeWindow;
+    if (!alertTimeWindow) return true;
+
     const now = new Date();
     const currentTime = formatTime(now);
-    const alertTimeWindow = server.monitoring?.alerts?.timeWindow;
 
-    if (
-        alertTimeWindow &&
-        (currentTime < alertTimeWindow.start || currentTime > alertTimeWindow.end)
-    ) {
-        logger.debug(`Alert time window check failed: ${currentTime} not in ${alertTimeWindow.start}-${alertTimeWindow.end}`);
-        return false;
-    }
-
-    // Send alert on status change or slow response
-    return (
-        // Status changed
-        oldStatus !== newStatus ||
-        // Or status is 'up' but response is slow
-        (newStatus === 'up' && server.error && server.error.includes('Slow response'))
-    );
+    return currentTime >= alertTimeWindow.start &&
+        currentTime <= alertTimeWindow.end;
 };
 
 /**
- * Send alert for server status change
- * @param {Object} server - Server object
- * @param {String} oldStatus - Previous status
- * @param {String} newStatus - New status
- * @returns {Boolean} Whether alert was sent
+ * Optimized alert sending function
  */
 const sendAlert = async (server, oldStatus, newStatus) => {
     try {
-        logger.info(`Sending alert for server ${server.name}: ${oldStatus} -> ${newStatus}`);
-
-        // Different alert types
+        // Quick determination of alert type
         let alertType;
         if (oldStatus === 'up' && newStatus === 'down') {
             alertType = 'server_down';
@@ -507,18 +596,39 @@ const sendAlert = async (server, oldStatus, newStatus) => {
             return false;
         }
 
-        // Email alerts
-        if (server.monitoring?.alerts?.email && server.contactEmails?.length > 0) {
-            sendAlertEmail(server, alertType, oldStatus, newStatus);
-        }
+        // Email alerts - only if needed
+        if (server.monitoring?.alerts?.email &&
+            server.contactEmails?.length > 0) {
 
-        // Future: Add SMS/call alerts, webhooks, etc.
+            // Use non-awaited call to avoid blocking
+            sendAlertEmail(server, alertType, oldStatus, newStatus)
+                .catch(err => logger.error(`Email alert error: ${err.message}`));
+        }
 
         return true;
     } catch (error) {
-        logger.error(`Error sending alert for server ${server.id}: ${error.message}`);
+        logger.error(`Error sending alert for server ${server._id}: ${error.message}`);
         return false;
     }
 };
+
+// Periodically clean DNS and server status caches
+setInterval(() => {
+    const now = Date.now();
+
+    // Clean DNS cache (older than 30 minutes)
+    for (const [host, data] of dnsCache.entries()) {
+        if (now - data.timestamp > 30 * 60 * 1000) {
+            dnsCache.delete(host);
+        }
+    }
+
+    // Clean server status cache (older than TTL)
+    for (const [serverId, data] of serverStatusCache.entries()) {
+        if (now - data.timestamp > SERVER_CACHE_TTL) {
+            serverStatusCache.delete(serverId);
+        }
+    }
+}, 5 * 60 * 1000); // Every 5 minutes
 
 export default { checkAllServers };
