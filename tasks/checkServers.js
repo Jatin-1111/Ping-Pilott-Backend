@@ -13,13 +13,29 @@ import { promisify } from 'util';
 const dnsCache = new Map();
 const dnsLookup = promisify(dns.lookup);
 
+const USER_AGENTS = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0'
+];
+
+const getRandomUserAgent = () => {
+    return USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+};
+
 // Enhanced connection pool for HTTP requests
 const axiosInstance = axios.create({
     timeout: 10000,
-    maxRedirects: 2, // Limit redirects to prevent long chains
+    maxRedirects: 5, // Increased redirects
     headers: {
-        'User-Agent': 'PingPilot-Monitoring/1.0',
-        'Connection': 'keep-alive'
+        'User-Agent': getRandomUserAgent(),
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Cache-Control': 'max-age=0'
     }
 });
 
@@ -509,40 +525,50 @@ const checkHttpServerWithCache = async (url) => {
     }
 
     try {
-        // Use HEAD request for faster checks where possible
-        // Fall back to GET if HEAD fails
+        // Strategy 1: Try HEAD request first
         try {
             const response = await axiosInstance.head(url, {
-                validateStatus: false, // Don't throw on non-2xx responses
+                validateStatus: false,
+                headers: {
+                    'User-Agent': getRandomUserAgent() // Rotate user agent
+                }
             });
 
-            // Return success for 2xx and 3xx responses
+            // Success for 2xx and 3xx
             if (response.status >= 200 && response.status < 400) {
                 return 'up';
             }
 
-            // If we get 405 Method Not Allowed, try GET
-            if (response.status === 405) {
-                throw new Error('HEAD method not allowed');
+            // If 403 or 405, try GET request
+            if (response.status === 403 || response.status === 405) {
+                throw new Error('HEAD method blocked, trying GET');
             }
 
             throw new Error(`HTTP ${response.status}: ${response.statusText || 'Error'}`);
+
         } catch (headError) {
-            // Fall back to GET if HEAD fails or is not supported
+            // Strategy 2: Fall back to GET request with different headers
             const response = await axiosInstance.get(url, {
-                validateStatus: false, // Don't throw on non-2xx responses
-                // Don't download whole content, just headers
-                maxContentLength: 1024,
-                transformResponse: [(data) => { return {} }]
+                validateStatus: false,
+                maxContentLength: 1024 * 10, // Limit to 10KB
+                transformResponse: [(data) => data], // Don't parse
+                headers: {
+                    'User-Agent': getRandomUserAgent(), // Different user agent
+                    'Referer': new URL(url).origin, // Add referer
+                    'Sec-Fetch-Dest': 'document',
+                    'Sec-Fetch-Mode': 'navigate',
+                    'Sec-Fetch-Site': 'none'
+                }
             });
 
-            // Return success for 2xx and 3xx responses
+            // Success for 2xx and 3xx
             if (response.status >= 200 && response.status < 400) {
                 return 'up';
             }
 
             throw new Error(`HTTP ${response.status}: ${response.statusText || 'Error'}`);
         }
+
     } catch (error) {
         if (error.response) {
             throw new Error(`HTTP ${error.response.status}: ${error.response.statusText || 'Error'}`);

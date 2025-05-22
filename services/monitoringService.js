@@ -1,9 +1,23 @@
+// services/monitoringService.js - Updated with browser user agent
+
 import axios from 'axios';
 import net from 'net';
 import logger from '../utils/logger.js';
 
 // HTTP timeout in milliseconds (10 seconds)
 const HTTP_TIMEOUT = 10000;
+
+// More realistic browser user agents
+const USER_AGENTS = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0'
+];
+
+// Get random user agent
+const getRandomUserAgent = () => {
+    return USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+};
 
 /**
  * Check the status of a server
@@ -33,7 +47,7 @@ export const checkServerStatus = async (server) => {
                 error = err.message;
             }
         } else {
-            // For HTTP/HTTPS resources, use axios
+            // For HTTP/HTTPS resources, use axios with browser headers
             try {
                 await checkHttpServer(server.url);
                 status = 'up';
@@ -132,7 +146,7 @@ export const checkTcpServer = (url) => {
 };
 
 /**
- * Check an HTTP/HTTPS server
+ * Check an HTTP/HTTPS server with browser-like headers
  * @param {String} url - HTTP server URL
  * @returns {Promise} Resolves if connection succeeds, rejects if it fails
  */
@@ -143,24 +157,98 @@ export const checkHttpServer = async (url) => {
             url = `https://${url}`;
         }
 
-        // Make HTTP request
-        const response = await axios.get(url, {
-            timeout: HTTP_TIMEOUT,
-            headers: {
-                'User-Agent': 'PingPilot-Monitoring/1.0'
+        // Try multiple strategies to avoid bot detection
+        const strategies = [
+            // Strategy 1: HEAD request with browser headers
+            async () => {
+                const response = await axios.head(url, {
+                    timeout: HTTP_TIMEOUT,
+                    headers: {
+                        'User-Agent': getRandomUserAgent(),
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                        'Accept-Language': 'en-US,en;q=0.5',
+                        'Accept-Encoding': 'gzip, deflate, br',
+                        'DNT': '1',
+                        'Connection': 'keep-alive',
+                        'Upgrade-Insecure-Requests': '1',
+                        'Cache-Control': 'max-age=0'
+                    },
+                    validateStatus: false,
+                    maxRedirects: 5
+                });
+                return response;
             },
-            validateStatus: false // Don't throw on non-2xx responses
-        });
 
-        // Consider 2xx and 3xx responses as up
-        if (response.status >= 200 && response.status < 400) {
-            return true;
-        } else {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            // Strategy 2: GET request with browser headers (fallback for HEAD failures)
+            async () => {
+                const response = await axios.get(url, {
+                    timeout: HTTP_TIMEOUT,
+                    headers: {
+                        'User-Agent': getRandomUserAgent(),
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                        'Accept-Language': 'en-US,en;q=0.5',
+                        'Accept-Encoding': 'gzip, deflate, br',
+                        'DNT': '1',
+                        'Connection': 'keep-alive',
+                        'Upgrade-Insecure-Requests': '1',
+                        'Cache-Control': 'max-age=0'
+                    },
+                    validateStatus: false,
+                    maxRedirects: 5,
+                    maxContentLength: 1024 * 10, // Limit to 10KB
+                    transformResponse: [(data) => data] // Don't parse response
+                });
+                return response;
+            }
+        ];
+
+        let lastError;
+
+        // Try each strategy
+        for (const strategy of strategies) {
+            try {
+                const response = await strategy();
+
+                // Consider 2xx and 3xx responses as up
+                if (response.status >= 200 && response.status < 400) {
+                    return true;
+                }
+
+                // For 403, try the next strategy
+                if (response.status === 403) {
+                    lastError = new Error(`HTTP ${response.status}: Forbidden - trying alternative approach`);
+                    continue;
+                }
+
+                // For other errors, throw immediately
+                throw new Error(`HTTP ${response.status}: ${response.statusText || 'Error'}`);
+
+            } catch (error) {
+                lastError = error;
+
+                // If it's a 405 Method Not Allowed on HEAD, try GET
+                if (error.response?.status === 405) {
+                    continue;
+                }
+
+                // If it's a 403, try the next strategy
+                if (error.response?.status === 403) {
+                    continue;
+                }
+
+                // For other errors, try next strategy or throw
+                if (strategies.indexOf(strategy) === strategies.length - 1) {
+                    throw error;
+                }
+            }
         }
+
+        // If we get here, all strategies failed
+        throw lastError || new Error('All connection strategies failed');
+
     } catch (error) {
         if (error.response) {
-            throw new Error(`HTTP ${error.response.status}: ${error.response.statusText}`);
+            throw new Error(`HTTP ${error.response.status}: ${error.response.statusText || 'Error'}`);
         } else if (error.request) {
             throw new Error(`No response received: ${error.message}`);
         } else {
