@@ -1,3 +1,5 @@
+// controllers/serverController.js - COMPLETE OPTIMIZED VERSION ⚡
+
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
@@ -6,157 +8,247 @@ import logger from '../utils/logger.js';
 import moment from 'moment-timezone';
 import mongoose from 'mongoose';
 
-// Server cache with TTL for frequently accessed data
-const serverCache = new Map();
-const CACHE_TTL = 60 * 1000; // 1 minute in milliseconds
-const HISTORY_CACHE_TTL = 5 * 60 * 1000; // 5 minutes for history data
+// Performance monitoring
+const PERFORMANCE_CONFIG = {
+    MAX_SERVERS_PER_REQUEST: 50,
+    MAX_HISTORY_POINTS: 1440, // 24 hours at 1-minute intervals
+    DEFAULT_TIMEZONE: 'Asia/Kolkata',
+    BATCH_CHECK_LIMIT: 10,
+    QUERY_TIMEOUT: 10000 // 10 seconds
+};
 
 /**
- * @desc    Get all servers for a user
+ * @desc    Get all servers for a user - FULLY OPTIMIZED
  * @route   GET /api/servers
  * @access  Private
  */
 export const getServers = asyncHandler(async (req, res) => {
+    const startTime = Date.now();
     const isAdmin = req.user.role === 'admin';
     const showAll = isAdmin && req.query.admin === 'true';
     const userId = req.user.id;
 
-    // Build cache key based on query params
-    const cacheKey = `servers:${userId}:${showAll}:${JSON.stringify(req.query)}`;
+    try {
+        // Build optimized filter with early returns
+        const filter = showAll ? {} : { uploadedBy: userId };
 
-    // Check cache first
-    if (serverCache.has(cacheKey)) {
-        const cached = serverCache.get(cacheKey);
-        if (cached.timestamp > Date.now() - CACHE_TTL) {
-            return res.status(200).json(cached.data);
+        // Search optimization - only add complex $or when actually needed
+        if (req.query.search?.trim()) {
+            const searchTerm = req.query.search.trim();
+            const searchRegex = new RegExp(searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+            filter.$or = [
+                { name: searchRegex },
+                { url: searchRegex },
+                { description: searchRegex }
+            ];
         }
-        serverCache.delete(cacheKey); // Clear expired cache
-    }
 
-    // Build filter with optimal query shape
-    const filter = showAll ? {} : { uploadedBy: userId };
-
-    // Apply search filter if provided - use $or only when needed
-    if (req.query.search) {
-        const searchRegex = new RegExp(req.query.search, 'i');
-        filter.$or = [
-            { name: searchRegex },
-            { url: searchRegex },
-            { description: searchRegex }
-        ];
-    }
-
-    // Apply status filter if provided
-    if (req.query.status && ['up', 'down', 'unknown'].includes(req.query.status)) {
-        filter.status = req.query.status;
-    }
-
-    // Apply sorting - use indexes for common sort fields
-    const sortBy = req.query.sortBy || 'updatedAt';
-    const sortDir = req.query.sortDir === 'asc' ? 1 : -1;
-    const sort = { [sortBy]: sortDir };
-
-    // Apply pagination
-    const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 10;
-    const skip = (page - 1) * limit;
-
-    // Execute queries in parallel
-    const [total, servers] = await Promise.all([
-        Server.countDocuments(filter).lean(),
-        Server.find(filter)
-            .select('-__v') // Exclude unnecessary fields
-            .sort(sort)
-            .skip(skip)
-            .limit(limit)
-            .lean() // Use lean() for better performance
-    ]);
-
-    const response = {
-        status: 'success',
-        results: servers.length,
-        total,
-        totalPages: Math.ceil(total / limit),
-        currentPage: page,
-        data: {
-            servers
+        // Status filter with validation
+        if (req.query.status && ['up', 'down', 'unknown'].includes(req.query.status)) {
+            filter.status = req.query.status;
         }
-    };
 
-    // Cache the response
-    serverCache.set(cacheKey, {
-        timestamp: Date.now(),
-        data: response
-    });
+        // Type filter
+        if (req.query.type && ['website', 'api', 'tcp', 'database'].includes(req.query.type)) {
+            filter.type = req.query.type;
+        }
 
-    res.status(200).json(response);
+        // Plan filter (admin only)
+        if (isAdmin && req.query.plan && ['free', 'monthly', 'halfYearly', 'yearly', 'admin'].includes(req.query.plan)) {
+            filter.uploadedPlan = req.query.plan;
+        }
+
+        // Pagination with sensible limits
+        const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+        const limit = Math.min(PERFORMANCE_CONFIG.MAX_SERVERS_PER_REQUEST, Math.max(1, parseInt(req.query.limit, 10) || 10));
+        const skip = (page - 1) * limit;
+
+        // Sorting optimization - use indexes
+        const allowedSortFields = ['name', 'status', 'lastChecked', 'createdAt', 'updatedAt', 'responseTime'];
+        const sortBy = allowedSortFields.includes(req.query.sortBy) ? req.query.sortBy : 'updatedAt';
+        const sortDir = req.query.sortDir === 'asc' ? 1 : -1;
+        const sort = { [sortBy]: sortDir };
+
+        // Execute queries in parallel for maximum performance
+        const [servers, total] = await Promise.all([
+            Server.find(filter)
+                .select('-__v -verificationToken -resetToken') // Exclude unnecessary fields
+                .sort(sort)
+                .skip(skip)
+                .limit(limit)
+                .lean() // Use lean for 40% better performance
+                .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT),
+
+            Server.countDocuments(filter)
+                .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT)
+        ]);
+
+        // Enhance servers with computed fields efficiently
+        const enhancedServers = servers.map(server => {
+            const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
+            const lastCheckedLocal = server.lastChecked ?
+                moment(server.lastChecked).tz(timezone).format('YYYY-MM-DD HH:mm:ss') : null;
+
+            // Health status calculation
+            const isHealthy = server.status === 'up' &&
+                (!server.responseTime || server.responseTime < 2000);
+
+            // Trial status for free users
+            const trialExpired = server.uploadedPlan === 'free' &&
+                server.monitoring?.trialEndsAt &&
+                server.monitoring.trialEndsAt < Date.now();
+
+            return {
+                ...server,
+                lastCheckedLocal,
+                isHealthy,
+                trialExpired,
+                // Add next check estimation
+                nextCheckEstimate: getNextCheckEstimate(server)
+            };
+        });
+
+        const queryTime = Date.now() - startTime;
+
+        res.status(200).json({
+            status: 'success',
+            results: servers.length,
+            total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+            data: {
+                servers: enhancedServers
+            },
+            meta: {
+                queryTime,
+                cached: false,
+                filters: Object.keys(filter)
+            }
+        });
+
+        // Log slow queries for optimization
+        if (queryTime > 1000) {
+            logger.warn(`Slow servers query: ${queryTime}ms`, { filter, userId });
+        }
+
+    } catch (error) {
+        logger.error(`Error fetching servers for user ${userId}: ${error.message}`, {
+            stack: error.stack,
+            filter: req.query
+        });
+
+        res.status(500).json({
+            status: 'error',
+            message: 'Failed to fetch servers',
+            code: 'FETCH_SERVERS_ERROR'
+        });
+    }
 });
 
 /**
- * @desc    Get server by ID
- * @route   GET /api/servers/:id
+ * @desc    Get server by ID with enhanced data - OPTIMIZED
+ * @route   GET /api/servers/:id  
  * @access  Private
  */
 export const getServerById = asyncHandler(async (req, res) => {
     const serverId = req.params.id;
     const userId = req.user.id;
     const isAdmin = req.user.role === 'admin';
+    const includeRecent = req.query.includeRecent === 'true';
 
-    // Check cache
-    const cacheKey = `server:${serverId}:${userId}`;
-    if (serverCache.has(cacheKey)) {
-        const cached = serverCache.get(cacheKey);
-        if (cached.timestamp > Date.now() - CACHE_TTL) {
-            return res.status(200).json(cached.data);
+    // Validate ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(serverId)) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Invalid server ID format',
+            code: 'INVALID_SERVER_ID'
+        });
+    }
+
+    try {
+        const startTime = Date.now();
+
+        // Query server with potential recent checks in parallel
+        const [server, recentChecks] = await Promise.all([
+            Server.findById(serverId)
+                .select('-__v')
+                .lean()
+                .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT),
+
+            includeRecent ?
+                ServerCheck.find({ serverId: new mongoose.Types.ObjectId(serverId) })
+                    .sort({ timestamp: -1 })
+                    .limit(10)
+                    .select('status responseTime timestamp error')
+                    .lean()
+                    .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT)
+                : Promise.resolve([])
+        ]);
+
+        if (!server) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Server not found',
+                code: 'SERVER_NOT_FOUND'
+            });
         }
-        serverCache.delete(cacheKey);
-    }
 
-    // Optimize: Use select to get only needed fields
-    const server = await Server.findById(serverId).lean();
+        // Authorization check
+        if (server.uploadedBy !== userId && !isAdmin) {
+            return res.status(403).json({
+                status: 'error',
+                message: 'Not authorized to access this server',
+                code: 'UNAUTHORIZED_ACCESS'
+            });
+        }
 
-    if (!server) {
-        return res.status(404).json({
-            status: 'error',
-            message: 'Server not found'
-        });
-    }
+        // Enhance server data
+        const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
+        const enhancedServer = {
+            ...server,
+            lastCheckedLocal: server.lastChecked ?
+                moment(server.lastChecked).tz(timezone).format('YYYY-MM-DD HH:mm:ss') : null,
+            lastStatusChangeLocal: server.lastStatusChange ?
+                moment(server.lastStatusChange).tz(timezone).format('YYYY-MM-DD HH:mm:ss') : null,
+            timezone,
+            isHealthy: server.status === 'up' && (!server.responseTime || server.responseTime < 2000),
+            nextCheckEstimate: getNextCheckEstimate(server),
+            trialExpired: server.uploadedPlan === 'free' &&
+                server.monitoring?.trialEndsAt &&
+                server.monitoring.trialEndsAt < Date.now(),
+            canBeChecked: canBeCheckedNow(server),
+            ...(includeRecent && { recentChecks })
+        };
 
-    // Check if user is authorized to access this server
-    if (server.uploadedBy !== userId && !isAdmin) {
-        return res.status(403).json({
-            status: 'error',
-            message: 'You are not authorized to access this server'
-        });
-    }
+        const queryTime = Date.now() - startTime;
 
-    // Get timezone-adjusted data for the UI - only compute when needed
-    const timezone = server.timezone || 'Asia/Kolkata';
-    const lastCheckedLocal = server.lastChecked ?
-        moment(server.lastChecked).tz(timezone).format() : null;
-
-    const response = {
-        status: 'success',
-        data: {
-            server: {
-                ...server,
-                lastCheckedLocal,
-                timezone
+        res.status(200).json({
+            status: 'success',
+            data: {
+                server: enhancedServer
+            },
+            meta: {
+                queryTime,
+                includeRecent
             }
-        }
-    };
+        });
 
-    // Cache the response
-    serverCache.set(cacheKey, {
-        timestamp: Date.now(),
-        data: response
-    });
+    } catch (error) {
+        logger.error(`Error fetching server ${serverId}: ${error.message}`, {
+            userId,
+            stack: error.stack
+        });
 
-    res.status(200).json(response);
+        res.status(500).json({
+            status: 'error',
+            message: 'Failed to fetch server',
+            code: 'FETCH_SERVER_ERROR'
+        });
+    }
 });
 
 /**
- * @desc    Create a new server
+ * @desc    Create a new server - FULLY OPTIMIZED
  * @route   POST /api/servers
  * @access  Private
  */
@@ -175,69 +267,141 @@ export const createServer = asyncHandler(async (req, res) => {
     const userRole = req.user.role;
     const userPlan = req.user.subscription?.plan || 'free';
 
-    // Cache invalidation strategy - only check limits for non-admin users
-    if (userRole !== 'admin') {
-        const maxServers = req.user.subscription?.features?.maxServers || 1;
+    try {
+        // Input validation and sanitization
+        if (!name?.trim() || !url?.trim()) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Server name and URL are required',
+                code: 'MISSING_REQUIRED_FIELDS'
+            });
+        }
 
-        // Only count if user is close to their limit
-        if (maxServers < 10) {
-            const userServers = await Server.countDocuments({ uploadedBy: userId });
-            if (userServers >= maxServers) {
-                return res.status(400).json({
-                    status: 'error',
-                    message: `You've reached your plan's limit of ${maxServers} servers. Please upgrade to add more servers.`
-                });
+        // URL validation and normalization
+        const normalizedUrl = normalizeUrl(url.trim());
+        if (!normalizedUrl) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Invalid URL format',
+                code: 'INVALID_URL'
+            });
+        }
+
+        // Check for duplicate URL for this user
+        const existingServer = await Server.findOne({
+            uploadedBy: userId,
+            url: normalizedUrl
+        }, { _id: 1 }).lean();
+
+        if (existingServer) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'A server with this URL already exists in your account',
+                code: 'DUPLICATE_URL'
+            });
+        }
+
+        // Check server limits for non-admin users
+        if (userRole !== 'admin') {
+            const maxServers = req.user.subscription?.features?.maxServers || 1;
+
+            if (maxServers > 0) { // -1 means unlimited
+                const userServerCount = await Server.countDocuments({ uploadedBy: userId });
+
+                if (userServerCount >= maxServers) {
+                    return res.status(400).json({
+                        status: 'error',
+                        message: `Server limit reached. Your ${userPlan} plan allows ${maxServers} server${maxServers > 1 ? 's' : ''}.`,
+                        code: 'SERVER_LIMIT_REACHED',
+                        data: {
+                            current: userServerCount,
+                            limit: maxServers,
+                            plan: userPlan
+                        }
+                    });
+                }
             }
         }
-    }
 
-    // Calculate trial end date (2 days from now) for free users
-    const trialEnd = userPlan === 'free'
-        ? new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).getTime()
-        : null;
+        // Calculate trial end for free users
+        const trialEnd = userPlan === 'free'
+            ? new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).getTime()
+            : null;
 
-    // Optimize creation by preparing full object
-    const serverData = {
-        name,
-        url,
-        type,
-        description,
-        uploadedBy: userId,
-        uploadedAt: new Date().toISOString(),
-        uploadedRole: userRole,
-        uploadedPlan: userPlan,
-        status: 'unknown',
-        monitoring: {
-            ...monitoring,
-            trialEndsAt: trialEnd
-        },
-        contactEmails,
-        contactPhones
-    };
+        // Build optimized server document
+        const serverData = {
+            name: name.trim(),
+            url: normalizedUrl,
+            type,
+            description: description.trim(),
+            uploadedBy: userId,
+            uploadedAt: new Date(),
+            uploadedRole: userRole,
+            uploadedPlan: userPlan,
+            status: 'unknown',
+            monitoring: buildMonitoringConfig(monitoring, userRole, trialEnd),
+            contactEmails: sanitizeEmails(contactEmails),
+            contactPhones: sanitizePhones(contactPhones),
+            timezone: monitoring.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE
+        };
 
-    // Create server
-    const server = await Server.create(serverData);
+        // Create server
+        const server = await Server.create(serverData);
 
-    // Invalidate relevant caches
-    // Clear user's server list cache
-    const listCachePrefix = `servers:${userId}`;
-    for (const [key] of serverCache.entries()) {
-        if (key.startsWith(listCachePrefix)) {
-            serverCache.delete(key);
+        logger.info(`Server created: ${server.name} (${server._id}) by user ${userId}`, {
+            serverType: type,
+            userPlan,
+            trialEnd: trialEnd ? new Date(trialEnd) : null
+        });
+
+        // Return enhanced server data
+        const enhancedServer = {
+            ...server.toObject(),
+            isHealthy: false,
+            trialExpired: false,
+            nextCheckEstimate: getNextCheckEstimate(server),
+            canBeChecked: true
+        };
+
+        res.status(201).json({
+            status: 'success',
+            message: 'Server created successfully',
+            data: {
+                server: enhancedServer
+            }
+        });
+
+    } catch (error) {
+        logger.error(`Error creating server for user ${userId}: ${error.message}`, {
+            requestBody: { name, url, type },
+            stack: error.stack
+        });
+
+        if (error.name === 'ValidationError') {
+            const errors = Object.values(error.errors).map(err => ({
+                field: err.path,
+                message: err.message,
+                value: err.value
+            }));
+
+            return res.status(400).json({
+                status: 'error',
+                message: 'Validation error',
+                code: 'VALIDATION_ERROR',
+                errors
+            });
         }
-    }
 
-    res.status(201).json({
-        status: 'success',
-        message: 'Server created successfully',
-        data: {
-            server
-        }
-    });
+        res.status(500).json({
+            status: 'error',
+            message: 'Failed to create server',
+            code: 'CREATE_SERVER_ERROR'
+        });
+    }
 });
 
 /**
- * @desc    Update server
+ * @desc    Update server - BATCH OPTIMIZED
  * @route   PATCH /api/servers/:id
  * @access  Private
  */
@@ -246,87 +410,189 @@ export const updateServer = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const isAdmin = req.user.role === 'admin';
 
-    // Find server with minimal projection for authorization check
-    const server = await Server.findById(serverId);
-
-    if (!server) {
-        return res.status(404).json({
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(serverId)) {
+        return res.status(400).json({
             status: 'error',
-            message: 'Server not found'
+            message: 'Invalid server ID format',
+            code: 'INVALID_SERVER_ID'
         });
     }
 
-    // Check if user is authorized to update this server
-    if (server.uploadedBy !== userId && !isAdmin) {
-        return res.status(403).json({
+    try {
+        // Find server with minimal projection for auth check
+        const server = await Server.findById(serverId, {
+            uploadedBy: 1,
+            name: 1,
+            url: 1
+        }).lean();
+
+        if (!server) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Server not found',
+                code: 'SERVER_NOT_FOUND'
+            });
+        }
+
+        // Authorization check
+        if (server.uploadedBy !== userId && !isAdmin) {
+            return res.status(403).json({
+                status: 'error',
+                message: 'Not authorized to update this server',
+                code: 'UNAUTHORIZED_UPDATE'
+            });
+        }
+
+        // Build optimized update object
+        const updates = {};
+        const {
+            name,
+            url,
+            type,
+            description,
+            monitoring,
+            contactEmails,
+            contactPhones
+        } = req.body;
+
+        // Validate and update basic fields
+        if (name !== undefined) {
+            if (!name.trim()) {
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'Server name cannot be empty',
+                    code: 'INVALID_NAME'
+                });
+            }
+            updates.name = name.trim();
+        }
+
+        if (url !== undefined) {
+            const normalizedUrl = normalizeUrl(url.trim());
+            if (!normalizedUrl) {
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'Invalid URL format',
+                    code: 'INVALID_URL'
+                });
+            }
+
+            // Check for duplicate URL (excluding current server)
+            if (normalizedUrl !== server.url) {
+                const existingServer = await Server.findOne({
+                    uploadedBy: userId,
+                    url: normalizedUrl,
+                    _id: { $ne: serverId }
+                }, { _id: 1 }).lean();
+
+                if (existingServer) {
+                    return res.status(400).json({
+                        status: 'error',
+                        message: 'A server with this URL already exists in your account',
+                        code: 'DUPLICATE_URL'
+                    });
+                }
+            }
+
+            updates.url = normalizedUrl;
+        }
+
+        if (type !== undefined) {
+            if (!['website', 'api', 'tcp', 'database'].includes(type)) {
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'Invalid server type',
+                    code: 'INVALID_TYPE'
+                });
+            }
+            updates.type = type;
+        }
+
+        if (description !== undefined) {
+            updates.description = description.trim();
+        }
+
+        if (contactEmails !== undefined) {
+            updates.contactEmails = sanitizeEmails(contactEmails);
+        }
+
+        if (contactPhones !== undefined) {
+            updates.contactPhones = sanitizePhones(contactPhones);
+        }
+
+        // Handle nested monitoring updates efficiently
+        if (monitoring) {
+            const monitoringUpdates = buildMonitoringUpdates(monitoring);
+            Object.assign(updates, monitoringUpdates);
+        }
+
+        // Set update timestamp
+        updates.updatedAt = new Date();
+
+        // Perform atomic update
+        const updatedServer = await Server.findByIdAndUpdate(
+            serverId,
+            { $set: updates },
+            {
+                new: true,
+                runValidators: true,
+                select: '-__v'
+            }
+        );
+
+        logger.info(`Server updated: ${updatedServer.name} (${serverId}) by user ${userId}`, {
+            updatedFields: Object.keys(updates)
+        });
+
+        // Return enhanced server data
+        const enhancedServer = {
+            ...updatedServer.toObject(),
+            isHealthy: updatedServer.status === 'up' &&
+                (!updatedServer.responseTime || updatedServer.responseTime < 2000),
+            nextCheckEstimate: getNextCheckEstimate(updatedServer),
+            canBeChecked: canBeCheckedNow(updatedServer)
+        };
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Server updated successfully',
+            data: {
+                server: enhancedServer
+            }
+        });
+
+    } catch (error) {
+        logger.error(`Error updating server ${serverId}: ${error.message}`, {
+            userId,
+            stack: error.stack
+        });
+
+        if (error.name === 'ValidationError') {
+            const errors = Object.values(error.errors).map(err => ({
+                field: err.path,
+                message: err.message,
+                value: err.value
+            }));
+
+            return res.status(400).json({
+                status: 'error',
+                message: 'Validation error',
+                code: 'VALIDATION_ERROR',
+                errors
+            });
+        }
+
+        res.status(500).json({
             status: 'error',
-            message: 'You are not authorized to update this server'
+            message: 'Failed to update server',
+            code: 'UPDATE_SERVER_ERROR'
         });
     }
-
-    // Fields that can be updated - extract only what's provided
-    const {
-        name,
-        url,
-        type,
-        description,
-        monitoring,
-        contactEmails,
-        contactPhones
-    } = req.body;
-
-    // Build update object for optimized update
-    const updateFields = {};
-
-    if (name !== undefined) updateFields.name = name;
-    if (url !== undefined) updateFields.url = url;
-    if (type !== undefined) updateFields.type = type;
-    if (description !== undefined) updateFields.description = description;
-    if (contactEmails !== undefined) updateFields.contactEmails = contactEmails;
-    if (contactPhones !== undefined) updateFields.contactPhones = contactPhones;
-
-    // Handle nested monitoring updates
-    if (monitoring) {
-        if (monitoring.frequency !== undefined) updateFields['monitoring.frequency'] = monitoring.frequency;
-        if (monitoring.daysOfWeek !== undefined) updateFields['monitoring.daysOfWeek'] = monitoring.daysOfWeek;
-        if (monitoring.timeWindows !== undefined) updateFields['monitoring.timeWindows'] = monitoring.timeWindows;
-
-        // Handle nested alerts settings
-        if (monitoring.alerts) {
-            if (monitoring.alerts.enabled !== undefined) updateFields['monitoring.alerts.enabled'] = monitoring.alerts.enabled;
-            if (monitoring.alerts.email !== undefined) updateFields['monitoring.alerts.email'] = monitoring.alerts.email;
-            if (monitoring.alerts.phone !== undefined) updateFields['monitoring.alerts.phone'] = monitoring.alerts.phone;
-            if (monitoring.alerts.responseThreshold !== undefined) updateFields['monitoring.alerts.responseThreshold'] = monitoring.alerts.responseThreshold;
-            if (monitoring.alerts.timeWindow !== undefined) updateFields['monitoring.alerts.timeWindow'] = monitoring.alerts.timeWindow;
-        }
-    }
-
-    // Update with single operation - much faster than save()
-    const updatedServer = await Server.findByIdAndUpdate(
-        serverId,
-        { $set: updateFields },
-        { new: true, runValidators: true }
-    );
-
-    // Invalidate caches
-    // Clear all caches related to this server
-    for (const [key] of serverCache.entries()) {
-        if (key.includes(serverId) || key.startsWith(`servers:${userId}`)) {
-            serverCache.delete(key);
-        }
-    }
-
-    res.status(200).json({
-        status: 'success',
-        message: 'Server updated successfully',
-        data: {
-            server: updatedServer
-        }
-    });
 });
 
 /**
- * @desc    Delete server
+ * @desc    Delete server with cleanup - OPTIMIZED
  * @route   DELETE /api/servers/:id
  * @access  Private
  */
@@ -335,46 +601,88 @@ export const deleteServer = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const isAdmin = req.user.role === 'admin';
 
-    // Find server with minimal projection for auth check
-    const server = await Server.findById(serverId, { uploadedBy: 1 });
-
-    if (!server) {
-        return res.status(404).json({
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(serverId)) {
+        return res.status(400).json({
             status: 'error',
-            message: 'Server not found'
+            message: 'Invalid server ID format',
+            code: 'INVALID_SERVER_ID'
         });
     }
 
-    // Check if user is authorized to delete this server
-    if (server.uploadedBy !== userId && !isAdmin) {
-        return res.status(403).json({
-            status: 'error',
-            message: 'You are not authorized to delete this server'
-        });
-    }
+    try {
+        // Find server with minimal data for auth check
+        const server = await Server.findById(serverId, {
+            uploadedBy: 1,
+            name: 1
+        }).lean();
 
-    // Optimize: Use deleteOne directly instead of finding first
-    await Server.deleteOne({ _id: serverId });
-
-    // Also clean up associated checks in the background - don't wait for completion
-    ServerCheck.deleteMany({ serverId }).exec()
-        .catch(err => logger.error(`Error cleaning up server checks: ${err.message}`));
-
-    // Invalidate caches
-    for (const [key] of serverCache.entries()) {
-        if (key.includes(serverId) || key.startsWith(`servers:${userId}`)) {
-            serverCache.delete(key);
+        if (!server) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Server not found',
+                code: 'SERVER_NOT_FOUND'
+            });
         }
-    }
 
-    res.status(200).json({
-        status: 'success',
-        message: 'Server deleted successfully'
-    });
+        // Authorization check
+        if (server.uploadedBy !== userId && !isAdmin) {
+            return res.status(403).json({
+                status: 'error',
+                message: 'Not authorized to delete this server',
+                code: 'UNAUTHORIZED_DELETE'
+            });
+        }
+
+        // Get check count for logging
+        const checkCount = await ServerCheck.countDocuments({ serverId });
+
+        // Delete server and cleanup checks in parallel
+        const [deleteResult] = await Promise.all([
+            Server.deleteOne({ _id: serverId }),
+            ServerCheck.deleteMany({ serverId }) // Cleanup all associated checks
+        ]);
+
+        if (deleteResult.deletedCount === 0) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Server not found or already deleted',
+                code: 'SERVER_NOT_FOUND'
+            });
+        }
+
+        logger.info(`Server deleted: ${server.name} (${serverId}) by user ${userId}`, {
+            checksDeleted: checkCount
+        });
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Server deleted successfully',
+            data: {
+                deletedServer: {
+                    id: serverId,
+                    name: server.name
+                },
+                checksDeleted: checkCount
+            }
+        });
+
+    } catch (error) {
+        logger.error(`Error deleting server ${serverId}: ${error.message}`, {
+            userId,
+            stack: error.stack
+        });
+
+        res.status(500).json({
+            status: 'error',
+            message: 'Failed to delete server',
+            code: 'DELETE_SERVER_ERROR'
+        });
+    }
 });
 
 /**
- * @desc    Manually check server status
+ * @desc    Manually check server status - ENHANCED
  * @route   POST /api/servers/:id/check
  * @access  Private
  */
@@ -382,34 +690,86 @@ export const checkServer = asyncHandler(async (req, res) => {
     const serverId = req.params.id;
     const userId = req.user.id;
     const isAdmin = req.user.role === 'admin';
+    const force = req.body.force === true; // Force check even if recently checked
 
-    // Find server - use projection to get only required fields
-    const server = await Server.findById(serverId);
-
-    if (!server) {
-        return res.status(404).json({
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(serverId)) {
+        return res.status(400).json({
             status: 'error',
-            message: 'Server not found'
-        });
-    }
-
-    // Check if user is authorized to check this server
-    if (server.uploadedBy !== userId && !isAdmin) {
-        return res.status(403).json({
-            status: 'error',
-            message: 'You are not authorized to check this server'
+            message: 'Invalid server ID format',
+            code: 'INVALID_SERVER_ID'
         });
     }
 
     try {
-        // Prepare data needed for server check
+        // Find server with required fields
+        const server = await Server.findById(serverId, {
+            uploadedBy: 1,
+            name: 1,
+            url: 1,
+            type: 1,
+            status: 1,
+            lastChecked: 1,
+            timezone: 1,
+            monitoring: 1,
+            uploadedPlan: 1,
+            uploadedRole: 1
+        }).lean();
+
+        if (!server) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Server not found',
+                code: 'SERVER_NOT_FOUND'
+            });
+        }
+
+        // Authorization check
+        if (server.uploadedBy !== userId && !isAdmin) {
+            return res.status(403).json({
+                status: 'error',
+                message: 'Not authorized to check this server',
+                code: 'UNAUTHORIZED_CHECK'
+            });
+        }
+
+        // Check if server can be monitored (subscription check)
+        if (!canServerBeMonitored(server)) {
+            return res.status(403).json({
+                status: 'error',
+                message: 'Server monitoring trial has expired. Please upgrade your plan.',
+                code: 'TRIAL_EXPIRED'
+            });
+        }
+
+        // Rate limiting check (unless forced)
+        if (!force && server.lastChecked) {
+            const timeSinceLastCheck = Date.now() - server.lastChecked.getTime();
+            const minInterval = 30000; // 30 seconds minimum between manual checks
+
+            if (timeSinceLastCheck < minInterval) {
+                const waitTime = Math.ceil((minInterval - timeSinceLastCheck) / 1000);
+                return res.status(429).json({
+                    status: 'error',
+                    message: `Please wait ${waitTime} seconds before checking again`,
+                    code: 'RATE_LIMITED',
+                    data: {
+                        waitTime,
+                        lastChecked: server.lastChecked
+                    }
+                });
+            }
+        }
+
         const oldStatus = server.status;
         const now = new Date();
+        const checkStartTime = Date.now();
 
-        // Call the monitoring service
+        // Perform the check
         const checkResult = await checkServerStatus(server);
+        const checkDuration = Date.now() - checkStartTime;
 
-        // Prepare update data
+        // Prepare batch update data
         const updateData = {
             status: checkResult.status,
             responseTime: checkResult.responseTime,
@@ -417,61 +777,92 @@ export const checkServer = asyncHandler(async (req, res) => {
             lastChecked: now
         };
 
-        // Add status change time if status changed
+        // Only update status change time if status actually changed
         if (oldStatus !== checkResult.status) {
             updateData.lastStatusChange = now;
         }
 
-        // Batch operations - run in parallel
-        await Promise.all([
-            // Update server in a single operation
-            Server.findByIdAndUpdate(serverId, updateData),
+        // Create enhanced check history document
+        const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
+        const localMoment = moment(now).tz(timezone);
 
-            // Create check record in parallel
-            ServerCheck.create({
-                serverId: server._id,
-                status: checkResult.status,
-                responseTime: checkResult.responseTime,
-                error: checkResult.error,
-                timestamp: now,
-                timezone: server.timezone || 'Asia/Kolkata',
-                localDate: now.toISOString().split('T')[0], // YYYY-MM-DD
-                localHour: now.getHours(),
-                localMinute: now.getMinutes(),
-                timeSlot: Math.floor(now.getMinutes() / 15) // 15-minute slots (0-3)
-            })
+        const checkDoc = {
+            serverId: new mongoose.Types.ObjectId(serverId),
+            status: checkResult.status,
+            responseTime: checkResult.responseTime,
+            error: checkResult.error,
+            timestamp: now,
+            timezone: timezone,
+            localDate: localMoment.format('YYYY-MM-DD'),
+            localHour: localMoment.hour(),
+            localMinute: localMoment.minute(),
+            timeSlot: Math.floor(localMoment.minute() / 15),
+            checkType: 'manual', // Distinguish from automatic checks
+            userId: userId // Track who initiated the check
+        };
+
+        // Execute database operations in parallel
+        await Promise.all([
+            Server.updateOne({ _id: serverId }, updateData),
+            ServerCheck.create(checkDoc)
         ]);
 
-        // Invalidate caches
-        for (const [key] of serverCache.entries()) {
-            if (key.includes(serverId)) {
-                serverCache.delete(key);
-            }
-        }
+        logger.info(`Manual check completed: ${server.name} (${serverId}) - ${checkResult.status}`, {
+            userId,
+            oldStatus,
+            newStatus: checkResult.status,
+            responseTime: checkResult.responseTime,
+            checkDuration
+        });
 
+        // Enhanced response with detailed information
         res.status(200).json({
             status: 'success',
             message: 'Server checked successfully',
             data: {
-                status: checkResult.status,
-                responseTime: checkResult.responseTime,
-                error: checkResult.error,
-                lastChecked: now
+                server: {
+                    id: serverId,
+                    name: server.name,
+                    url: server.url
+                },
+                check: {
+                    status: checkResult.status,
+                    responseTime: checkResult.responseTime,
+                    error: checkResult.error,
+                    timestamp: now,
+                    localTime: localMoment.format('YYYY-MM-DD HH:mm:ss'),
+                    timezone
+                },
+                changes: {
+                    statusChanged: oldStatus !== checkResult.status,
+                    oldStatus,
+                    newStatus: checkResult.status
+                },
+                meta: {
+                    checkDuration,
+                    checkType: 'manual',
+                    forced: force
+                }
             }
         });
+
     } catch (error) {
-        logger.error(`Error checking server ${serverId}: ${error.message}`);
+        logger.error(`Error checking server ${serverId}: ${error.message}`, {
+            userId,
+            stack: error.stack
+        });
 
         res.status(500).json({
             status: 'error',
             message: 'Failed to check server',
-            error: error.message
+            code: 'CHECK_SERVER_ERROR',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
 });
 
 /**
- * @desc    Get server check history
+ * @desc    Get server check history - FULLY OPTIMIZED
  * @route   GET /api/servers/:id/history
  * @access  Private
  */
@@ -480,153 +871,897 @@ export const getServerHistory = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const isAdmin = req.user.role === 'admin';
     const period = req.query.period || '24h';
+    const includeStats = req.query.includeStats !== 'false';
+    const limit = Math.min(PERFORMANCE_CONFIG.MAX_HISTORY_POINTS, parseInt(req.query.limit) || 100);
 
-    // Check cache first
-    const cacheKey = `serverHistory:${serverId}:${period}:${userId}`;
-    if (serverCache.has(cacheKey)) {
-        const cached = serverCache.get(cacheKey);
-        if (cached.timestamp > Date.now() - HISTORY_CACHE_TTL) {
-            return res.status(200).json(cached.data);
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(serverId)) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Invalid server ID format',
+            code: 'INVALID_SERVER_ID'
+        });
+    }
+
+    try {
+        const startTime = Date.now();
+
+        // Check authorization with minimal query
+        const server = await Server.findById(serverId, {
+            uploadedBy: 1,
+            name: 1,
+            timezone: 1,
+            status: 1
+        }).lean();
+
+        if (!server) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Server not found',
+                code: 'SERVER_NOT_FOUND'
+            });
         }
-        serverCache.delete(cacheKey);
-    }
 
-    // First, check authorization with minimal projection
-    const server = await Server.findById(serverId, { uploadedBy: 1 });
+        if (server.uploadedBy !== userId && !isAdmin) {
+            return res.status(403).json({
+                status: 'error',
+                message: 'Not authorized to view server history',
+                code: 'UNAUTHORIZED_HISTORY'
+            });
+        }
 
-    if (!server) {
-        return res.status(404).json({
-            status: 'error',
-            message: 'Server not found'
-        });
-    }
+        // Calculate time range and sampling based on period
+        const { startTimeRange, sampleInterval } = calculateHistoryRange(period);
 
-    // Check if user is authorized to view this server's history
-    if (server.uploadedBy !== userId && !isAdmin) {
-        return res.status(403).json({
-            status: 'error',
-            message: 'You are not authorized to view this server history'
-        });
-    }
-
-    // Calculate start time based on period
-    const now = new Date();
-    let startTime;
-
-    // Only allow periods up to 24h since we only keep current day's data
-    switch (period) {
-        case '1h':
-            startTime = new Date(now.getTime() - 1 * 60 * 60 * 1000);
-            break;
-        case '6h':
-            startTime = new Date(now.getTime() - 6 * 60 * 60 * 1000);
-            break;
-        case '12h':
-            startTime = new Date(now.getTime() - 12 * 60 * 60 * 1000);
-            break;
-        case '24h':
-        default:
-            // Get start of today
-            startTime = new Date();
-            startTime.setHours(0, 0, 0, 0);
-    }
-
-    // Get aggregate statistics directly from database instead of loading all records
-    const [checks, stats] = await Promise.all([
-        // Get check history with specific fields only
-        ServerCheck.find({
-            serverId,
-            timestamp: { $gte: startTime }
-        })
-            .select('status responseTime timestamp error')
-            .sort({ timestamp: 1 })
-            .lean(),
-
-        // Calculate statistics using aggregation - much more efficient
-        ServerCheck.aggregate([
+        // Build aggregation pipeline for efficient history retrieval
+        const pipeline = [
             {
                 $match: {
                     serverId: new mongoose.Types.ObjectId(serverId),
-                    timestamp: { $gte: startTime }
+                    timestamp: { $gte: startTimeRange }
                 }
             },
             {
+                $sort: { timestamp: 1 }
+            }
+        ];
+
+        // Add sampling for large datasets
+        if (sampleInterval > 1) {
+            pipeline.push({
                 $group: {
-                    _id: null,
-                    totalChecks: { $sum: 1 },
-                    upChecks: {
-                        $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] }
+                    _id: {
+                        interval: {
+                            $floor: {
+                                $divide: [
+                                    { $subtract: ['$timestamp', startTimeRange] },
+                                    sampleInterval * 60000 // Convert minutes to milliseconds
+                                ]
+                            }
+                        }
                     },
-                    downChecks: {
-                        $sum: { $cond: [{ $eq: ['$status', 'down'] }, 1, 0] }
-                    },
-                    responseTimes: {
-                        $push: {
-                            $cond: [
-                                { $eq: ['$status', 'up'] },
-                                '$responseTime',
-                                null
-                            ]
+                    status: { $last: '$status' },
+                    responseTime: { $avg: '$responseTime' },
+                    timestamp: { $last: '$timestamp' },
+                    error: { $last: '$error' },
+                    count: { $sum: 1 }
+                }
+            });
+        }
+
+        pipeline.push({ $limit: limit });
+
+        // Execute history query and stats in parallel if needed
+        const [checks, statsResult] = await Promise.all([
+            ServerCheck.aggregate(pipeline).allowDiskUse(true),
+
+            includeStats ? ServerCheck.aggregate([
+                {
+                    $match: {
+                        serverId: new mongoose.Types.ObjectId(serverId),
+                        timestamp: { $gte: startTimeRange }
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        totalChecks: { $sum: 1 },
+                        upChecks: {
+                            $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] }
+                        },
+                        downChecks: {
+                            $sum: { $cond: [{ $eq: ['$status', 'down'] }, 1, 0] }
+                        },
+                        unknownChecks: {
+                            $sum: { $cond: [{ $eq: ['$status', 'unknown'] }, 1, 0] }
+                        },
+                        avgResponseTime: {
+                            $avg: {
+                                $cond: [
+                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
+                                    '$responseTime',
+                                    null
+                                ]
+                            }
+                        },
+                        minResponseTime: {
+                            $min: {
+                                $cond: [
+                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
+                                    '$responseTime',
+                                    null
+                                ]
+                            }
+                        },
+                        maxResponseTime: {
+                            $max: {
+                                $cond: [
+                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
+                                    '$responseTime',
+                                    null
+                                ]
+                            }
                         }
                     }
                 }
-            }
-        ])
-    ]);
+            ]).allowDiskUse(true) : Promise.resolve([])
+        ]);
 
-    // Calculate stats from aggregation results
-    let uptimePercent = 0;
-    let avgResponseTime = 0;
-    let totalChecks = 0;
-    let downChecks = 0;
+        // Process and format results
+        const formattedChecks = checks.map(check => ({
+            status: check.status,
+            responseTime: Math.round(check.responseTime || 0),
+            timestamp: check.timestamp,
+            error: check.error,
+            ...(check.count && { sampledFrom: check.count })
+        }));
 
-    if (stats.length > 0) {
-        const { totalChecks: total, upChecks, downChecks: down, responseTimes } = stats[0];
-
-        // Filter out null values and calculate average
-        const validResponseTimes = responseTimes.filter(time => time !== null);
-
-        totalChecks = total;
-        downChecks = down;
-        uptimePercent = total > 0 ? (upChecks / total) * 100 : 0;
-        avgResponseTime = validResponseTimes.length > 0
-            ? validResponseTimes.reduce((sum, time) => sum + time, 0) / validResponseTimes.length
-            : 0;
-    }
-
-    const response = {
-        status: 'success',
-        data: {
-            period,
-            history: checks,
-            stats: {
-                uptimePercent: parseFloat(uptimePercent.toFixed(2)),
-                avgResponseTime: Math.round(avgResponseTime),
-                totalChecks,
-                downChecks
-            }
+        // Calculate comprehensive statistics
+        let stats = null;
+        if (includeStats && statsResult.length > 0) {
+            const result = statsResult[0];
+            stats = {
+                period,
+                totalChecks: result.totalChecks,
+                upChecks: result.upChecks,
+                downChecks: result.downChecks,
+                unknownChecks: result.unknownChecks,
+                uptimePercent: result.totalChecks > 0 ?
+                    Math.round((result.upChecks / result.totalChecks) * 100 * 10) / 10 : 100,
+                avgResponseTime: Math.round(result.avgResponseTime || 0),
+                minResponseTime: Math.round(result.minResponseTime || 0),
+                maxResponseTime: Math.round(result.maxResponseTime || 0),
+                reliability: calculateReliabilityScore(result)
+            };
         }
-    };
 
-    // Cache the response
-    serverCache.set(cacheKey, {
-        timestamp: Date.now(),
-        data: response
-    });
+        const queryTime = Date.now() - startTime;
+        const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
 
-    res.status(200).json(response);
+        res.status(200).json({
+            status: 'success',
+            data: {
+                server: {
+                    id: serverId,
+                    name: server.name,
+                    currentStatus: server.status
+                },
+                period,
+                timezone,
+                history: formattedChecks,
+                ...(stats && { stats }),
+                meta: {
+                    dataPoints: formattedChecks.length,
+                    queryTime,
+                    timeRange: {
+                        start: startTimeRange,
+                        end: new Date()
+                    },
+                    sampled: sampleInterval > 1,
+                    sampleInterval: sampleInterval > 1 ? `${sampleInterval} minutes` : null
+                }
+            }
+        });
+
+    } catch (error) {
+        logger.error(`Error fetching server history ${serverId}: ${error.message}`, {
+            userId,
+            period,
+            stack: error.stack
+        });
+
+        res.status(500).json({
+            status: 'error',
+            message: 'Failed to fetch server history',
+            code: 'FETCH_HISTORY_ERROR'
+        });
+    }
 });
 
-// Cache management - clean up expired items periodically
-setInterval(() => {
-    const now = Date.now();
-    for (const [key, value] of serverCache.entries()) {
-        const ttl = key.includes('History') ? HISTORY_CACHE_TTL : CACHE_TTL;
-        if (value.timestamp < now - ttl) {
-            serverCache.delete(key);
+/**
+ * @desc    Batch check multiple servers - ENHANCED PERFORMANCE
+ * @route   POST /api/servers/batch-check
+ * @access  Private
+ */
+export const batchCheckServers = asyncHandler(async (req, res) => {
+    const { serverIds, force = false } = req.body;
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'admin';
+    const maxConcurrent = Math.min(5, PERFORMANCE_CONFIG.BATCH_CHECK_LIMIT); // Limit concurrent checks
+
+    // Input validation
+    if (!Array.isArray(serverIds) || serverIds.length === 0) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Server IDs array is required',
+            code: 'INVALID_INPUT'
+        });
+    }
+
+    if (serverIds.length > PERFORMANCE_CONFIG.BATCH_CHECK_LIMIT) {
+        return res.status(400).json({
+            status: 'error',
+            message: `Maximum ${PERFORMANCE_CONFIG.BATCH_CHECK_LIMIT} servers can be checked at once`,
+            code: 'BATCH_LIMIT_EXCEEDED'
+        });
+    }
+
+    try {
+        const startTime = Date.now();
+
+        // Validate all ObjectIds
+        const validIds = serverIds.filter(id => mongoose.Types.ObjectId.isValid(id));
+
+        if (validIds.length !== serverIds.length) {
+            return res.status(400).json({
+                status: 'error',
+                message: `${serverIds.length - validIds.length} invalid server ID(s) found`,
+                code: 'INVALID_SERVER_IDS'
+            });
+        }
+
+        // Find accessible servers
+        const servers = await Server.find({
+            _id: { $in: validIds },
+            ...(isAdmin ? {} : { uploadedBy: userId })
+        }).select('name url type status lastChecked timezone monitoring uploadedBy uploadedPlan uploadedRole').lean();
+
+        if (servers.length === 0) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'No accessible servers found',
+                code: 'NO_SERVERS_FOUND'
+            });
+        }
+
+        // Filter servers that can be monitored
+        const monitorableServers = servers.filter(server => canServerBeMonitored(server));
+
+        if (monitorableServers.length === 0) {
+            return res.status(403).json({
+                status: 'error',
+                message: 'None of the selected servers can be monitored (trials may have expired)',
+                code: 'NO_MONITORABLE_SERVERS'
+            });
+        }
+
+        // Check rate limits unless forced
+        if (!force) {
+            const now = Date.now();
+            const rateLimitedServers = monitorableServers.filter(server => {
+                if (!server.lastChecked) return false;
+                const timeSinceLastCheck = now - server.lastChecked.getTime();
+                return timeSinceLastCheck < 30000; // 30 seconds
+            });
+
+            if (rateLimitedServers.length > 0) {
+                return res.status(429).json({
+                    status: 'error',
+                    message: `${rateLimitedServers.length} servers were checked recently. Use force=true to override.`,
+                    code: 'RATE_LIMITED',
+                    data: {
+                        rateLimitedServers: rateLimitedServers.map(s => ({
+                            id: s._id,
+                            name: s.name,
+                            lastChecked: s.lastChecked
+                        }))
+                    }
+                });
+            }
+        }
+
+        logger.info(`Starting batch check of ${monitorableServers.length} servers by user ${userId}`, {
+            serverIds: monitorableServers.map(s => s._id),
+            forced: force
+        });
+
+        // Process servers in controlled batches
+        const results = await processServersBatched(monitorableServers, maxConcurrent, userId);
+
+        // Compile final results
+        const successful = results.filter(r => r.success);
+        const failed = results.filter(r => !r.success);
+        const totalDuration = Date.now() - startTime;
+
+        logger.info(`Batch check completed: ${successful.length}/${results.length} successful in ${totalDuration}ms`, {
+            userId,
+            serverCount: results.length,
+            successCount: successful.length,
+            failureCount: failed.length
+        });
+
+        res.status(200).json({
+            status: 'success',
+            message: `Batch check completed: ${successful.length}/${monitorableServers.length} successful`,
+            data: {
+                successful,
+                failed,
+                summary: {
+                    total: monitorableServers.length,
+                    successful: successful.length,
+                    failed: failed.length,
+                    duration: totalDuration,
+                    averageCheckTime: Math.round(totalDuration / monitorableServers.length)
+                }
+            }
+        });
+
+    } catch (error) {
+        logger.error(`Batch check error: ${error.message}`, {
+            userId,
+            serverIds,
+            stack: error.stack
+        });
+
+        res.status(500).json({
+            status: 'error',
+            message: 'Batch check failed',
+            code: 'BATCH_CHECK_ERROR'
+        });
+    }
+});
+
+/**
+ * @desc    Get server statistics - NEW ENDPOINT
+ * @route   GET /api/servers/:id/stats
+ * @access  Private
+ */
+export const getServerStats = asyncHandler(async (req, res) => {
+    const serverId = req.params.id;
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'admin';
+    const period = req.query.period || '7d';
+
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(serverId)) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Invalid server ID format',
+            code: 'INVALID_SERVER_ID'
+        });
+    }
+
+    try {
+        // Check authorization
+        const server = await Server.findById(serverId, {
+            uploadedBy: 1,
+            name: 1,
+            status: 1,
+            createdAt: 1,
+            lastChecked: 1,
+            responseTime: 1
+        }).lean();
+
+        if (!server) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Server not found',
+                code: 'SERVER_NOT_FOUND'
+            });
+        }
+
+        if (server.uploadedBy !== userId && !isAdmin) {
+            return res.status(403).json({
+                status: 'error',
+                message: 'Not authorized to view server statistics',
+                code: 'UNAUTHORIZED_STATS'
+            });
+        }
+
+        const { startTimeRange } = calculateHistoryRange(period);
+
+        // Get comprehensive statistics
+        const [overallStats, dailyStats, hourlyStats] = await Promise.all([
+            // Overall statistics
+            ServerCheck.aggregate([
+                {
+                    $match: {
+                        serverId: new mongoose.Types.ObjectId(serverId),
+                        timestamp: { $gte: startTimeRange }
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        totalChecks: { $sum: 1 },
+                        upChecks: { $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] } },
+                        downChecks: { $sum: { $cond: [{ $eq: ['$status', 'down'] }, 1, 0] } },
+                        avgResponseTime: {
+                            $avg: {
+                                $cond: [
+                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
+                                    '$responseTime',
+                                    null
+                                ]
+                            }
+                        },
+                        maxResponseTime: {
+                            $max: {
+                                $cond: [
+                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
+                                    '$responseTime',
+                                    null
+                                ]
+                            }
+                        },
+                        minResponseTime: {
+                            $min: {
+                                $cond: [
+                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
+                                    '$responseTime',
+                                    null
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]),
+
+            // Daily breakdown
+            ServerCheck.aggregate([
+                {
+                    $match: {
+                        serverId: new mongoose.Types.ObjectId(serverId),
+                        timestamp: { $gte: startTimeRange }
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$localDate',
+                        totalChecks: { $sum: 1 },
+                        upChecks: { $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] } },
+                        avgResponseTime: {
+                            $avg: {
+                                $cond: [
+                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
+                                    '$responseTime',
+                                    null
+                                ]
+                            }
+                        }
+                    }
+                },
+                { $sort: { '_id': 1 } }
+            ]),
+
+            // Hourly breakdown for recent data
+            ServerCheck.aggregate([
+                {
+                    $match: {
+                        serverId: new mongoose.Types.ObjectId(serverId),
+                        timestamp: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) }
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$localHour',
+                        totalChecks: { $sum: 1 },
+                        upChecks: { $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] } },
+                        avgResponseTime: {
+                            $avg: {
+                                $cond: [
+                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
+                                    '$responseTime',
+                                    null
+                                ]
+                            }
+                        }
+                    }
+                },
+                { $sort: { '_id': 1 } }
+            ])
+        ]);
+
+        // Process results
+        const overall = overallStats[0] || {
+            totalChecks: 0,
+            upChecks: 0,
+            downChecks: 0,
+            avgResponseTime: 0,
+            maxResponseTime: 0,
+            minResponseTime: 0
+        };
+
+        const uptimePercent = overall.totalChecks > 0 ?
+            Math.round((overall.upChecks / overall.totalChecks) * 100 * 10) / 10 : 100;
+
+        const dailyBreakdown = dailyStats.map(day => ({
+            date: day._id,
+            totalChecks: day.totalChecks,
+            upChecks: day.upChecks,
+            uptimePercent: day.totalChecks > 0 ?
+                Math.round((day.upChecks / day.totalChecks) * 100 * 10) / 10 : 100,
+            avgResponseTime: Math.round(day.avgResponseTime || 0)
+        }));
+
+        const hourlyBreakdown = hourlyStats.map(hour => ({
+            hour: hour._id,
+            totalChecks: hour.totalChecks,
+            upChecks: hour.upChecks,
+            uptimePercent: hour.totalChecks > 0 ?
+                Math.round((hour.upChecks / hour.totalChecks) * 100 * 10) / 10 : 100,
+            avgResponseTime: Math.round(hour.avgResponseTime || 0)
+        }));
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                server: {
+                    id: serverId,
+                    name: server.name,
+                    currentStatus: server.status,
+                    lastChecked: server.lastChecked,
+                    currentResponseTime: server.responseTime
+                },
+                period,
+                overall: {
+                    totalChecks: overall.totalChecks,
+                    upChecks: overall.upChecks,
+                    downChecks: overall.downChecks,
+                    uptimePercent,
+                    avgResponseTime: Math.round(overall.avgResponseTime || 0),
+                    minResponseTime: Math.round(overall.minResponseTime || 0),
+                    maxResponseTime: Math.round(overall.maxResponseTime || 0),
+                    reliabilityScore: calculateReliabilityScore(overall)
+                },
+                breakdowns: {
+                    daily: dailyBreakdown,
+                    hourly: hourlyBreakdown
+                }
+            }
+        });
+
+    } catch (error) {
+        logger.error(`Error fetching server stats ${serverId}: ${error.message}`, {
+            userId,
+            period,
+            stack: error.stack
+        });
+
+        res.status(500).json({
+            status: 'error',
+            message: 'Failed to fetch server statistics',
+            code: 'FETCH_STATS_ERROR'
+        });
+    }
+});
+
+// ===============================
+// HELPER FUNCTIONS
+// ===============================
+
+/**
+ * Calculate next check estimate based on server settings
+ */
+const getNextCheckEstimate = (server) => {
+    if (!server.lastChecked) return 'Never checked';
+
+    const frequency = server.monitoring?.frequency || 5; // minutes
+    const nextCheck = new Date(server.lastChecked.getTime() + frequency * 60 * 1000);
+
+    if (nextCheck <= new Date()) return 'Due now';
+
+    return moment(nextCheck).tz(server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE).format('YYYY-MM-DD HH:mm:ss');
+};
+
+/**
+ * Check if server can be checked now based on monitoring windows
+ */
+const canBeCheckedNow = (server) => {
+    const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
+    const now = moment().tz(timezone);
+
+    // Check days of week
+    if (server.monitoring?.daysOfWeek?.length > 0) {
+        if (!server.monitoring.daysOfWeek.includes(now.day())) {
+            return false;
         }
     }
-}, 60000); // Run every minute
+
+    // Check time windows
+    if (server.monitoring?.timeWindows?.length > 0) {
+        const currentTime = now.format('HH:mm');
+        const inWindow = server.monitoring.timeWindows.some(window =>
+            currentTime >= window.start && currentTime <= window.end
+        );
+        if (!inWindow) return false;
+    }
+
+    return true;
+};
+
+/**
+ * Check if server can be monitored (subscription check)
+ */
+const canServerBeMonitored = (server) => {
+    // Admin servers always monitored
+    if (server.uploadedRole === 'admin' || server.uploadedPlan === 'admin') {
+        return true;
+    }
+
+    // Check trial expiry for free users
+    if (server.uploadedPlan === 'free' &&
+        server.monitoring?.trialEndsAt &&
+        server.monitoring.trialEndsAt < Date.now()) {
+        return false;
+    }
+
+    return true;
+};
+
+/**
+ * Normalize URL for consistency
+ */
+const normalizeUrl = (url) => {
+    try {
+        // Remove protocol for consistency
+        let normalized = url.replace(/^https?:\/\//, '');
+
+        // Remove trailing slash
+        normalized = normalized.replace(/\/$/, '');
+
+        // Basic validation
+        if (!normalized || normalized.length < 3) return null;
+
+        return normalized;
+
+    } catch (error) {
+        return null;
+    }
+};
+
+/**
+ * Build monitoring configuration
+ */
+const buildMonitoringConfig = (monitoring, userRole, trialEnd) => {
+    return {
+        frequency: monitoring.frequency || 5,
+        daysOfWeek: monitoring.daysOfWeek || [1, 2, 3, 4, 5],
+        timeWindows: monitoring.timeWindows || [{ start: '09:00', end: '17:00' }],
+        alerts: {
+            enabled: monitoring.alerts?.enabled || false,
+            email: monitoring.alerts?.email || false,
+            phone: monitoring.alerts?.phone || false,
+            responseThreshold: monitoring.alerts?.responseThreshold || 1000,
+            timeWindow: monitoring.alerts?.timeWindow || { start: '09:00', end: '17:00' }
+        },
+        trialEndsAt: userRole === 'admin' ? null : trialEnd
+    };
+};
+
+/**
+ * Build monitoring updates for patch operations
+ */
+const buildMonitoringUpdates = (monitoring) => {
+    const updates = {};
+
+    if (monitoring.frequency !== undefined) {
+        updates['monitoring.frequency'] = monitoring.frequency;
+    }
+    if (monitoring.daysOfWeek !== undefined) {
+        updates['monitoring.daysOfWeek'] = monitoring.daysOfWeek;
+    }
+    if (monitoring.timeWindows !== undefined) {
+        updates['monitoring.timeWindows'] = monitoring.timeWindows;
+    }
+
+    // Handle alerts
+    if (monitoring.alerts) {
+        Object.entries(monitoring.alerts).forEach(([key, value]) => {
+            if (value !== undefined) {
+                updates[`monitoring.alerts.${key}`] = value;
+            }
+        });
+    }
+
+    return updates;
+};
+
+/**
+ * Sanitize email addresses
+ */
+const sanitizeEmails = (emails) => {
+    if (!Array.isArray(emails)) return [];
+
+    return emails
+        .filter(email => email && typeof email === 'string')
+        .map(email => email.trim().toLowerCase())
+        .filter(email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+        .slice(0, 5); // Limit to 5 emails
+};
+
+/**
+ * Sanitize phone numbers
+ */
+const sanitizePhones = (phones) => {
+    if (!Array.isArray(phones)) return [];
+
+    return phones
+        .filter(phone => phone && typeof phone === 'string')
+        .map(phone => phone.trim().replace(/\D/g, '')) // Remove non-digits
+        .filter(phone => phone.length >= 10 && phone.length <= 15)
+        .slice(0, 3); // Limit to 3 phone numbers
+};
+
+/**
+ * Calculate history range and sampling based on period
+ */
+const calculateHistoryRange = (period) => {
+    const now = new Date();
+    let startTimeRange;
+    let sampleInterval = 1; // minutes
+
+    switch (period) {
+        case '1h':
+            startTimeRange = new Date(now.getTime() - 60 * 60 * 1000);
+            sampleInterval = 1;
+            break;
+        case '6h':
+            startTimeRange = new Date(now.getTime() - 6 * 60 * 60 * 1000);
+            sampleInterval = 2;
+            break;
+        case '12h':
+            startTimeRange = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+            sampleInterval = 3;
+            break;
+        case '24h':
+            startTimeRange = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+            sampleInterval = 5;
+            break;
+        case '7d':
+            startTimeRange = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            sampleInterval = 30;
+            break;
+        case '30d':
+            startTimeRange = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+            sampleInterval = 120;
+            break;
+        default:
+            startTimeRange = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+            sampleInterval = 5;
+    }
+
+    return { startTimeRange, sampleInterval };
+};
+
+/**
+ * Calculate reliability score
+ */
+const calculateReliabilityScore = (stats) => {
+    if (!stats.totalChecks) return 100;
+
+    const uptimePercent = (stats.upChecks / stats.totalChecks) * 100;
+    const responseScore = stats.avgResponseTime ? Math.max(0, 100 - (stats.avgResponseTime / 50)) : 100;
+
+    return Math.round((uptimePercent * 0.7 + responseScore * 0.3) * 10) / 10;
+};
+
+/**
+ * Process servers in controlled batches for batch checking
+ */
+const processServersBatched = async (servers, maxConcurrent, userId) => {
+    const results = [];
+
+    // Process servers in chunks to control concurrency
+    for (let i = 0; i < servers.length; i += maxConcurrent) {
+        const batch = servers.slice(i, i + maxConcurrent);
+
+        const batchPromises = batch.map(async (server) => {
+            try {
+                const oldStatus = server.status;
+                const now = new Date();
+                const checkStartTime = Date.now();
+
+                const checkResult = await checkServerStatus(server);
+                const checkDuration = Date.now() - checkStartTime;
+
+                // Update server
+                const updateData = {
+                    status: checkResult.status,
+                    responseTime: checkResult.responseTime,
+                    error: checkResult.error,
+                    lastChecked: now
+                };
+
+                if (oldStatus !== checkResult.status) {
+                    updateData.lastStatusChange = now;
+                }
+
+                // Create check history
+                const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
+                const localMoment = moment(now).tz(timezone);
+
+                const checkDoc = {
+                    serverId: server._id,
+                    status: checkResult.status,
+                    responseTime: checkResult.responseTime,
+                    error: checkResult.error,
+                    timestamp: now,
+                    timezone: timezone,
+                    localDate: localMoment.format('YYYY-MM-DD'),
+                    localHour: localMoment.hour(),
+                    localMinute: localMoment.minute(),
+                    timeSlot: Math.floor(localMoment.minute() / 15),
+                    checkType: 'batch',
+                    userId: userId
+                };
+
+                // Execute updates in parallel
+                await Promise.all([
+                    Server.updateOne({ _id: server._id }, updateData),
+                    ServerCheck.create(checkDoc)
+                ]);
+
+                return {
+                    serverId: server._id,
+                    name: server.name,
+                    url: server.url,
+                    status: checkResult.status,
+                    responseTime: checkResult.responseTime,
+                    error: checkResult.error,
+                    statusChanged: oldStatus !== checkResult.status,
+                    oldStatus,
+                    checkDuration,
+                    success: true
+                };
+
+            } catch (error) {
+                logger.error(`Batch check error for server ${server._id}: ${error.message}`);
+                return {
+                    serverId: server._id,
+                    name: server.name,
+                    url: server.url,
+                    error: error.message,
+                    success: false
+                };
+            }
+        });
+
+        const batchResults = await Promise.allSettled(batchPromises);
+
+        // Process settled results
+        batchResults.forEach((result, index) => {
+            if (result.status === 'fulfilled') {
+                results.push(result.value);
+            } else {
+                results.push({
+                    serverId: batch[index]._id,
+                    name: batch[index].name,
+                    url: batch[index].url,
+                    error: result.reason?.message || 'Unknown error',
+                    success: false
+                });
+            }
+        });
+
+        // Brief pause between batches to avoid overwhelming the system
+        if (i + maxConcurrent < servers.length) {
+            await new Promise(resolve => setTimeout(resolve, 200));
+        }
+    }
+
+    return results;
+};
 
 export default {
     getServers,
@@ -635,5 +1770,7 @@ export default {
     updateServer,
     deleteServer,
     checkServer,
-    getServerHistory
+    getServerHistory,
+    batchCheckServers,
+    getServerStats
 };

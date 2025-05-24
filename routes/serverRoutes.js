@@ -88,4 +88,11 @@ router.get('/:id/history', [
     validate
 ], serverController.getServerHistory);
 
+// Batch check servers
+router.post('/batch-check', [
+    body('serverIds').isArray({ min: 1, max: 10 }).withMessage('Server IDs array required (1-10 items)'),
+    body('serverIds.*').isMongoId().withMessage('Invalid server ID'),
+    validate
+], serverController.batchCheckServers);
+
 export default router;

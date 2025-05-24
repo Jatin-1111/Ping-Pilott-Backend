@@ -3440,3 +3440,140 @@
 2025-05-21 12:13:01:131 [32minfo[39m: [32mJob 'checkServers' completed in 60ms[39m
 2025-05-21 12:13:01:131 [32minfo[39m: [32mJob checkServers completed successfully[39m
 2025-05-21 12:13:01:131 [32minfo[39m: [32mJob checkServers record saved successfully[39m
+2025-05-24 14:11:17:1117 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-24 14:11:17:1117 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-24 08:41:17:4117 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-24 08:41:17:4117 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:41:17:4117 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:41:17:4117 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-24 08:41:17:4117 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-24 08:41:17:4117 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:41:17:4117 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-24 08:41:17:4117 [32minfo[39m: [32m⚡ Starting BASIC monitoring system (every 3 minutes)...[39m
+2025-05-24 08:41:17:4117 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-24 08:41:17:4117 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-24 08:41:19:4119 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-24 08:41:42:4142 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2025-05-24 14:11:46:1146 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-24 14:11:46:1146 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-24 08:41:46:4146 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-24 08:41:46:4146 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:41:46:4146 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:41:46:4146 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-24 08:41:46:4146 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-24 08:41:46:4146 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:41:46:4146 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-24 08:41:46:4146 [32minfo[39m: [32m⚡ Starting BASIC monitoring system (every 3 minutes)...[39m
+2025-05-24 08:41:46:4146 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-24 08:41:46:4146 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-24 08:41:46:4146 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-24 08:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 08:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 08:42:01:421 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 08:42:01:421 [32minfo[39m: [32mJob 'smartCheckServers' completed in 198ms[39m
+2025-05-24 08:43:10:4310 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2025-05-24 14:13:18:1318 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-24 14:13:18:1318 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-24 08:43:18:4318 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-24 08:43:18:4318 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:43:18:4318 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:43:18:4318 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-24 08:43:18:4318 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-24 08:43:18:4318 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:43:18:4318 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-24 08:43:18:4318 [32minfo[39m: [32m⚡ Starting BASIC monitoring system (every 3 minutes)...[39m
+2025-05-24 08:43:18:4318 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-24 08:43:18:4318 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-24 08:43:20:4320 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-24 08:44:08:448 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2025-05-24 14:14:17:1417 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-24 14:14:17:1417 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-24 08:44:17:4417 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-24 08:44:17:4417 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:44:17:4417 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:44:17:4417 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-24 08:44:17:4417 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-24 08:44:17:4417 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:44:17:4417 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-24 08:44:17:4417 [32minfo[39m: [32m⚡ Starting BASIC monitoring system (every 3 minutes)...[39m
+2025-05-24 08:44:17:4417 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-24 08:44:17:4417 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-24 08:44:18:4418 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-24 08:45:00:450 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 08:45:00:450 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 08:45:00:450 [32minfo[39m: [32mFound 2 servers to check (smart filtering applied)[39m
+2025-05-24 08:45:00:450 [32minfo[39m: [32mProcessing 2 high priority servers in 1 batches[39m
+2025-05-24 08:45:00:450 [34mdebug[39m: [34mChecking Ping Pilott (attempt 1/2)[39m
+2025-05-24 08:45:00:450 [34mdebug[39m: [34mChecking Chaitanya (attempt 1/2)[39m
+2025-05-24 08:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 08:45:00:450 [34mdebug[39m: [34mAttempt 1 failed for Chaitanya: HTTP 503: Service Temporarily Unavailable[39m
+2025-05-24 08:45:00:450 [34mdebug[39m: [34mAttempt 1 failed for Ping Pilott: HTTP 503: Service Unavailable[39m
+2025-05-24 08:45:00:450 [34mdebug[39m: [34mChecking Chaitanya (attempt 2/2)[39m
+2025-05-24 08:45:00:450 [34mdebug[39m: [34mAttempt 2 failed for Chaitanya: HTTP 503: Service Temporarily Unavailable[39m
+2025-05-24 08:45:01:451 [34mdebug[39m: [34mChecking Ping Pilott (attempt 2/2)[39m
+2025-05-24 08:45:01:451 [34mdebug[39m: [34mAttempt 2 failed for Ping Pilott: HTTP 503: Service Unavailable[39m
+2025-05-24 08:45:01:451 [32minfo[39m: [32m✅ Smart monitoring completed in 1830ms[39m
+2025-05-24 08:45:01:451 [32minfo[39m: [32mJob 'smartCheckServers' completed in 1831ms[39m
+2025-05-24 08:45:01:451 [32minfo[39m: [32m✅ Monitoring (basic) completed[39m
+2025-05-24 08:45:07:457 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2025-05-24 14:16:36:1636 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-24 14:16:36:1636 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-24 08:46:36:4636 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-24 08:46:36:4636 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:46:36:4636 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:46:36:4636 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-24 08:46:36:4636 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-24 08:46:36:4636 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:46:36:4636 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-24 08:46:36:4636 [32minfo[39m: [32m⚡ Starting BASIC monitoring system (every 3 minutes)...[39m
+2025-05-24 08:46:36:4636 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-24 08:46:36:4636 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-24 08:46:39:4639 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-24 08:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 08:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 08:48:00:480 [32minfo[39m: [32mFound 5 servers to check (smart filtering applied)[39m
+2025-05-24 08:48:00:480 [32minfo[39m: [32mProcessing 3 high priority servers in 1 batches[39m
+2025-05-24 08:48:00:480 [34mdebug[39m: [34mChecking Valide (attempt 1/2)[39m
+2025-05-24 08:48:00:480 [34mdebug[39m: [34mChecking Chaitanya (attempt 1/2)[39m
+2025-05-24 08:48:00:480 [34mdebug[39m: [34mChecking Ping Pilott (attempt 1/2)[39m
+2025-05-24 08:48:00:480 [34mdebug[39m: [34mAttempt 1 failed for Chaitanya: HTTP 503: Service Temporarily Unavailable[39m
+2025-05-24 08:48:01:481 [34mdebug[39m: [34mChecking Chaitanya (attempt 2/2)[39m
+2025-05-24 08:48:01:481 [34mdebug[39m: [34mAttempt 2 failed for Chaitanya: HTTP 503: Service Temporarily Unavailable[39m
+2025-05-24 08:48:01:481 [34mdebug[39m: [34mAttempt 1 failed for Ping Pilott: HTTP 503: Service Unavailable[39m
+2025-05-24 08:48:01:481 [34mdebug[39m: [34mChecking Ping Pilott (attempt 2/2)[39m
+2025-05-24 08:48:02:482 [34mdebug[39m: [34mAttempt 2 failed for Ping Pilott: HTTP 503: Service Unavailable[39m
+2025-05-24 08:48:02:482 [32minfo[39m: [32mProcessing 1 medium priority servers in 1 batches[39m
+2025-05-24 08:48:02:482 [34mdebug[39m: [34mChecking Shopino (attempt 1/2)[39m
+2025-05-24 08:48:03:483 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2025-05-24 08:48:03:483 [34mdebug[39m: [34mChecking Jatin (attempt 1/2)[39m
+2025-05-24 08:48:04:484 [32minfo[39m: [32m✅ Smart monitoring completed in 4363ms[39m
+2025-05-24 08:48:04:484 [32minfo[39m: [32mJob 'smartCheckServers' completed in 4363ms[39m
+2025-05-24 08:48:04:484 [32minfo[39m: [32m✅ Monitoring (basic) completed[39m
+2025-05-24 08:48:33:4833 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2025-05-24 14:19:03:193 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-24 14:19:03:193 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-24 08:49:03:493 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-24 08:49:03:493 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:49:03:493 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:49:03:493 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-24 08:49:03:493 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-24 08:49:03:493 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:49:03:493 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-24 08:49:03:493 [32minfo[39m: [32m⚡ Starting BASIC monitoring system (every 3 minutes)...[39m
+2025-05-24 08:49:03:493 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-24 08:49:03:493 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-24 08:49:05:495 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-24 14:19:37:1937 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-24 14:19:37:1937 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-24 08:49:37:4937 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-24 08:49:37:4937 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:49:37:4937 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:49:37:4937 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-24 08:49:37:4937 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-24 08:49:37:4937 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:49:37:4937 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-24 08:49:37:4937 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2025-05-24 08:49:37:4937 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-24 08:49:37:4937 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-24 08:49:38:4938 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-24 08:49:39:4939 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m

@@ -1,10 +1,12 @@
-// utils/jobQueue.js
+// utils/jobQueue.js - FIXED WITH STOP METHOD
+
 import logger from './logger.js';
 
 class JobQueue {
     constructor() {
         this.jobs = new Map();
         this.running = new Map();
+        this.stopped = false; // Add stopped flag
         console.log('[TROUBLESHOOTING] JobQueue initialized');
     }
 
@@ -36,8 +38,30 @@ class JobQueue {
             .map(([name]) => name);
     }
 
+    // Stop the job queue (prevent new jobs)
+    stop() {
+        this.stopped = true;
+        logger.info('🛑 Job queue stopped - no new jobs will be accepted');
+    }
+
+    // Start the job queue (allow new jobs)
+    start() {
+        this.stopped = false;
+        logger.info('🚀 Job queue started - accepting new jobs');
+    }
+
+    // Check if queue is stopped
+    isStopped() {
+        return this.stopped;
+    }
+
     // Execute a job
     async execute(name) {
+        // Check if queue is stopped
+        if (this.stopped) {
+            logger.warn(`Job '${name}' rejected - queue is stopped`);
+            return false;
+        }
 
         if (!this.jobs.has(name)) {
             logger.warn(`Job '${name}' not found in queue`);
@@ -73,6 +97,23 @@ class JobQueue {
         } finally {
             this.running.set(name, false);
         }
+    }
+
+    // Clear all jobs (for cleanup)
+    clear() {
+        this.jobs.clear();
+        this.running.clear();
+        logger.info('🧹 Job queue cleared');
+    }
+
+    // Get queue status
+    getStatus() {
+        return {
+            totalJobs: this.jobs.size,
+            runningJobs: this.getRunningJobs().length,
+            stopped: this.stopped,
+            jobs: Array.from(this.jobs.keys())
+        };
     }
 }
 

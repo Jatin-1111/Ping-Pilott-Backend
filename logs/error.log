@@ -38,3 +38,14 @@
 2025-05-20 21:05:01:51 [31merror[39m: [31mError recording check history for server 682cdfa486bc8f9d1a1beba0: now is not defined[39m
 2025-05-20 21:06:01:61 [31merror[39m: [31mError recording check history for server 682cdbfa27eb0af5637efcab: now is not defined[39m
 2025-05-20 21:06:01:61 [31merror[39m: [31mError recording check history for server 682cdfa486bc8f9d1a1beba0: now is not defined[39m
+2025-05-24 08:41:17:4117 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:41:42:4142 [31merror[39m: [31mError during graceful shutdown: jobQueue.stop is not a function[39m
+2025-05-24 08:41:46:4146 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:43:10:4310 [31merror[39m: [31mError during graceful shutdown: jobQueue.stop is not a function[39m
+2025-05-24 08:43:18:4318 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:44:08:448 [31merror[39m: [31mError during graceful shutdown: jobQueue.stop is not a function[39m
+2025-05-24 08:44:17:4417 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:45:07:457 [31merror[39m: [31mError during graceful shutdown: jobQueue.stop is not a function[39m
+2025-05-24 08:46:36:4636 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:49:03:493 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:49:37:4937 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
