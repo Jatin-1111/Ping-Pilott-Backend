@@ -1,4 +1,4 @@
-// models/CronJob.js - PURE IST TIMEZONE MODEL 🇮🇳
+// models/CronJob.js - FIXED DUPLICATE INDEXES
 
 import mongoose from 'mongoose';
 import moment from 'moment-timezone';
@@ -9,14 +9,12 @@ const IST_TIMEZONE = 'Asia/Kolkata';
 const cronJobSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Job name is required'],
-        index: true
+        required: [true, 'Job name is required']
     },
     status: {
         type: String,
         enum: ['pending', 'running', 'completed', 'failed', 'skipped'],
-        default: 'pending',
-        index: true
+        default: 'pending'
     },
     timezone: {
         type: String,
@@ -25,8 +23,7 @@ const cronJobSchema = new mongoose.Schema({
     },
     startedAt: {
         type: Date,
-        required: [true, 'Start time is required'],
-        index: true
+        required: [true, 'Start time is required']
     },
     completedAt: {
         type: Date,
@@ -50,8 +47,7 @@ const cronJobSchema = new mongoose.Schema({
     // IST-specific fields for better querying and cleanup
     istDate: {
         type: String, // YYYY-MM-DD in IST
-        required: true,
-        index: true
+        required: true
     },
     istHour: {
         type: Number, // 0-23 in IST
@@ -206,11 +202,11 @@ cronJobSchema.virtual('istDisplay').get(function () {
     };
 });
 
-// Create indexes for better performance with IST queries
+// FIXED: Create indexes WITHOUT duplicates - only use compound indexes
 cronJobSchema.index({ name: 1, istDate: -1 });
 cronJobSchema.index({ status: 1, istDate: -1 });
 cronJobSchema.index({ startedAt: -1 });
-cronJobSchema.index({ istDate: 1 }); // For cleanup operations
+// REMOVED: cronJobSchema.index({ istDate: 1 }); // This was causing duplicate
 
 // Create and export the model
 const CronJob = mongoose.model('CronJob', cronJobSchema);

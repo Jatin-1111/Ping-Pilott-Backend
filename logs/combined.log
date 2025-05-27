@@ -5375,3 +5375,133 @@
 2025-05-25 14:40:29:4029 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
 2025-05-25 14:40:29:4029 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
 2025-05-25 14:40:29:4029 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-27 17:27:29:2729 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-27 17:27:29:2729 [32minfo[39m: [32m🇮🇳 Initializing PURE IST cron jobs...[39m
+2025-05-27 17:27:29:2729 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-27 17:27:29:2729 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:27:29:2729 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:27:29:2729 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-27 17:27:29:2729 [32minfo[39m: [32m🇮🇳 PURE IST Monitoring System Started[39m
+2025-05-27 17:27:29:2729 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:27:29:2729 [32minfo[39m: [32m📊 Current Data Status (IST):[39m
+2025-05-27 17:27:29:2729 [32minfo[39m: [32m🧠 Starting IST ADAPTIVE monitoring system...[39m
+2025-05-27 17:27:29:2729 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-27 17:27:29:2729 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
+2025-05-27 17:27:31:2731 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-27 17:28:00:280 [31merror[39m: [31m❌ IST Monitoring error (peak): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:28:00:280 [31merror[39m: [31mDatabase error saving IST monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:30:00:300 [31merror[39m: [31m❌ IST Monitoring error (peak): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:30:00:300 [31merror[39m: [31mDatabase error saving IST monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:30:00:300 [34mdebug[39m: [34m💚 IST System health OK[39m
+2025-05-27 17:32:00:320 [31merror[39m: [31m❌ IST Monitoring error (peak): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:32:00:320 [31merror[39m: [31mDatabase error saving IST monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:34:00:340 [31merror[39m: [31m❌ IST Monitoring error (peak): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:34:00:340 [31merror[39m: [31mDatabase error saving IST monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:36:00:360 [31merror[39m: [31m❌ IST Monitoring error (peak): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:36:00:360 [31merror[39m: [31mDatabase error saving IST monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:36:33:3633 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-27 17:36:33:3633 [32minfo[39m: [32m🇮🇳 Initializing PURE IST cron jobs...[39m
+2025-05-27 17:36:33:3633 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-27 17:36:33:3633 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:36:33:3633 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:36:33:3633 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-27 17:36:33:3633 [32minfo[39m: [32m🇮🇳 PURE IST Monitoring System Started[39m
+2025-05-27 17:36:33:3633 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:36:33:3633 [32minfo[39m: [32m📊 Current Data Status (IST):[39m
+2025-05-27 17:36:33:3633 [32minfo[39m: [32m🧠 Starting IST ADAPTIVE monitoring system...[39m
+2025-05-27 17:36:33:3633 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-27 17:36:33:3633 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
+2025-05-27 17:36:35:3635 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-27 17:36:46:3646 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-27 17:36:46:3646 [32minfo[39m: [32m🇮🇳 Initializing PURE IST cron jobs...[39m
+2025-05-27 17:36:46:3646 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-27 17:36:46:3646 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:36:46:3646 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:36:46:3646 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-27 17:36:46:3646 [32minfo[39m: [32m🇮🇳 PURE IST Monitoring System Started[39m
+2025-05-27 17:36:46:3646 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:36:46:3646 [32minfo[39m: [32m📊 Current Data Status (IST):[39m
+2025-05-27 17:36:46:3646 [32minfo[39m: [32m🧠 Starting IST ADAPTIVE monitoring system...[39m
+2025-05-27 17:36:46:3646 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-27 17:36:46:3646 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
+2025-05-27 17:36:47:3647 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-27 17:38:00:380 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 17:38:00[39m
+2025-05-27 17:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-27 17:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2025-05-27 17:38:00:380 [32minfo[39m: [32mFound 4 servers to check (IST smart filtering applied)[39m
+2025-05-27 17:38:00:380 [32minfo[39m: [32mProcessing 4 low priority servers in 1 batches (IST)[39m
+2025-05-27 17:38:00:380 [34mdebug[39m: [34mChecking Shopino (attempt 1/2) [IST][39m
+2025-05-27 17:38:00:380 [34mdebug[39m: [34mChecking Ping Pilott (attempt 1/2) [IST][39m
+2025-05-27 17:38:00:380 [34mdebug[39m: [34mChecking Valide (attempt 1/2) [IST][39m
+2025-05-27 17:38:00:380 [34mdebug[39m: [34mChecking Jatin (attempt 1/2) [IST][39m
+2025-05-27 17:38:01:381 [32minfo[39m: [32mEmail transporter initialized[39m
+2025-05-27 17:38:01:381 [32minfo[39m: [32m✅ IST Smart monitoring completed in 1186ms[39m
+2025-05-27 17:38:01:381 [32minfo[39m: [32mJob 'smartCheckServers' completed in 1186ms[39m
+2025-05-27 17:38:01:381 [32minfo[39m: [32m✅ IST Monitoring (peak) completed[39m
+2025-05-27 17:38:08:388 [32minfo[39m: [32mAlert email sent to cosmic123buddy@gmail.com: <849bad40-6ad1-5139-a1c5-475d0e3d8289@gmail.com>[39m
+2025-05-27 17:38:08:388 [32minfo[39m: [32mIST Smart alert sent for Shopino: slow_response at 17:38:01[39m
+2025-05-27 17:40:00:400 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 17:40:00[39m
+2025-05-27 17:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-27 17:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2025-05-27 17:40:00:400 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2025-05-27 17:40:00:400 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32m🇮🇳 Initializing PURE IST cron jobs...[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32m🇮🇳 PURE IST Monitoring System Started[39m
+2025-05-27 17:41:46:4146 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32m📊 Current Data Status (IST):[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32m🧠 Starting IST ADAPTIVE monitoring system...[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
+2025-05-27 17:41:46:4146 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-27 17:41:53:4153 [32minfo[39m: [32m🛑 IST Graceful shutdown initiated...[39m
+2025-05-27 17:41:59:4159 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-27 17:41:59:4159 [32minfo[39m: [32m🇮🇳 Initializing PURE IST cron jobs...[39m
+2025-05-27 17:41:59:4159 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-27 17:41:59:4159 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:41:59:4159 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:41:59:4159 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-27 17:41:59:4159 [32minfo[39m: [32m🇮🇳 PURE IST Monitoring System Started[39m
+2025-05-27 17:41:59:4159 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:41:59:4159 [32minfo[39m: [32m📊 Current Data Status (IST):[39m
+2025-05-27 17:41:59:4159 [32minfo[39m: [32m🧠 Starting IST ADAPTIVE monitoring system...[39m
+2025-05-27 17:41:59:4159 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-27 17:41:59:4159 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
+2025-05-27 17:42:00:420 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-27 17:42:00:420 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 17:42:00[39m
+2025-05-27 17:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-27 17:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2025-05-27 17:42:01:421 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2025-05-27 17:42:01:421 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32m🇮🇳 Initializing PURE IST cron jobs...[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32m🇮🇳 PURE IST Monitoring System Started[39m
+2025-05-27 17:42:22:4222 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32m📊 Current Data Status (IST):[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32m🧠 Starting IST ADAPTIVE monitoring system...[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
+2025-05-27 17:42:22:4222 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-27 17:42:27:4227 [32minfo[39m: [32m🛑 IST Graceful shutdown initiated...[39m
+2025-05-27 17:45:20:4520 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-27 17:45:20:4520 [32minfo[39m: [32m🇮🇳 Initializing PURE IST cron jobs...[39m
+2025-05-27 17:45:20:4520 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-27 17:45:20:4520 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:45:20:4520 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-27 17:45:20:4520 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-27 17:45:20:4520 [32minfo[39m: [32m🇮🇳 PURE IST Monitoring System Started[39m
+2025-05-27 17:45:20:4520 [32minfo[39m: [32m🔍 Starting cleanup recommendations...[39m
+2025-05-27 17:45:20:4520 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:45:20:4520 [32minfo[39m: [32m📊 Current Data Status (IST):[39m
+2025-05-27 17:45:20:4520 [32minfo[39m: [32m🧠 Starting IST ADAPTIVE monitoring system...[39m
+2025-05-27 17:45:21:4521 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-27 17:45:21:4521 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
+2025-05-27 17:45:22:4522 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m

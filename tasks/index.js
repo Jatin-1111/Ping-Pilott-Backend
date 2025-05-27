@@ -1,4 +1,4 @@
-// tasks/index.js - PURE IST TIMEZONE SCHEDULER 🇮🇳
+// tasks/index.js - FIXED CRONJOB CREATION
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -37,6 +37,24 @@ moment.tz.setDefault('Asia/Kolkata');
  */
 const getISTTime = () => {
     return moment().tz(IST_CONFIG.TIMEZONE);
+};
+
+/**
+ * FIXED: Create CronJob with all required IST fields
+ */
+const createISTCronJob = (name) => {
+    const now = new Date();
+    const istMoment = getISTTime();
+
+    return new CronJob({
+        name,
+        status: 'running',
+        startedAt: now,
+        timezone: IST_CONFIG.TIMEZONE,
+        istDate: istMoment.format('YYYY-MM-DD'),
+        istHour: istMoment.hour(),
+        istStartTime: istMoment.format('HH:mm:ss')
+    });
 };
 
 /**
@@ -85,19 +103,14 @@ const startISTMidnightCleanup = () => {
     // Set timezone explicitly for this cron job
     cron.schedule(IST_CONFIG.MIDNIGHT_CRON, async () => {
         const jobName = getDataRetentionJobName();
-        const startTime = new Date();
-        const istTime = getISTTime();
 
-        const cronJobRecord = new CronJob({
-            name: jobName,
-            status: 'running',
-            startedAt: startTime,
-            timezone: IST_CONFIG.TIMEZONE
-        });
+        // FIXED: Create CronJob with all required fields
+        const cronJobRecord = createISTCronJob(jobName);
 
         try {
             await cronJobRecord.save();
 
+            const istTime = getISTTime();
             logger.info(`💀 Starting IST MIDNIGHT CLEANUP at ${istTime.format('YYYY-MM-DD HH:mm:ss')} IST`);
             logger.info(`🎯 Cleanup mode: ${IST_CONFIG.DATA_RETENTION_MODE.toUpperCase()}`);
 
@@ -107,7 +120,7 @@ const startISTMidnightCleanup = () => {
                 logger.info('IST midnight cleanup already running, skipping');
                 cronJobRecord.status = 'skipped';
             } else {
-                const duration = Date.now() - startTime.getTime();
+                const duration = Date.now() - cronJobRecord.startedAt.getTime();
                 logger.info('✅ IST MIDNIGHT CLEANUP completed successfully!', {
                     ...result,
                     duration,
@@ -222,7 +235,7 @@ const startISTHealthMonitoring = () => {
 
             if (healthStats.issues.length > 0) {
                 logger.warn('⚠️ IST System health issues detected:', {
-                    ...healthStats.issues,
+                    issues: healthStats.issues,
                     istTime: istNow.format('YYYY-MM-DD HH:mm:ss')
                 });
 
@@ -273,14 +286,9 @@ const shouldRunISTAdaptiveCheck = (interval, currentMinute) => {
  */
 const executeISTSmartMonitoring = async (interval, istTime) => {
     const jobName = 'smartCheckServers';
-    const startTime = new Date();
 
-    const cronJobRecord = new CronJob({
-        name: jobName,
-        status: 'running',
-        startedAt: startTime,
-        timezone: IST_CONFIG.TIMEZONE
-    });
+    // FIXED: Create CronJob with all required fields
+    const cronJobRecord = createISTCronJob(jobName);
 
     try {
         await cronJobRecord.save();
@@ -294,7 +302,7 @@ const executeISTSmartMonitoring = async (interval, istTime) => {
         if (result === false) {
             cronJobRecord.status = 'skipped';
         } else {
-            const duration = Date.now() - startTime.getTime();
+            const duration = Date.now() - cronJobRecord.startedAt.getTime();
 
             // Only log detailed results for significant activity
             if (result.checked > 0 || result.alertsSent > 0) {

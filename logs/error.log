@@ -54,3 +54,20 @@
 2025-05-24 09:24:00:240 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
 2025-05-24 09:36:59:3659 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
 2025-05-25 14:40:29:4029 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:27:29:2729 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:28:00:280 [31merror[39m: [31m❌ IST Monitoring error (peak): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:28:00:280 [31merror[39m: [31mDatabase error saving IST monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:30:00:300 [31merror[39m: [31m❌ IST Monitoring error (peak): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:30:00:300 [31merror[39m: [31mDatabase error saving IST monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:32:00:320 [31merror[39m: [31m❌ IST Monitoring error (peak): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:32:00:320 [31merror[39m: [31mDatabase error saving IST monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:34:00:340 [31merror[39m: [31m❌ IST Monitoring error (peak): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:34:00:340 [31merror[39m: [31mDatabase error saving IST monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:36:00:360 [31merror[39m: [31m❌ IST Monitoring error (peak): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:36:00:360 [31merror[39m: [31mDatabase error saving IST monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2025-05-27 17:36:33:3633 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:36:46:3646 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:41:46:4146 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:41:59:4159 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:42:22:4222 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-27 17:45:20:4520 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m

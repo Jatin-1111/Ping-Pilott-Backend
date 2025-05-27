@@ -1,4 +1,4 @@
-// tasks/dataRetention.js - PURE IST TIMEZONE 🇮🇳
+// services/dataRetentionService.js - FIXED STATS ERROR
 
 import logger from '../utils/logger.js';
 import ServerCheck from '../models/ServerCheck.js';
@@ -29,13 +29,6 @@ const getISTDateString = (date = null) => {
 };
 
 /**
- * Get yesterday's IST date string
- */
-const getYesterdayISTString = () => {
-    return getISTTime().subtract(1, 'day').format('YYYY-MM-DD');
-};
-
-/**
  * AGGRESSIVE data retention - clears almost everything at IST midnight
  * @returns {Object} Statistics about the cleanup process
  */
@@ -54,13 +47,19 @@ export const runAggressiveDataRetention = async () => {
         databaseSizeBeforeMB: 0,
         databaseSizeAfterMB: 0,
         duration: 0,
-        cleanupDate: getISTDateString()
+        cleanupDate: getISTDateString(),
+        spaceSavedMB: 0 // Initialize this field
     };
 
     try {
         // Get database size before cleanup
-        const dbStats = await mongoose.connection.db.stats();
-        stats.databaseSizeBeforeMB = Math.round(dbStats.dataSize / 1024 / 1024);
+        try {
+            const dbStats = await mongoose.connection.db.stats();
+            stats.databaseSizeBeforeMB = Math.round(dbStats.dataSize / 1024 / 1024);
+        } catch (dbError) {
+            logger.warn(`Could not get DB stats: ${dbError.message}`);
+            stats.databaseSizeBeforeMB = 0;
+        }
 
         logger.info(`📊 Database size before cleanup: ${stats.databaseSizeBeforeMB} MB`);
 
@@ -70,7 +69,7 @@ export const runAggressiveDataRetention = async () => {
         logger.info('🗑️ Deleting ALL ServerCheck records...');
 
         const serverCheckResult = await ServerCheck.deleteMany({});
-        stats.serverChecksDeleted = serverCheckResult.deletedCount;
+        stats.serverChecksDeleted = serverCheckResult.deletedCount || 0;
 
         logger.info(`✅ Deleted ${stats.serverChecksDeleted} ServerCheck records`);
 
@@ -86,7 +85,7 @@ export const runAggressiveDataRetention = async () => {
         const cronJobResult = await CronJob.deleteMany({
             startedAt: { $lt: twentyFourHoursAgoIST }
         });
-        stats.cronJobsDeleted = cronJobResult.deletedCount;
+        stats.cronJobsDeleted = cronJobResult.deletedCount || 0;
 
         logger.info(`✅ Deleted ${stats.cronJobsDeleted} old CronJob records`);
 
@@ -108,10 +107,15 @@ export const runAggressiveDataRetention = async () => {
         // ========================================
         // STEP 4: Get final database size
         // ========================================
-        const dbStatsAfter = await mongoose.connection.db.stats();
-        stats.databaseSizeAfterMB = Math.round(dbStatsAfter.dataSize / 1024 / 1024);
+        try {
+            const dbStatsAfter = await mongoose.connection.db.stats();
+            stats.databaseSizeAfterMB = Math.round(dbStatsAfter.dataSize / 1024 / 1024);
+        } catch (dbError) {
+            logger.warn(`Could not get final DB stats: ${dbError.message}`);
+            stats.databaseSizeAfterMB = 0;
+        }
 
-        const spaceSaved = stats.databaseSizeBeforeMB - stats.databaseSizeAfterMB;
+        const spaceSaved = Math.max(0, stats.databaseSizeBeforeMB - stats.databaseSizeAfterMB);
         stats.spaceSavedMB = spaceSaved;
         stats.duration = Date.now() - startTime;
 
@@ -171,7 +175,7 @@ export const runSelectiveDataRetention = async (hoursToKeep = 24) => {
         const serverCheckResult = await ServerCheck.deleteMany({
             timestamp: { $lt: cutoffTimeUTC }
         });
-        stats.serverChecksDeleted = serverCheckResult.deletedCount;
+        stats.serverChecksDeleted = serverCheckResult.deletedCount || 0;
 
         // Count remaining records
         stats.serverChecksKept = await ServerCheck.countDocuments();
@@ -181,7 +185,7 @@ export const runSelectiveDataRetention = async (hoursToKeep = 24) => {
         const cronJobResult = await CronJob.deleteMany({
             startedAt: { $lt: fortyEightHoursAgoIST }
         });
-        stats.cronJobsDeleted = cronJobResult.deletedCount;
+        stats.cronJobsDeleted = cronJobResult.deletedCount || 0;
 
         stats.duration = Date.now() - startTime;
 
@@ -231,8 +235,8 @@ export const runEmergencyCleanup = async () => {
             CronJob.deleteMany({})
         ]);
 
-        stats.serverChecksDeleted = serverCheckResult.deletedCount;
-        stats.cronJobsDeleted = cronJobResult.deletedCount;
+        stats.serverChecksDeleted = serverCheckResult.deletedCount || 0;
+        stats.cronJobsDeleted = cronJobResult.deletedCount || 0;
         stats.duration = Date.now() - startTime;
 
         logger.warn('🚨 EMERGENCY IST cleanup completed!', {
@@ -260,14 +264,21 @@ export const runEmergencyCleanup = async () => {
  */
 export const getCleanupRecommendations = async () => {
     try {
-        const [serverCheckCount, cronJobCount, dbStats] = await Promise.all([
-            ServerCheck.countDocuments(),
-            CronJob.countDocuments(),
-            mongoose.connection.db.stats()
+        logger.info('🔍 Starting cleanup recommendations...');
+
+        const [serverCheckCount, cronJobCount, dbStatsResult] = await Promise.all([
+            ServerCheck.countDocuments().catch(() => 0),
+            CronJob.countDocuments().catch(() => 0),
+            mongoose.connection.db.stats().catch(() => null)
         ]);
 
-        const dbSizeMB = Math.round(dbStats.dataSize / 1024 / 1024);
-        const indexSizeMB = Math.round(dbStats.indexSize / 1024 / 1024);
+        // Handle database stats safely
+        const dbStats = dbStatsResult || { dataSize: 0, indexSize: 0 };
+
+        logger.info('🔍 Got database counts:', { serverCheckCount, cronJobCount, dbStats: !!dbStats });
+
+        const dbSizeMB = Math.round((dbStats.dataSize || 0) / 1024 / 1024);
+        const indexSizeMB = Math.round((dbStats.indexSize || 0) / 1024 / 1024);
 
         let recommendation = 'selective';
         let reasoning = 'Current data volume is manageable';
@@ -307,12 +318,20 @@ export const getCleanupRecommendations = async () => {
         };
 
     } catch (error) {
-        logger.error(`Error getting cleanup recommendations: ${error.message}`);
+        logger.error(`Error getting cleanup recommendations: ${error.message}`, {
+            stack: error.stack,
+            trace: new Error().stack // Add stack trace to see where this is called from
+        });
         return {
             current: {
                 error: error.message,
                 analyzedAt: getISTTime().format('YYYY-MM-DD HH:mm:ss'),
-                timezone: IST_CONFIG.TIMEZONE
+                timezone: IST_CONFIG.TIMEZONE,
+                serverChecks: 0,
+                cronJobs: 0,
+                databaseSizeMB: 0,
+                indexSizeMB: 0,
+                totalSizeMB: 0
             },
             recommendation: 'aggressive',
             reasoning: 'Error analyzing data, defaulting to aggressive cleanup'
@@ -326,7 +345,7 @@ export const getCleanupRecommendations = async () => {
 export const istHelpers = {
     getISTTime,
     getISTDateString,
-    getYesterdayISTString,
+    getYesterdayISTString: () => getISTTime().subtract(1, 'day').format('YYYY-MM-DD'),
 
     // Check if it's IST midnight (within 5 minutes)
     isISTMidnight: () => {
