@@ -1,3 +1,5 @@
+// models/ServerCheck.js - IST TIMEZONE ONLY 🇮🇳
+
 import mongoose from 'mongoose';
 import moment from 'moment-timezone';
 
@@ -28,20 +30,20 @@ const serverCheckSchema = new mongoose.Schema({
     },
     timezone: {
         type: String,
-        default: 'Asia/Kolkata',
+        default: 'Asia/Kolkata', // ALWAYS IST
         required: true
     },
-    // These timezone-specific fields help with faster querying
+    // IST timezone-specific fields for faster querying
     localDate: {
-        type: String, // Store as YYYY-MM-DD in server's timezone
+        type: String, // Store as YYYY-MM-DD in IST
         required: true
     },
     localHour: {
-        type: Number, // 0-23 in server's timezone
+        type: Number, // 0-23 in IST
         required: true
     },
     localMinute: {
-        type: Number, // 0-59 in server's timezone
+        type: Number, // 0-59 in IST
         required: true
     },
     timeSlot: {
@@ -51,14 +53,19 @@ const serverCheckSchema = new mongoose.Schema({
     }
 });
 
-// Fix: Properly calculate timezone-specific fields before saving
+// FIXED: Calculate IST timezone fields before saving
 serverCheckSchema.pre('save', function (next) {
     if (this.isNew || this.isModified('timestamp') || this.isModified('timezone')) {
-        const m = moment(this.timestamp).tz(this.timezone);
-        this.localDate = m.format('YYYY-MM-DD');
-        this.localHour = m.hour();
-        this.localMinute = m.minute();
-        this.timeSlot = Math.floor(m.minute() / 15); // 0-3 for 15-minute slots
+        // FORCE IST timezone
+        this.timezone = 'Asia/Kolkata';
+
+        // Calculate IST fields from timestamp
+        const istMoment = moment(this.timestamp).tz('Asia/Kolkata');
+
+        this.localDate = istMoment.format('YYYY-MM-DD');
+        this.localHour = istMoment.hour();
+        this.localMinute = istMoment.minute();
+        this.timeSlot = Math.floor(istMoment.minute() / 15); // 0-3 for 15-minute slots
     }
     next();
 });

@@ -3577,3 +3577,1801 @@
 2025-05-24 08:49:37:4937 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
 2025-05-24 08:49:38:4938 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
 2025-05-24 08:49:39:4939 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2025-05-24 14:19:43:1943 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-24 14:19:43:1943 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-24 08:49:43:4943 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-24 08:49:43:4943 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:49:43:4943 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-24 08:49:43:4943 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-24 08:49:43:4943 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-24 08:49:43:4943 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 08:49:43:4943 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-24 08:49:43:4943 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2025-05-24 08:49:43:4943 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-24 08:49:43:4943 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-24 08:49:43:4943 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-24 08:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:20:00[39m
+2025-05-24 08:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 08:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 08:50:00:500 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 08:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 82ms[39m
+2025-05-24 08:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:22:00[39m
+2025-05-24 08:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 08:52:00:520 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 08:52:00:520 [32minfo[39m: [32mFound 2 servers to check (smart filtering applied)[39m
+2025-05-24 08:52:00:520 [32minfo[39m: [32mProcessing 2 high priority servers in 1 batches[39m
+2025-05-24 08:52:00:520 [34mdebug[39m: [34mChecking Chaitanya (attempt 1/2)[39m
+2025-05-24 08:52:00:520 [34mdebug[39m: [34mChecking Ping Pilott (attempt 1/2)[39m
+2025-05-24 08:52:01:521 [34mdebug[39m: [34mAttempt 1 failed for Chaitanya: HTTP 503: Service Temporarily Unavailable[39m
+2025-05-24 08:52:01:521 [34mdebug[39m: [34mChecking Chaitanya (attempt 2/2)[39m
+2025-05-24 08:52:01:521 [34mdebug[39m: [34mAttempt 2 failed for Chaitanya: HTTP 503: Service Temporarily Unavailable[39m
+2025-05-24 08:52:02:522 [34mdebug[39m: [34mAttempt 1 failed for Ping Pilott: HTTP 503: Service Unavailable[39m
+2025-05-24 08:52:02:522 [34mdebug[39m: [34mChecking Ping Pilott (attempt 2/2)[39m
+2025-05-24 08:52:03:523 [34mdebug[39m: [34mAttempt 2 failed for Ping Pilott: HTTP 503: Service Unavailable[39m
+2025-05-24 08:52:03:523 [32minfo[39m: [32m✅ Smart monitoring completed in 3432ms[39m
+2025-05-24 08:52:03:523 [32minfo[39m: [32mJob 'smartCheckServers' completed in 3433ms[39m
+2025-05-24 08:52:03:523 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2025-05-24 08:54:01:541 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:24:01[39m
+2025-05-24 08:54:01:541 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 08:54:01:541 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 08:54:01:541 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 08:54:01:541 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-24 08:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:26:00[39m
+2025-05-24 08:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 08:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 08:56:00:560 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 08:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-24 08:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:28:00[39m
+2025-05-24 08:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 08:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 08:58:01:581 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 08:58:01:581 [32minfo[39m: [32mJob 'smartCheckServers' completed in 795ms[39m
+2025-05-24 09:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:30:00[39m
+2025-05-24 09:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 09:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-24 09:02:01:21 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:32:01[39m
+2025-05-24 09:02:01:21 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:02:01:21 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:02:01:21 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:02:01:21 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-24 09:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:34:00[39m
+2025-05-24 09:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:04:00:40 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:04:00:40 [32minfo[39m: [32mJob 'smartCheckServers' completed in 69ms[39m
+2025-05-24 09:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:36:00[39m
+2025-05-24 09:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:06:01:61 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:06:01:61 [32minfo[39m: [32mJob 'smartCheckServers' completed in 358ms[39m
+2025-05-24 09:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:38:00[39m
+2025-05-24 09:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:08:00:80 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 57ms[39m
+2025-05-24 09:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:40:00[39m
+2025-05-24 09:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-24 09:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:42:00[39m
+2025-05-24 09:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 09:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:44:00[39m
+2025-05-24 09:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:14:00:140 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:14:00:140 [32minfo[39m: [32mJob 'smartCheckServers' completed in 40ms[39m
+2025-05-24 09:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 09:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:46:00[39m
+2025-05-24 09:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 45ms[39m
+2025-05-24 09:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:48:00[39m
+2025-05-24 09:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-24 09:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:50:00[39m
+2025-05-24 09:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:20:00:200 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-24 09:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:52:00[39m
+2025-05-24 09:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:22:00:220 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:22:00:220 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 40ms[39m
+2025-05-24 14:53:44:5344 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-24 14:53:44:5344 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-24 09:23:44:2344 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-24 09:23:44:2344 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-24 09:23:44:2344 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-24 09:23:44:2344 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-24 09:23:44:2344 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-24 09:23:44:2344 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 09:23:44:2344 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-24 09:23:44:2344 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2025-05-24 09:23:44:2344 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-24 09:23:44:2344 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-24 09:23:47:2347 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-24 14:54:00:540 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-24 14:54:00:540 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-24 09:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-24 09:24:00:240 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-24 09:24:00:240 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-24 09:24:00:240 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-24 09:24:00:240 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-24 09:24:00:240 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 09:24:00:240 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-24 09:24:00:240 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2025-05-24 09:24:00:240 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-24 09:24:00:240 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-24 09:24:01:241 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-24 09:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:56:00[39m
+2025-05-24 09:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:26:00:260 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 55ms[39m
+2025-05-24 09:28:01:281 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:58:01[39m
+2025-05-24 09:28:01:281 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:28:01:281 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:28:01:281 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:28:01:281 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2025-05-24 09:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:00:00[39m
+2025-05-24 09:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 09:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 09:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:02:00[39m
+2025-05-24 09:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:32:00:320 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:32:00:320 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2025-05-24 09:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:04:00[39m
+2025-05-24 09:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:34:00:340 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 51ms[39m
+2025-05-24 09:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:06:00[39m
+2025-05-24 09:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:36:00:360 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:36:00:360 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:36:00:360 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-24 15:06:59:659 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-24 15:06:59:659 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-24 09:36:59:3659 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-24 09:36:59:3659 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-24 09:36:59:3659 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-24 09:36:59:3659 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-24 09:36:59:3659 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-24 09:36:59:3659 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-24 09:36:59:3659 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-24 09:36:59:3659 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2025-05-24 09:36:59:3659 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-24 09:36:59:3659 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-24 09:37:01:371 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2025-05-24 09:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:08:00[39m
+2025-05-24 09:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:38:00:380 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 58ms[39m
+2025-05-24 09:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:10:00[39m
+2025-05-24 09:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:40:00:400 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:40:00:400 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 09:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:12:00[39m
+2025-05-24 09:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:42:00:420 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 09:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:14:00[39m
+2025-05-24 09:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:44:00:440 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:44:00:440 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-24 09:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 09:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:16:00[39m
+2025-05-24 09:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:46:00:460 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:46:00:460 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-24 09:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:18:00[39m
+2025-05-24 09:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:48:00:480 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 09:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:20:00[39m
+2025-05-24 09:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:50:00:500 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 40ms[39m
+2025-05-24 09:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:22:00[39m
+2025-05-24 09:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:52:00:520 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:52:00:520 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:52:00:520 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-24 09:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:24:00[39m
+2025-05-24 09:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:54:00:540 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:54:00:540 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-24 09:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:26:00[39m
+2025-05-24 09:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:56:00:560 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-24 09:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:28:00[39m
+2025-05-24 09:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 09:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 09:58:00:580 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 09:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-24 10:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:30:00[39m
+2025-05-24 10:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 215ms[39m
+2025-05-24 10:00:01:01 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 10:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:32:00[39m
+2025-05-24 10:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:02:00:20 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:02:00:20 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 10:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:34:00[39m
+2025-05-24 10:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:04:00:40 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:04:00:40 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 10:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:36:00[39m
+2025-05-24 10:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-24 10:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:38:00[39m
+2025-05-24 10:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:08:00:80 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-24 10:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:40:00[39m
+2025-05-24 10:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 35ms[39m
+2025-05-24 10:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:42:00[39m
+2025-05-24 10:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-24 10:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:44:00[39m
+2025-05-24 10:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:14:00:140 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:14:00:140 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-24 10:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 10:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:46:00[39m
+2025-05-24 10:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-24 10:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:48:00[39m
+2025-05-24 10:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 10:20:01:201 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:50:01[39m
+2025-05-24 10:20:01:201 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:20:01:201 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:20:01:201 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:20:01:201 [32minfo[39m: [32mJob 'smartCheckServers' completed in 195ms[39m
+2025-05-24 10:22:01:221 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:52:01[39m
+2025-05-24 10:22:01:221 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:22:01:221 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:22:01:221 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:22:01:221 [32minfo[39m: [32mJob 'smartCheckServers' completed in 216ms[39m
+2025-05-24 10:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:54:00[39m
+2025-05-24 10:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:24:00:240 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 10:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:56:00[39m
+2025-05-24 10:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:26:00:260 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-24 10:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:58:00[39m
+2025-05-24 10:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:28:00:280 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:28:00:280 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 10:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:00:00[39m
+2025-05-24 10:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-24 10:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 10:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:02:00[39m
+2025-05-24 10:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:32:00:320 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:32:00:320 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 10:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:04:00[39m
+2025-05-24 10:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:34:00:340 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-24 10:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:06:00[39m
+2025-05-24 10:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:36:00:360 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:36:00:360 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:36:00:360 [32minfo[39m: [32mJob 'smartCheckServers' completed in 35ms[39m
+2025-05-24 10:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:08:00[39m
+2025-05-24 10:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 10:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 10:38:00:380 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 10:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 12:55:57:5557 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-24 12:55:57:5557 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-24 12:56:03:563 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-24 12:56:05:565 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-24 12:56:05:565 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:26:05[39m
+2025-05-24 12:56:05:565 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 12:56:05:565 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 12:56:05:565 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 12:56:05:565 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 12:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:28:00[39m
+2025-05-24 12:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 12:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 12:58:00:580 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 12:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-24 13:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:30:00[39m
+2025-05-24 13:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2025-05-24 13:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 13:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:32:00[39m
+2025-05-24 13:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:02:00:20 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:02:00:20 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 81ms[39m
+2025-05-24 13:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:34:00[39m
+2025-05-24 13:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:04:00:40 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:04:00:40 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 13:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:36:00[39m
+2025-05-24 13:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 13:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:38:00[39m
+2025-05-24 13:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:08:00:80 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-24 13:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:40:00[39m
+2025-05-24 13:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:10:01:101 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:10:01:101 [32minfo[39m: [32mJob 'smartCheckServers' completed in 963ms[39m
+2025-05-24 13:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:42:00[39m
+2025-05-24 13:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 13:14:01:141 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:44:01[39m
+2025-05-24 13:14:01:141 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:14:01:141 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:14:01:141 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:14:01:141 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 13:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 13:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:46:00[39m
+2025-05-24 13:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:16:01:161 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:16:01:161 [32minfo[39m: [32mJob 'smartCheckServers' completed in 809ms[39m
+2025-05-24 13:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:48:00[39m
+2025-05-24 13:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2025-05-24 13:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:52:00[39m
+2025-05-24 13:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:22:00:220 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:22:00:220 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 46ms[39m
+2025-05-24 13:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:54:00[39m
+2025-05-24 13:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:24:00:240 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-24 13:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:56:00[39m
+2025-05-24 13:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:26:00:260 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 40ms[39m
+2025-05-24 13:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:58:00[39m
+2025-05-24 13:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:28:00:280 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:28:00:280 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2025-05-24 13:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:00:00[39m
+2025-05-24 13:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 13:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 13:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:02:00[39m
+2025-05-24 13:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:32:00:320 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:32:00:320 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-24 13:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:04:00[39m
+2025-05-24 13:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:34:00:340 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 13:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:06:00[39m
+2025-05-24 13:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:36:00:360 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:36:00:360 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:36:00:360 [32minfo[39m: [32mJob 'smartCheckServers' completed in 51ms[39m
+2025-05-24 13:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:08:00[39m
+2025-05-24 13:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:38:00:380 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 13:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:10:00[39m
+2025-05-24 13:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:40:00:400 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:40:00:400 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 13:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:12:00[39m
+2025-05-24 13:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:42:00:420 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2025-05-24 13:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:14:00[39m
+2025-05-24 13:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:44:00:440 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:44:00:440 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 13:45:01:451 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 13:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:16:00[39m
+2025-05-24 13:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:46:00:460 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:46:00:460 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-24 13:48:01:481 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:18:01[39m
+2025-05-24 13:48:01:481 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:48:01:481 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:48:01:481 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:48:01:481 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 13:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:20:00[39m
+2025-05-24 13:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:50:00:500 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 13:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:22:00[39m
+2025-05-24 13:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:52:00:520 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:52:00:520 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:52:00:520 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-24 13:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:24:00[39m
+2025-05-24 13:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:54:00:540 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:54:00:540 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 13:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:26:00[39m
+2025-05-24 13:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:56:00:560 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 13:58:01:581 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:28:01[39m
+2025-05-24 13:58:01:581 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 13:58:01:581 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 13:58:01:581 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 13:58:01:581 [32minfo[39m: [32mJob 'smartCheckServers' completed in 45ms[39m
+2025-05-24 14:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:30:00[39m
+2025-05-24 14:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-24 14:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 14:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:32:00[39m
+2025-05-24 14:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:02:00:20 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:02:00:20 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-24 14:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:34:00[39m
+2025-05-24 14:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:04:01:41 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:04:01:41 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 14:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:36:00[39m
+2025-05-24 14:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2025-05-24 14:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:38:00[39m
+2025-05-24 14:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:08:00:80 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-24 14:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:40:00[39m
+2025-05-24 14:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-24 14:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:42:00[39m
+2025-05-24 14:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 77ms[39m
+2025-05-24 14:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:44:00[39m
+2025-05-24 14:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:14:00:140 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:14:00:140 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 14:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 14:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:46:00[39m
+2025-05-24 14:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-24 14:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:48:00[39m
+2025-05-24 14:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-24 14:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:50:00[39m
+2025-05-24 14:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:20:00:200 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-24 14:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:52:00[39m
+2025-05-24 14:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:22:00:220 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:22:01:221 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:22:01:221 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-24 14:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:54:00[39m
+2025-05-24 14:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:24:00:240 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-24 14:26:01:261 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:56:01[39m
+2025-05-24 14:26:01:261 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:26:01:261 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:26:01:261 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:26:01:261 [32minfo[39m: [32mJob 'smartCheckServers' completed in 382ms[39m
+2025-05-24 14:28:01:281 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 19:58:01[39m
+2025-05-24 14:28:01:281 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:28:01:281 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:28:01:281 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:28:01:281 [32minfo[39m: [32mJob 'smartCheckServers' completed in 45ms[39m
+2025-05-24 14:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:00:00[39m
+2025-05-24 14:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 14:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 14:33:00:330 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:03:00[39m
+2025-05-24 14:33:00:330 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:33:00:330 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:33:01:331 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:33:01:331 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-24 14:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:06:00[39m
+2025-05-24 14:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:36:00:360 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:36:00:360 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:36:00:360 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-24 14:39:00:390 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:09:00[39m
+2025-05-24 14:39:00:390 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:39:00:390 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:39:00:390 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:39:00:390 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 14:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:12:00[39m
+2025-05-24 14:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:42:00:420 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 14:45:00:450 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:15:00[39m
+2025-05-24 14:45:00:450 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:45:00:450 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:45:00:450 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:45:00:450 [32minfo[39m: [32mJob 'smartCheckServers' completed in 57ms[39m
+2025-05-24 14:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 14:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:18:00[39m
+2025-05-24 14:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:48:01:481 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:48:01:481 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 14:51:00:510 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:21:00[39m
+2025-05-24 14:51:00:510 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:51:00:510 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:51:01:511 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:51:01:511 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 14:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:24:00[39m
+2025-05-24 14:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:54:00:540 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:54:00:540 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 14:57:00:570 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:27:00[39m
+2025-05-24 14:57:00:570 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 14:57:00:570 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 14:57:00:570 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 14:57:00:570 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 15:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:30:00[39m
+2025-05-24 15:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-24 15:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 15:03:00:30 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:33:00[39m
+2025-05-24 15:03:00:30 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:03:00:30 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:03:00:30 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:03:00:30 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-24 15:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:36:00[39m
+2025-05-24 15:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 15:09:00:90 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:39:00[39m
+2025-05-24 15:09:00:90 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:09:00:90 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:09:00:90 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:09:00:90 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 15:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:42:00[39m
+2025-05-24 15:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-24 15:29:07:297 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-24 15:29:07:297 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-24 15:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:00:00[39m
+2025-05-24 15:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 15:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 15:33:00:330 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:03:00[39m
+2025-05-24 15:33:00:330 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:33:00:330 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:33:00:330 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:33:00:330 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-24 15:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:06:00[39m
+2025-05-24 15:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:36:00:360 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:36:00:360 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:36:00:360 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 15:39:00:390 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:09:00[39m
+2025-05-24 15:39:00:390 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:39:00:390 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:39:01:391 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:39:01:391 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 15:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:12:00[39m
+2025-05-24 15:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:42:01:421 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:42:01:421 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 15:45:00:450 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:15:00[39m
+2025-05-24 15:45:00:450 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:45:00:450 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:45:00:450 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:45:00:450 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-24 15:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 15:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:18:00[39m
+2025-05-24 15:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:48:00:480 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-24 15:51:00:510 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:21:00[39m
+2025-05-24 15:51:00:510 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:51:00:510 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:51:00:510 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:51:00:510 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-24 15:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:24:00[39m
+2025-05-24 15:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:54:00:540 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:54:00:540 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-24 15:57:00:570 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:27:00[39m
+2025-05-24 15:57:00:570 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 15:57:00:570 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 15:57:00:570 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 15:57:00:570 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-24 16:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:30:00[39m
+2025-05-24 16:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 16:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 16:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 16:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-24 16:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 16:03:00:30 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:33:00[39m
+2025-05-24 16:03:00:30 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 16:03:00:30 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 16:03:00:30 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 16:03:00:30 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2025-05-24 16:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:36:00[39m
+2025-05-24 16:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 16:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 16:06:01:61 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 16:06:01:61 [32minfo[39m: [32mJob 'smartCheckServers' completed in 360ms[39m
+2025-05-24 16:09:00:90 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:39:00[39m
+2025-05-24 16:09:00:90 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 16:09:00:90 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 16:09:00:90 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 16:09:00:90 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2025-05-24 16:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:42:00[39m
+2025-05-24 16:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 16:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 16:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 16:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-24 16:15:00:150 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:45:00[39m
+2025-05-24 16:15:00:150 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 16:15:00:150 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 16:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-24 16:15:00:150 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 16:15:00:150 [32minfo[39m: [32mJob 'smartCheckServers' completed in 46ms[39m
+2025-05-24 16:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:48:00[39m
+2025-05-24 16:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 16:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 16:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 16:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-24 16:21:00:210 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 21:51:00[39m
+2025-05-24 16:21:00:210 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-24 16:21:00:210 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-24 16:21:00:210 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-24 16:21:00:210 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-25 06:02:55:255 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-25 06:03:18:318 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-25 06:03:18:318 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-25 06:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:34:00[39m
+2025-05-25 06:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:04:00:40 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:04:00:40 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 06:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:36:00[39m
+2025-05-25 06:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 58ms[39m
+2025-05-25 06:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:38:00[39m
+2025-05-25 06:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:08:00:80 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 40ms[39m
+2025-05-25 06:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:40:00[39m
+2025-05-25 06:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-25 06:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:42:00[39m
+2025-05-25 06:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-25 06:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:44:00[39m
+2025-05-25 06:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:14:00:140 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:14:00:140 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 06:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 06:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:46:00[39m
+2025-05-25 06:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 06:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:48:00[39m
+2025-05-25 06:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 06:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:50:00[39m
+2025-05-25 06:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:20:00:200 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 54ms[39m
+2025-05-25 06:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:52:00[39m
+2025-05-25 06:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:22:00:220 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:22:00:220 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 06:24:01:241 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:54:01[39m
+2025-05-25 06:24:01:241 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:24:01:241 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:24:01:241 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:24:01:241 [32minfo[39m: [32mJob 'smartCheckServers' completed in 64ms[39m
+2025-05-25 06:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:56:00[39m
+2025-05-25 06:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:26:00:260 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 57ms[39m
+2025-05-25 06:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 11:58:00[39m
+2025-05-25 06:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:28:00:280 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:28:00:280 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 06:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:00:00[39m
+2025-05-25 06:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 06:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 06:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:02:00[39m
+2025-05-25 06:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:32:00:320 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:32:00:320 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 57ms[39m
+2025-05-25 06:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:04:00[39m
+2025-05-25 06:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:34:00:340 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 06:36:01:361 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:06:01[39m
+2025-05-25 06:36:01:361 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:36:01:361 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:36:01:361 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:36:01:361 [32minfo[39m: [32mJob 'smartCheckServers' completed in 54ms[39m
+2025-05-25 06:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:08:00[39m
+2025-05-25 06:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:38:00:380 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 51ms[39m
+2025-05-25 06:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:10:00[39m
+2025-05-25 06:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:40:00:400 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:40:00:400 [32minfo[39m: [32mJob 'smartCheckServers' completed in 56ms[39m
+2025-05-25 06:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:12:00[39m
+2025-05-25 06:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:42:00:420 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 55ms[39m
+2025-05-25 06:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:14:00[39m
+2025-05-25 06:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:44:00:440 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:44:00:440 [32minfo[39m: [32mJob 'smartCheckServers' completed in 58ms[39m
+2025-05-25 06:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 06:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:16:00[39m
+2025-05-25 06:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:46:00:460 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:46:00:460 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 06:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:18:00[39m
+2025-05-25 06:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:48:00:480 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 06:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:20:00[39m
+2025-05-25 06:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:50:00:500 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 56ms[39m
+2025-05-25 06:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:24:00[39m
+2025-05-25 06:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:54:01:541 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:54:01:541 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 06:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:26:00[39m
+2025-05-25 06:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:56:00:560 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 06:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:28:00[39m
+2025-05-25 06:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 06:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 06:58:00:580 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 06:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 07:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:30:00[39m
+2025-05-25 07:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 07:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 07:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:32:00[39m
+2025-05-25 07:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:02:00:20 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:02:00:20 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 07:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:34:00[39m
+2025-05-25 07:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:04:00:40 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:04:00:40 [32minfo[39m: [32mJob 'smartCheckServers' completed in 54ms[39m
+2025-05-25 07:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:36:00[39m
+2025-05-25 07:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 07:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:38:00[39m
+2025-05-25 07:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:08:00:80 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 07:10:01:101 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:40:01[39m
+2025-05-25 07:10:01:101 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:10:01:101 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:10:01:101 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:10:01:101 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-25 07:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:42:00[39m
+2025-05-25 07:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 07:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:44:00[39m
+2025-05-25 07:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:14:00:140 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:14:00:140 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 07:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 07:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:46:00[39m
+2025-05-25 07:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 07:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:48:00[39m
+2025-05-25 07:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 54ms[39m
+2025-05-25 07:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:50:00[39m
+2025-05-25 07:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:20:00:200 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 07:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:52:00[39m
+2025-05-25 07:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:22:00:220 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:22:00:220 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 07:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:54:00[39m
+2025-05-25 07:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:24:00:240 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 07:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:56:00[39m
+2025-05-25 07:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:26:00:260 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 07:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 12:58:00[39m
+2025-05-25 07:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:28:00:280 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:28:00:280 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 57ms[39m
+2025-05-25 07:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:00:00[39m
+2025-05-25 07:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 07:30:01:301 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 07:32:01:321 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:02:01[39m
+2025-05-25 07:32:01:321 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:32:01:321 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:32:01:321 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:32:01:321 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 07:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:04:00[39m
+2025-05-25 07:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:34:00:340 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 07:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:06:00[39m
+2025-05-25 07:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:36:00:360 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:36:00:360 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:36:00:360 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-25 07:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:08:00[39m
+2025-05-25 07:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:38:00:380 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-25 07:40:01:401 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:10:01[39m
+2025-05-25 07:40:01:401 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:40:01:401 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:40:01:401 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:40:01:401 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 07:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:12:00[39m
+2025-05-25 07:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:42:00:420 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 56ms[39m
+2025-05-25 07:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:14:00[39m
+2025-05-25 07:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:44:00:440 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:44:00:440 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 07:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 07:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:16:00[39m
+2025-05-25 07:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:46:00:460 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:46:00:460 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 54ms[39m
+2025-05-25 07:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:18:00[39m
+2025-05-25 07:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:48:00:480 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 07:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:20:00[39m
+2025-05-25 07:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:50:00:500 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 07:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:22:00[39m
+2025-05-25 07:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:52:00:520 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:52:00:520 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:52:00:520 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 07:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:24:00[39m
+2025-05-25 07:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:54:00:540 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:54:00:540 [32minfo[39m: [32mJob 'smartCheckServers' completed in 54ms[39m
+2025-05-25 07:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:26:00[39m
+2025-05-25 07:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:56:00:560 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 07:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:28:00[39m
+2025-05-25 07:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 07:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 07:58:00:580 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 07:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 08:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:30:00[39m
+2025-05-25 08:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 46ms[39m
+2025-05-25 08:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 08:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:32:00[39m
+2025-05-25 08:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:02:00:20 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:02:00:20 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-25 08:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:34:00[39m
+2025-05-25 08:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:04:00:40 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:04:00:40 [32minfo[39m: [32mJob 'smartCheckServers' completed in 45ms[39m
+2025-05-25 08:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:36:00[39m
+2025-05-25 08:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-25 08:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:38:00[39m
+2025-05-25 08:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:08:00:80 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 08:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:40:00[39m
+2025-05-25 08:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 08:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:42:00[39m
+2025-05-25 08:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 08:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:44:00[39m
+2025-05-25 08:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:14:00:140 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:14:00:140 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 08:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 08:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:46:00[39m
+2025-05-25 08:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 54ms[39m
+2025-05-25 08:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:48:00[39m
+2025-05-25 08:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 08:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:50:00[39m
+2025-05-25 08:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:20:00:200 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 08:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:52:00[39m
+2025-05-25 08:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:22:00:220 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:22:00:220 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 08:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:54:00[39m
+2025-05-25 08:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:24:00:240 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 51ms[39m
+2025-05-25 08:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:56:00[39m
+2025-05-25 08:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:26:00:260 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 51ms[39m
+2025-05-25 08:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 13:58:00[39m
+2025-05-25 08:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:28:00:280 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:28:00:280 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 51ms[39m
+2025-05-25 08:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:00:00[39m
+2025-05-25 08:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 08:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 08:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:02:00[39m
+2025-05-25 08:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:32:00:320 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:32:00:320 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 08:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:04:00[39m
+2025-05-25 08:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:34:00:340 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 08:47:46:4746 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-25 08:47:57:4757 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2025-05-25 08:47:57:4757 [32minfo[39m: [32mMongoDB reconnected[39m
+2025-05-25 08:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:18:00[39m
+2025-05-25 08:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:48:01:481 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:48:01:481 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-25 08:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:20:00[39m
+2025-05-25 08:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:50:00:500 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-25 08:52:01:521 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:22:01[39m
+2025-05-25 08:52:01:521 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:52:01:521 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:52:01:521 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:52:01:521 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-25 08:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:24:00[39m
+2025-05-25 08:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:54:00:540 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:54:00:540 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-25 08:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:26:00[39m
+2025-05-25 08:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:56:00:560 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2025-05-25 08:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:28:00[39m
+2025-05-25 08:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 08:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 08:58:00:580 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 08:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 40ms[39m
+2025-05-25 09:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:30:00[39m
+2025-05-25 09:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 36ms[39m
+2025-05-25 09:00:01:01 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 09:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:32:00[39m
+2025-05-25 09:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:02:00:20 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:02:00:20 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-25 09:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:34:00[39m
+2025-05-25 09:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:04:00:40 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:04:00:40 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-25 09:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:36:00[39m
+2025-05-25 09:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-25 09:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:38:00[39m
+2025-05-25 09:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:08:00:80 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 09:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:40:00[39m
+2025-05-25 09:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 40ms[39m
+2025-05-25 09:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:42:00[39m
+2025-05-25 09:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-25 09:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:44:00[39m
+2025-05-25 09:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:14:00:140 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:14:00:140 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-25 09:15:02:152 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 09:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:46:00[39m
+2025-05-25 09:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 186ms[39m
+2025-05-25 09:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:48:00[39m
+2025-05-25 09:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 09:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:50:00[39m
+2025-05-25 09:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:20:00:200 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 09:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:52:00[39m
+2025-05-25 09:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:22:00:220 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:22:00:220 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 09:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:54:00[39m
+2025-05-25 09:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:24:00:240 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 09:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:56:00[39m
+2025-05-25 09:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:26:00:260 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-25 09:28:01:281 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 14:58:01[39m
+2025-05-25 09:28:01:281 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:28:01:281 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:28:01:281 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:28:01:281 [32minfo[39m: [32mJob 'smartCheckServers' completed in 60ms[39m
+2025-05-25 09:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:00:00[39m
+2025-05-25 09:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 09:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 09:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:02:00[39m
+2025-05-25 09:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:32:00:320 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:32:00:320 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 09:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:04:00[39m
+2025-05-25 09:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:34:00:340 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 09:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:06:00[39m
+2025-05-25 09:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:36:00:360 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:36:00:360 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:36:00:360 [32minfo[39m: [32mJob 'smartCheckServers' completed in 82ms[39m
+2025-05-25 09:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:08:00[39m
+2025-05-25 09:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:38:00:380 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 351ms[39m
+2025-05-25 09:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:10:00[39m
+2025-05-25 09:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:40:00:400 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:40:00:400 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-25 09:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:12:00[39m
+2025-05-25 09:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:42:00:420 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 09:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:14:00[39m
+2025-05-25 09:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:44:01:441 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:44:01:441 [32minfo[39m: [32mJob 'smartCheckServers' completed in 114ms[39m
+2025-05-25 09:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 09:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:16:00[39m
+2025-05-25 09:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:46:00:460 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:46:00:460 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 76ms[39m
+2025-05-25 09:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:18:00[39m
+2025-05-25 09:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:48:00:480 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 377ms[39m
+2025-05-25 09:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:20:00[39m
+2025-05-25 09:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:50:00:500 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 104ms[39m
+2025-05-25 09:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:22:00[39m
+2025-05-25 09:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:52:00:520 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:52:00:520 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:52:00:520 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 09:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:24:00[39m
+2025-05-25 09:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:54:00:540 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:54:00:540 [32minfo[39m: [32mJob 'smartCheckServers' completed in 118ms[39m
+2025-05-25 09:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:26:00[39m
+2025-05-25 09:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:56:00:560 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 165ms[39m
+2025-05-25 09:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:28:00[39m
+2025-05-25 09:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 09:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 09:58:00:580 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 09:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 97ms[39m
+2025-05-25 10:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:30:00[39m
+2025-05-25 10:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 10:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 10:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:32:00[39m
+2025-05-25 10:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:02:00:20 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:02:00:20 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 10:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:34:00[39m
+2025-05-25 10:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:04:00:40 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:04:00:40 [32minfo[39m: [32mJob 'smartCheckServers' completed in 51ms[39m
+2025-05-25 10:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:36:00[39m
+2025-05-25 10:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 10:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:38:00[39m
+2025-05-25 10:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:08:00:80 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 55ms[39m
+2025-05-25 10:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:40:00[39m
+2025-05-25 10:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 10:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:42:00[39m
+2025-05-25 10:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 75ms[39m
+2025-05-25 10:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:44:00[39m
+2025-05-25 10:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:14:00:140 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:14:00:140 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 10:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:46:00[39m
+2025-05-25 10:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 10:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:50:00[39m
+2025-05-25 10:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:20:00:200 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 83ms[39m
+2025-05-25 10:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:52:00[39m
+2025-05-25 10:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:22:00:220 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:22:00:220 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 10:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:54:00[39m
+2025-05-25 10:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:24:00:240 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 10:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:56:00[39m
+2025-05-25 10:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:26:00:260 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 10:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 15:58:00[39m
+2025-05-25 10:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:28:00:280 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:28:00:280 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 57ms[39m
+2025-05-25 10:30:01:301 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:00:01[39m
+2025-05-25 10:30:01:301 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:30:01:301 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:30:01:301 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 10:30:01:301 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:30:01:301 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 10:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:02:00[39m
+2025-05-25 10:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:32:00:320 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:32:00:320 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 10:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:04:00[39m
+2025-05-25 10:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:34:00:340 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2025-05-25 10:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:06:00[39m
+2025-05-25 10:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:36:00:360 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:36:01:361 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:36:01:361 [32minfo[39m: [32mJob 'smartCheckServers' completed in 74ms[39m
+2025-05-25 10:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:08:00[39m
+2025-05-25 10:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:38:00:380 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 141ms[39m
+2025-05-25 10:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:10:00[39m
+2025-05-25 10:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:40:00:400 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:40:00:400 [32minfo[39m: [32mJob 'smartCheckServers' completed in 88ms[39m
+2025-05-25 10:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:12:00[39m
+2025-05-25 10:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:42:00:420 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 76ms[39m
+2025-05-25 10:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:14:00[39m
+2025-05-25 10:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:44:00:440 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:44:00:440 [32minfo[39m: [32mJob 'smartCheckServers' completed in 216ms[39m
+2025-05-25 10:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 10:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:16:00[39m
+2025-05-25 10:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:46:00:460 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:46:00:460 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 171ms[39m
+2025-05-25 10:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:18:00[39m
+2025-05-25 10:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:48:00:480 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 86ms[39m
+2025-05-25 10:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:20:00[39m
+2025-05-25 10:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:50:00:500 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 10:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:22:00[39m
+2025-05-25 10:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:52:00:520 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:52:00:520 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:52:00:520 [32minfo[39m: [32mJob 'smartCheckServers' completed in 120ms[39m
+2025-05-25 10:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:24:00[39m
+2025-05-25 10:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:54:01:541 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:54:01:541 [32minfo[39m: [32mJob 'smartCheckServers' completed in 84ms[39m
+2025-05-25 10:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:26:00[39m
+2025-05-25 10:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:56:00:560 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 54ms[39m
+2025-05-25 10:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:28:00[39m
+2025-05-25 10:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 10:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 10:58:00:580 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 10:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 11:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:30:00[39m
+2025-05-25 11:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 11:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 11:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:32:00[39m
+2025-05-25 11:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:02:00:20 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:02:00:20 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 11:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:34:00[39m
+2025-05-25 11:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:04:00:40 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:04:00:40 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 11:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:36:00[39m
+2025-05-25 11:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 78ms[39m
+2025-05-25 11:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:38:00[39m
+2025-05-25 11:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:08:01:81 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:08:01:81 [32minfo[39m: [32mJob 'smartCheckServers' completed in 90ms[39m
+2025-05-25 11:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:40:00[39m
+2025-05-25 11:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 315ms[39m
+2025-05-25 11:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:42:00[39m
+2025-05-25 11:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 69ms[39m
+2025-05-25 11:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:44:00[39m
+2025-05-25 11:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:14:00:140 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:14:00:140 [32minfo[39m: [32mJob 'smartCheckServers' completed in 111ms[39m
+2025-05-25 11:15:01:151 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 11:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:46:00[39m
+2025-05-25 11:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 167ms[39m
+2025-05-25 11:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:48:00[39m
+2025-05-25 11:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 85ms[39m
+2025-05-25 11:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:50:00[39m
+2025-05-25 11:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:20:00:200 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 85ms[39m
+2025-05-25 11:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:52:00[39m
+2025-05-25 11:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:22:00:220 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:22:00:220 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-25 11:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:54:00[39m
+2025-05-25 11:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:24:00:240 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2025-05-25 11:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:56:00[39m
+2025-05-25 11:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:26:00:260 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-25 11:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 16:58:00[39m
+2025-05-25 11:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:28:00:280 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:28:00:280 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 11:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:00:00[39m
+2025-05-25 11:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 46ms[39m
+2025-05-25 11:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 11:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:02:00[39m
+2025-05-25 11:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:32:00:320 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:32:00:320 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-25 11:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:04:00[39m
+2025-05-25 11:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:34:00:340 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-25 11:36:01:361 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:06:01[39m
+2025-05-25 11:36:01:361 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:36:01:361 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:36:01:361 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:36:01:361 [32minfo[39m: [32mJob 'smartCheckServers' completed in 155ms[39m
+2025-05-25 11:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:08:00[39m
+2025-05-25 11:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:38:00:380 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-25 11:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:10:00[39m
+2025-05-25 11:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:40:00:400 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:40:00:400 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-25 11:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:12:00[39m
+2025-05-25 11:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:42:01:421 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:42:01:421 [32minfo[39m: [32mJob 'smartCheckServers' completed in 164ms[39m
+2025-05-25 11:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:14:00[39m
+2025-05-25 11:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:44:00:440 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:44:00:440 [32minfo[39m: [32mJob 'smartCheckServers' completed in 40ms[39m
+2025-05-25 11:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 11:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:16:00[39m
+2025-05-25 11:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:46:00:460 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:46:00:460 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-25 11:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:18:00[39m
+2025-05-25 11:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:48:00:480 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2025-05-25 11:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:20:00[39m
+2025-05-25 11:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:50:00:500 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-25 11:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:22:00[39m
+2025-05-25 11:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:52:00:520 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:52:00:520 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:52:00:520 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-25 11:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:24:00[39m
+2025-05-25 11:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:54:00:540 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:54:00:540 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-25 11:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:26:00[39m
+2025-05-25 11:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:56:00:560 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-25 11:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:28:00[39m
+2025-05-25 11:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 11:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 11:58:00:580 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 11:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 39ms[39m
+2025-05-25 12:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:30:00[39m
+2025-05-25 12:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 37ms[39m
+2025-05-25 12:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 12:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:32:00[39m
+2025-05-25 12:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:02:00:20 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:02:00:20 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-25 12:04:01:41 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:34:01[39m
+2025-05-25 12:04:01:41 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:04:01:41 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:04:01:41 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:04:01:41 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2025-05-25 12:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:36:00[39m
+2025-05-25 12:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 162ms[39m
+2025-05-25 12:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:38:00[39m
+2025-05-25 12:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:08:00:80 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 55ms[39m
+2025-05-25 12:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:40:00[39m
+2025-05-25 12:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 35ms[39m
+2025-05-25 12:12:01:121 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:42:01[39m
+2025-05-25 12:12:01:121 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:12:01:121 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:12:01:121 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:12:01:121 [32minfo[39m: [32mJob 'smartCheckServers' completed in 203ms[39m
+2025-05-25 12:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:44:00[39m
+2025-05-25 12:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:14:00:140 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:14:00:140 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-25 12:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 12:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:46:00[39m
+2025-05-25 12:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 80ms[39m
+2025-05-25 12:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:48:00[39m
+2025-05-25 12:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:18:01:181 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:18:01:181 [32minfo[39m: [32mJob 'smartCheckServers' completed in 544ms[39m
+2025-05-25 12:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:50:00[39m
+2025-05-25 12:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:20:00:200 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 408ms[39m
+2025-05-25 12:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:52:00[39m
+2025-05-25 12:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:22:00:220 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:22:00:220 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2025-05-25 12:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:54:00[39m
+2025-05-25 12:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:24:00:240 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2025-05-25 12:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:56:00[39m
+2025-05-25 12:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:26:00:260 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 12:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 17:58:00[39m
+2025-05-25 12:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:28:00:280 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:28:00:280 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 12:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:00:00[39m
+2025-05-25 12:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 12:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 69ms[39m
+2025-05-25 12:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:02:00[39m
+2025-05-25 12:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:32:00:320 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:32:00:320 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 58ms[39m
+2025-05-25 12:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:04:00[39m
+2025-05-25 12:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:34:01:341 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:34:01:341 [32minfo[39m: [32mJob 'smartCheckServers' completed in 166ms[39m
+2025-05-25 12:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:06:00[39m
+2025-05-25 12:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:36:00:360 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:36:00:360 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:36:00:360 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2025-05-25 12:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:08:00[39m
+2025-05-25 12:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:38:00:380 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 74ms[39m
+2025-05-25 12:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:10:00[39m
+2025-05-25 12:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:40:01:401 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:40:01:401 [32minfo[39m: [32mJob 'smartCheckServers' completed in 88ms[39m
+2025-05-25 12:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:12:00[39m
+2025-05-25 12:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:42:00:420 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 71ms[39m
+2025-05-25 12:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:14:00[39m
+2025-05-25 12:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:44:00:440 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:44:00:440 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2025-05-25 12:45:01:451 [34mdebug[39m: [34m💚 System health OK[39m
+2025-05-25 12:46:01:461 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:16:01[39m
+2025-05-25 12:46:01:461 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:46:01:461 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:46:01:461 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:46:01:461 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2025-05-25 12:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:18:00[39m
+2025-05-25 12:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:48:00:480 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 83ms[39m
+2025-05-25 12:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:20:00[39m
+2025-05-25 12:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:50:00:500 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2025-05-25 12:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:22:00[39m
+2025-05-25 12:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:52:00:520 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:52:00:520 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:52:00:520 [32minfo[39m: [32mJob 'smartCheckServers' completed in 425ms[39m
+2025-05-25 12:54:01:541 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:24:01[39m
+2025-05-25 12:54:01:541 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:54:01:541 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:54:01:541 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:54:01:541 [32minfo[39m: [32mJob 'smartCheckServers' completed in 198ms[39m
+2025-05-25 12:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode) - 18:26:00[39m
+2025-05-25 12:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 12:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 12:56:00:560 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 12:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2025-05-25 14:39:00:390 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode) - 20:09:00[39m
+2025-05-25 14:39:00:390 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2025-05-25 14:39:00:390 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2025-05-25 14:39:00:390 [32minfo[39m: [32mNo servers need checking right now[39m
+2025-05-25 14:39:00:390 [32minfo[39m: [32mJob 'smartCheckServers' completed in 38ms[39m
+2025-05-25 20:10:29:1029 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2025-05-25 20:10:29:1029 [32minfo[39m: [32m🕛 Initializing SMART cron jobs with MIDNIGHT CLEANUP...[39m
+2025-05-25 14:40:29:4029 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2025-05-25 14:40:29:4029 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2025-05-25 14:40:29:4029 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2025-05-25 14:40:29:4029 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2025-05-25 14:40:29:4029 [32minfo[39m: [32m🌟 Smart Monitoring System with Midnight Cleanup Started[39m
+2025-05-25 14:40:29:4029 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2025-05-25 14:40:29:4029 [32minfo[39m: [32m📊 Current Data Status:[39m
+2025-05-25 14:40:29:4029 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2025-05-25 14:40:29:4029 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2025-05-25 14:40:29:4029 [32minfo[39m: [32m✅ All smart cron jobs with midnight cleanup initialized successfully[39m
+2025-05-25 14:40:29:4029 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
