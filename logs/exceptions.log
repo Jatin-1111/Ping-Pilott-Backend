@@ -1,0 +1,53 @@
+2026-01-25 20:45:49:4549 [31merror[39m: [31muncaughtException: serverId is not defined[39m
+[31mReferenceError: serverId is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/controllers/serverController.js:24:43[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)[39m
+[31m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:669:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)[39m
+2026-01-25 20:46:50:4650 [31merror[39m: [31muncaughtException: serverId is not defined[39m
+[31mReferenceError: serverId is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/controllers/serverController.js:24:43[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)[39m
+[31m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:669:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)[39m
+2026-01-25 20:47:27:4727 [31merror[39m: [31muncaughtException: serverId is not defined[39m
+[31mReferenceError: serverId is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/controllers/serverController.js:24:43[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:669:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)[39m
+2026-01-25 20:48:34:4834 [31merror[39m: [31muncaughtException: serverId is not defined[39m
+[31mReferenceError: serverId is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/controllers/serverController.js:24:43[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)[39m
+[31m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:669:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)[39m
+2026-01-25 20:49:12:4912 [31merror[39m: [31muncaughtException: serverId is not defined[39m
+[31mReferenceError: serverId is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/controllers/serverController.js:24:43[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:669:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)[39m
+2026-01-25 20:50:13:5013 [31merror[39m: [31muncaughtException: serverId is not defined[39m
+[31mReferenceError: serverId is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/controllers/serverController.js:24:43[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:669:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)[39m
+2026-01-25 20:51:00:510 [31merror[39m: [31muncaughtException: serverId is not defined[39m
+[31mReferenceError: serverId is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/controllers/serverController.js:24:43[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)[39m
+[31m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:669:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)[39m
+2026-01-25 20:51:13:5113 [31merror[39m: [31muncaughtException: serverId is not defined[39m
+[31mReferenceError: serverId is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/controllers/serverController.js:24:43[39m
+[31m    at ModuleJob.run (node:internal/modules/esm/module_job:371:25)[39m
+[31m    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+[31m    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:669:26)[39m
+[31m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)[39m

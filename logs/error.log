@@ -71,3 +71,48 @@
 2025-05-27 17:41:59:4159 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
 2025-05-27 17:42:22:4222 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
 2025-05-27 17:45:20:4520 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2026-01-25 19:22:17:2217 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2026-01-25 19:29:31:2931 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2026-01-25 19:38:53:3853 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2026-01-25 19:49:23:4923 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2026-01-25 20:54:00:540 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 20:54:00:540 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 20:57:00:570 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 20:57:00:570 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:00:00:00 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:00:00:00 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:03:00:30 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:03:00:30 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:06:00:60 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:06:00:60 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:09:00:90 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:09:00:90 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:12:00:120 [31merror[39m: [31m❌ Smart monitoring error: getServersWithPriority is not defined[39m
+2026-01-25 21:12:00:120 [31merror[39m: [31mError executing job 'smartCheckServers' (1ms): getServersWithPriority is not defined[39m
+2026-01-25 21:12:00:120 [31merror[39m: [31m❌ Monitoring error (normal): getServersWithPriority is not defined[39m
+2026-01-25 21:15:00:150 [31merror[39m: [31m❌ Smart monitoring error: getServersWithPriority is not defined[39m
+2026-01-25 21:15:00:150 [31merror[39m: [31mError executing job 'smartCheckServers' (1ms): getServersWithPriority is not defined[39m
+2026-01-25 21:15:00:150 [31merror[39m: [31m❌ Monitoring error (normal): getServersWithPriority is not defined[39m
+2026-01-25 21:18:00:180 [31merror[39m: [31m❌ Smart monitoring error: getISTTime is not defined[39m
+2026-01-25 21:18:00:180 [31merror[39m: [31mError executing job 'smartCheckServers' (1ms): getISTTime is not defined[39m
+2026-01-25 21:18:00:180 [31merror[39m: [31m❌ Monitoring error (normal): getISTTime is not defined[39m
+2026-01-25 21:21:00:210 [31merror[39m: [31m❌ Smart monitoring error: getISTTime is not defined[39m
+2026-01-25 21:21:00:210 [31merror[39m: [31mError executing job 'smartCheckServers' (1ms): getISTTime is not defined[39m
+2026-01-25 21:21:00:210 [31merror[39m: [31m❌ Monitoring error (normal): getISTTime is not defined[39m
+2026-01-25 21:30:00:300 [31merror[39m: [31m❌ Smart monitoring error: IST_CONFIG is not defined[39m
+2026-01-25 21:30:00:300 [31merror[39m: [31mError executing job 'smartCheckServers' (101ms): IST_CONFIG is not defined[39m
+2026-01-25 21:30:00:300 [31merror[39m: [31m❌ Monitoring error (normal): IST_CONFIG is not defined[39m
+2026-01-25 21:33:00:330 [31merror[39m: [31m❌ Smart monitoring error: IST_CONFIG is not defined[39m
+2026-01-25 21:33:00:330 [31merror[39m: [31mError executing job 'smartCheckServers' (103ms): IST_CONFIG is not defined[39m
+2026-01-25 21:33:00:330 [31merror[39m: [31m❌ Monitoring error (normal): IST_CONFIG is not defined[39m
+2026-01-25 21:36:01:361 [31merror[39m: [31m❌ Smart monitoring error: IST_CONFIG is not defined[39m
+2026-01-25 21:36:01:361 [31merror[39m: [31mError executing job 'smartCheckServers' (58ms): IST_CONFIG is not defined[39m
+2026-01-25 21:36:01:361 [31merror[39m: [31m❌ Monitoring error (normal): IST_CONFIG is not defined[39m
+2026-01-25 21:39:01:391 [31merror[39m: [31m❌ Smart monitoring error: IST_CONFIG is not defined[39m
+2026-01-25 21:39:01:391 [31merror[39m: [31mError executing job 'smartCheckServers' (48ms): IST_CONFIG is not defined[39m
+2026-01-25 21:39:01:391 [31merror[39m: [31m❌ Monitoring error (normal): IST_CONFIG is not defined[39m
+2026-01-25 21:42:00:420 [31merror[39m: [31m❌ Smart monitoring error: processServerSmartIST is not defined[39m
+2026-01-25 21:42:00:420 [31merror[39m: [31mError executing job 'smartCheckServers' (101ms): processServerSmartIST is not defined[39m
+2026-01-25 21:42:00:420 [31merror[39m: [31m❌ Monitoring error (normal): processServerSmartIST is not defined[39m
+2026-01-25 21:50:01:501 [31merror[39m: [31mError: moment is not defined[39m
+2026-01-25 21:51:02:512 [31merror[39m: [31mError: moment is not defined[39m

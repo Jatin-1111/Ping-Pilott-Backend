@@ -1,68 +1,48 @@
-// tasks/index.js - FIXED CRONJOB CREATION
+// tasks/index.js - Cron Jobs (System Time)
 
 import dotenv from 'dotenv';
 dotenv.config();
 
 import cron from 'node-cron';
 import logger from '../utils/logger.js';
-import istDataRetention from './dataRetention.js';
+import istDataRetention from './dataRetention.js'; // You might want to rename this file too eventually
 import smartCheckServers from './checkServers.js';
 import jobQueue from '../utils/jobQueue.js';
 import CronJob from '../models/CronJob.js';
-import moment from 'moment-timezone';
 
-// PURE IST CONFIGURATION - NO UTC/OTHER TIMEZONE MIXING
-const IST_CONFIG = {
-    TIMEZONE: 'Asia/Kolkata',
+// CONFIGURATION
+const CONFIG = {
     DATA_RETENTION_MODE: process.env.DATA_RETENTION_MODE || 'aggressive',
 
-    // Midnight IST = 18:30 UTC (but we don't care about UTC anymore)
-    MIDNIGHT_CRON: '0 0 * * *', // This runs at IST midnight, not UTC
+    // MIDNIGHT CRON (Runs at 00:00 system time)
+    MIDNIGHT_CRON: '0 0 * * *',
 
-    // Peak hours in IST
+    // Peak hours (server time)
     PEAK_HOURS: {
-        start: parseInt(process.env.PEAK_HOURS_START) || 9,  // 9 AM IST
-        end: parseInt(process.env.PEAK_HOURS_END) || 18      // 6 PM IST
+        start: parseInt(process.env.PEAK_HOURS_START) || 9,
+        end: parseInt(process.env.PEAK_HOURS_END) || 18
     },
 
     SMART_MONITORING_ENABLED: process.env.SMART_MONITORING_ENABLED === 'true'
 };
 
-// Set system timezone to IST everywhere
-process.env.TZ = 'Asia/Kolkata';
-moment.tz.setDefault('Asia/Kolkata');
-
 /**
- * Get current IST time - ONLY IST
+ * Create CronJob record (system time)
  */
-const getISTTime = () => {
-    return moment().tz(IST_CONFIG.TIMEZONE);
-};
-
-/**
- * FIXED: Create CronJob with all required IST fields
- */
-const createISTCronJob = (name) => {
-    const now = new Date();
-    const istMoment = getISTTime();
-
+const createCronJob = (name) => {
     return new CronJob({
         name,
         status: 'running',
-        startedAt: now,
-        timezone: IST_CONFIG.TIMEZONE,
-        istDate: istMoment.format('YYYY-MM-DD'),
-        istHour: istMoment.hour(),
-        istStartTime: istMoment.format('HH:mm:ss')
+        startedAt: new Date()
     });
 };
 
 /**
- * Initialize PURE IST cron jobs
+ * Initialize cron jobs
  */
 export const initCronJobs = async () => {
     try {
-        logger.info('🇮🇳 Initializing PURE IST cron jobs...');
+        logger.info('Initializing cron jobs...');
 
         // Initialize job queue with all tasks
         jobQueue.add('smartCheckServers', smartCheckServers.checkAllServersIntelligently, 1);
@@ -71,69 +51,67 @@ export const initCronJobs = async () => {
         jobQueue.add('emergencyCleanup', istDataRetention.runEmergencyCleanup, 3);
 
         // Log system info
-        await logISTSystemInfo();
-        await logCleanupRecommendations();
+        await logSystemInfo();
 
         // Start monitoring based on configuration
-        if (IST_CONFIG.SMART_MONITORING_ENABLED) {
-            startISTAdaptiveMonitoring();
+        if (CONFIG.SMART_MONITORING_ENABLED) {
+            startAdaptiveMonitoring();
         } else {
-            startISTBasicMonitoring();
+            startBasicMonitoring();
         }
 
-        // THE MAIN EVENT: IST Midnight cleanup 🕛
-        startISTMidnightCleanup();
+        // Midnight cleanup
+        startMidnightCleanup();
 
-        // Health monitoring in IST
-        startISTHealthMonitoring();
+        // Health monitoring
+        startHealthMonitoring();
 
-        logger.info('✅ All PURE IST cron jobs initialized successfully');
+        logger.info('✅ All cron jobs initialized successfully');
 
     } catch (error) {
-        logger.error(`❌ Error initializing IST cron jobs: ${error.message}`);
+        logger.error(`❌ Error initializing cron jobs: ${error.message}`);
         throw error;
     }
 };
 
 /**
- * IST MIDNIGHT CLEANUP - Runs at exactly 00:00 IST every day
- * NO MORE UTC CONFUSION! 
+ * MIDNIGHT CLEANUP - Runs at 00:00 server time
  */
-const startISTMidnightCleanup = () => {
-    // Set timezone explicitly for this cron job
-    cron.schedule(IST_CONFIG.MIDNIGHT_CRON, async () => {
+const startMidnightCleanup = () => {
+    cron.schedule(CONFIG.MIDNIGHT_CRON, async () => {
         const jobName = getDataRetentionJobName();
 
-        // FIXED: Create CronJob with all required fields
-        const cronJobRecord = createISTCronJob(jobName);
+        const cronJobRecord = createCronJob(jobName);
 
         try {
             await cronJobRecord.save();
+        } catch (saveError) {
+            logger.error(`Failed to save cron job record: ${saveError.message}`);
+            // Continue execution even if logging fails
+        }
 
-            const istTime = getISTTime();
-            logger.info(`💀 Starting IST MIDNIGHT CLEANUP at ${istTime.format('YYYY-MM-DD HH:mm:ss')} IST`);
-            logger.info(`🎯 Cleanup mode: ${IST_CONFIG.DATA_RETENTION_MODE.toUpperCase()}`);
+        try {
+            logger.info(`💀 Starting MIDNIGHT CLEANUP at ${new Date().toISOString()}`);
+            logger.info(`🎯 Cleanup mode: ${CONFIG.DATA_RETENTION_MODE.toUpperCase()}`);
 
             const result = await jobQueue.execute(jobName);
 
             if (result === false) {
-                logger.info('IST midnight cleanup already running, skipping');
+                logger.info('Midnight cleanup already running, skipping');
                 cronJobRecord.status = 'skipped';
             } else {
                 const duration = Date.now() - cronJobRecord.startedAt.getTime();
-                logger.info('✅ IST MIDNIGHT CLEANUP completed successfully!', {
+                logger.info('✅ MIDNIGHT CLEANUP completed successfully!', {
                     ...result,
                     duration,
-                    mode: IST_CONFIG.DATA_RETENTION_MODE,
-                    istCompletedAt: getISTTime().format('YYYY-MM-DD HH:mm:ss')
+                    mode: CONFIG.DATA_RETENTION_MODE
                 });
 
                 cronJobRecord.status = 'completed';
                 cronJobRecord.result = {
                     ...result,
                     duration,
-                    mode: IST_CONFIG.DATA_RETENTION_MODE,
-                    istCompletedAt: getISTTime().format('YYYY-MM-DD HH:mm:ss')
+                    mode: CONFIG.DATA_RETENTION_MODE
                 };
 
                 // Log space savings if available
@@ -143,12 +121,12 @@ const startISTMidnightCleanup = () => {
             }
 
         } catch (error) {
-            logger.error(`💥 IST MIDNIGHT CLEANUP ERROR: ${error.message}`);
+            logger.error(`💥 MIDNIGHT CLEANUP ERROR: ${error.message}`);
             cronJobRecord.status = 'failed';
             cronJobRecord.error = error.message;
 
             // Try emergency cleanup if regular cleanup fails
-            if (IST_CONFIG.DATA_RETENTION_MODE !== 'emergency') {
+            if (CONFIG.DATA_RETENTION_MODE !== 'emergency') {
                 logger.warn('🚨 Attempting emergency cleanup as fallback...');
                 try {
                     const emergencyResult = await jobQueue.execute('emergencyCleanup');
@@ -160,36 +138,47 @@ const startISTMidnightCleanup = () => {
 
         } finally {
             cronJobRecord.completedAt = new Date();
-            try {
-                await cronJobRecord.save();
-            } catch (dbError) {
-                logger.error(`Database error saving IST midnight cleanup job: ${dbError.message}`);
+
+            // Try to save with retry
+            let saveAttempts = 0;
+            const maxAttempts = 3;
+
+            while (saveAttempts < maxAttempts) {
+                try {
+                    await cronJobRecord.save();
+                    break; // Success, exit loop
+                } catch (dbError) {
+                    saveAttempts++;
+                    logger.error(`Database error saving midnight cleanup job (attempt ${saveAttempts}/${maxAttempts}): ${dbError.message}`);
+
+                    if (saveAttempts < maxAttempts) {
+                        // Wait before retry
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                    }
+                }
             }
         }
-    }, {
-        scheduled: true,
-        timezone: IST_CONFIG.TIMEZONE // CRITICAL: This ensures cron runs in IST
     });
 
-    logger.info(`🕛 IST Midnight cleanup scheduled for 00:00 IST daily (${IST_CONFIG.DATA_RETENTION_MODE} mode)`);
+    logger.info(`🕛 Midnight cleanup scheduled for 00:00 daily (system time, ${CONFIG.DATA_RETENTION_MODE} mode)`);
 };
 
 /**
- * IST Adaptive monitoring based on IST time of day
+ * Adaptive monitoring based on server time of day
  */
-const startISTAdaptiveMonitoring = () => {
-    logger.info('🧠 Starting IST ADAPTIVE monitoring system...');
+const startAdaptiveMonitoring = () => {
+    logger.info('🧠 Starting ADAPTIVE monitoring system...');
 
-    // Run every minute but check IST time for decisions
+    // Run every minute
     cron.schedule('* * * * *', async () => {
-        const istNow = getISTTime();
-        const currentHour = istNow.hour();
-        const currentMinute = istNow.minute();
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
 
-        // Determine current period based on IST hours
+        // Determine current period based on hours
         let interval;
-        if (currentHour >= IST_CONFIG.PEAK_HOURS.start &&
-            currentHour < IST_CONFIG.PEAK_HOURS.end) {
+        if (currentHour >= CONFIG.PEAK_HOURS.start &&
+            currentHour < CONFIG.PEAK_HOURS.end) {
             interval = 'peak';
         } else if (currentHour >= 22 || currentHour < 6) {
             interval = 'quiet';
@@ -197,46 +186,37 @@ const startISTAdaptiveMonitoring = () => {
             interval = 'normal';
         }
 
-        const shouldRunCheck = shouldRunISTAdaptiveCheck(interval, currentMinute);
+        const shouldRunCheck = shouldRunAdaptiveCheck(interval, currentMinute);
 
         if (shouldRunCheck) {
-            await executeISTSmartMonitoring(interval, istNow);
+            await executeSmartMonitoring(interval);
         }
-    }, {
-        scheduled: true,
-        timezone: IST_CONFIG.TIMEZONE
     });
 };
 
 /**
- * Basic IST monitoring - fallback when smart monitoring is disabled
+ * Basic monitoring - fallback when smart monitoring is disabled
  */
-const startISTBasicMonitoring = () => {
-    logger.info('⚡ Starting IST BASIC monitoring system (every 3 minutes)...');
+const startBasicMonitoring = () => {
+    logger.info('⚡ Starting BASIC monitoring system (every 3 minutes)...');
 
     cron.schedule('*/3 * * * *', async () => {
-        const istNow = getISTTime();
-        await executeISTSmartMonitoring('basic', istNow);
-    }, {
-        scheduled: true,
-        timezone: IST_CONFIG.TIMEZONE
+        await executeSmartMonitoring('basic');
     });
 };
 
 /**
- * IST Health monitoring - check system health every 15 minutes in IST
+ * Health monitoring - check system health every 15 minutes
  */
-const startISTHealthMonitoring = () => {
+const startHealthMonitoring = () => {
     cron.schedule('*/15 * * * *', async () => {
-        const istNow = getISTTime();
-
         try {
-            const healthStats = await getISTSystemHealth();
+            const healthStats = await getSystemHealth();
 
             if (healthStats.issues.length > 0) {
-                logger.warn('⚠️ IST System health issues detected:', {
+                logger.warn('⚠️ System health issues detected:', {
                     issues: healthStats.issues,
-                    istTime: istNow.format('YYYY-MM-DD HH:mm:ss')
+                    time: new Date().toISOString()
                 });
 
                 // Auto-trigger emergency cleanup if database is too large
@@ -249,52 +229,51 @@ const startISTHealthMonitoring = () => {
                     }
                 }
             } else {
-                logger.debug('💚 IST System health OK', {
+                logger.debug('💚 System health OK', {
                     memory: `${Math.round(healthStats.memoryUsage.heapUsed / 1024 / 1024)}MB`,
-                    db: `${healthStats.dbSizeMB}MB`,
-                    istTime: istNow.format('YYYY-MM-DD HH:mm:ss')
+                    db: `${healthStats.dbSizeMB}MB`
                 });
             }
 
         } catch (error) {
-            logger.error(`IST Health monitoring error: ${error.message}`);
+            logger.error(`Health monitoring error: ${error.message}`);
         }
-    }, {
-        scheduled: true,
-        timezone: IST_CONFIG.TIMEZONE
     });
 };
 
 /**
- * Determine if we should run a check based on IST adaptive schedule
+ * Determine if we should run a check based on adaptive schedule
  */
-const shouldRunISTAdaptiveCheck = (interval, currentMinute) => {
+const shouldRunAdaptiveCheck = (interval, currentMinute) => {
     switch (interval) {
         case 'peak':
-            return currentMinute % 2 === 0; // Every 2 minutes during peak IST hours
+            return currentMinute % 2 === 0; // Every 2 minutes during peak hours
         case 'normal':
-            return currentMinute % 3 === 0; // Every 3 minutes during normal IST hours
+            return currentMinute % 3 === 0; // Every 3 minutes during normal hours
         case 'quiet':
-            return currentMinute % 5 === 0; // Every 5 minutes during quiet IST hours
+            return currentMinute % 5 === 0; // Every 5 minutes during quiet hours
         default:
             return currentMinute % 3 === 0;
     }
 };
 
 /**
- * Execute smart monitoring with IST logging
+ * Execute smart monitoring
  */
-const executeISTSmartMonitoring = async (interval, istTime) => {
+const executeSmartMonitoring = async (interval) => {
     const jobName = 'smartCheckServers';
-
-    // FIXED: Create CronJob with all required fields
-    const cronJobRecord = createISTCronJob(jobName);
+    const cronJobRecord = createCronJob(jobName);
 
     try {
         await cronJobRecord.save();
+    } catch (saveError) {
+        logger.error(`Failed to save monitoring job record: ${saveError.message}`);
+        // Continue execution even if logging fails
+    }
 
+    try {
         if (interval !== 'basic') {
-            logger.debug(`🔄 IST Smart monitoring (${interval} mode) - ${istTime.format('HH:mm:ss')}`);
+            logger.debug(`🔄 Smart monitoring (${interval} mode)`);
         }
 
         const result = await jobQueue.execute(jobName);
@@ -306,13 +285,12 @@ const executeISTSmartMonitoring = async (interval, istTime) => {
 
             // Only log detailed results for significant activity
             if (result.checked > 0 || result.alertsSent > 0) {
-                logger.info(`✅ IST Monitoring (${interval}) completed`, {
+                logger.info(`✅ Monitoring (${interval}) completed`, {
                     checked: result.checked,
                     up: result.up,
                     down: result.down,
                     alerts: result.alertsSent,
-                    duration: `${duration}ms`,
-                    istTime: istTime.format('HH:mm:ss')
+                    duration: `${duration}ms`
                 });
             }
 
@@ -320,48 +298,61 @@ const executeISTSmartMonitoring = async (interval, istTime) => {
             cronJobRecord.result = {
                 ...result,
                 interval,
-                duration,
-                istCompletedAt: getISTTime().format('YYYY-MM-DD HH:mm:ss')
+                duration
             };
         }
 
     } catch (error) {
-        logger.error(`❌ IST Monitoring error (${interval}): ${error.message}`);
+        logger.error(`❌ Monitoring error (${interval}): ${error.message}`);
         cronJobRecord.status = 'failed';
         cronJobRecord.error = error.message;
 
     } finally {
         cronJobRecord.completedAt = new Date();
-        try {
-            await cronJobRecord.save();
-        } catch (dbError) {
-            logger.error(`Database error saving IST monitoring job: ${dbError.message}`);
+
+        // Try to save with retry
+        let saveAttempts = 0;
+        const maxAttempts = 3;
+
+        while (saveAttempts < maxAttempts) {
+            try {
+                await cronJobRecord.save();
+                break; // Success, exit loop
+            } catch (dbError) {
+                saveAttempts++;
+                logger.error(`Database error saving monitoring job (attempt ${saveAttempts}/${maxAttempts}): ${dbError.message}`);
+
+                if (saveAttempts < maxAttempts) {
+                    // Wait before retry
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            }
         }
     }
 };
 
 /**
- * Get IST system health statistics
+ * Get system health statistics
  */
-const getISTSystemHealth = async () => {
+const getSystemHealth = async () => {
     const health = {
         issues: [],
         activeJobs: 0,
         dbSizeMB: 0,
         memoryUsage: process.memoryUsage(),
-        istTime: getISTTime().format('YYYY-MM-DD HH:mm:ss')
+        time: new Date().toISOString()
     };
 
     try {
-        // Check recent job failures
-        const oneHourAgoIST = getISTTime().subtract(1, 'hour').toDate();
+        // Check recent job failures (last hour)
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
         const recentFailures = await CronJob.countDocuments({
-            startedAt: { $gte: oneHourAgoIST },
+            startedAt: { $gte: oneHourAgo },
             status: 'failed'
         });
 
         if (recentFailures > 5) {
-            health.issues.push(`${recentFailures} job failures in the last IST hour`);
+            health.issues.push(`${recentFailures} job failures in the last hour`);
         }
 
         // Check memory usage
@@ -385,7 +376,7 @@ const getISTSystemHealth = async () => {
         }
 
     } catch (error) {
-        health.issues.push(`IST Health check error: ${error.message}`);
+        health.issues.push(`Health check error: ${error.message}`);
     }
 
     return health;
@@ -395,7 +386,7 @@ const getISTSystemHealth = async () => {
  * Get the appropriate data retention job name based on configuration
  */
 const getDataRetentionJobName = () => {
-    switch (IST_CONFIG.DATA_RETENTION_MODE) {
+    switch (CONFIG.DATA_RETENTION_MODE) {
         case 'selective':
             return 'selectiveDataRetention';
         case 'emergency':
@@ -407,63 +398,57 @@ const getDataRetentionJobName = () => {
 };
 
 /**
- * Log IST system information on startup
+ * Log system information on startup
  */
-const logISTSystemInfo = async () => {
+const logSystemInfo = async () => {
     try {
-        const istNow = getISTTime();
-
-        logger.info('🇮🇳 PURE IST Monitoring System Started', {
-            istTime: istNow.format('YYYY-MM-DD HH:mm:ss'),
-            timezone: IST_CONFIG.TIMEZONE,
-            dataRetentionMode: IST_CONFIG.DATA_RETENTION_MODE,
-            smartMonitoring: IST_CONFIG.SMART_MONITORING_ENABLED,
-            peakHoursIST: `${IST_CONFIG.PEAK_HOURS.start}:00 - ${IST_CONFIG.PEAK_HOURS.end}:00 IST`,
-            midnightCleanup: '00:00 IST daily',
+        logger.info('🚀 Monitoring System Started', {
+            time: new Date().toISOString(),
+            dataRetentionMode: CONFIG.DATA_RETENTION_MODE,
+            smartMonitoring: CONFIG.SMART_MONITORING_ENABLED,
+            peakHours: `${CONFIG.PEAK_HOURS.start}:00 - ${CONFIG.PEAK_HOURS.end}:00`,
+            midnightCleanup: '00:00 daily (system time)',
             nodeVersion: process.version,
-            platform: process.platform,
-            processTimezone: process.env.TZ
+            platform: process.platform
         });
 
     } catch (error) {
-        logger.error(`Error logging IST system info: ${error.message}`);
+        logger.error(`Error logging system info: ${error.message}`);
     }
 };
 
 /**
- * Log cleanup recommendations in IST
+ * Log cleanup recommendations
  */
 const logCleanupRecommendations = async () => {
     try {
         const recommendations = await istDataRetention.getCleanupRecommendations();
 
-        logger.info('📊 Current Data Status (IST):', {
+        logger.info('📊 Current Data Status:', {
             serverChecks: recommendations.current.serverChecks,
             cronJobs: recommendations.current.cronJobs,
             databaseSize: `${recommendations.current.totalSizeMB} MB`,
             recommendedMode: recommendations.recommendation,
-            currentMode: IST_CONFIG.DATA_RETENTION_MODE,
-            reasoning: recommendations.reasoning,
-            analyzedAtIST: recommendations.current.analyzedAt
+            currentMode: CONFIG.DATA_RETENTION_MODE,
+            reasoning: recommendations.reasoning
         });
 
-        if (recommendations.recommendation !== IST_CONFIG.DATA_RETENTION_MODE) {
+        if (recommendations.recommendation !== CONFIG.DATA_RETENTION_MODE) {
             logger.warn(`💡 Recommendation: Consider switching to '${recommendations.recommendation}' mode`);
             logger.warn(`Reason: ${recommendations.reasoning}`);
         }
 
     } catch (error) {
-        logger.error(`Error getting IST cleanup recommendations: ${error.message}`);
+        logger.error(`Error getting cleanup recommendations: ${error.message}`);
     }
 };
 
 /**
- * Graceful shutdown handler with IST logging
+ * Graceful shutdown handler
  */
 const gracefulShutdown = async () => {
-    const istTime = getISTTime();
-    logger.info('🛑 IST Graceful shutdown initiated...', {
-        istTime: istTime.format('YYYY-MM-DD HH:mm:ss')
+    logger.info('🛑 Graceful shutdown initiated...', {
+        time: new Date().toISOString()
     });
 
     try {
@@ -480,12 +465,12 @@ const gracefulShutdown = async () => {
             }
         }
 
-        logger.info('✅ IST Graceful shutdown completed', {
-            shutdownAtIST: getISTTime().format('YYYY-MM-DD HH:mm:ss')
+        logger.info('✅ Graceful shutdown completed', {
+            shutdownAt: new Date().toISOString()
         });
 
     } catch (error) {
-        logger.error(`Error during IST graceful shutdown: ${error.message}`);
+        logger.error(`Error during graceful shutdown: ${error.message}`);
     }
 };
 

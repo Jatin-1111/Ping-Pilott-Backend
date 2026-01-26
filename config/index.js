@@ -19,7 +19,6 @@ import cron from './cron.js';
 const config = {
     env: process.env.NODE_ENV || 'development',
     port: process.env.PORT || 5000,
-    timezone: process.env.TIMEZONE || 'UTC',
 
     // MongoDB settings
     db: {

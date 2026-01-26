@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import moment from 'moment-timezone';
 
 // Define a schema for the time window
 const timeWindowSchema = new mongoose.Schema({
@@ -158,18 +157,7 @@ const serverSchema = new mongoose.Schema({
             },
             message: 'Invalid phone format (must be 10 digits)'
         }
-    },
-    timezone: {
-        type: String,
-        default: 'Asia/Kolkata', // Default to Indian timezone
-        validate: {
-            validator: function (v) {
-                // Validate using moment-timezone's zone names
-                return moment.tz.names().includes(v);
-            },
-            message: props => `${props.value} is not a valid timezone!`
-        }
-    },
+    }
 }, {
     timestamps: true,
     toJSON: { virtuals: true },

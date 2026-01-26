@@ -16,6 +16,8 @@ router.patch('/me', [
     validate
 ], userController.updateUserProfile);
 
+router.delete('/me', userController.deleteMyAccount);
+
 router.patch('/change-password', [
     body('currentPassword').exists().withMessage('Current password is required'),
     body('newPassword').isLength({ min: 6 }).withMessage('New password must be at least 6 characters long'),

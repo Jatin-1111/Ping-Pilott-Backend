@@ -10,7 +10,14 @@ const router = express.Router();
 router.use(protect);
 router.use(authorize('admin'));
 
-// Get analytics data
+// Get analytics data (Aggregated)
 router.get('/', analyticsController.getAnalytics);
+
+// Granular Analytics Endpoints
+router.get('/kpi', analyticsController.getAnalyticsKPIs);
+router.get('/users', analyticsController.getAnalyticsUserGrowth);
+router.get('/servers', analyticsController.getAnalyticsServerStatus);
+router.get('/alerts', analyticsController.getAnalyticsAlerts);
+router.get('/response-time', analyticsController.getAnalyticsResponseTime);
 
 export default router;

@@ -2,7 +2,7 @@
 import SupportTicket from '../models/SupportTicket.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import logger from '../utils/logger.js';
-import { sendSupportNotificationEmail } from '../services/emailService.js';
+import { sendSupportNotificationEmail, sendResponseNotificationEmail } from '../services/emailService.js';
 
 /**
  * @desc    Create a new support ticket
@@ -154,10 +154,10 @@ export const addResponse = asyncHandler(async (req, res) => {
     try {
         if (isAdmin) {
             // Notify user of admin response
-            // Implementation in emailService.js
+            await sendResponseNotificationEmail(ticket, await import('../models/User.js').then(m => m.default.findById(ticket.userId)), false);
         } else {
             // Notify admin of user response
-            // Implementation in emailService.js
+            await sendResponseNotificationEmail(ticket, req.user, true);
         }
     } catch (error) {
         logger.error(`Failed to send response notification: ${error.message}`);
@@ -219,6 +219,9 @@ export const updateTicketStatus = asyncHandler(async (req, res) => {
 export const getAllTickets = asyncHandler(async (req, res) => {
     const status = req.query.status || 'all';
     const priority = req.query.priority || 'all';
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
     const filter = {};
     if (status !== 'all') {
@@ -229,14 +232,23 @@ export const getAllTickets = asyncHandler(async (req, res) => {
         filter.priority = priority;
     }
 
+    // Get total count for pagination metadata
+    const totalTickets = await SupportTicket.countDocuments(filter);
+    const totalPages = Math.ceil(totalTickets / limit);
+
     // Optimize query with lean()
     const tickets = await SupportTicket.find(filter)
         .sort({ priority: -1, createdAt: 1 })
+        .skip(skip)
+        .limit(limit)
         .lean();
 
     res.status(200).json({
         status: 'success',
         results: tickets.length,
+        totalPages,
+        currentPage: page,
+        totalTickets,
         data: {
             tickets
         }

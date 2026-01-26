@@ -1,4 +1,4 @@
-// tasks/checkServers.js - PURE IST TIMEZONE 🇮🇳
+// tasks/checkServers.js - Standardized Timezone Logic (UTC/System)
 
 import axios from 'axios';
 import net from 'net';
@@ -7,11 +7,9 @@ import logger from '../utils/logger.js';
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
 import { sendAlertEmail } from '../services/emailService.js';
-import moment from 'moment-timezone';
 
-// PURE IST CONFIGURATION
-const IST_CONFIG = {
-    TIMEZONE: 'Asia/Kolkata',
+// CONFIGURATION
+const CONFIG = {
     MAX_CONCURRENT: 20,
     TIMEOUT: 8000,
     RETRY_ATTEMPTS: 2,
@@ -23,27 +21,22 @@ const IST_CONFIG = {
     }
 };
 
-// Get IST time - NO OTHER TIMEZONES ALLOWED
-const getISTTime = () => {
-    return moment().tz(IST_CONFIG.TIMEZONE);
-};
-
 // Connection pools for efficiency
 const httpAgent = new (await import('http')).Agent({
     keepAlive: true,
     maxSockets: 50,
-    timeout: IST_CONFIG.TIMEOUT
+    timeout: CONFIG.TIMEOUT
 });
 
 const httpsAgent = new (await import('https')).Agent({
     keepAlive: true,
     maxSockets: 50,
-    timeout: IST_CONFIG.TIMEOUT,
+    timeout: CONFIG.TIMEOUT,
     rejectUnauthorized: false
 });
 
 const axiosInstance = axios.create({
-    timeout: IST_CONFIG.TIMEOUT,
+    timeout: CONFIG.TIMEOUT,
     httpAgent,
     httpsAgent,
     maxRedirects: 3,
@@ -57,26 +50,26 @@ const processingServers = new Set();
 const serverStats = new Map(); // Track success/failure rates
 
 /**
- * MAIN: Smart server checking with IST timestamps
+ * MAIN: Smart server checking
  */
 export const checkAllServersIntelligently = async () => {
     const startTime = Date.now();
-    const istNow = getISTTime();
+    const now = new Date();
 
-    logger.info('🧠 Starting SMART server monitoring in IST...', {
-        istTime: istNow.format('YYYY-MM-DD HH:mm:ss')
+    logger.info('🧠 Starting SMART server monitoring...', {
+        time: now.toISOString()
     });
 
     try {
-        // Get servers with intelligent prioritization (IST based)
-        const servers = await getServersWithISTBasedPriority();
+        // Get servers with intelligent prioritization
+        const servers = await getServersWithPriority();
 
         if (!servers?.length) {
-            logger.info('No servers need checking right now (IST based)');
+            logger.info('No servers need checking right now');
             return { total: 0, checked: 0, skipped: 0 };
         }
 
-        logger.info(`Found ${servers.length} servers to check (IST smart filtering applied)`);
+        logger.info(`Found ${servers.length} servers to check`);
 
         const stats = {
             total: servers.length,
@@ -91,11 +84,11 @@ export const checkAllServersIntelligently = async () => {
             highPriority: servers.filter(s => s.priority === 'high').length,
             mediumPriority: servers.filter(s => s.priority === 'medium').length,
             lowPriority: servers.filter(s => s.priority === 'low').length,
-            istStartTime: istNow.format('YYYY-MM-DD HH:mm:ss')
+            startTime: now.toISOString()
         };
 
         // Process in smart batches
-        await processServersBatchedIST(servers, stats);
+        await processServersBatched(servers, stats);
 
         // Calculate final metrics
         if (stats.checked > 0) {
@@ -103,26 +96,25 @@ export const checkAllServersIntelligently = async () => {
         }
 
         const duration = Date.now() - startTime;
-        stats.istCompletedTime = getISTTime().format('YYYY-MM-DD HH:mm:ss');
+        stats.completedTime = new Date().toISOString();
 
-        logger.info(`✅ IST Smart monitoring completed in ${duration}ms`, { stats });
+        logger.info(`✅ Smart monitoring completed in ${duration}ms`, { stats });
 
         return stats;
 
     } catch (error) {
-        logger.error(`❌ IST Smart monitoring error: ${error.message}`);
+        logger.error(`❌ Smart monitoring error: ${error.message}`);
         throw error;
     }
 };
 
 /**
- * Get servers with IST-based intelligent prioritization
+ * Get servers with intelligent prioritization (system time)
  */
-const getServersWithISTBasedPriority = async () => {
+const getServersWithPriority = async () => {
     const now = new Date();
-    const istNow = getISTTime();
 
-    // Smart query - only get servers that ACTUALLY need checking based on IST
+    // Smart query - only get servers that ACTUALLY need checking
     const query = {
         $or: [
             { lastChecked: null },
@@ -160,7 +152,6 @@ const getServersWithISTBasedPriority = async () => {
         lastChecked: 1,
         lastStatusChange: 1,
         monitoring: 1,
-        timezone: 1,
         error: 1,
         contactEmails: 1,
         responseTime: 1,
@@ -168,13 +159,13 @@ const getServersWithISTBasedPriority = async () => {
         uploadedPlan: 1
     }).lean();
 
-    // Filter by IST time windows and add priority
+    // Filter by time windows and add priority
     return servers
-        .filter(server => isInISTMonitoringWindow(server, istNow))
-        .filter(server => shouldMonitorServerIST(server))
+        .filter(server => isInMonitoringWindow(server, now))
+        .filter(server => shouldMonitorServer(server))
         .map(server => ({
             ...server,
-            priority: calculateISTBasedPriority(server)
+            priority: calculatePriority(server)
         }))
         .sort((a, b) => {
             // Sort by priority, then by last check time
@@ -190,23 +181,21 @@ const getServersWithISTBasedPriority = async () => {
 };
 
 /**
- * Calculate server priority based on IST factors
+ * Calculate server priority
  */
-const calculateISTBasedPriority = (server) => {
+const calculatePriority = (server) => {
     let score = 0;
 
     // Status-based priority
     if (server.status === 'down') score += 10;
     else if (server.status === 'unknown') score += 5;
 
-    // Recently changed status (IST based)
+    // Recently changed status (system time)
     if (server.lastStatusChange) {
-        const istStatusChange = moment(server.lastStatusChange).tz(IST_CONFIG.TIMEZONE);
-        const istNow = getISTTime();
-        const hoursIST = istNow.diff(istStatusChange, 'hours', true);
+        const hoursSinceChange = (Date.now() - new Date(server.lastStatusChange).getTime()) / (1000 * 60 * 60);
 
-        if (hoursIST < 1) score += 8;
-        else if (hoursIST < 6) score += 4;
+        if (hoursSinceChange < 1) score += 8;
+        else if (hoursSinceChange < 6) score += 4;
     }
 
     // Never checked
@@ -227,9 +216,9 @@ const calculateISTBasedPriority = (server) => {
 };
 
 /**
- * Process servers in intelligent batches with IST logging
+ * Process servers in intelligent batches
  */
-const processServersBatchedIST = async (servers, stats) => {
+const processServersBatched = async (servers, stats) => {
     // Group by priority
     const priorityGroups = {
         high: servers.filter(s => s.priority === 'high'),
@@ -241,10 +230,10 @@ const processServersBatchedIST = async (servers, stats) => {
     for (const [priority, serverList] of Object.entries(priorityGroups)) {
         if (!serverList.length) continue;
 
-        const batchSize = priority === 'high' ? IST_CONFIG.BATCH_SIZE * 2 : IST_CONFIG.BATCH_SIZE;
+        const batchSize = priority === 'high' ? CONFIG.BATCH_SIZE * 2 : CONFIG.BATCH_SIZE;
         const batches = Math.ceil(serverList.length / batchSize);
 
-        logger.info(`Processing ${serverList.length} ${priority} priority servers in ${batches} batches (IST)`);
+        logger.info(`Processing ${serverList.length} ${priority} priority servers in ${batches} batches`);
 
         for (let i = 0; i < batches; i++) {
             const start = i * batchSize;
@@ -252,7 +241,7 @@ const processServersBatchedIST = async (servers, stats) => {
             const batch = serverList.slice(start, end);
 
             // Process batch in parallel
-            const promises = batch.map(server => processServerSmartIST(server, stats));
+            const promises = batch.map(server => processServerSmart(server, stats));
             await Promise.allSettled(promises); // Don't let one failure kill the batch
 
             // Brief pause between batches to avoid overwhelming
@@ -269,9 +258,9 @@ const processServersBatchedIST = async (servers, stats) => {
 };
 
 /**
- * Smart individual server processing with IST timestamps
+ * Smart individual server processing
  */
-const processServerSmartIST = async (server, stats) => {
+const processServerSmart = async (server, stats) => {
     const serverId = server._id.toString();
 
     // Skip if already processing
@@ -300,9 +289,8 @@ const processServerSmartIST = async (server, stats) => {
             stats.totalResponseTime += checkResult.responseTime;
         }
 
-        // Batch database updates with IST timestamps
+        // Batch database updates
         const now = new Date();
-        const istNow = getISTTime();
 
         const updateData = {
             status: checkResult.status,
@@ -316,18 +304,14 @@ const processServerSmartIST = async (server, stats) => {
             updateData.lastStatusChange = now;
         }
 
-        // Create check history document with PURE IST data
+        // Create check history document
         const checkDoc = {
             serverId: server._id,
             status: checkResult.status,
             responseTime: checkResult.responseTime,
             error: checkResult.error,
             timestamp: now,
-            timezone: IST_CONFIG.TIMEZONE, // Always IST
-            localDate: istNow.format('YYYY-MM-DD'), // Pure IST date
-            localHour: istNow.hour(), // Pure IST hour
-            localMinute: istNow.minute(), // Pure IST minute
-            timeSlot: Math.floor(istNow.minute() / 15) // Pure IST time slot
+            // timezone, localDate etc removed in favor of standard timestamp
         };
 
         // Execute database operations in parallel
@@ -337,14 +321,14 @@ const processServerSmartIST = async (server, stats) => {
         ]);
 
         // Handle alerts asynchronously
-        if (shouldSendSmartAlertIST(server, oldStatus, checkResult.status, checkResult, istNow)) {
-            sendSmartAlertIST(server, oldStatus, checkResult.status, checkResult, istNow)
+        if (shouldSendSmartAlert(server, oldStatus, checkResult.status, checkResult, now)) {
+            sendSmartAlert(server, oldStatus, checkResult.status, checkResult, now)
                 .then(sent => { if (sent) stats.alertsSent++; })
-                .catch(err => logger.error(`IST Alert error for ${server.name}: ${err.message}`));
+                .catch(err => logger.error(`Alert error for ${server.name}: ${err.message}`));
         }
 
     } catch (error) {
-        logger.error(`Error checking server ${serverId} (IST): ${error.message}`);
+        logger.error(`Error checking server ${serverId}: ${error.message}`);
         stats.error++;
 
         // Update failure stats
@@ -356,11 +340,18 @@ const processServerSmartIST = async (server, stats) => {
 };
 
 /**
- * Check if server is in IST monitoring window
+ * Check if server is in monitoring window
  */
-const isInISTMonitoringWindow = (server, istNow) => {
-    const currentDay = istNow.day();
-    const currentTime = istNow.format('HH:mm');
+const isInMonitoringWindow = (server, now = new Date()) => {
+    // If no window defined, always monitor
+    if (!server.monitoring?.timeWindows?.length && !server.monitoring?.daysOfWeek?.length) {
+        return true;
+    }
+
+    const currentDay = now.getDay();
+    // Format HH:MM with leading zeros
+    const currentTime = now.getHours().toString().padStart(2, '0') + ':' +
+        now.getMinutes().toString().padStart(2, '0');
 
     // Check days of week
     if (server.monitoring?.daysOfWeek?.length > 0) {
@@ -385,18 +376,18 @@ const isInISTMonitoringWindow = (server, istNow) => {
 };
 
 /**
- * Check if server should be monitored with IST trial checks
+ * Check if server should be monitored
  */
-const shouldMonitorServerIST = (server) => {
+const shouldMonitorServer = (server) => {
     // Admin servers always monitored
     if (server.uploadedRole === 'admin' || server.uploadedPlan === 'admin') {
         return true;
     }
 
-    // Check trial expiry for free users (IST based)
+    // Check trial expiry
     if (server.uploadedPlan === 'free' &&
         server.monitoring?.trialEndsAt &&
-        server.monitoring.trialEndsAt < Date.now()) {
+        new Date(server.monitoring.trialEndsAt) < new Date()) {
         return false;
     }
 
@@ -404,9 +395,9 @@ const shouldMonitorServerIST = (server) => {
 };
 
 /**
- * Smart alert decision making with IST time checks
+ * Smart alert decision making
  */
-const shouldSendSmartAlertIST = (server, oldStatus, newStatus, checkResult, istNow) => {
+const shouldSendSmartAlert = (server, oldStatus, newStatus, checkResult, now) => {
     // Basic checks
     if (!server.monitoring?.alerts?.enabled) return false;
 
@@ -422,12 +413,13 @@ const shouldSendSmartAlertIST = (server, oldStatus, newStatus, checkResult, istN
         return false;
     }
 
-    // Check IST time window
+    // Check time window for alerts
     const alertTimeWindow = server.monitoring?.alerts?.timeWindow;
     if (alertTimeWindow) {
-        const currentISTTime = istNow.format('HH:mm');
+        const currentTime = now.getHours().toString().padStart(2, '0') + ':' +
+            now.getMinutes().toString().padStart(2, '0');
 
-        if (currentISTTime < alertTimeWindow.start || currentISTTime > alertTimeWindow.end) {
+        if (currentTime < alertTimeWindow.start || currentTime > alertTimeWindow.end) {
             return false;
         }
     }
@@ -436,9 +428,9 @@ const shouldSendSmartAlertIST = (server, oldStatus, newStatus, checkResult, istN
 };
 
 /**
- * Send smart alerts with IST logging
+ * Send smart alerts
  */
-const sendSmartAlertIST = async (server, oldStatus, newStatus, checkResult, istNow) => {
+const sendSmartAlert = async (server, oldStatus, newStatus, checkResult, now) => {
     try {
         let alertType;
 
@@ -452,43 +444,43 @@ const sendSmartAlertIST = async (server, oldStatus, newStatus, checkResult, istN
             return false;
         }
 
-        // Enhanced server object for email with IST time
+        // Enhanced server object for email
         const enhancedServer = {
             ...server,
             responseTime: checkResult.responseTime,
             error: checkResult.error,
             attempts: checkResult.attempts,
-            istAlertTime: istNow.format('YYYY-MM-DD HH:mm:ss')
+            alertTime: now.toISOString()
         };
 
         if (server.monitoring?.alerts?.email && server.contactEmails?.length > 0) {
             await sendAlertEmail(enhancedServer, alertType, oldStatus, newStatus);
-            logger.info(`IST Smart alert sent for ${server.name}: ${alertType} at ${istNow.format('HH:mm:ss')}`);
+            logger.info(`Smart alert sent for ${server.name}: ${alertType}`);
         }
 
         return true;
 
     } catch (error) {
-        logger.error(`IST Smart alert error for ${server.name}: ${error.message}`);
+        logger.error(`Alert error for ${server.name}: ${error.message}`);
         return false;
     }
 };
 
 /**
- * Perform smart check with adaptive strategies (same as before but with IST logging)
+ * Perform smart check with adaptive strategies
  */
 const performSmartCheck = async (server) => {
     const startTime = Date.now();
     const serverStats = getServerStats(server._id.toString());
 
     // Determine retry count based on server reliability
-    const maxRetries = serverStats.failureRate > 0.5 ? IST_CONFIG.RETRY_ATTEMPTS + 1 : IST_CONFIG.RETRY_ATTEMPTS;
+    const maxRetries = serverStats.failureRate > 0.5 ? CONFIG.RETRY_ATTEMPTS + 1 : CONFIG.RETRY_ATTEMPTS;
 
     let lastError = null;
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
-            logger.debug(`Checking ${server.name} (attempt ${attempt}/${maxRetries}) [IST]`);
+            logger.debug(`Checking ${server.name} (attempt ${attempt}/${maxRetries})`);
 
             let status;
             if (server.type === 'tcp') {
@@ -535,7 +527,7 @@ const performSmartCheck = async (server) => {
 };
 
 /**
- * Smart HTTP checking with multiple strategies (unchanged but IST logged)
+ * Smart HTTP checking with multiple strategies
  */
 const checkHttpSmart = async (url, attempt = 1) => {
     // Add protocol if missing
@@ -562,7 +554,7 @@ const checkHttpSmart = async (url, attempt = 1) => {
             const response = await axiosInstance.get(url, {
                 validateStatus: false,
                 maxContentLength: 1024 * 5, // 5KB limit
-                timeout: IST_CONFIG.TIMEOUT * 0.8,
+                timeout: CONFIG.TIMEOUT * 0.8,
                 headers: {
                     'Accept': 'text/html,application/xhtml+xml,*/*;q=0.9',
                     'Accept-Encoding': 'gzip, deflate',
@@ -584,7 +576,7 @@ const checkHttpSmart = async (url, attempt = 1) => {
             const response = await axiosInstance.get(url, {
                 validateStatus: false,
                 maxContentLength: 1024 * 5,
-                timeout: IST_CONFIG.TIMEOUT,
+                timeout: CONFIG.TIMEOUT,
                 headers: {
                     'User-Agent': userAgents[attempt % userAgents.length],
                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -638,7 +630,7 @@ const checkTcpSmart = async (url) => {
             }
         };
 
-        socket.setTimeout(IST_CONFIG.TIMEOUT);
+        socket.setTimeout(CONFIG.TIMEOUT);
 
         socket.on('connect', () => {
             cleanup();
@@ -701,7 +693,7 @@ const getServerStats = (serverId) => {
     };
 };
 
-// Cleanup old stats periodically with IST logging
+// Cleanup old stats periodically
 setInterval(() => {
     const now = Date.now();
     const oneHour = 60 * 60 * 1000;
@@ -715,7 +707,7 @@ setInterval(() => {
     processingServers.clear(); // Safety cleanup
 
     if (serverStats.size > 0) {
-        logger.debug(`IST Stats cleanup: ${serverStats.size} servers being tracked`);
+        logger.debug(`Stats cleanup: ${serverStats.size} servers being tracked`);
     }
 }, 10 * 60 * 1000); // Every 10 minutes
 

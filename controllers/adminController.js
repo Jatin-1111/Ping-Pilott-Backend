@@ -26,21 +26,14 @@ export const createAdmin = asyncHandler(async (req, res) => {
 
         // Update user to admin role
         existingUser.role = 'admin';
+        existingUser.emailVerified = true; // Admins must be verified
 
-        // Set admin subscription and features
+        // Subscription details will be auto-set by the model pre-save hook
+        // but explicit setting here acts as a double-check/override
         existingUser.subscription.plan = 'admin';
         existingUser.subscription.status = 'unlimited';
-        existingUser.subscription.features.maxServers = -1;
-        existingUser.subscription.features.minCheckFrequency = 1;
-        existingUser.subscription.features.maxCheckFrequency = -1;
-        existingUser.subscription.features.advancedAlerts = true;
-        existingUser.subscription.features.apiAccess = true;
-        existingUser.subscription.features.prioritySupport = true;
-        existingUser.subscription.features.webhookIntegrations = true;
-        existingUser.subscription.features.historicalReporting = true;
-        existingUser.subscription.features.unlimitedMonitoring = true;
 
-        // Save the updated user
+        // Save the updated user - model hooks will populate 'subscription.features'
         adminUser = await existingUser.save();
 
         logger.info(`User ${existingUser.email} promoted to admin by ${req.user.email}`);
@@ -73,18 +66,8 @@ export const createAdmin = asyncHandler(async (req, res) => {
             emailVerified: true, // Auto-verify admin accounts
             subscription: {
                 plan: 'admin',
-                status: 'unlimited',
-                features: {
-                    maxServers: -1,
-                    minCheckFrequency: 1,
-                    maxCheckFrequency: -1,
-                    advancedAlerts: true,
-                    apiAccess: true,
-                    prioritySupport: true,
-                    webhookIntegrations: true,
-                    historicalReporting: true,
-                    unlimitedMonitoring: true
-                }
+                status: 'unlimited'
+                // Features auto-set by model hook
             }
         });
 
@@ -109,12 +92,26 @@ export const createAdmin = asyncHandler(async (req, res) => {
  * @access  Private/Admin
  */
 export const listAdmins = asyncHandler(async (req, res) => {
-    // Find all admin users
-    const admins = await User.find({ role: 'admin' }).select('-password');
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Get total count
+    const totalAdmins = await User.countDocuments({ role: 'admin' });
+    const totalPages = Math.ceil(totalAdmins / limit);
+
+    // Find admin users with pagination
+    const admins = await User.find({ role: 'admin' })
+        .select('-password')
+        .skip(skip)
+        .limit(limit);
 
     res.status(200).json({
         status: 'success',
         results: admins.length,
+        totalPages,
+        currentPage: page,
+        totalAdmins,
         data: {
             admins,
         },
@@ -235,18 +232,8 @@ export const initialSetup = asyncHandler(async (req, res) => {
         emailVerified: true, // Auto-verify admin accounts
         subscription: {
             plan: 'admin',
-            status: 'unlimited',
-            features: {
-                maxServers: -1,
-                minCheckFrequency: 1,
-                maxCheckFrequency: -1,
-                advancedAlerts: true,
-                apiAccess: true,
-                prioritySupport: true,
-                webhookIntegrations: true,
-                historicalReporting: true,
-                unlimitedMonitoring: true
-            }
+            status: 'unlimited'
+            // Features auto-set by model hook
         }
     });
 

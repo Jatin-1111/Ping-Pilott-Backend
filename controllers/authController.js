@@ -52,20 +52,14 @@ export const register = asyncHandler(async (req, res) => {
     // Send verification email
     await sendVerificationEmail(user, verificationToken);
 
-    // Generate tokens
-    const token = generateToken(user._id);
-    const refreshToken = generateRefreshToken(user._id);
-
     // Remove password from response
     user.password = undefined;
 
     res.status(201).json({
         status: 'success',
-        message: 'User registered successfully. Please check your email to verify your account.',
+        message: 'User registered successfully. Please check your email to verify your account before logging in.',
         data: {
-            user,
-            token,
-            refreshToken,
+            user
         },
     });
 });

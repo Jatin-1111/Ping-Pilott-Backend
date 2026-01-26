@@ -5505,3 +5505,1557 @@
 2025-05-27 17:45:21:4521 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
 2025-05-27 17:45:21:4521 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
 2025-05-27 17:45:22:4522 [32minfo[39m: [32mMongoDB Connected: ac-whl4gas-shard-00-00.yivtxy9.mongodb.net[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32m🇮🇳 Initializing PURE IST cron jobs...[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32m🇮🇳 PURE IST Monitoring System Started[39m
+2026-01-25 19:22:17:2217 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32m📊 Current Data Status (IST):[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32m🧠 Starting IST ADAPTIVE monitoring system...[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
+2026-01-25 19:22:17:2217 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 19:24:00:240 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 19:24:00[39m
+2026-01-25 19:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 19:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2026-01-25 19:24:00:240 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2026-01-25 19:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 100ms[39m
+2026-01-25 19:26:00:260 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 19:26:00[39m
+2026-01-25 19:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 19:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2026-01-25 19:26:00:260 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2026-01-25 19:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 104ms[39m
+2026-01-25 19:26:46:2646 [32minfo[39m: [32mEmail transporter initialized[39m
+2026-01-25 19:26:51:2651 [32minfo[39m: [32mVerification email sent to off.jatin1111@gmail.com: <9f340628-76e8-02e8-66c8-9c7a1133f11f@gmail.com>[39m
+2026-01-25 19:27:44:2744 [32minfo[39m: [32mVerification email sent to off.jatin1111@gmail.com: <24cfe5f4-dbd3-39f6-bde1-d1278733d31f@gmail.com>[39m
+2026-01-25 19:28:00:280 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 19:28:00[39m
+2026-01-25 19:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 19:28:00:280 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2026-01-25 19:28:00:280 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2026-01-25 19:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 213ms[39m
+2026-01-25 19:28:49:2849 [32minfo[39m: [32mVerification email sent to off.jatin1111@gmail.com: <9f91d87c-9520-c5a5-242b-71052d41d7c0@gmail.com>[39m
+2026-01-25 19:29:27:2927 [32minfo[39m: [32m🛑 IST Graceful shutdown initiated...[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32m🇮🇳 Initializing PURE IST cron jobs...[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32m🇮🇳 PURE IST Monitoring System Started[39m
+2026-01-25 19:29:31:2931 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32m📊 Current Data Status (IST):[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32m🧠 Starting IST ADAPTIVE monitoring system...[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
+2026-01-25 19:29:31:2931 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 19:29:36:2936 [32minfo[39m: [32mEmail transporter initialized[39m
+2026-01-25 19:29:41:2941 [32minfo[39m: [32mVerification email sent to off.jatin1111@gmail.com: <5c4bd7cd-c208-6441-0c01-10df37106478@gmail.com>[39m
+2026-01-25 19:30:00:300 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 19:30:00[39m
+2026-01-25 19:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 19:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2026-01-25 19:30:00:300 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2026-01-25 19:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 103ms[39m
+2026-01-25 19:30:00:300 [34mdebug[39m: [34m💚 IST System health OK[39m
+2026-01-25 19:31:56:3156 [32minfo[39m: [32mServer created: Zeerostock (69762254eb6409c1bbd39e16) by user 6976211df1d5f2649e5559dd[39m
+2026-01-25 19:32:00:320 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 19:32:00[39m
+2026-01-25 19:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 19:32:00:320 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2026-01-25 19:32:00:320 [32minfo[39m: [32mFound 1 servers to check (IST smart filtering applied)[39m
+2026-01-25 19:32:00:320 [32minfo[39m: [32mProcessing 1 high priority servers in 1 batches (IST)[39m
+2026-01-25 19:32:00:320 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2) [IST][39m
+2026-01-25 19:32:01:321 [32minfo[39m: [32m✅ IST Smart monitoring completed in 1334ms[39m
+2026-01-25 19:32:01:321 [32minfo[39m: [32mJob 'smartCheckServers' completed in 1336ms[39m
+2026-01-25 19:32:01:321 [32minfo[39m: [32m✅ IST Monitoring (peak) completed[39m
+2026-01-25 19:32:06:326 [32minfo[39m: [32mAlert email sent to off.jatin1111@gmail.com: <d7b5c21d-5371-7fc9-6b64-342face4d851@gmail.com>[39m
+2026-01-25 19:32:08:328 [32minfo[39m: [32mAlert email sent to vanshika24narang@gmail.com: <53d81bb3-ef0e-1cca-c42a-de5c9c8dfef8@gmail.com>[39m
+2026-01-25 19:32:08:328 [32minfo[39m: [32mIST Smart alert sent for Zeerostock: server_recovery at 19:32:00[39m
+2026-01-25 19:34:01:341 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 19:34:00[39m
+2026-01-25 19:34:01:341 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 19:34:01:341 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2026-01-25 19:34:01:341 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2026-01-25 19:34:01:341 [32minfo[39m: [32mJob 'smartCheckServers' completed in 101ms[39m
+2026-01-25 19:38:53:3853 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 19:38:53:3853 [32minfo[39m: [32m🇮🇳 Initializing PURE IST cron jobs...[39m
+2026-01-25 19:38:53:3853 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 19:38:53:3853 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 19:38:53:3853 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 19:38:53:3853 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 19:38:53:3853 [32minfo[39m: [32m🇮🇳 PURE IST Monitoring System Started[39m
+2026-01-25 19:38:53:3853 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2026-01-25 19:38:53:3853 [32minfo[39m: [32m📊 Current Data Status (IST):[39m
+2026-01-25 19:38:53:3853 [32minfo[39m: [32m🧠 Starting IST ADAPTIVE monitoring system...[39m
+2026-01-25 19:38:53:3853 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2026-01-25 19:38:53:3853 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
+2026-01-25 19:38:54:3854 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 19:39:19:3919 [34mdebug[39m: [34mChecking server Zeerostock (api.zeerostock.com)[39m
+2026-01-25 19:39:20:3920 [34mdebug[39m: [34mCheck result for Zeerostock: up, 718ms[39m
+2026-01-25 19:39:20:3920 [32minfo[39m: [32mManual check completed: Zeerostock (69762254eb6409c1bbd39e16) - up[39m
+2026-01-25 19:40:00:400 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 19:40:00[39m
+2026-01-25 19:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 19:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2026-01-25 19:40:00:400 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2026-01-25 19:40:00:400 [32minfo[39m: [32mJob 'smartCheckServers' completed in 102ms[39m
+2026-01-25 19:42:00:420 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 19:42:00[39m
+2026-01-25 19:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 19:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2026-01-25 19:42:00:420 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2026-01-25 19:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-25 19:43:51:4351 [34mdebug[39m: [34mChecking server Zeerostock (api.zeerostock.com)[39m
+2026-01-25 19:43:51:4351 [34mdebug[39m: [34mCheck result for Zeerostock: up, 333ms[39m
+2026-01-25 19:43:51:4351 [32minfo[39m: [32mManual check completed: Zeerostock (69762254eb6409c1bbd39e16) - up[39m
+2026-01-25 19:44:00:440 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 19:44:00[39m
+2026-01-25 19:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 19:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2026-01-25 19:44:00:440 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2026-01-25 19:44:00:440 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2026-01-25 19:45:00:450 [34mdebug[39m: [34m💚 IST System health OK[39m
+2026-01-25 19:46:00:460 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 19:46:00[39m
+2026-01-25 19:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 19:46:00:460 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2026-01-25 19:46:00:460 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2026-01-25 19:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2026-01-25 19:48:00:480 [34mdebug[39m: [34m🔄 IST Smart monitoring (peak mode) - 19:48:00[39m
+2026-01-25 19:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 19:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring in IST...[39m
+2026-01-25 19:48:01:481 [32minfo[39m: [32mNo servers need checking right now (IST based)[39m
+2026-01-25 19:48:01:481 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2026-01-25 19:49:23:4923 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 19:49:23:4923 [32minfo[39m: [32m🇮🇳 Initializing PURE IST cron jobs...[39m
+2026-01-25 19:49:23:4923 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 19:49:23:4923 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 19:49:23:4923 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 19:49:23:4923 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 19:49:23:4923 [32minfo[39m: [32m🇮🇳 PURE IST Monitoring System Started[39m
+2026-01-25 19:49:23:4923 [31merror[39m: [31mError getting cleanup recommendations: Cannot read properties of undefined (reading 'stats')[39m
+2026-01-25 19:49:23:4923 [32minfo[39m: [32m📊 Current Data Status (IST):[39m
+2026-01-25 19:49:23:4923 [32minfo[39m: [32m🧠 Starting IST ADAPTIVE monitoring system...[39m
+2026-01-25 19:49:23:4923 [32minfo[39m: [32m🕛 IST Midnight cleanup scheduled for 00:00 IST daily (aggressive mode)[39m
+2026-01-25 19:49:23:4923 [32minfo[39m: [32m✅ All PURE IST cron jobs initialized successfully[39m
+2026-01-25 19:49:24:4924 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 20:52:03:523 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 20:52:03:523 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 20:52:03:523 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 20:52:03:523 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 20:52:03:523 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 20:52:03:523 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 20:52:03:523 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 20:52:03:523 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 20:52:03:523 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 20:52:03:523 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 20:52:05:525 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 20:53:15:5315 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 20:53:15:5315 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 20:53:15:5315 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 20:53:15:5315 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 20:53:15:5315 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 20:53:15:5315 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 20:53:15:5315 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 20:53:15:5315 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 20:53:15:5315 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 20:53:15:5315 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 20:53:15:5315 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 20:54:00:540 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 20:54:00:540 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 20:57:00:570 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 20:57:00:570 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 20:57:03:573 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2026-01-25 20:57:11:5711 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 20:57:11:5711 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 20:57:11:5711 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 20:57:11:5711 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 20:57:11:5711 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 20:57:11:5711 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 20:57:11:5711 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 20:57:11:5711 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 20:57:11:5711 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 20:57:11:5711 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 20:57:13:5713 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:00:00:00 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:00:00:00 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-25 21:03:00:30 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:03:00:30 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:03:15:315 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:03:15:315 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:03:15:315 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:03:15:315 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:03:15:315 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:03:15:315 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:03:15:315 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:03:15:315 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:03:15:315 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:03:15:315 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:03:16:316 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:03:59:359 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2026-01-25 21:04:04:44 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:04:04:44 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:04:04:44 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:04:04:44 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:04:04:44 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:04:04:44 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:04:04:44 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:04:04:44 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:04:04:44 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:04:04:44 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:04:05:45 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:06:00:60 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:06:00:60 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:07:26:726 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:07:26:726 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:07:26:726 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:07:26:726 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:07:26:726 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:07:26:726 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:07:26:726 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:07:26:726 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:07:26:726 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:07:26:726 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:07:27:727 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:08:13:813 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:08:13:813 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:08:13:813 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:08:13:813 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:08:13:813 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:08:13:813 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:08:13:813 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:08:13:813 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:08:13:813 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:08:13:813 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:08:14:814 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:09:00:90 [31merror[39m: [31m❌ Monitoring error (normal): CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:09:00:90 [31merror[39m: [31mDatabase error saving monitoring job: CronJob validation failed: istStartTime: Path `istStartTime` is required., istHour: Path `istHour` is required., istDate: Path `istDate` is required.[39m
+2026-01-25 21:11:58:1158 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:11:58:1158 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:11:58:1158 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:11:58:1158 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:11:58:1158 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:11:58:1158 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:11:58:1158 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:11:58:1158 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:11:58:1158 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:11:58:1158 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:11:59:1159 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:12:00:120 [31merror[39m: [31m❌ Smart monitoring error: getServersWithPriority is not defined[39m
+2026-01-25 21:12:00:120 [31merror[39m: [31mError executing job 'smartCheckServers' (1ms): getServersWithPriority is not defined[39m
+2026-01-25 21:12:00:120 [31merror[39m: [31m❌ Monitoring error (normal): getServersWithPriority is not defined[39m
+2026-01-25 21:12:01:121 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:12:01:121 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:12:01:121 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:12:01:121 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:01:121 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:01:121 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:12:01:121 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:12:01:121 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:12:01:121 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:12:01:121 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:12:02:122 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:12:07:127 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:12:07:127 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:12:07:127 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:12:07:127 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:07:127 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:07:127 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:12:07:127 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:12:07:127 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:12:07:127 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:12:07:127 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:12:08:128 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:12:11:1211 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:12:11:1211 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:12:11:1211 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:12:11:1211 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:11:1211 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:11:1211 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:12:11:1211 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:12:11:1211 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:12:11:1211 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:12:11:1211 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:12:11:1211 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:12:13:1213 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:12:13:1213 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:12:13:1213 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:12:13:1213 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:13:1213 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:13:1213 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:12:13:1213 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:12:13:1213 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:12:13:1213 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:12:13:1213 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:12:13:1213 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:12:47:1247 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:12:47:1247 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:12:47:1247 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:12:47:1247 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:47:1247 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:47:1247 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:12:47:1247 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:12:47:1247 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:12:47:1247 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:12:47:1247 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:12:48:1248 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:12:52:1252 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:12:52:1252 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:12:52:1252 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:12:52:1252 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:52:1252 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:52:1252 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:12:52:1252 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:12:52:1252 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:12:52:1252 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:12:52:1252 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:12:53:1253 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:12:56:1256 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:12:56:1256 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:12:56:1256 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:12:56:1256 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:56:1256 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:56:1256 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:12:56:1256 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:12:56:1256 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:12:56:1256 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (aggressive mode)[39m
+2026-01-25 21:12:56:1256 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:12:57:1257 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:12:58:1258 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:12:58:1258 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:12:58:1258 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:12:58:1258 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:58:1258 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:12:58:1258 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:12:58:1258 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:12:58:1258 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:12:58:1258 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:12:58:1258 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:12:59:1259 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:15:00:150 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:15:00:150 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:15:00:150 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:15:00:150 [31merror[39m: [31m❌ Smart monitoring error: getServersWithPriority is not defined[39m
+2026-01-25 21:15:00:150 [31merror[39m: [31mError executing job 'smartCheckServers' (1ms): getServersWithPriority is not defined[39m
+2026-01-25 21:15:00:150 [31merror[39m: [31m❌ Monitoring error (normal): getServersWithPriority is not defined[39m
+2026-01-25 21:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-25 21:16:06:166 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:16:06:166 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:16:06:166 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:16:06:166 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:16:06:166 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:16:06:166 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:16:06:166 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:16:06:166 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:16:06:166 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:16:06:166 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:16:07:167 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:18:00:180 [31merror[39m: [31m❌ Smart monitoring error: getISTTime is not defined[39m
+2026-01-25 21:18:00:180 [31merror[39m: [31mError executing job 'smartCheckServers' (1ms): getISTTime is not defined[39m
+2026-01-25 21:18:00:180 [31merror[39m: [31m❌ Monitoring error (normal): getISTTime is not defined[39m
+2026-01-25 21:21:00:210 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:21:00:210 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:21:00:210 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:21:00:210 [31merror[39m: [31m❌ Smart monitoring error: getISTTime is not defined[39m
+2026-01-25 21:21:00:210 [31merror[39m: [31mError executing job 'smartCheckServers' (1ms): getISTTime is not defined[39m
+2026-01-25 21:21:00:210 [31merror[39m: [31m❌ Monitoring error (normal): getISTTime is not defined[39m
+2026-01-25 21:22:57:2257 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:22:57:2257 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:22:57:2257 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:22:57:2257 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:22:57:2257 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:22:57:2257 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:22:57:2257 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:22:57:2257 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:22:57:2257 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:22:57:2257 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:22:57:2257 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:24:00:240 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 21:24:00:240 [32minfo[39m: [32mProcessing 1 low priority servers in NaN batches (IST)[39m
+2026-01-25 21:24:00:240 [32minfo[39m: [32m✅ Smart monitoring completed in 102ms[39m
+2026-01-25 21:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 102ms[39m
+2026-01-25 21:27:00:270 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:27:00:270 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:27:00:270 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:27:00:270 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 21:27:00:270 [32minfo[39m: [32mProcessing 1 low priority servers in NaN batches (IST)[39m
+2026-01-25 21:27:00:270 [32minfo[39m: [32m✅ Smart monitoring completed in 103ms[39m
+2026-01-25 21:27:00:270 [32minfo[39m: [32mJob 'smartCheckServers' completed in 104ms[39m
+2026-01-25 21:28:52:2852 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:28:52:2852 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:28:52:2852 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:28:52:2852 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:28:52:2852 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:28:52:2852 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:28:52:2852 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:28:52:2852 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:28:52:2852 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:28:52:2852 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:28:53:2853 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:29:11:2911 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:29:11:2911 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:29:11:2911 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:29:11:2911 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:29:11:2911 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:29:11:2911 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:29:11:2911 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:29:11:2911 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:29:11:2911 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:29:11:2911 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:29:12:2912 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:29:52:2952 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:29:52:2952 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:29:52:2952 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:29:52:2952 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:29:52:2952 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:29:52:2952 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:29:52:2952 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:29:52:2952 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:29:52:2952 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:29:52:2952 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:29:52:2952 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-25 21:30:00:300 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 21:30:00:300 [31merror[39m: [31m❌ Smart monitoring error: IST_CONFIG is not defined[39m
+2026-01-25 21:30:00:300 [31merror[39m: [31mError executing job 'smartCheckServers' (101ms): IST_CONFIG is not defined[39m
+2026-01-25 21:30:00:300 [31merror[39m: [31m❌ Monitoring error (normal): IST_CONFIG is not defined[39m
+2026-01-25 21:31:45:3145 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:31:45:3145 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:31:45:3145 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:31:45:3145 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:31:45:3145 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:31:45:3145 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:31:45:3145 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:31:45:3145 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:31:45:3145 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:31:45:3145 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:31:46:3146 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:32:02:322 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:32:02:322 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:32:02:322 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:32:02:322 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:32:02:322 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:32:02:322 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:32:02:322 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:32:02:322 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:32:02:322 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:32:02:322 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:32:03:323 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:32:27:3227 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:32:27:3227 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:32:27:3227 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:32:27:3227 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:32:27:3227 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:32:27:3227 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:32:27:3227 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:32:27:3227 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:32:27:3227 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:32:27:3227 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:32:28:3228 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:32:44:3244 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:32:44:3244 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:32:44:3244 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:32:44:3244 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:32:44:3244 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:32:44:3244 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:32:44:3244 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:32:44:3244 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:32:44:3244 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:32:44:3244 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:32:45:3245 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:33:00:330 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:33:00:330 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:33:00:330 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:33:00:330 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 21:33:00:330 [31merror[39m: [31m❌ Smart monitoring error: IST_CONFIG is not defined[39m
+2026-01-25 21:33:00:330 [31merror[39m: [31mError executing job 'smartCheckServers' (103ms): IST_CONFIG is not defined[39m
+2026-01-25 21:33:00:330 [31merror[39m: [31m❌ Monitoring error (normal): IST_CONFIG is not defined[39m
+2026-01-25 21:33:02:332 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:33:02:332 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:33:02:332 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:33:02:332 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:33:02:332 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:33:02:332 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:33:02:332 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:33:02:332 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:33:02:332 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:33:02:332 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:33:02:332 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:33:05:335 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:33:05:335 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:33:05:335 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:33:05:335 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:33:05:335 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:33:05:335 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:33:05:335 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:33:05:335 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:33:05:335 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:33:05:335 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:33:05:335 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:33:09:339 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:33:09:339 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:33:09:339 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:33:09:339 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:33:09:339 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:33:09:339 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:33:09:339 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:33:09:339 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:33:09:339 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:33:09:339 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:33:10:3310 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:33:17:3317 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:33:17:3317 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:33:17:3317 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:33:17:3317 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:33:17:3317 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:33:17:3317 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:33:17:3317 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:33:17:3317 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:33:17:3317 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:33:17:3317 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:33:18:3318 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:34:59:3459 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:34:59:3459 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:34:59:3459 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:34:59:3459 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:34:59:3459 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:34:59:3459 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:34:59:3459 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:34:59:3459 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:34:59:3459 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:34:59:3459 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:35:00:350 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:36:01:361 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:36:01:361 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:36:01:361 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:36:01:361 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 21:36:01:361 [31merror[39m: [31m❌ Smart monitoring error: IST_CONFIG is not defined[39m
+2026-01-25 21:36:01:361 [31merror[39m: [31mError executing job 'smartCheckServers' (58ms): IST_CONFIG is not defined[39m
+2026-01-25 21:36:01:361 [31merror[39m: [31m❌ Monitoring error (normal): IST_CONFIG is not defined[39m
+2026-01-25 21:37:40:3740 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2026-01-25 21:37:49:3749 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:37:49:3749 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:37:49:3749 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:37:49:3749 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:37:49:3749 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:37:49:3749 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:37:49:3749 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:37:49:3749 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:37:49:3749 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:37:49:3749 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:37:50:3750 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:39:01:391 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:39:01:391 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:39:01:391 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:39:01:391 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 21:39:01:391 [31merror[39m: [31m❌ Smart monitoring error: IST_CONFIG is not defined[39m
+2026-01-25 21:39:01:391 [31merror[39m: [31mError executing job 'smartCheckServers' (48ms): IST_CONFIG is not defined[39m
+2026-01-25 21:39:01:391 [31merror[39m: [31m❌ Monitoring error (normal): IST_CONFIG is not defined[39m
+2026-01-25 21:39:16:3916 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:39:16:3916 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:39:16:3916 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:39:16:3916 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:39:16:3916 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:39:16:3916 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:39:16:3916 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:39:16:3916 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:39:16:3916 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:39:16:3916 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:39:18:3918 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:40:01:401 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:40:01:401 [32minfo[39m: [32m✅ Analytics completed in 614ms[39m
+2026-01-25 21:40:01:401 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:40:02:402 [32minfo[39m: [32m✅ Analytics completed in 613ms[39m
+2026-01-25 21:41:02:412 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:41:02:412 [32minfo[39m: [32m✅ Analytics completed in 461ms[39m
+2026-01-25 21:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:42:00:420 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 21:42:00:420 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches (IST)[39m
+2026-01-25 21:42:00:420 [31merror[39m: [31m❌ Smart monitoring error: processServerSmartIST is not defined[39m
+2026-01-25 21:42:00:420 [31merror[39m: [31mError executing job 'smartCheckServers' (101ms): processServerSmartIST is not defined[39m
+2026-01-25 21:42:00:420 [31merror[39m: [31m❌ Monitoring error (normal): processServerSmartIST is not defined[39m
+2026-01-25 21:42:02:422 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:42:02:422 [32minfo[39m: [32m✅ Analytics completed in 615ms[39m
+2026-01-25 21:43:02:432 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:43:02:432 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:43:02:432 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:43:02:432 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:43:02:432 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:43:02:432 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:43:02:432 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:43:02:432 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:43:02:432 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:43:02:432 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:43:03:433 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:43:03:433 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:43:04:434 [32minfo[39m: [32m✅ Analytics completed in 966ms[39m
+2026-01-25 21:43:25:4325 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:43:25:4325 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:43:25:4325 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:43:25:4325 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:43:25:4325 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:43:25:4325 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:43:25:4325 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:43:25:4325 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:43:25:4325 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:43:25:4325 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:43:26:4326 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:43:28:4328 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:43:28:4328 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:43:28:4328 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:43:28:4328 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:43:28:4328 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:43:28:4328 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:43:28:4328 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:43:28:4328 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:43:28:4328 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:43:28:4328 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:43:28:4328 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:43:36:4336 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:43:36:4336 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:43:36:4336 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:43:36:4336 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:43:36:4336 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:43:36:4336 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:43:36:4336 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:43:36:4336 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:43:36:4336 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:43:36:4336 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:43:37:4337 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:44:02:442 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:44:02:442 [32minfo[39m: [32m✅ Analytics completed in 315ms[39m
+2026-01-25 21:45:00:450 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:45:00:450 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:45:00:450 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:45:00:450 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 21:45:00:450 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 21:45:00:450 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 21:45:00:450 [33mwarn[39m: [33m⚠️ System health issues detected:[39m
+2026-01-25 21:45:01:451 [32minfo[39m: [32m✅ Smart monitoring completed in 818ms[39m
+2026-01-25 21:45:01:451 [32minfo[39m: [32mJob 'smartCheckServers' completed in 819ms[39m
+2026-01-25 21:45:01:451 [32minfo[39m: [32m✅ Monitoring (normal) completed[39m
+2026-01-25 21:45:02:452 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:45:03:453 [32minfo[39m: [32m✅ Analytics completed in 819ms[39m
+2026-01-25 21:45:21:4521 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:45:21:4521 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:45:21:4521 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:45:21:4521 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:45:21:4521 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:45:21:4521 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:45:21:4521 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:45:21:4521 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:45:21:4521 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:45:21:4521 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:45:22:4522 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:46:02:462 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:46:02:462 [32minfo[39m: [32m✅ Analytics completed in 674ms[39m
+2026-01-25 21:46:11:4611 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:46:11:4611 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:46:11:4611 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:46:11:4611 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:46:11:4611 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:46:11:4611 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:46:11:4611 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:46:11:4611 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:46:11:4611 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:46:11:4611 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:46:12:4612 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:46:53:4653 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:46:53:4653 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:46:53:4653 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:46:53:4653 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:46:53:4653 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:46:53:4653 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:46:53:4653 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:46:53:4653 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:46:53:4653 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:46:53:4653 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:46:54:4654 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:47:52:4752 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:47:52:4752 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:47:52:4752 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:47:52:4752 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:47:52:4752 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:47:52:4752 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:47:52:4752 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:47:52:4752 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:47:52:4752 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:47:52:4752 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:47:53:4753 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:48:00:480 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 21:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 104ms[39m
+2026-01-25 21:48:01:481 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:48:01:481 [32minfo[39m: [32m✅ Analytics completed in 612ms[39m
+2026-01-25 21:48:04:484 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:48:04:484 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:48:04:484 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:48:04:484 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:48:04:484 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:48:04:484 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:48:04:484 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:48:04:484 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:48:04:484 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:48:04:484 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:48:05:485 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:48:41:4841 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:48:41:4841 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:48:41:4841 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:48:41:4841 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:48:41:4841 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:48:41:4841 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:48:41:4841 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:48:41:4841 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:48:41:4841 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:48:41:4841 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:48:42:4842 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:48:57:4857 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:48:57:4857 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:48:57:4857 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:48:57:4857 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:48:57:4857 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:48:57:4857 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:48:57:4857 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:48:57:4857 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:48:57:4857 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:48:57:4857 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:48:58:4858 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:50:01:501 [31merror[39m: [31mError: moment is not defined[39m
+2026-01-25 21:51:00:510 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:51:00:510 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:51:00:510 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:51:00:510 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 21:51:00:510 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 21:51:00:510 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 21:51:01:511 [32minfo[39m: [32m✅ Smart monitoring completed in 776ms[39m
+2026-01-25 21:51:01:511 [32minfo[39m: [32mJob 'smartCheckServers' completed in 776ms[39m
+2026-01-25 21:51:01:511 [32minfo[39m: [32m✅ Monitoring (normal) completed[39m
+2026-01-25 21:51:02:512 [31merror[39m: [31mError: moment is not defined[39m
+2026-01-25 21:51:12:5112 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:51:12:5112 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:51:12:5112 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:51:12:5112 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:51:12:5112 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:51:12:5112 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:51:12:5112 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:51:12:5112 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:51:12:5112 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:51:12:5112 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:51:14:5114 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:51:51:5151 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:51:51:5151 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:51:51:5151 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:51:51:5151 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:51:51:5151 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:51:51:5151 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:51:51:5151 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:51:51:5151 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:51:51:5151 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:51:51:5151 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:51:51:5151 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:52:30:5230 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:52:30:5230 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:52:30:5230 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:52:30:5230 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:52:30:5230 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:52:30:5230 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:52:30:5230 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:52:30:5230 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:52:30:5230 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:52:30:5230 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:52:30:5230 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:52:46:5246 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-01-25 21:52:46:5246 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-01-25 21:52:46:5246 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-01-25 21:52:46:5246 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:52:46:5246 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-01-25 21:52:46:5246 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-01-25 21:52:46:5246 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-01-25 21:52:46:5246 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-01-25 21:52:46:5246 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-01-25 21:52:46:5246 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-01-25 21:52:46:5246 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-01-25 21:53:01:531 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:53:01:531 [32minfo[39m: [32m✅ Analytics completed in 304ms[39m
+2026-01-25 21:54:01:541 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:54:01:541 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:54:01:541 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:54:01:541 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 21:54:01:541 [32minfo[39m: [32mJob 'smartCheckServers' completed in 101ms[39m
+2026-01-25 21:54:17:5417 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:54:18:5418 [32minfo[39m: [32m✅ Analytics completed in 759ms[39m
+2026-01-25 21:54:24:5424 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:54:24:5424 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:54:24:5424 [32minfo[39m: [32m✅ Analytics completed in 308ms[39m
+2026-01-25 21:54:24:5424 [32minfo[39m: [32m✅ Analytics completed in 613ms[39m
+2026-01-25 21:54:31:5431 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:54:31:5431 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:54:31:5431 [32minfo[39m: [32m✅ Analytics completed in 167ms[39m
+2026-01-25 21:54:31:5431 [32minfo[39m: [32m✅ Analytics completed in 356ms[39m
+2026-01-25 21:54:45:5445 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:54:45:5445 [32minfo[39m: [32m✅ Analytics completed in 104ms[39m
+2026-01-25 21:54:45:5445 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-25 21:54:45:5445 [32minfo[39m: [32m✅ Analytics completed in 106ms[39m
+2026-01-25 21:57:00:570 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-25 21:57:00:570 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 21:57:00:570 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 21:57:00:570 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 21:57:00:570 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 21:57:00:570 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 21:57:01:571 [32minfo[39m: [32m✅ Smart monitoring completed in 543ms[39m
+2026-01-25 21:57:01:571 [32minfo[39m: [32mJob 'smartCheckServers' completed in 543ms[39m
+2026-01-25 21:57:01:571 [32minfo[39m: [32m✅ Monitoring (normal) completed[39m
+2026-01-25 22:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 22:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2026-01-25 22:00:00:00 [33mwarn[39m: [33m⚠️ System health issues detected:[39m
+2026-01-25 22:02:46:246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 22:05:00:50 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:05:00:50 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:05:00:50 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:05:00:50 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 22:05:00:50 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 22:05:00:50 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 22:05:00:50 [32minfo[39m: [32m✅ Smart monitoring completed in 268ms[39m
+2026-01-25 22:05:00:50 [32minfo[39m: [32mJob 'smartCheckServers' completed in 269ms[39m
+2026-01-25 22:05:00:50 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-25 22:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 22:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2026-01-25 22:12:46:1246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 22:15:00:150 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:15:00:150 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:15:00:150 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:15:00:150 [33mwarn[39m: [33m⚠️ System health issues detected:[39m
+2026-01-25 22:15:00:150 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 22:15:00:150 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 22:15:00:150 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 22:15:00:150 [32minfo[39m: [32m✅ Smart monitoring completed in 676ms[39m
+2026-01-25 22:15:00:150 [32minfo[39m: [32mJob 'smartCheckServers' completed in 676ms[39m
+2026-01-25 22:15:00:150 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-25 22:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:20:00:200 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 22:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2026-01-25 22:22:46:2246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 22:25:00:250 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:25:00:250 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:25:00:250 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:25:00:250 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 22:25:00:250 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 22:25:00:250 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 22:25:00:250 [32minfo[39m: [32m✅ Smart monitoring completed in 494ms[39m
+2026-01-25 22:25:00:250 [32minfo[39m: [32mJob 'smartCheckServers' completed in 494ms[39m
+2026-01-25 22:25:00:250 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-25 22:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-25 22:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 22:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2026-01-25 22:32:46:3246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 22:35:00:350 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:35:00:350 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:35:00:350 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:35:00:350 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 22:35:00:350 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 22:35:00:350 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 22:35:00:350 [32minfo[39m: [32m✅ Smart monitoring completed in 570ms[39m
+2026-01-25 22:35:00:350 [32minfo[39m: [32mJob 'smartCheckServers' completed in 571ms[39m
+2026-01-25 22:35:00:350 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-25 22:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:40:00:400 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 22:40:00:400 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 22:40:00:400 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 22:40:01:401 [32minfo[39m: [32m✅ Smart monitoring completed in 817ms[39m
+2026-01-25 22:40:01:401 [32minfo[39m: [32mJob 'smartCheckServers' completed in 818ms[39m
+2026-01-25 22:40:01:401 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-25 22:42:46:4246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 22:45:01:451 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:45:01:451 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:45:01:451 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:45:01:451 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-25 22:45:01:451 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 22:45:01:451 [32minfo[39m: [32mJob 'smartCheckServers' completed in 48ms[39m
+2026-01-25 22:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:50:00:500 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 22:50:00:500 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 22:50:00:500 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 22:50:01:501 [32minfo[39m: [32m✅ Smart monitoring completed in 821ms[39m
+2026-01-25 22:50:01:501 [32minfo[39m: [32mJob 'smartCheckServers' completed in 821ms[39m
+2026-01-25 22:50:01:501 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-25 22:52:46:5246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 22:55:00:550 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 22:55:00:550 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 22:55:00:550 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 22:55:01:551 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 22:55:01:551 [32minfo[39m: [32mJob 'smartCheckServers' completed in 104ms[39m
+2026-01-25 23:02:46:246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 23:05:00:50 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 23:05:00:50 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 23:05:00:50 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 23:05:00:50 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 23:05:00:50 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 23:05:00:50 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 23:05:01:51 [32minfo[39m: [32m✅ Smart monitoring completed in 822ms[39m
+2026-01-25 23:05:01:51 [32minfo[39m: [32mJob 'smartCheckServers' completed in 822ms[39m
+2026-01-25 23:05:01:51 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-25 23:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 23:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 23:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 23:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 23:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 45ms[39m
+2026-01-25 23:12:46:1246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 23:15:00:150 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 23:15:00:150 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 23:15:00:150 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 23:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-25 23:15:00:150 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 23:15:00:150 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 23:15:00:150 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 23:15:00:150 [32minfo[39m: [32m✅ Smart monitoring completed in 556ms[39m
+2026-01-25 23:15:00:150 [32minfo[39m: [32mJob 'smartCheckServers' completed in 556ms[39m
+2026-01-25 23:15:00:150 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-25 23:20:01:201 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 23:20:01:201 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 23:20:01:201 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 23:20:01:201 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 23:20:01:201 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 23:20:01:201 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 23:20:01:201 [32minfo[39m: [32m✅ Smart monitoring completed in 577ms[39m
+2026-01-25 23:20:01:201 [32minfo[39m: [32mJob 'smartCheckServers' completed in 578ms[39m
+2026-01-25 23:20:01:201 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-25 23:22:46:2246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 23:25:00:250 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 23:25:00:250 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 23:25:00:250 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 23:25:00:250 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 23:25:00:250 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-25 23:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 23:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 23:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 23:30:00:300 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-25 23:30:00:300 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-25 23:30:00:300 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-25 23:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-25 23:30:01:301 [32minfo[39m: [32m✅ Smart monitoring completed in 513ms[39m
+2026-01-25 23:30:01:301 [32minfo[39m: [32mJob 'smartCheckServers' completed in 514ms[39m
+2026-01-25 23:30:01:301 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-25 23:32:46:3246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 23:35:00:350 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 23:35:00:350 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 23:35:00:350 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 23:35:00:350 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 23:35:00:350 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-25 23:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 23:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 23:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 23:40:00:400 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 23:40:00:400 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-25 23:42:46:4246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 23:45:00:450 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 23:45:00:450 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 23:45:00:450 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 23:45:00:450 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 23:45:00:450 [32minfo[39m: [32mJob 'smartCheckServers' completed in 45ms[39m
+2026-01-25 23:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-25 23:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 23:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 23:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 23:50:00:500 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 23:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-25 23:52:46:5246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-25 23:55:00:550 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-25 23:55:00:550 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-25 23:55:00:550 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-25 23:55:00:550 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-25 23:55:00:550 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 00:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-26 00:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 00:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 00:00:00:00 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 00:00:00:00 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 00:00:00:00 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 00:00:00:00 [32minfo[39m: [32m✅ Smart monitoring completed in 512ms[39m
+2026-01-26 00:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 512ms[39m
+2026-01-26 00:00:00:00 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32m💀 Starting MIDNIGHT CLEANUP at 2026-01-25T18:30:01.005Z[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32m🎯 Cleanup mode: AGGRESSIVE[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32mExecuting job 'aggressiveDataRetention'[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32m💀 Starting AGGRESSIVE midnight data cleanup...[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32mDatabase size before cleanup: 0 MB[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32m🗑️ Deleting ALL ServerCheck records...[39m
+2026-01-26 00:00:01:01 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32m✅ Deleted 17 ServerCheck records[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32m🗑️ Deleting old CronJob logs (keeping last 24 hours)...[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32m✅ Deleted 0 old CronJob records[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32m🔧 Running database optimization...[39m
+2026-01-26 00:00:01:01 [33mwarn[39m: [33mDatabase compaction warning: CMD_NOT_ALLOWED: compact[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32m💀 AGGRESSIVE cleanup completed successfully![39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32mJob 'aggressiveDataRetention' completed in 221ms[39m
+2026-01-26 00:00:01:01 [32minfo[39m: [32m✅ MIDNIGHT CLEANUP completed successfully![39m
+2026-01-26 00:02:46:246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 00:05:00:50 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-26 00:05:00:50 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 00:05:00:50 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 00:05:01:51 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 00:05:01:51 [32minfo[39m: [32mJob 'smartCheckServers' completed in 939ms[39m
+2026-01-26 00:05:02:52 [33mwarn[39m: [33mSlow servers query: 1599ms[39m
+2026-01-26 00:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-26 00:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 00:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 00:10:00:100 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 00:10:00:100 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 00:10:00:100 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 00:10:01:101 [32minfo[39m: [32m✅ Smart monitoring completed in 715ms[39m
+2026-01-26 00:10:01:101 [32minfo[39m: [32mJob 'smartCheckServers' completed in 716ms[39m
+2026-01-26 00:10:01:101 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-26 00:12:46:1246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 00:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 00:15:01:151 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-26 00:15:01:151 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 00:15:01:151 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 00:15:01:151 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 00:15:01:151 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 00:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-26 00:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 00:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 00:20:00:200 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 00:20:00:200 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 00:20:00:200 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 00:20:02:202 [32minfo[39m: [32mEmail transporter initialized[39m
+2026-01-26 00:20:02:202 [32minfo[39m: [32m✅ Smart monitoring completed in 1481ms[39m
+2026-01-26 00:20:02:202 [32minfo[39m: [32mJob 'smartCheckServers' completed in 1482ms[39m
+2026-01-26 00:20:02:202 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-26 00:20:09:209 [32minfo[39m: [32mAlert email sent to off.jatin1111@gmail.com: <ea50937e-abc7-00a6-c47e-15c9e924807a@gmail.com>[39m
+2026-01-26 00:20:12:2012 [32minfo[39m: [32mAlert email sent to vanshika24narang@gmail.com: <f2485848-0bc9-23d9-a282-6cfbc55cabf1@gmail.com>[39m
+2026-01-26 00:20:12:2012 [32minfo[39m: [32mSmart alert sent for Zeerostock: slow_response[39m
+2026-01-26 00:22:46:2246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 00:25:01:251 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-26 00:25:01:251 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 00:25:01:251 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 00:25:01:251 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 00:25:01:251 [32minfo[39m: [32mJob 'smartCheckServers' completed in 105ms[39m
+2026-01-26 00:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 00:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-26 00:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 00:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 00:30:00:300 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 00:30:00:300 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 00:30:00:300 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 00:30:01:301 [32minfo[39m: [32m✅ Smart monitoring completed in 921ms[39m
+2026-01-26 00:30:01:301 [32minfo[39m: [32mJob 'smartCheckServers' completed in 922ms[39m
+2026-01-26 00:30:01:301 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-26 00:32:46:3246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 00:35:01:351 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-26 00:35:01:351 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 00:35:01:351 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 00:35:01:351 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 00:35:01:351 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2026-01-26 00:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-26 00:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 00:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 00:40:00:400 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 00:40:00:400 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 00:40:00:400 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 00:40:01:401 [32minfo[39m: [32m✅ Smart monitoring completed in 922ms[39m
+2026-01-26 00:40:01:401 [32minfo[39m: [32mJob 'smartCheckServers' completed in 922ms[39m
+2026-01-26 00:40:01:401 [32minfo[39m: [32m✅ Monitoring (quiet) completed[39m
+2026-01-26 00:42:46:4246 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 00:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 00:45:00:450 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-01-26 00:45:00:450 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 00:45:00:450 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 00:45:00:450 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 00:45:00:450 [32minfo[39m: [32mJob 'smartCheckServers' completed in 104ms[39m
+2026-01-26 10:32:02:322 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2026-01-26 10:32:03:323 [32minfo[39m: [32mMongoDB reconnected[39m
+2026-01-26 10:32:03:323 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:32:03:323 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:32:03:323 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:32:03:323 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 10:32:03:323 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 10:32:03:323 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 10:32:03:323 [32minfo[39m: [32m✅ Smart monitoring completed in 565ms[39m
+2026-01-26 10:32:03:323 [32minfo[39m: [32mJob 'smartCheckServers' completed in 570ms[39m
+2026-01-26 10:32:03:323 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 10:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:34:00:340 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 10:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 10:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:36:00:360 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:36:01:361 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 10:36:01:361 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2026-01-26 10:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:38:00:380 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 10:38:00:380 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 10:38:00:380 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 10:38:00:380 [32minfo[39m: [32m✅ Smart monitoring completed in 534ms[39m
+2026-01-26 10:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 534ms[39m
+2026-01-26 10:38:00:380 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 10:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:40:00:400 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:40:00:400 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 10:40:00:400 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 10:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:42:00:420 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 10:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 10:42:03:423 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 10:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:44:00:440 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 10:44:00:440 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 10:44:00:440 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 10:44:01:441 [32minfo[39m: [32m✅ Smart monitoring completed in 531ms[39m
+2026-01-26 10:44:01:441 [32minfo[39m: [32mJob 'smartCheckServers' completed in 531ms[39m
+2026-01-26 10:44:01:441 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 10:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 10:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:46:00:460 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:46:00:460 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 10:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2026-01-26 10:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:48:01:481 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 10:48:01:481 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2026-01-26 10:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:50:00:500 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 10:50:00:500 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 10:50:00:500 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 10:50:00:500 [32minfo[39m: [32m✅ Smart monitoring completed in 277ms[39m
+2026-01-26 10:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 277ms[39m
+2026-01-26 10:50:00:500 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 10:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:52:00:520 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:52:00:520 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 10:52:00:520 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 10:52:03:523 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 10:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:54:00:540 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 10:54:00:540 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2026-01-26 10:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:56:00:560 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 10:56:00:560 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 10:56:00:560 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 10:56:01:561 [32minfo[39m: [32m✅ Smart monitoring completed in 546ms[39m
+2026-01-26 10:56:01:561 [32minfo[39m: [32mJob 'smartCheckServers' completed in 547ms[39m
+2026-01-26 10:56:01:561 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 10:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 10:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 10:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 10:58:01:581 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 10:58:01:581 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2026-01-26 11:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 11:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 55ms[39m
+2026-01-26 11:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:02:00:20 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:02:00:20 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 11:02:00:20 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 11:02:00:20 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 11:02:00:20 [32minfo[39m: [32m✅ Smart monitoring completed in 546ms[39m
+2026-01-26 11:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 547ms[39m
+2026-01-26 11:02:00:20 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 11:02:03:23 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 11:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:04:00:40 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:04:00:40 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 11:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2026-01-26 11:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:08:00:80 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 11:08:00:80 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 11:08:00:80 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 11:08:00:80 [32minfo[39m: [32m✅ Smart monitoring completed in 530ms[39m
+2026-01-26 11:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 531ms[39m
+2026-01-26 11:08:00:80 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 11:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:10:00:100 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:10:00:100 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 47ms[39m
+2026-01-26 11:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:12:00:120 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2026-01-26 11:12:03:123 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 11:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:14:00:140 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 11:14:00:140 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 11:14:00:140 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 11:14:01:141 [32minfo[39m: [32m✅ Smart monitoring completed in 492ms[39m
+2026-01-26 11:14:01:141 [32minfo[39m: [32mJob 'smartCheckServers' completed in 492ms[39m
+2026-01-26 11:14:01:141 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 11:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 11:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2026-01-26 11:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 45ms[39m
+2026-01-26 11:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:20:00:200 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:20:00:200 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 11:20:00:200 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 11:20:00:200 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 11:20:00:200 [32minfo[39m: [32m✅ Smart monitoring completed in 541ms[39m
+2026-01-26 11:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 541ms[39m
+2026-01-26 11:20:00:200 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 11:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:22:00:220 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:22:00:220 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 57ms[39m
+2026-01-26 11:22:03:223 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 11:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:24:00:240 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:24:00:240 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2026-01-26 11:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:26:00:260 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:26:00:260 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 11:26:00:260 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 11:26:00:260 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 11:26:01:261 [32minfo[39m: [32m✅ Smart monitoring completed in 530ms[39m
+2026-01-26 11:26:01:261 [32minfo[39m: [32mJob 'smartCheckServers' completed in 532ms[39m
+2026-01-26 11:26:01:261 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 11:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:28:00:280 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:28:00:280 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 11:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:30:00:300 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:30:00:300 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2026-01-26 11:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 11:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:32:00:320 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:32:00:320 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 11:32:00:320 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 11:32:00:320 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 11:32:00:320 [32minfo[39m: [32m✅ Smart monitoring completed in 520ms[39m
+2026-01-26 11:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 521ms[39m
+2026-01-26 11:32:00:320 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 11:32:03:323 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 11:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:34:00:340 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:34:00:340 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2026-01-26 11:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:36:00:360 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:36:00:360 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:36:00:360 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2026-01-26 11:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:38:00:380 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:38:00:380 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 11:38:00:380 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 11:38:00:380 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 11:38:01:381 [32minfo[39m: [32m✅ Smart monitoring completed in 526ms[39m
+2026-01-26 11:38:01:381 [32minfo[39m: [32mJob 'smartCheckServers' completed in 527ms[39m
+2026-01-26 11:38:01:381 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 11:40:01:401 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:40:01:401 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:40:01:401 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:40:01:401 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:40:01:401 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 11:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:42:00:420 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 11:42:03:423 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 11:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:44:00:440 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 11:44:00:440 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 11:44:00:440 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 11:44:00:440 [32minfo[39m: [32m✅ Smart monitoring completed in 556ms[39m
+2026-01-26 11:44:00:440 [32minfo[39m: [32mJob 'smartCheckServers' completed in 556ms[39m
+2026-01-26 11:44:00:440 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 11:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 11:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:46:00:460 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:46:00:460 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 11:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:48:00:480 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2026-01-26 11:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:50:00:500 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:50:00:500 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 11:50:00:500 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 11:50:00:500 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 11:50:01:501 [32minfo[39m: [32m✅ Smart monitoring completed in 563ms[39m
+2026-01-26 11:50:01:501 [32minfo[39m: [32mJob 'smartCheckServers' completed in 564ms[39m
+2026-01-26 11:50:01:501 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 11:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:52:00:520 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:52:00:520 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:52:00:520 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2026-01-26 11:52:03:523 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 11:54:01:541 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:54:01:541 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:54:01:541 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:54:01:541 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:54:01:541 [32minfo[39m: [32mJob 'smartCheckServers' completed in 57ms[39m
+2026-01-26 11:56:01:561 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:56:01:561 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:56:01:561 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:56:01:561 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 11:56:01:561 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 11:56:01:561 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 11:56:01:561 [32minfo[39m: [32m✅ Smart monitoring completed in 580ms[39m
+2026-01-26 11:56:01:561 [32minfo[39m: [32mJob 'smartCheckServers' completed in 581ms[39m
+2026-01-26 11:56:01:561 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 11:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 11:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 11:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 11:58:00:580 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 11:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 43ms[39m
+2026-01-26 12:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 12:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 12:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 12:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 12:00:00:00 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 12:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2026-01-26 12:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 12:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 12:02:00:20 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 12:02:00:20 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 12:02:00:20 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 12:02:00:20 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 12:02:00:20 [32minfo[39m: [32m✅ Smart monitoring completed in 623ms[39m
+2026-01-26 12:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 623ms[39m
+2026-01-26 12:02:00:20 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 12:02:03:23 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 12:04:00:40 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 12:04:00:40 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 12:04:00:40 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 12:04:00:40 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 12:04:00:40 [32minfo[39m: [32mJob 'smartCheckServers' completed in 41ms[39m
+2026-01-26 12:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 12:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 12:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 12:06:00:60 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 12:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 49ms[39m
+2026-01-26 12:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 12:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 12:08:00:80 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 12:08:00:80 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 12:08:00:80 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 12:08:00:80 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 12:08:01:81 [32minfo[39m: [32m✅ Smart monitoring completed in 556ms[39m
+2026-01-26 12:08:01:81 [32minfo[39m: [32mJob 'smartCheckServers' completed in 556ms[39m
+2026-01-26 12:08:01:81 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 12:10:01:101 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 12:10:01:101 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 12:10:01:101 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 12:10:01:101 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 12:10:01:101 [32minfo[39m: [32mJob 'smartCheckServers' completed in 102ms[39m
+2026-01-26 12:12:01:121 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 12:12:01:121 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 12:12:01:121 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 12:12:01:121 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 12:12:01:121 [32minfo[39m: [32mJob 'smartCheckServers' completed in 42ms[39m
+2026-01-26 12:12:03:123 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 12:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 12:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 12:14:00:140 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 12:14:00:140 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 12:14:00:140 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 12:14:00:140 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 12:14:01:141 [32minfo[39m: [32m✅ Smart monitoring completed in 922ms[39m
+2026-01-26 12:14:01:141 [32minfo[39m: [32mJob 'smartCheckServers' completed in 923ms[39m
+2026-01-26 12:14:01:141 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 12:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 12:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 12:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 12:16:00:160 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 12:16:00:160 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 12:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 102ms[39m
+2026-01-26 12:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 12:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 12:18:00:180 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 12:18:00:180 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 12:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 103ms[39m
+2026-01-26 19:41:07:417 [32minfo[39m: [32mMongoDB reconnected[39m
+2026-01-26 19:41:17:4117 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2026-01-26 19:41:17:4117 [32minfo[39m: [32mMongoDB reconnected[39m
+2026-01-26 19:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 19:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 19:42:00:420 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 19:42:00:420 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 19:42:00:420 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 19:42:00:420 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 19:42:00:420 [32minfo[39m: [32m✅ Smart monitoring completed in 548ms[39m
+2026-01-26 19:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 548ms[39m
+2026-01-26 19:42:00:420 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 19:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 19:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 19:44:00:440 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 19:44:00:440 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 19:44:00:440 [32minfo[39m: [32mJob 'smartCheckServers' completed in 103ms[39m
+2026-01-26 19:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 19:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 19:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 19:46:00:460 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 19:46:00:460 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 19:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 102ms[39m
+2026-01-26 19:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 19:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 19:48:00:480 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 19:48:00:480 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 19:48:00:480 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 19:48:00:480 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 19:48:01:481 [32minfo[39m: [32m✅ Smart monitoring completed in 819ms[39m
+2026-01-26 19:48:01:481 [32minfo[39m: [32mJob 'smartCheckServers' completed in 819ms[39m
+2026-01-26 19:48:01:481 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 19:50:01:501 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 19:50:01:501 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 19:50:01:501 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 19:50:01:501 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 19:50:01:501 [32minfo[39m: [32mJob 'smartCheckServers' completed in 101ms[39m
+2026-01-26 19:51:07:517 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 19:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 19:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 19:52:00:520 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 19:52:00:520 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 19:52:00:520 [32minfo[39m: [32mJob 'smartCheckServers' completed in 103ms[39m
+2026-01-26 19:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 19:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 19:54:00:540 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 19:54:00:540 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 19:54:00:540 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 19:54:00:540 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 19:54:01:541 [32minfo[39m: [32m✅ Smart monitoring completed in 921ms[39m
+2026-01-26 19:54:01:541 [32minfo[39m: [32mJob 'smartCheckServers' completed in 922ms[39m
+2026-01-26 19:54:01:541 [32minfo[39m: [32m✅ Monitoring (peak) completed[39m
+2026-01-26 19:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 19:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 19:56:00:560 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 19:56:00:560 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 19:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 101ms[39m
+2026-01-26 19:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-26 19:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 19:58:00:580 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 19:58:00:580 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 19:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 44ms[39m
+2026-01-26 20:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-26 20:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 20:00:00:00 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 20:00:00:00 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 20:00:00:00 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 20:00:00:00 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 20:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 20:00:01:01 [32minfo[39m: [32m✅ Smart monitoring completed in 816ms[39m
+2026-01-26 20:00:01:01 [32minfo[39m: [32mJob 'smartCheckServers' completed in 817ms[39m
+2026-01-26 20:00:01:01 [32minfo[39m: [32m✅ Monitoring (normal) completed[39m
+2026-01-26 20:01:07:17 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 20:03:00:30 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-26 20:03:00:30 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 20:03:00:30 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 20:03:00:30 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 20:03:00:30 [32minfo[39m: [32mJob 'smartCheckServers' completed in 46ms[39m
+2026-01-26 20:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-26 20:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 20:06:00:60 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 20:06:00:60 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 20:06:00:60 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 20:06:00:60 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 20:06:01:61 [32minfo[39m: [32m✅ Smart monitoring completed in 921ms[39m
+2026-01-26 20:06:01:61 [32minfo[39m: [32mJob 'smartCheckServers' completed in 922ms[39m
+2026-01-26 20:06:01:61 [32minfo[39m: [32m✅ Monitoring (normal) completed[39m
+2026-01-26 20:09:00:90 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-26 20:09:00:90 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 20:09:00:90 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 20:09:00:90 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 20:09:00:90 [32minfo[39m: [32mJob 'smartCheckServers' completed in 102ms[39m
+2026-01-26 20:11:07:117 [34mdebug[39m: [34mStats cleanup: 1 servers being tracked[39m
+2026-01-26 20:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-26 20:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 20:12:00:120 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 20:12:01:121 [32minfo[39m: [32mFound 1 servers to check[39m
+2026-01-26 20:12:01:121 [32minfo[39m: [32mProcessing 1 low priority servers in 1 batches[39m
+2026-01-26 20:12:01:121 [34mdebug[39m: [34mChecking Zeerostock (attempt 1/2)[39m
+2026-01-26 20:12:01:121 [32minfo[39m: [32m✅ Smart monitoring completed in 921ms[39m
+2026-01-26 20:12:01:121 [32minfo[39m: [32mJob 'smartCheckServers' completed in 922ms[39m
+2026-01-26 20:12:01:121 [32minfo[39m: [32m✅ Monitoring (normal) completed[39m
+2026-01-26 20:15:00:150 [34mdebug[39m: [34m🔄 Smart monitoring (normal mode)[39m
+2026-01-26 20:15:00:150 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-26 20:15:00:150 [32minfo[39m: [32m🧠 Starting SMART server monitoring...[39m
+2026-01-26 20:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-26 20:15:00:150 [32minfo[39m: [32mNo servers need checking right now[39m
+2026-01-26 20:15:00:150 [32minfo[39m: [32mJob 'smartCheckServers' completed in 106ms[39m

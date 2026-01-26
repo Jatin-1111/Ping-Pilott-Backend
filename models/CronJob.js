@@ -1,10 +1,6 @@
-// models/CronJob.js - FIXED DUPLICATE INDEXES
+// models/CronJob.js - Simplified System Time Version
 
 import mongoose from 'mongoose';
-import moment from 'moment-timezone';
-
-// PURE IST CONFIGURATION
-const IST_TIMEZONE = 'Asia/Kolkata';
 
 const cronJobSchema = new mongoose.Schema({
     name: {
@@ -15,11 +11,6 @@ const cronJobSchema = new mongoose.Schema({
         type: String,
         enum: ['pending', 'running', 'completed', 'failed', 'skipped'],
         default: 'pending'
-    },
-    timezone: {
-        type: String,
-        default: IST_TIMEZONE, // ALWAYS IST
-        required: true
     },
     startedAt: {
         type: Date,
@@ -43,54 +34,12 @@ const cronJobSchema = new mongoose.Schema({
     error: {
         type: String,
         default: null
-    },
-    // IST-specific fields for better querying and cleanup
-    istDate: {
-        type: String, // YYYY-MM-DD in IST
-        required: true
-    },
-    istHour: {
-        type: Number, // 0-23 in IST
-        required: true
-    },
-    istStartTime: {
-        type: String, // HH:mm:ss in IST
-        required: true
     }
 }, {
     timestamps: true,
     toJSON: { virtuals: true, getters: true },
     toObject: { virtuals: true, getters: true }
 });
-
-// Pre-save middleware to calculate IST fields
-cronJobSchema.pre('save', function (next) {
-    if (this.isNew || this.isModified('startedAt')) {
-        // FORCE IST timezone
-        this.timezone = IST_TIMEZONE;
-
-        // Calculate IST fields
-        const istMoment = moment(this.startedAt).tz(IST_TIMEZONE);
-        this.istDate = istMoment.format('YYYY-MM-DD');
-        this.istHour = istMoment.hour();
-        this.istStartTime = istMoment.format('HH:mm:ss');
-
-        console.log(`[IST DEBUG] CronJob ${this.name}: ${this.istDate} ${this.istStartTime} IST`);
-    }
-    next();
-});
-
-// Method to get IST formatted start time
-cronJobSchema.methods.getISTStartTime = function () {
-    return moment(this.startedAt).tz(IST_TIMEZONE).format('YYYY-MM-DD HH:mm:ss');
-};
-
-// Method to get IST formatted completion time
-cronJobSchema.methods.getISTCompletedTime = function () {
-    return this.completedAt ?
-        moment(this.completedAt).tz(IST_TIMEZONE).format('YYYY-MM-DD HH:mm:ss') :
-        null;
-};
 
 // Method to get duration in human readable format
 cronJobSchema.methods.getDurationFormatted = function () {
@@ -102,35 +51,9 @@ cronJobSchema.methods.getDurationFormatted = function () {
     return `${(duration / 60000).toFixed(1)}m`;
 };
 
-// Static method to create with IST data
-cronJobSchema.statics.createWithIST = async function (data) {
-    const istMoment = moment().tz(IST_TIMEZONE);
-
-    const jobData = {
-        ...data,
-        startedAt: new Date(),
-        timezone: IST_TIMEZONE,
-        istDate: istMoment.format('YYYY-MM-DD'),
-        istHour: istMoment.hour(),
-        istStartTime: istMoment.format('HH:mm:ss')
-    };
-
-    return this.create(jobData);
-};
-
-// Static method to find jobs by IST date
-cronJobSchema.statics.findByISTDate = function (date, additionalFilters = {}) {
-    const filter = {
-        istDate: date, // YYYY-MM-DD format
-        ...additionalFilters
-    };
-
-    return this.find(filter).sort({ startedAt: -1 });
-};
-
-// Static method to find recent jobs (last N hours in IST)
-cronJobSchema.statics.findRecentIST = function (hoursBack = 24, additionalFilters = {}) {
-    const cutoffTime = moment().tz(IST_TIMEZONE).subtract(hoursBack, 'hours').toDate();
+// Static method to find recent jobs (last N hours)
+cronJobSchema.statics.findRecent = function (hoursBack = 24, additionalFilters = {}) {
+    const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
 
     const filter = {
         startedAt: { $gte: cutoffTime },
@@ -140,22 +63,22 @@ cronJobSchema.statics.findRecentIST = function (hoursBack = 24, additionalFilter
     return this.find(filter).sort({ startedAt: -1 });
 };
 
-// Static method to cleanup old jobs by IST date
-cronJobSchema.statics.cleanupByISTDate = function (beforeDate) {
+// Static method to cleanup old jobs
+cronJobSchema.statics.cleanupOld = function (daysOld = 30) {
+    const cutoffDate = new Date(Date.now() - daysOld * 24 * 60 * 60 * 1000);
     return this.deleteMany({
-        istDate: { $lt: beforeDate } // YYYY-MM-DD format
+        startedAt: { $lt: cutoffDate }
     });
 };
 
-// Static method to get job statistics for IST date range
-cronJobSchema.statics.getISTStats = async function (startDate, endDate) {
+// Static method to get job statistics
+cronJobSchema.statics.getStats = async function (hoursBack = 24) {
+    const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+
     const pipeline = [
         {
             $match: {
-                istDate: {
-                    $gte: startDate,
-                    $lte: endDate
-                }
+                startedAt: { $gte: cutoffTime }
             }
         },
         {
@@ -190,23 +113,10 @@ cronJobSchema.statics.getISTStats = async function (startDate, endDate) {
     return stats;
 };
 
-// Virtual for IST display
-cronJobSchema.virtual('istDisplay').get(function () {
-    return {
-        date: this.istDate,
-        startTime: this.istStartTime,
-        completedTime: this.completedAt ?
-            moment(this.completedAt).tz(IST_TIMEZONE).format('HH:mm:ss') : null,
-        duration: this.getDurationFormatted(),
-        timezone: this.timezone
-    };
-});
-
-// FIXED: Create indexes WITHOUT duplicates - only use compound indexes
-cronJobSchema.index({ name: 1, istDate: -1 });
-cronJobSchema.index({ status: 1, istDate: -1 });
+// Create simple indexes
+cronJobSchema.index({ name: 1, startedAt: -1 });
+cronJobSchema.index({ status: 1, startedAt: -1 });
 cronJobSchema.index({ startedAt: -1 });
-// REMOVED: cronJobSchema.index({ istDate: 1 }); // This was causing duplicate
 
 // Create and export the model
 const CronJob = mongoose.model('CronJob', cronJobSchema);

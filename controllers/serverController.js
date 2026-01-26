@@ -5,14 +5,12 @@ import ServerCheck from '../models/ServerCheck.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { checkServerStatus } from '../services/monitoringService.js';
 import logger from '../utils/logger.js';
-import moment from 'moment-timezone';
 import mongoose from 'mongoose';
 
 // Performance monitoring
 const PERFORMANCE_CONFIG = {
     MAX_SERVERS_PER_REQUEST: 50,
     MAX_HISTORY_POINTS: 1440, // 24 hours at 1-minute intervals
-    DEFAULT_TIMEZONE: 'Asia/Kolkata',
     BATCH_CHECK_LIMIT: 10,
     QUERY_TIMEOUT: 10000 // 10 seconds
 };
@@ -85,9 +83,7 @@ export const getServers = asyncHandler(async (req, res) => {
 
         // Enhance servers with computed fields efficiently
         const enhancedServers = servers.map(server => {
-            const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
-            const lastCheckedLocal = server.lastChecked ?
-                moment(server.lastChecked).tz(timezone).format('YYYY-MM-DD HH:mm:ss') : null;
+            const lastCheckedLocal = server.lastChecked ? new Date(server.lastChecked).toISOString() : null;
 
             // Health status calculation
             const isHealthy = server.status === 'up' &&
@@ -152,7 +148,7 @@ export const getServers = asyncHandler(async (req, res) => {
  */
 export const getServerById = asyncHandler(async (req, res) => {
     const serverId = req.params.id;
-    const userId = req.user.id;
+    const userId = req.user._id.toString(); // Use _id instead of id
     const isAdmin = req.user.role === 'admin';
     const includeRecent = req.query.includeRecent === 'true';
 
@@ -193,8 +189,8 @@ export const getServerById = asyncHandler(async (req, res) => {
             });
         }
 
-        // Authorization check
-        if (server.uploadedBy !== userId && !isAdmin) {
+        // Authorization check - ensure both are strings for comparison
+        if (String(server.uploadedBy) !== String(userId) && !isAdmin) {
             return res.status(403).json({
                 status: 'error',
                 message: 'Not authorized to access this server',
@@ -203,14 +199,10 @@ export const getServerById = asyncHandler(async (req, res) => {
         }
 
         // Enhance server data
-        const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
         const enhancedServer = {
             ...server,
-            lastCheckedLocal: server.lastChecked ?
-                moment(server.lastChecked).tz(timezone).format('YYYY-MM-DD HH:mm:ss') : null,
-            lastStatusChangeLocal: server.lastStatusChange ?
-                moment(server.lastStatusChange).tz(timezone).format('YYYY-MM-DD HH:mm:ss') : null,
-            timezone,
+            lastCheckedLocal: server.lastChecked ? new Date(server.lastChecked).toISOString() : null,
+            lastStatusChangeLocal: server.lastStatusChange ? new Date(server.lastStatusChange).toISOString() : null,
             isHealthy: server.status === 'up' && (!server.responseTime || server.responseTime < 2000),
             nextCheckEstimate: getNextCheckEstimate(server),
             trialExpired: server.uploadedPlan === 'free' &&
@@ -783,22 +775,13 @@ export const checkServer = asyncHandler(async (req, res) => {
         }
 
         // Create enhanced check history document
-        const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
-        const localMoment = moment(now).tz(timezone);
-
         const checkDoc = {
             serverId: new mongoose.Types.ObjectId(serverId),
             status: checkResult.status,
             responseTime: checkResult.responseTime,
             error: checkResult.error,
             timestamp: now,
-            timezone: timezone,
-            localDate: localMoment.format('YYYY-MM-DD'),
-            localHour: localMoment.hour(),
-            localMinute: localMoment.minute(),
-            timeSlot: Math.floor(localMoment.minute() / 15),
-            checkType: 'manual', // Distinguish from automatic checks
-            userId: userId // Track who initiated the check
+            checkType: 'manual'
         };
 
         // Execute database operations in parallel
@@ -1327,7 +1310,7 @@ export const getServerStats = asyncHandler(async (req, res) => {
                 },
                 {
                     $group: {
-                        _id: '$localDate',
+                        _id: { $dateToString: { format: "%Y-%m-%d", date: "$timestamp" } },
                         totalChecks: { $sum: 1 },
                         upChecks: { $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] } },
                         avgResponseTime: {
@@ -1354,7 +1337,7 @@ export const getServerStats = asyncHandler(async (req, res) => {
                 },
                 {
                     $group: {
-                        _id: '$localHour',
+                        _id: { $dateToString: { format: "%H", date: "$timestamp" } },
                         totalChecks: { $sum: 1 },
                         upChecks: { $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] } },
                         avgResponseTime: {
@@ -1461,19 +1444,18 @@ const getNextCheckEstimate = (server) => {
 
     if (nextCheck <= new Date()) return 'Due now';
 
-    return moment(nextCheck).tz(server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE).format('YYYY-MM-DD HH:mm:ss');
+    return nextCheck.toISOString();
 };
 
 /**
  * Check if server can be checked now based on monitoring windows
  */
 const canBeCheckedNow = (server) => {
-    const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
-    const now = moment().tz(timezone);
+    const now = new Date();
 
     // Check days of week
     if (server.monitoring?.daysOfWeek?.length > 0) {
-        if (!server.monitoring.daysOfWeek.includes(now.day())) {
+        if (!server.monitoring.daysOfWeek.includes(now.getDay())) {
             return false;
         }
     }
@@ -1687,21 +1669,12 @@ const processServersBatched = async (servers, maxConcurrent, userId) => {
                     updateData.lastStatusChange = now;
                 }
 
-                // Create check history
-                const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
-                const localMoment = moment(now).tz(timezone);
-
                 const checkDoc = {
                     serverId: server._id,
                     status: checkResult.status,
                     responseTime: checkResult.responseTime,
                     error: checkResult.error,
                     timestamp: now,
-                    timezone: timezone,
-                    localDate: localMoment.format('YYYY-MM-DD'),
-                    localHour: localMoment.hour(),
-                    localMinute: localMoment.minute(),
-                    timeSlot: Math.floor(localMoment.minute() / 15),
                     checkType: 'batch',
                     userId: userId
                 };

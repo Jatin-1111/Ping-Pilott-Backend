@@ -1,7 +1,6 @@
 // controllers/analyticsController.js - OPTIMIZED FOR SPEED ⚡
 
 import mongoose from 'mongoose';
-import moment from 'moment-timezone';
 import User from '../models/User.js';
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
@@ -25,10 +24,10 @@ export const getAnalytics = asyncHandler(async (req, res) => {
         period = 'month'
     } = req.query;
 
-    const start = startDate ? new Date(startDate) : moment().subtract(30, 'days').toDate();
+    const start = startDate ? new Date(startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     const end = endDate ? new Date(endDate) : new Date();
-    const prevStart = prevStartDate ? new Date(prevStartDate) : moment(start).subtract(30, 'days').toDate();
-    const prevEnd = prevEndDate ? new Date(prevEndDate) : moment(start).subtract(1, 'milliseconds').toDate();
+    const prevStart = prevStartDate ? new Date(prevStartDate) : new Date(start.getTime() - 30 * 24 * 60 * 60 * 1000);
+    const prevEnd = prevEndDate ? new Date(prevEndDate) : new Date(start.getTime() - 1);
 
     try {
         logger.info(`🚀 Starting analytics query for period: ${period}`);
@@ -77,6 +76,73 @@ export const getAnalytics = asyncHandler(async (req, res) => {
             error: error.message
         });
     }
+});
+
+/**
+ * @desc    Get just KPI data
+ * @route   GET /api/admin/analytics/kpi
+ * @access  Private/Admin
+ */
+export const getAnalyticsKPIs = asyncHandler(async (req, res) => {
+    const { startDate, endDate, prevStartDate, prevEndDate } = req.query;
+    const start = startDate ? new Date(startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const end = endDate ? new Date(endDate) : new Date();
+    const prevStart = prevStartDate ? new Date(prevStartDate) : new Date(start.getTime() - 30 * 24 * 60 * 60 * 1000);
+    const prevEnd = prevEndDate ? new Date(prevEndDate) : new Date(start.getTime() - 1);
+
+    const stats = await getKPIsOptimized(start, end, prevStart, prevEnd);
+
+    res.status(200).json({ status: 'success', data: stats });
+});
+
+/**
+ * @desc    Get user growth chart data
+ * @route   GET /api/admin/analytics/users
+ * @access  Private/Admin
+ */
+export const getAnalyticsUserGrowth = asyncHandler(async (req, res) => {
+    const { startDate, endDate, period = 'month' } = req.query;
+    const start = startDate ? new Date(startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const end = endDate ? new Date(endDate) : new Date();
+
+    const stats = await getUserGrowthOptimized(start, end, period);
+
+    res.status(200).json({ status: 'success', data: stats });
+});
+
+/**
+ * @desc    Get server status breakdown
+ * @route   GET /api/admin/analytics/servers
+ * @access  Private/Admin
+ */
+export const getAnalyticsServerStatus = asyncHandler(async (req, res) => {
+    const stats = await getServerStatusOptimized();
+    res.status(200).json({ status: 'success', data: stats });
+});
+
+/**
+ * @desc    Get alerts by type
+ * @route   GET /api/admin/analytics/alerts
+ * @access  Private/Admin
+ */
+export const getAnalyticsAlerts = asyncHandler(async (req, res) => {
+    const stats = await getAlertsByTypeOptimized();
+    res.status(200).json({ status: 'success', data: stats });
+});
+
+/**
+ * @desc    Get response time chart
+ * @route   GET /api/admin/analytics/response-time
+ * @access  Private/Admin
+ */
+export const getAnalyticsResponseTime = asyncHandler(async (req, res) => {
+    const { startDate, endDate, period = 'month' } = req.query;
+    const start = startDate ? new Date(startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const end = endDate ? new Date(endDate) : new Date();
+
+    const stats = await getResponseTimeOptimized(start, end, period);
+
+    res.status(200).json({ status: 'success', data: stats });
 });
 
 /**
@@ -429,4 +495,11 @@ const getUptimeOptimized = async (startDate, endDate) => {
     return totalChecks > 0 ? (upChecks / totalChecks) * 100 : 100;
 };
 
-export default { getAnalytics };
+export default {
+    getAnalytics,
+    getAnalyticsKPIs,
+    getAnalyticsUserGrowth,
+    getAnalyticsServerStatus,
+    getAnalyticsAlerts,
+    getAnalyticsResponseTime
+};

@@ -1,44 +1,27 @@
-// services/dataRetentionService.js - FIXED STATS ERROR
+// services/dataRetentionService.js - System Time Data Retention
 
 import logger from '../utils/logger.js';
 import ServerCheck from '../models/ServerCheck.js';
 import CronJob from '../models/CronJob.js';
 import mongoose from 'mongoose';
-import moment from 'moment-timezone';
-
-// PURE IST CONFIGURATION - NO OTHER TIMEZONES ALLOWED
-const IST_CONFIG = {
-    TIMEZONE: 'Asia/Kolkata',
-    MIDNIGHT_HOUR: 0,
-    MIDNIGHT_MINUTE: 0
-};
 
 /**
- * Get IST date/time - ONLY IST, NO UTC BULLSHIT
+ * Get date string (YYYY-MM-DD) for a given date
  */
-const getISTTime = () => {
-    return moment().tz(IST_CONFIG.TIMEZONE);
+const getDateString = (date = new Date()) => {
+    return date.toISOString().split('T')[0];
 };
 
 /**
- * Get IST date string (YYYY-MM-DD)
- */
-const getISTDateString = (date = null) => {
-    const istMoment = date ? moment(date).tz(IST_CONFIG.TIMEZONE) : getISTTime();
-    return istMoment.format('YYYY-MM-DD');
-};
-
-/**
- * AGGRESSIVE data retention - clears almost everything at IST midnight
+ * AGGRESSIVE data retention - clears almost everything at midnight
  * @returns {Object} Statistics about the cleanup process
  */
 export const runAggressiveDataRetention = async () => {
     const startTime = Date.now();
-    const istNow = getISTTime();
+    const now = new Date();
 
-    logger.info('💀 Starting AGGRESSIVE IST midnight data cleanup...', {
-        istTime: istNow.format('YYYY-MM-DD HH:mm:ss'),
-        timezone: IST_CONFIG.TIMEZONE
+    logger.info('💀 Starting AGGRESSIVE midnight data cleanup...', {
+        time: now.toISOString()
     });
 
     const stats = {
@@ -47,8 +30,8 @@ export const runAggressiveDataRetention = async () => {
         databaseSizeBeforeMB: 0,
         databaseSizeAfterMB: 0,
         duration: 0,
-        cleanupDate: getISTDateString(),
-        spaceSavedMB: 0 // Initialize this field
+        cleanupDate: getDateString(),
+        spaceSavedMB: 0
     };
 
     try {
@@ -63,9 +46,7 @@ export const runAggressiveDataRetention = async () => {
 
         logger.info(`📊 Database size before cleanup: ${stats.databaseSizeBeforeMB} MB`);
 
-        // ========================================
         // STEP 1: Clear ALL ServerCheck data
-        // ========================================
         logger.info('🗑️ Deleting ALL ServerCheck records...');
 
         const serverCheckResult = await ServerCheck.deleteMany({});
@@ -73,25 +54,21 @@ export const runAggressiveDataRetention = async () => {
 
         logger.info(`✅ Deleted ${stats.serverChecksDeleted} ServerCheck records`);
 
-        // ========================================
-        // STEP 2: Clear old CronJob logs (keep last 24 hours IST)
-        // ========================================
-        const twentyFourHoursAgoIST = getISTTime().subtract(24, 'hours').toDate();
+        // STEP 2: Clear old CronJob logs (keep last 24 hours)
+        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
-        logger.info('🗑️ Deleting old CronJob logs (keeping last 24 hours IST)...', {
-            cutoffTime: moment(twentyFourHoursAgoIST).tz(IST_CONFIG.TIMEZONE).format('YYYY-MM-DD HH:mm:ss')
+        logger.info('🗑️ Deleting old CronJob logs (keeping last 24 hours)...', {
+            cutoffTime: twentyFourHoursAgo.toISOString()
         });
 
         const cronJobResult = await CronJob.deleteMany({
-            startedAt: { $lt: twentyFourHoursAgoIST }
+            startedAt: { $lt: twentyFourHoursAgo }
         });
         stats.cronJobsDeleted = cronJobResult.deletedCount || 0;
 
         logger.info(`✅ Deleted ${stats.cronJobsDeleted} old CronJob records`);
 
-        // ========================================
         // STEP 3: Database optimization
-        // ========================================
         logger.info('🔧 Running database optimization...');
 
         try {
@@ -104,9 +81,7 @@ export const runAggressiveDataRetention = async () => {
             logger.warn(`Database compaction warning: ${compactError.message}`);
         }
 
-        // ========================================
         // STEP 4: Get final database size
-        // ========================================
         try {
             const dbStatsAfter = await mongoose.connection.db.stats();
             stats.databaseSizeAfterMB = Math.round(dbStatsAfter.dataSize / 1024 / 1024);
@@ -119,11 +94,11 @@ export const runAggressiveDataRetention = async () => {
         stats.spaceSavedMB = spaceSaved;
         stats.duration = Date.now() - startTime;
 
-        logger.info('💀 AGGRESSIVE IST cleanup completed successfully!', {
+        logger.info('💀 AGGRESSIVE cleanup completed successfully!', {
             ...stats,
             percentReduction: stats.databaseSizeBeforeMB > 0 ?
                 Math.round((spaceSaved / stats.databaseSizeBeforeMB) * 100) : 0,
-            completedAt: getISTTime().format('YYYY-MM-DD HH:mm:ss')
+            completedAt: new Date().toISOString()
         });
 
         return {
@@ -133,10 +108,10 @@ export const runAggressiveDataRetention = async () => {
 
     } catch (error) {
         stats.duration = Date.now() - startTime;
-        logger.error(`💥 Error in aggressive IST data retention: ${error.message}`, {
+        logger.error(`💥 Error in aggressive data retention: ${error.message}`, {
             stack: error.stack,
             stats,
-            istTime: getISTTime().format('YYYY-MM-DD HH:mm:ss')
+            time: new Date().toISOString()
         });
 
         throw error;
@@ -144,16 +119,16 @@ export const runAggressiveDataRetention = async () => {
 };
 
 /**
- * SELECTIVE data retention - keeps recent data for analytics (IST based)
+ * SELECTIVE data retention - keeps recent data for analytics
  * @param {Number} hoursToKeep - Hours of data to retain (default: 24)
  * @returns {Object} Statistics about the cleanup process
  */
 export const runSelectiveDataRetention = async (hoursToKeep = 24) => {
     const startTime = Date.now();
-    const istNow = getISTTime();
+    const now = new Date();
 
-    logger.info(`🎯 Starting SELECTIVE IST data cleanup (keeping last ${hoursToKeep} hours)...`, {
-        istTime: istNow.format('YYYY-MM-DD HH:mm:ss')
+    logger.info(`🎯 Starting SELECTIVE data cleanup (keeping last ${hoursToKeep} hours)...`, {
+        time: now.toISOString()
     });
 
     const stats = {
@@ -161,47 +136,46 @@ export const runSelectiveDataRetention = async (hoursToKeep = 24) => {
         cronJobsDeleted: 0,
         serverChecksKept: 0,
         duration: 0,
-        cleanupDate: getISTDateString()
+        cleanupDate: getDateString()
     };
 
     try {
-        // Calculate cutoff time in IST
-        const cutoffTimeIST = getISTTime().subtract(hoursToKeep, 'hours');
-        const cutoffTimeUTC = cutoffTimeIST.utc().toDate();
+        // Calculate cutoff time
+        const cutoffTime = new Date(Date.now() - hoursToKeep * 60 * 60 * 1000);
 
-        logger.info(`🗑️ Deleting ServerCheck records older than ${cutoffTimeIST.format('YYYY-MM-DD HH:mm:ss')} IST`);
+        logger.info(`🗑️ Deleting ServerCheck records older than ${cutoffTime.toISOString()}`);
 
         // Delete old ServerCheck records
         const serverCheckResult = await ServerCheck.deleteMany({
-            timestamp: { $lt: cutoffTimeUTC }
+            timestamp: { $lt: cutoffTime }
         });
         stats.serverChecksDeleted = serverCheckResult.deletedCount || 0;
 
         // Count remaining records
         stats.serverChecksKept = await ServerCheck.countDocuments();
 
-        // Delete old CronJob logs (keep last 48 hours IST)
-        const fortyEightHoursAgoIST = getISTTime().subtract(48, 'hours').toDate();
+        // Delete old CronJob logs (keep last 48 hours)
+        const fortyEightHoursAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
         const cronJobResult = await CronJob.deleteMany({
-            startedAt: { $lt: fortyEightHoursAgoIST }
+            startedAt: { $lt: fortyEightHoursAgo }
         });
         stats.cronJobsDeleted = cronJobResult.deletedCount || 0;
 
         stats.duration = Date.now() - startTime;
 
-        logger.info('🎯 SELECTIVE IST cleanup completed successfully!', {
+        logger.info('🎯 SELECTIVE cleanup completed successfully!', {
             ...stats,
-            completedAt: getISTTime().format('YYYY-MM-DD HH:mm:ss')
+            completedAt: new Date().toISOString()
         });
 
         return { ...stats, success: true };
 
     } catch (error) {
         stats.duration = Date.now() - startTime;
-        logger.error(`💥 Error in selective IST data retention: ${error.message}`, {
+        logger.error(`💥 Error in selective data retention: ${error.message}`, {
             stack: error.stack,
             stats,
-            istTime: getISTTime().format('YYYY-MM-DD HH:mm:ss')
+            time: new Date().toISOString()
         });
 
         throw error;
@@ -209,15 +183,15 @@ export const runSelectiveDataRetention = async (hoursToKeep = 24) => {
 };
 
 /**
- * EMERGENCY cleanup - use when database is critically full (IST logged)
+ * EMERGENCY cleanup - use when database is critically full
  * @returns {Object} Statistics about the emergency cleanup
  */
 export const runEmergencyCleanup = async () => {
     const startTime = Date.now();
-    const istNow = getISTTime();
+    const now = new Date();
 
-    logger.warn('🚨 EMERGENCY IST CLEANUP INITIATED - CLEARING ALL HISTORICAL DATA', {
-        istTime: istNow.format('YYYY-MM-DD HH:mm:ss')
+    logger.warn('🚨 EMERGENCY CLEANUP INITIATED - CLEARING ALL HISTORICAL DATA', {
+        time: now.toISOString()
     });
 
     const stats = {
@@ -225,7 +199,7 @@ export const runEmergencyCleanup = async () => {
         cronJobsDeleted: 0,
         duration: 0,
         emergency: true,
-        cleanupDate: getISTDateString()
+        cleanupDate: getDateString()
     };
 
     try {
@@ -239,19 +213,19 @@ export const runEmergencyCleanup = async () => {
         stats.cronJobsDeleted = cronJobResult.deletedCount || 0;
         stats.duration = Date.now() - startTime;
 
-        logger.warn('🚨 EMERGENCY IST cleanup completed!', {
+        logger.warn('🚨 EMERGENCY cleanup completed!', {
             ...stats,
-            completedAt: getISTTime().format('YYYY-MM-DD HH:mm:ss')
+            completedAt: new Date().toISOString()
         });
 
         return { ...stats, success: true };
 
     } catch (error) {
         stats.duration = Date.now() - startTime;
-        logger.error(`💥 EMERGENCY IST cleanup failed: ${error.message}`, {
+        logger.error(`💥 EMERGENCY cleanup failed: ${error.message}`, {
             stack: error.stack,
             stats,
-            istTime: getISTTime().format('YYYY-MM-DD HH:mm:ss')
+            time: new Date().toISOString()
         });
 
         throw error;
@@ -259,7 +233,7 @@ export const runEmergencyCleanup = async () => {
 };
 
 /**
- * Get cleanup recommendations based on current data volume (IST aware)
+ * Get cleanup recommendations based on current data volume
  * @returns {Object} Recommendations for data retention strategy
  */
 export const getCleanupRecommendations = async () => {
@@ -305,14 +279,13 @@ export const getCleanupRecommendations = async () => {
                 databaseSizeMB: dbSizeMB,
                 indexSizeMB: indexSizeMB,
                 totalSizeMB: dbSizeMB + indexSizeMB,
-                analyzedAt: getISTTime().format('YYYY-MM-DD HH:mm:ss'),
-                timezone: IST_CONFIG.TIMEZONE
+                analyzedAt: new Date().toISOString()
             },
             recommendation,
             reasoning,
             actions: {
-                aggressive: 'Clear all historical data daily at IST midnight',
-                selective: 'Keep last 24 hours of data (IST based)',
+                aggressive: 'Clear all historical data daily at midnight',
+                selective: 'Keep last 24 hours of data',
                 emergency: 'Clear everything immediately'
             }
         };
@@ -320,13 +293,12 @@ export const getCleanupRecommendations = async () => {
     } catch (error) {
         logger.error(`Error getting cleanup recommendations: ${error.message}`, {
             stack: error.stack,
-            trace: new Error().stack // Add stack trace to see where this is called from
+            trace: new Error().stack
         });
         return {
             current: {
                 error: error.message,
-                analyzedAt: getISTTime().format('YYYY-MM-DD HH:mm:ss'),
-                timezone: IST_CONFIG.TIMEZONE,
+                analyzedAt: new Date().toISOString(),
                 serverChecks: 0,
                 cronJobs: 0,
                 databaseSizeMB: 0,
@@ -339,39 +311,9 @@ export const getCleanupRecommendations = async () => {
     }
 };
 
-/**
- * IST Helper functions for other modules
- */
-export const istHelpers = {
-    getISTTime,
-    getISTDateString,
-    getYesterdayISTString: () => getISTTime().subtract(1, 'day').format('YYYY-MM-DD'),
-
-    // Check if it's IST midnight (within 5 minutes)
-    isISTMidnight: () => {
-        const now = getISTTime();
-        const hour = now.hour();
-        const minute = now.minute();
-
-        return hour === 0 && minute >= 0 && minute <= 5;
-    },
-
-    // Get IST midnight for a specific date
-    getISTMidnight: (date = null) => {
-        const istDate = date ? moment(date).tz(IST_CONFIG.TIMEZONE) : getISTTime();
-        return istDate.startOf('day'); // This gives 00:00:00 IST
-    },
-
-    // Convert any date to IST
-    toIST: (date) => {
-        return moment(date).tz(IST_CONFIG.TIMEZONE);
-    }
-};
-
 export default {
     runAggressiveDataRetention,
     runSelectiveDataRetention,
     runEmergencyCleanup,
-    getCleanupRecommendations,
-    istHelpers
+    getCleanupRecommendations
 };
