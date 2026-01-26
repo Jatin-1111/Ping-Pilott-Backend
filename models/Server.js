@@ -106,8 +106,12 @@ const serverSchema = new mongoose.Schema({
     },
     uploadedPlan: {
         type: String,
-        enum: ['free', 'monthly', 'halfYearly', 'yearly', 'admin'],
         default: 'free'
+    },
+    priority: {
+        type: String,
+        enum: ['high', 'medium', 'low'],
+        default: 'medium'
     },
     status: {
         type: String,
@@ -169,6 +173,8 @@ serverSchema.index({ uploadedBy: 1 });
 serverSchema.index({ status: 1 });
 serverSchema.index({ lastChecked: 1 });
 serverSchema.index({ uploadedAt: -1 });
+// Compound index for check scheduler (find by status + sort by lastChecked/calc)
+serverSchema.index({ status: 1, lastChecked: 1 });
 
 // Calculate uptime percentage
 serverSchema.virtual('uptime24h').get(function () {

@@ -186,11 +186,8 @@ const startAdaptiveMonitoring = () => {
             interval = 'normal';
         }
 
-        const shouldRunCheck = shouldRunAdaptiveCheck(interval, currentMinute);
-
-        if (shouldRunCheck) {
-            await executeSmartMonitoring(interval);
-        }
+        // Run every minute - logic in checkServers.js handles the filtering
+        await executeSmartMonitoring(interval);
     });
 };
 

@@ -31,6 +31,12 @@ const serverCheckSchema = new mongoose.Schema({
         type: String,
         default: 'automated'
     }
+}, {
+    timeseries: {
+        timeField: 'timestamp',
+        metaField: 'serverId',
+        granularity: 'minutes'
+    }
 });
 
 // Create compound indexes for efficient querying
@@ -40,5 +46,7 @@ serverCheckSchema.index({ serverId: 1, timestamp: -1 });
 serverCheckSchema.index({ timestamp: 1 }, { expireAfterSeconds: 2592000 });
 
 // Create and export the model
+// Create and export the model
+// Optimization: Enabled Time Series for massive performance gains (Requires MongoDB 5.0+)
 const ServerCheck = mongoose.model('ServerCheck', serverCheckSchema);
 export default ServerCheck;

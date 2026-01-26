@@ -6,6 +6,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { checkServerStatus } from '../services/monitoringService.js';
 import logger from '../utils/logger.js';
 import mongoose from 'mongoose';
+import { createServerSchema, updateServerSchema } from '../utils/validations.js';
 
 // Performance monitoring
 const PERFORMANCE_CONFIG = {
@@ -252,22 +253,41 @@ export const createServer = asyncHandler(async (req, res) => {
         description = '',
         monitoring = {},
         contactEmails = [],
-        contactPhones = []
+        contactPhones = [],
+        priority = 'medium'
     } = req.body;
 
     const userId = req.user.id;
     const userRole = req.user.role;
     const userPlan = req.user.subscription?.plan || 'free';
+    const isPremium = ['monthly', 'halfYearly', 'yearly', 'admin'].includes(userPlan);
 
     try {
-        // Input validation and sanitization
-        if (!name?.trim() || !url?.trim()) {
+        // Zod Validation
+        const validationResult = createServerSchema.safeParse(req.body);
+
+        if (!validationResult.success) {
             return res.status(400).json({
                 status: 'error',
-                message: 'Server name and URL are required',
-                code: 'MISSING_REQUIRED_FIELDS'
+                message: 'Validation error',
+                code: 'VALIDATION_ERROR',
+                errors: validationResult.error.errors.map(err => ({
+                    field: err.path.join('.'),
+                    message: err.message
+                }))
             });
         }
+
+        const {
+            name,
+            url,
+            type,
+            description,
+            monitoring,
+            contactEmails,
+            contactPhones,
+            priority
+        } = validationResult.data;
 
         // URL validation and normalization
         const normalizedUrl = normalizeUrl(url.trim());
@@ -331,10 +351,18 @@ export const createServer = asyncHandler(async (req, res) => {
             uploadedRole: userRole,
             uploadedPlan: userPlan,
             status: 'unknown',
-            monitoring: buildMonitoringConfig(monitoring, userRole, trialEnd),
+            monitoring: {
+                ...buildMonitoringConfig(monitoring, userRole, trialEnd), // Keep existing monitoring config logic
+                alerts: {
+                    ...monitoring?.alerts,
+                    // Force disable advanced alerts for free users
+                    email: isPremium ? (monitoring?.alerts?.email ?? true) : true, // Free users get email
+                    phone: isPremium ? (monitoring?.alerts?.phone ?? false) : false // Only premium get phone
+                }
+            },
             contactEmails: sanitizeEmails(contactEmails),
             contactPhones: sanitizePhones(contactPhones),
-            timezone: monitoring.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE
+            priority: priority || 'medium' // Set default priority if not provided
         };
 
         // Create server
@@ -445,32 +473,36 @@ export const updateServer = asyncHandler(async (req, res) => {
             description,
             monitoring,
             contactEmails,
-            contactPhones
+            contactPhones,
+            priority
         } = req.body;
 
-        // Validate and update basic fields
-        if (name !== undefined) {
-            if (!name.trim()) {
-                return res.status(400).json({
-                    status: 'error',
-                    message: 'Server name cannot be empty',
-                    code: 'INVALID_NAME'
-                });
-            }
-            updates.name = name.trim();
+        // Zod Validation for Update
+        const validationResult = updateServerSchema.safeParse(req.body);
+
+        if (!validationResult.success) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Validation error',
+                code: 'VALIDATION_ERROR',
+                errors: validationResult.error.errors.map(err => ({
+                    field: err.path.join('.'),
+                    message: err.message
+                }))
+            });
         }
 
-        if (url !== undefined) {
-            const normalizedUrl = normalizeUrl(url.trim());
-            if (!normalizedUrl) {
-                return res.status(400).json({
-                    status: 'error',
-                    message: 'Invalid URL format',
-                    code: 'INVALID_URL'
-                });
+        const validatedData = validationResult.data;
+
+        // Map validated data to updates object
+        if (validatedData.name) updates.name = validatedData.name;
+        if (validatedData.url) {
+            const normalizedUrl = normalizeUrl(validatedData.url);
+            if (!normalizedUrl) { // Double check url validity
+                return res.status(400).json({ status: 'error', message: 'Invalid URL', code: 'INVALID_URL' });
             }
 
-            // Check for duplicate URL (excluding current server)
+            // Check for duplicate URL (excluding current server) - Logic maintained
             if (normalizedUrl !== server.url) {
                 const existingServer = await Server.findOne({
                     uploadedBy: userId,
@@ -486,32 +518,14 @@ export const updateServer = asyncHandler(async (req, res) => {
                     });
                 }
             }
-
             updates.url = normalizedUrl;
         }
+        if (validatedData.type) updates.type = validatedData.type;
+        if (validatedData.description !== undefined) updates.description = validatedData.description; // Allow empty string
+        if (validatedData.priority) updates.priority = validatedData.priority;
 
-        if (type !== undefined) {
-            if (!['website', 'api', 'tcp', 'database'].includes(type)) {
-                return res.status(400).json({
-                    status: 'error',
-                    message: 'Invalid server type',
-                    code: 'INVALID_TYPE'
-                });
-            }
-            updates.type = type;
-        }
-
-        if (description !== undefined) {
-            updates.description = description.trim();
-        }
-
-        if (contactEmails !== undefined) {
-            updates.contactEmails = sanitizeEmails(contactEmails);
-        }
-
-        if (contactPhones !== undefined) {
-            updates.contactPhones = sanitizePhones(contactPhones);
-        }
+        if (validatedData.contactEmails) updates.contactEmails = validatedData.contactEmails; // Already validated by Zod
+        if (validatedData.contactPhones) updates.contactPhones = validatedData.contactPhones;
 
         // Handle nested monitoring updates efficiently
         if (monitoring) {

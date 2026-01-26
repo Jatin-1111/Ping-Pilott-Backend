@@ -125,15 +125,8 @@ const getServersWithPriority = async () => {
                         {
                             $multiply: [
                                 {
-                                    // Adaptive interval based on status
-                                    $switch: {
-                                        branches: [
-                                            { case: { $eq: ['$status', 'down'] }, then: 2 },    // 2 min for down
-                                            { case: { $eq: ['$status', 'unknown'] }, then: 3 }, // 3 min for unknown
-                                            { case: { $eq: ['$status', 'up'] }, then: 5 }       // 5 min for up
-                                        ],
-                                        default: 5
-                                    }
+                                    // Strictly follow user's configured frequency
+                                    $ifNull: ['$monitoring.frequency', 5]
                                 },
                                 60000 // Convert to milliseconds
                             ]
@@ -156,7 +149,8 @@ const getServersWithPriority = async () => {
         contactEmails: 1,
         responseTime: 1,
         uploadedRole: 1,
-        uploadedPlan: 1
+        uploadedPlan: 1,
+        priority: 1
     }).lean();
 
     // Filter by time windows and add priority
@@ -183,36 +177,28 @@ const getServersWithPriority = async () => {
 /**
  * Calculate server priority
  */
+/**
+ * Calculate server priority
+ * Uses user-defined priority as base, escalates for critical states
+ */
 const calculatePriority = (server) => {
-    let score = 0;
+    // 1. Start with user-defined priority (default: medium)
+    let priority = server.priority || 'medium';
 
-    // Status-based priority
-    if (server.status === 'down') score += 10;
-    else if (server.status === 'unknown') score += 5;
+    // 2. Smart Escalation: DOWN servers need faster checks to detect recovery
+    if (server.status === 'down') {
+        return 'high';
+    }
 
-    // Recently changed status (system time)
+    // 3. Smart Escalation: Recently changed servers (instability) get high priority
     if (server.lastStatusChange) {
         const hoursSinceChange = (Date.now() - new Date(server.lastStatusChange).getTime()) / (1000 * 60 * 60);
-
-        if (hoursSinceChange < 1) score += 8;
-        else if (hoursSinceChange < 6) score += 4;
+        if (hoursSinceChange < 0.5) { // Changed in last 30 mins
+            return 'high';
+        }
     }
 
-    // Never checked
-    if (!server.lastChecked) score += 6;
-
-    // Premium users get higher priority
-    if (server.uploadedRole === 'admin' || ['yearly', 'admin'].includes(server.uploadedPlan)) {
-        score += 3;
-    }
-
-    // Historical reliability (if we have stats)
-    const stats = serverStats.get(server._id?.toString());
-    if (stats && stats.failureRate > 0.2) score += 2;
-
-    if (score >= 10) return 'high';
-    if (score >= 5) return 'medium';
-    return 'low';
+    return priority;
 };
 
 /**
