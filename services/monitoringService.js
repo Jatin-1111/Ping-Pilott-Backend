@@ -1,11 +1,35 @@
-// services/monitoringService.js - Updated with browser user agent
-
+// services/monitoringService.js - Optimized with Connection Pooling & Browser Headers
 import axios from 'axios';
 import net from 'net';
+import http from 'http';
+import https from 'https';
 import logger from '../utils/logger.js';
 
 // HTTP timeout in milliseconds (10 seconds)
 const HTTP_TIMEOUT = 10000;
+
+// Connection pools for efficiency and reuse
+const httpAgent = new http.Agent({
+    keepAlive: true,
+    maxSockets: 100, // Handle more concurrency
+    timeout: HTTP_TIMEOUT
+});
+
+const httpsAgent = new https.Agent({
+    keepAlive: true,
+    maxSockets: 100,
+    timeout: HTTP_TIMEOUT,
+    rejectUnauthorized: false
+});
+
+// Create configured axios instance
+const monitoringAxios = axios.create({
+    timeout: HTTP_TIMEOUT,
+    httpAgent,
+    httpsAgent,
+    maxRedirects: 5,
+    validateStatus: false
+});
 
 // More realistic browser user agents
 const USER_AGENTS = [
@@ -34,7 +58,7 @@ export const checkServerStatus = async (server) => {
     const responseThreshold = server.monitoring?.alerts?.responseThreshold || 1000;
 
     try {
-        logger.debug(`Checking server ${server.name} (${server.url})`);
+        // logger.debug(`Checking server ${server.name} (${server.url})`);
 
         // Different check methods based on server type
         if (server.type === 'tcp') {
@@ -65,7 +89,7 @@ export const checkServerStatus = async (server) => {
             error = `Slow response: ${responseTime}ms exceeds threshold of ${responseThreshold}ms`;
         }
 
-        logger.debug(`Check result for ${server.name}: ${status}, ${responseTime}ms${error ? ', ' + error : ''}`);
+        // logger.debug(`Check result for ${server.name}: ${status}, ${responseTime}ms${error ? ', ' + error : ''}`);
 
         return {
             status,
@@ -113,27 +137,29 @@ export const checkTcpServer = (url) => {
             // Set timeout
             socket.setTimeout(HTTP_TIMEOUT);
 
-            socket.on('connect', () => {
-                socket.end();
-                if (!resolved) {
-                    resolved = true;
-                    resolve();
+            const cleanup = () => {
+                if (!resolved && socket) {
+                    socket.removeAllListeners();
+                    socket.destroy();
                 }
+            };
+
+            socket.on('connect', () => {
+                cleanup();
+                resolved = true;
+                resolve();
             });
 
             socket.on('timeout', () => {
-                socket.destroy();
-                if (!resolved) {
-                    resolved = true;
-                    reject(new Error('Connection timeout'));
-                }
+                cleanup();
+                resolved = true;
+                reject(new Error('Connection timeout'));
             });
 
             socket.on('error', (err) => {
-                if (!resolved) {
-                    resolved = true;
-                    reject(err);
-                }
+                cleanup();
+                resolved = true;
+                reject(err);
             });
 
             // Attempt connection
@@ -153,16 +179,16 @@ export const checkTcpServer = (url) => {
 export const checkHttpServer = async (url) => {
     try {
         // Add protocol if missing
-        if (!url.startsWith('http://') && !url.startsWith('https://')) {
-            url = `https://${url}`;
+        let targetUrl = url;
+        if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
+            targetUrl = `https://${targetUrl}`;
         }
 
         // Try multiple strategies to avoid bot detection
         const strategies = [
-            // Strategy 1: HEAD request with browser headers
+            // Strategy 1: HEAD request with browser headers (Optimized)
             async () => {
-                const response = await axios.head(url, {
-                    timeout: HTTP_TIMEOUT,
+                const response = await monitoringAxios.head(targetUrl, {
                     headers: {
                         'User-Agent': getRandomUserAgent(),
                         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -172,17 +198,14 @@ export const checkHttpServer = async (url) => {
                         'Connection': 'keep-alive',
                         'Upgrade-Insecure-Requests': '1',
                         'Cache-Control': 'max-age=0'
-                    },
-                    validateStatus: false,
-                    maxRedirects: 5
+                    }
                 });
                 return response;
             },
 
             // Strategy 2: GET request with browser headers (fallback for HEAD failures)
             async () => {
-                const response = await axios.get(url, {
-                    timeout: HTTP_TIMEOUT,
+                const response = await monitoringAxios.get(targetUrl, {
                     headers: {
                         'User-Agent': getRandomUserAgent(),
                         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -193,8 +216,6 @@ export const checkHttpServer = async (url) => {
                         'Upgrade-Insecure-Requests': '1',
                         'Cache-Control': 'max-age=0'
                     },
-                    validateStatus: false,
-                    maxRedirects: 5,
                     maxContentLength: 1024 * 10, // Limit to 10KB
                     transformResponse: [(data) => data] // Don't parse response
                 });
@@ -257,20 +278,8 @@ export const checkHttpServer = async (url) => {
     }
 };
 
-/**
- * Get stats for a server over a time period
- * @param {String} serverId - Server ID
- * @param {String} period - Time period (1h, 6h, 12h, 24h, 7d, 30d)
- * @returns {Object} Server stats
- */
-export const getServerStats = async (serverId, period = '24h') => {
-    // Implementation would be similar to getServerHistory in serverController
-    // This is a placeholder for a potential future method
-};
-
 export default {
     checkServerStatus,
     checkTcpServer,
-    checkHttpServer,
-    getServerStats
+    checkHttpServer
 };

@@ -4,6 +4,7 @@ import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { checkServerStatus } from '../services/monitoringService.js';
+import { redisConnection } from '../config/redis.js';
 import logger from '../utils/logger.js';
 import mongoose from 'mongoose';
 import { createServerSchema, updateServerSchema } from '../utils/validations.js';
@@ -27,7 +28,20 @@ export const getServers = asyncHandler(async (req, res) => {
     const showAll = isAdmin && req.query.admin === 'true';
     const userId = req.user.id;
 
+    // Redis Cache Key Generation
+    const cacheKey = `api:servers:${userId}:${JSON.stringify(req.query)}`;
+
     try {
+        // 1. Try Cache
+        const cachedData = await redisConnection.get(cacheKey);
+        if (cachedData) {
+            const data = JSON.parse(cachedData);
+            // Add cache meta header
+            data.meta.cached = true;
+            data.meta.queryTime = 0; // Instant
+            return res.status(200).json(data);
+        }
+
         // Build optimized filter with early returns
         const filter = showAll ? {} : { uploadedBy: userId };
 
@@ -107,7 +121,7 @@ export const getServers = asyncHandler(async (req, res) => {
 
         const queryTime = Date.now() - startTime;
 
-        res.status(200).json({
+        const responseData = {
             status: 'success',
             results: servers.length,
             total,
@@ -121,7 +135,13 @@ export const getServers = asyncHandler(async (req, res) => {
                 cached: false,
                 filters: Object.keys(filter)
             }
-        });
+        };
+
+        // 2. Set Cache (10 seconds TTL)
+        // 10s is enough to save DB from polling spam, but keeps UI seemingly fresh on refresh
+        await redisConnection.set(cacheKey, JSON.stringify(responseData), 'EX', 10);
+
+        res.status(200).json(responseData);
 
         // Log slow queries for optimization
         if (queryTime > 1000) {
@@ -531,6 +551,11 @@ export const updateServer = asyncHandler(async (req, res) => {
         if (monitoring) {
             const monitoringUpdates = buildMonitoringUpdates(monitoring);
             Object.assign(updates, monitoringUpdates);
+            logger.info('Monitoring updates processed', {
+                serverId,
+                receivedMonitoring: monitoring,
+                generatedUpdates: monitoringUpdates
+            });
         }
 
         // Set update timestamp
@@ -827,8 +852,8 @@ export const checkServer = asyncHandler(async (req, res) => {
                     responseTime: checkResult.responseTime,
                     error: checkResult.error,
                     timestamp: now,
-                    localTime: localMoment.format('YYYY-MM-DD HH:mm:ss'),
-                    timezone
+                    localTime: now.toLocaleString('sv-SE', { timeZone: server.timezone || 'UTC' }).replace('T', ' '),
+                    timezone: server.timezone || 'UTC'
                 },
                 changes: {
                     statusChanged: oldStatus !== checkResult.status,
@@ -1476,7 +1501,9 @@ const canBeCheckedNow = (server) => {
 
     // Check time windows
     if (server.monitoring?.timeWindows?.length > 0) {
-        const currentTime = now.format('HH:mm');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const currentTime = `${hours}:${minutes}`;
         const inWindow = server.monitoring.timeWindows.some(window =>
             currentTime >= window.start && currentTime <= window.end
         );
@@ -1532,14 +1559,14 @@ const normalizeUrl = (url) => {
 const buildMonitoringConfig = (monitoring, userRole, trialEnd) => {
     return {
         frequency: monitoring.frequency || 5,
-        daysOfWeek: monitoring.daysOfWeek || [1, 2, 3, 4, 5],
-        timeWindows: monitoring.timeWindows || [{ start: '09:00', end: '17:00' }],
+        daysOfWeek: monitoring.daysOfWeek || [0, 1, 2, 3, 4, 5, 6],
+        timeWindows: monitoring.timeWindows || [{ start: '00:00', end: '23:59' }],
         alerts: {
             enabled: monitoring.alerts?.enabled || false,
             email: monitoring.alerts?.email || false,
             phone: monitoring.alerts?.phone || false,
             responseThreshold: monitoring.alerts?.responseThreshold || 1000,
-            timeWindow: monitoring.alerts?.timeWindow || { start: '09:00', end: '17:00' }
+            timeWindow: monitoring.alerts?.timeWindow || { start: '00:00', end: '23:59' }
         },
         trialEndsAt: userRole === 'admin' ? null : trialEnd
     };
