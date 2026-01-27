@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/narang24/Ping-Pilott-Backend.git', credentialsId: 'github-credentials'
+                git branch: 'Redis', url: 'https://github.com/Jatin-1111/Ping-Pilott-Backend.git'
             }
         }
         
@@ -43,4 +43,5 @@ pipeline {
             echo '❌ Build Failed!'
         }
     }
+
 }
