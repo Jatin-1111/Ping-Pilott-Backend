@@ -10,19 +10,19 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
         
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ping-pilot:${BUILD_NUMBER} .'
+                bat 'docker build -t ping-pilot:%BUILD_NUMBER% .'
             }
         }
         
         stage('Deploy') {
             steps {
-                sh 'docker run -d -p 3000:3000 --name ping-pilot-${BUILD_NUMBER} ping-pilot:${BUILD_NUMBER}'
+                bat 'docker run -d -p 3000:3000 --name ping-pilot-%BUILD_NUMBER% ping-pilot:%BUILD_NUMBER%'
             }
         }
     }
