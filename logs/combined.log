@@ -13670,3 +13670,620 @@
 2026-01-27 13:15:04:154 [32minfo[39m: [32m✅ Analytics completed in 98ms[39m
 2026-01-27 13:15:04:154 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
 2026-01-27 13:15:04:154 [32minfo[39m: [32m✅ Analytics completed in 84ms[39m
+2026-01-27 13:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:16:00:160 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:16:01:161 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:16:01:161 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 91ms[39m
+2026-01-27 13:16:01:161 [32minfo[39m: [32mJob 'smartCheckServers' completed in 91ms[39m
+2026-01-27 13:16:01:161 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769499961048 (Check Zeerostock Frontend) processed in 454ms[39m
+2026-01-27 13:16:01:161 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769499961048 (Check Zeerostock) processed in 565ms[39m
+2026-01-27 13:16:01:161 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769499961048 (Check Zeerostock Backend) processed in 565ms[39m
+2026-01-27 13:16:04:164 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:16:04:164 [32minfo[39m: [32m✅ Analytics completed in 109ms[39m
+2026-01-27 13:17:00:170 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:17:00:170 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:17:00:170 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:17:00:170 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:17:00:170 [32minfo[39m: [32mJob 'smartCheckServers' completed in 77ms[39m
+2026-01-27 13:17:04:174 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:17:04:174 [32minfo[39m: [32m✅ Analytics completed in 99ms[39m
+2026-01-27 13:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:18:00:180 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:18:00:180 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:18:00:180 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 127ms[39m
+2026-01-27 13:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 127ms[39m
+2026-01-27 13:18:00:180 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769500080301 (Check Zeerostock) processed in 571ms[39m
+2026-01-27 13:18:00:180 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769500080301 (Check Zeerostock Backend) processed in 571ms[39m
+2026-01-27 13:18:00:180 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769500080301 (Check Zeerostock Frontend) processed in 576ms[39m
+2026-01-27 13:18:04:184 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:18:04:184 [32minfo[39m: [32m✅ Analytics completed in 85ms[39m
+2026-01-27 13:19:00:190 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:19:00:190 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:19:00:190 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:19:00:190 [32minfo[39m: [32mFound 4 servers to check - dispatching to queue[39m
+2026-01-27 13:19:00:190 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 4/4 jobs in 91ms[39m
+2026-01-27 13:19:00:190 [32minfo[39m: [32mJob 'smartCheckServers' completed in 92ms[39m
+2026-01-27 13:19:01:191 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769500140919 (Check StartupMela) processed in 448ms[39m
+2026-01-27 13:19:01:191 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769500140919 (Check Zeerostock) processed in 539ms[39m
+2026-01-27 13:19:01:191 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769500140919 (Check Zeerostock Frontend) processed in 537ms[39m
+2026-01-27 13:19:01:191 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769500140919 (Check Zeerostock Backend) processed in 537ms[39m
+2026-01-27 13:19:04:194 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:19:04:194 [32minfo[39m: [32m✅ Analytics completed in 89ms[39m
+2026-01-27 13:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:20:00:200 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:20:00:200 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 77ms[39m
+2026-01-27 13:20:04:204 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:20:04:204 [32minfo[39m: [32m✅ Analytics completed in 90ms[39m
+2026-01-27 13:21:00:210 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:21:00:210 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:21:00:210 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:21:00:210 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:21:00:210 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 95ms[39m
+2026-01-27 13:21:00:210 [32minfo[39m: [32mJob 'smartCheckServers' completed in 96ms[39m
+2026-01-27 13:21:01:211 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769500260991 (Check Zeerostock Frontend) processed in 443ms[39m
+2026-01-27 13:21:01:211 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769500260991 (Check Zeerostock) processed in 531ms[39m
+2026-01-27 13:21:01:211 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769500260991 (Check Zeerostock Backend) processed in 531ms[39m
+2026-01-27 13:21:04:214 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:21:04:214 [32minfo[39m: [32m✅ Analytics completed in 90ms[39m
+2026-01-27 13:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:22:00:220 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:22:00:220 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 97ms[39m
+2026-01-27 13:23:00:230 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:23:00:230 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:23:00:230 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:23:00:230 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:23:00:230 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 163ms[39m
+2026-01-27 13:23:00:230 [32minfo[39m: [32mJob 'smartCheckServers' completed in 164ms[39m
+2026-01-27 13:23:00:230 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769500380284 (Check Zeerostock Backend) processed in 537ms[39m
+2026-01-27 13:23:00:230 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769500380284 (Check Zeerostock) processed in 541ms[39m
+2026-01-27 13:23:00:230 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769500380284 (Check Zeerostock Frontend) processed in 657ms[39m
+2026-01-27 13:23:03:233 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:23:03:233 [32minfo[39m: [32m✅ Analytics completed in 95ms[39m
+2026-01-27 13:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:24:00:240 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:24:00:240 [32minfo[39m: [32mFound 2 servers to check - dispatching to queue[39m
+2026-01-27 13:24:00:240 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 2/2 jobs in 92ms[39m
+2026-01-27 13:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 92ms[39m
+2026-01-27 13:24:01:241 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769500440855 (Check Zeerostock Backend) processed in 447ms[39m
+2026-01-27 13:24:01:241 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769500440855 (Check Zeerostock) processed in 450ms[39m
+2026-01-27 13:25:00:250 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:25:00:250 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:25:00:250 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:25:00:250 [32minfo[39m: [32mFound 2 servers to check - dispatching to queue[39m
+2026-01-27 13:25:00:250 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 2/2 jobs in 79ms[39m
+2026-01-27 13:25:00:250 [32minfo[39m: [32mJob 'smartCheckServers' completed in 79ms[39m
+2026-01-27 13:25:00:250 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769500500383 (Check StartupMela) processed in 478ms[39m
+2026-01-27 13:25:00:250 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769500500383 (Check Zeerostock Frontend) processed in 549ms[39m
+2026-01-27 13:25:03:253 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:25:03:253 [32minfo[39m: [32m✅ Analytics completed in 101ms[39m
+2026-01-27 13:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:26:00:260 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:26:01:261 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:26:01:261 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 98ms[39m
+2026-01-27 13:26:01:261 [32minfo[39m: [32mJob 'smartCheckServers' completed in 98ms[39m
+2026-01-27 13:26:01:261 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769500561064 (Check Zeerostock Frontend) processed in 440ms[39m
+2026-01-27 13:26:01:261 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769500561065 (Check Zeerostock Backend) processed in 584ms[39m
+2026-01-27 13:26:01:261 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769500561064 (Check Zeerostock) processed in 587ms[39m
+2026-01-27 13:26:10:2610 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:26:10:2610 [32minfo[39m: [32m✅ Analytics completed in 82ms[39m
+2026-01-27 13:26:14:2614 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:26:14:2614 [32minfo[39m: [32m✅ Analytics completed in 130ms[39m
+2026-01-27 13:26:14:2614 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:26:14:2614 [32minfo[39m: [32m✅ Analytics completed in 89ms[39m
+2026-01-27 13:26:28:2628 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:26:28:2628 [32minfo[39m: [32m✅ Analytics completed in 91ms[39m
+2026-01-27 13:26:28:2628 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 13:26:28:2628 [32minfo[39m: [32m✅ Analytics completed in 102ms[39m
+2026-01-27 13:27:00:270 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:27:00:270 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:27:00:270 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:27:00:270 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:27:00:270 [32minfo[39m: [32mJob 'smartCheckServers' completed in 78ms[39m
+2026-01-27 13:29:00:290 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:29:00:290 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:29:00:290 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:29:00:290 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:29:00:290 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 102ms[39m
+2026-01-27 13:29:00:290 [32minfo[39m: [32mJob 'smartCheckServers' completed in 102ms[39m
+2026-01-27 13:29:01:291 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769500740743 (Check Zeerostock Backend) processed in 489ms[39m
+2026-01-27 13:29:01:291 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769500740743 (Check Zeerostock) processed in 491ms[39m
+2026-01-27 13:29:01:291 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769500740743 (Check Zeerostock Frontend) processed in 590ms[39m
+2026-01-27 13:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:30:00:300 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:30:00:300 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 78ms[39m
+2026-01-27 13:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-27 13:31:00:310 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:31:00:310 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:31:00:310 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:31:00:310 [32minfo[39m: [32mFound 4 servers to check - dispatching to queue[39m
+2026-01-27 13:31:00:310 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 4/4 jobs in 110ms[39m
+2026-01-27 13:31:00:310 [32minfo[39m: [32mJob 'smartCheckServers' completed in 117ms[39m
+2026-01-27 13:31:01:311 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769500860942 (Check Zeerostock) processed in 537ms[39m
+2026-01-27 13:31:01:311 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769500860942 (Check StartupMela) processed in 544ms[39m
+2026-01-27 13:31:01:311 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769500860942 (Check Zeerostock Backend) processed in 544ms[39m
+2026-01-27 13:31:02:312 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769500860942 (Check Zeerostock Frontend) processed in 1167ms[39m
+2026-01-27 13:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:32:00:320 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:32:00:320 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 78ms[39m
+2026-01-27 13:33:00:330 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:33:00:330 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:33:00:330 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:33:01:331 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:33:01:331 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 100ms[39m
+2026-01-27 13:33:01:331 [32minfo[39m: [32mJob 'smartCheckServers' completed in 100ms[39m
+2026-01-27 13:33:01:331 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769500981049 (Check Zeerostock) processed in 697ms[39m
+2026-01-27 13:33:01:331 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769500981049 (Check Zeerostock Backend) processed in 753ms[39m
+2026-01-27 13:33:01:331 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769500981049 (Check Zeerostock Frontend) processed in 791ms[39m
+2026-01-27 13:34:00:340 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:34:00:340 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:34:00:340 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:34:00:340 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:34:00:340 [32minfo[39m: [32mJob 'smartCheckServers' completed in 78ms[39m
+2026-01-27 13:34:47:3447 [31merror[39m: [31mAuth error: read ECONNRESET[39m
+2026-01-27 13:34:53:3453 [32minfo[39m: [32mMongoDB reconnected[39m
+2026-01-27 13:35:00:350 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2026-01-27 13:35:00:350 [32minfo[39m: [32mMongoDB reconnected[39m
+2026-01-27 13:35:05:355 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:35:05:355 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:35:05:355 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:35:07:357 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:35:07:357 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 2081ms[39m
+2026-01-27 13:35:07:357 [32minfo[39m: [32mJob 'smartCheckServers' completed in 2082ms[39m
+2026-01-27 13:35:09:359 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769501107690 (Check Zeerostock) processed in 1363ms[39m
+2026-01-27 13:35:09:359 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769501107690 (Check Zeerostock Backend) processed in 1684ms[39m
+2026-01-27 13:35:09:359 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769501107690 (Check Zeerostock Frontend) processed in 2036ms[39m
+2026-01-27 13:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:36:00:360 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:36:00:360 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:36:00:360 [32minfo[39m: [32mJob 'smartCheckServers' completed in 78ms[39m
+2026-01-27 13:37:00:370 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:37:00:370 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:37:00:370 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:37:00:370 [32minfo[39m: [32mFound 4 servers to check - dispatching to queue[39m
+2026-01-27 13:37:00:370 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 4/4 jobs in 94ms[39m
+2026-01-27 13:37:00:370 [32minfo[39m: [32mJob 'smartCheckServers' completed in 94ms[39m
+2026-01-27 13:37:00:370 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769501220342 (Check Zeerostock) processed in 509ms[39m
+2026-01-27 13:37:00:370 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769501220342 (Check Zeerostock Backend) processed in 508ms[39m
+2026-01-27 13:37:01:371 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769501220342 (Check StartupMela) processed in 749ms[39m
+2026-01-27 13:37:01:371 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769501220342 (Check Zeerostock Frontend) processed in 1054ms[39m
+2026-01-27 13:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:38:00:380 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:38:00:380 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:38:00:380 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 110ms[39m
+2026-01-27 13:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 111ms[39m
+2026-01-27 13:38:01:381 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769501280945 (Check Zeerostock) processed in 548ms[39m
+2026-01-27 13:38:01:381 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769501280945 (Check Zeerostock Backend) processed in 547ms[39m
+2026-01-27 13:38:01:381 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769501280945 (Check Zeerostock Frontend) processed in 554ms[39m
+2026-01-27 13:39:00:390 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:39:00:390 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:39:00:390 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:39:00:390 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:39:00:390 [32minfo[39m: [32mJob 'smartCheckServers' completed in 75ms[39m
+2026-01-27 13:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:40:00:400 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:40:01:401 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:40:01:401 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 95ms[39m
+2026-01-27 13:40:01:401 [32minfo[39m: [32mJob 'smartCheckServers' completed in 95ms[39m
+2026-01-27 13:40:01:401 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769501401075 (Check Zeerostock Backend) processed in 544ms[39m
+2026-01-27 13:40:01:401 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769501401075 (Check Zeerostock) processed in 623ms[39m
+2026-01-27 13:40:01:401 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769501401075 (Check Zeerostock Frontend) processed in 639ms[39m
+2026-01-27 13:41:00:410 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:41:00:410 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:41:00:410 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:41:00:410 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:41:00:410 [32minfo[39m: [32mJob 'smartCheckServers' completed in 89ms[39m
+2026-01-27 13:42:00:420 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:42:00:420 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:42:00:420 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:42:00:420 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:42:00:420 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 94ms[39m
+2026-01-27 13:42:00:420 [32minfo[39m: [32mJob 'smartCheckServers' completed in 95ms[39m
+2026-01-27 13:42:00:420 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769501520273 (Check Zeerostock) processed in 534ms[39m
+2026-01-27 13:42:00:420 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769501520273 (Check Zeerostock Frontend) processed in 535ms[39m
+2026-01-27 13:42:00:420 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769501520273 (Check Zeerostock Backend) processed in 535ms[39m
+2026-01-27 13:43:00:430 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:43:00:430 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:43:00:430 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:43:00:430 [32minfo[39m: [32mFound 4 servers to check - dispatching to queue[39m
+2026-01-27 13:43:00:430 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 4/4 jobs in 78ms[39m
+2026-01-27 13:43:00:430 [32minfo[39m: [32mJob 'smartCheckServers' completed in 78ms[39m
+2026-01-27 13:43:01:431 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769501580849 (Check StartupMela) processed in 443ms[39m
+2026-01-27 13:43:01:431 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769501580849 (Check Zeerostock Frontend) processed in 448ms[39m
+2026-01-27 13:43:01:431 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769501580849 (Check Zeerostock) processed in 536ms[39m
+2026-01-27 13:43:01:431 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769501580849 (Check Zeerostock Backend) processed in 537ms[39m
+2026-01-27 13:44:00:440 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:44:00:440 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:44:00:440 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:44:00:440 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:44:00:440 [32minfo[39m: [32mJob 'smartCheckServers' completed in 86ms[39m
+2026-01-27 13:45:00:450 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:45:00:450 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:45:00:450 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:45:01:451 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-27 13:45:01:451 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:45:01:451 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 78ms[39m
+2026-01-27 13:45:01:451 [32minfo[39m: [32mJob 'smartCheckServers' completed in 78ms[39m
+2026-01-27 13:45:01:451 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769501701042 (Check Zeerostock Frontend) processed in 490ms[39m
+2026-01-27 13:45:01:451 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769501701042 (Check Zeerostock) processed in 536ms[39m
+2026-01-27 13:45:01:451 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769501701042 (Check Zeerostock Backend) processed in 538ms[39m
+2026-01-27 13:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:46:00:460 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:46:00:460 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 90ms[39m
+2026-01-27 13:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:48:00:480 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:48:00:480 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:48:00:480 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 96ms[39m
+2026-01-27 13:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 97ms[39m
+2026-01-27 13:48:01:481 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769501880825 (Check Zeerostock Frontend) processed in 455ms[39m
+2026-01-27 13:48:01:481 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769501880825 (Check Zeerostock Backend) processed in 517ms[39m
+2026-01-27 13:48:01:481 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769501880825 (Check Zeerostock) processed in 518ms[39m
+2026-01-27 13:49:00:490 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:49:00:490 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:49:00:490 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:49:00:490 [32minfo[39m: [32mFound 1 servers to check - dispatching to queue[39m
+2026-01-27 13:49:00:490 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 1/1 jobs in 95ms[39m
+2026-01-27 13:49:00:490 [32minfo[39m: [32mJob 'smartCheckServers' completed in 95ms[39m
+2026-01-27 13:49:00:490 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769501940345 (Check StartupMela) processed in 450ms[39m
+2026-01-27 13:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:50:00:500 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:50:00:500 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:50:00:500 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 81ms[39m
+2026-01-27 13:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 81ms[39m
+2026-01-27 13:50:01:501 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769502000939 (Check Zeerostock Frontend) processed in 438ms[39m
+2026-01-27 13:50:01:501 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769502000939 (Check Zeerostock Backend) processed in 527ms[39m
+2026-01-27 13:50:01:501 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769502000939 (Check Zeerostock) processed in 531ms[39m
+2026-01-27 13:51:00:510 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:51:00:510 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:51:00:510 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:51:00:510 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:51:00:510 [32minfo[39m: [32mJob 'smartCheckServers' completed in 92ms[39m
+2026-01-27 13:52:01:521 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:52:01:521 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:52:01:521 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:52:01:521 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:52:01:521 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 91ms[39m
+2026-01-27 13:52:01:521 [32minfo[39m: [32mJob 'smartCheckServers' completed in 92ms[39m
+2026-01-27 13:52:01:521 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769502121142 (Check Zeerostock) processed in 488ms[39m
+2026-01-27 13:52:01:521 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769502121142 (Check Zeerostock Backend) processed in 538ms[39m
+2026-01-27 13:52:01:521 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769502121142 (Check Zeerostock Frontend) processed in 545ms[39m
+2026-01-27 13:53:00:530 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:53:00:530 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:53:00:530 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:53:00:530 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:53:00:530 [32minfo[39m: [32mJob 'smartCheckServers' completed in 88ms[39m
+2026-01-27 13:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:54:00:540 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:54:00:540 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:54:00:540 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 84ms[39m
+2026-01-27 13:54:00:540 [32minfo[39m: [32mJob 'smartCheckServers' completed in 85ms[39m
+2026-01-27 13:54:00:540 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769502240193 (Check Zeerostock) processed in 446ms[39m
+2026-01-27 13:54:00:540 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769502240193 (Check Zeerostock Backend) processed in 448ms[39m
+2026-01-27 13:54:00:540 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769502240193 (Check Zeerostock Frontend) processed in 460ms[39m
+2026-01-27 13:55:00:550 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:55:00:550 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:55:00:550 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:55:00:550 [32minfo[39m: [32mFound 4 servers to check - dispatching to queue[39m
+2026-01-27 13:55:00:550 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 4/4 jobs in 91ms[39m
+2026-01-27 13:55:00:550 [32minfo[39m: [32mJob 'smartCheckServers' completed in 91ms[39m
+2026-01-27 13:55:01:551 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769502300806 (Check StartupMela) processed in 448ms[39m
+2026-01-27 13:55:01:551 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769502300806 (Check Zeerostock) processed in 543ms[39m
+2026-01-27 13:55:01:551 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769502300806 (Check Zeerostock Backend) processed in 542ms[39m
+2026-01-27 13:55:01:551 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769502300806 (Check Zeerostock Frontend) processed in 542ms[39m
+2026-01-27 13:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:56:00:560 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:56:00:560 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 90ms[39m
+2026-01-27 13:57:00:570 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:57:00:570 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:57:00:570 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:57:00:570 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:57:00:570 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 83ms[39m
+2026-01-27 13:57:00:570 [32minfo[39m: [32mJob 'smartCheckServers' completed in 83ms[39m
+2026-01-27 13:57:01:571 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769502420969 (Check Zeerostock Frontend) processed in 447ms[39m
+2026-01-27 13:57:01:571 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769502420969 (Check Zeerostock) processed in 491ms[39m
+2026-01-27 13:57:01:571 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769502420969 (Check Zeerostock Backend) processed in 493ms[39m
+2026-01-27 13:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:58:00:580 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:58:00:580 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 13:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 90ms[39m
+2026-01-27 13:59:01:591 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 13:59:01:591 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 13:59:01:591 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 13:59:01:591 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 13:59:01:591 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 96ms[39m
+2026-01-27 13:59:01:591 [32minfo[39m: [32mJob 'smartCheckServers' completed in 96ms[39m
+2026-01-27 13:59:01:591 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769502541183 (Check Zeerostock Frontend) processed in 452ms[39m
+2026-01-27 13:59:01:591 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769502541183 (Check Zeerostock) processed in 531ms[39m
+2026-01-27 13:59:01:591 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769502541183 (Check Zeerostock Backend) processed in 530ms[39m
+2026-01-27 14:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:00:00:00 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-27 14:00:00:00 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 14:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 94ms[39m
+2026-01-27 14:01:00:10 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:01:00:10 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:01:00:10 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:01:00:10 [32minfo[39m: [32mFound 4 servers to check - dispatching to queue[39m
+2026-01-27 14:01:00:10 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 4/4 jobs in 78ms[39m
+2026-01-27 14:01:00:10 [32minfo[39m: [32mJob 'smartCheckServers' completed in 78ms[39m
+2026-01-27 14:01:00:10 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769502660320 (Check Zeerostock Frontend) processed in 452ms[39m
+2026-01-27 14:01:00:10 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769502660320 (Check StartupMela) processed in 459ms[39m
+2026-01-27 14:01:00:10 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769502660320 (Check Zeerostock Backend) processed in 532ms[39m
+2026-01-27 14:01:01:11 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769502660320 (Check Zeerostock) processed in 1096ms[39m
+2026-01-27 14:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:02:00:20 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:02:00:20 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 14:02:00:20 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 93ms[39m
+2026-01-27 14:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 93ms[39m
+2026-01-27 14:02:01:21 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769502720979 (Check Zeerostock Backend) processed in 474ms[39m
+2026-01-27 14:02:01:21 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769502720979 (Check Zeerostock) processed in 538ms[39m
+2026-01-27 14:02:01:21 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769502720979 (Check Zeerostock Frontend) processed in 625ms[39m
+2026-01-27 14:03:00:30 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:03:00:30 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:03:00:30 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:03:00:30 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 14:03:00:30 [32minfo[39m: [32mJob 'smartCheckServers' completed in 90ms[39m
+2026-01-27 14:05:00:50 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:05:00:50 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:05:00:50 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:05:00:50 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 14:05:00:50 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 89ms[39m
+2026-01-27 14:05:00:50 [32minfo[39m: [32mJob 'smartCheckServers' completed in 89ms[39m
+2026-01-27 14:05:01:51 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769502900796 (Check Zeerostock) processed in 447ms[39m
+2026-01-27 14:05:01:51 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769502900796 (Check Zeerostock Backend) processed in 450ms[39m
+2026-01-27 14:05:01:51 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769502900796 (Check Zeerostock Frontend) processed in 483ms[39m
+2026-01-27 14:06:00:60 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:06:00:60 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:06:00:60 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:06:00:60 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 14:06:00:60 [32minfo[39m: [32mJob 'smartCheckServers' completed in 69ms[39m
+2026-01-27 14:07:00:70 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:07:00:70 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:07:00:70 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:07:00:70 [32minfo[39m: [32mFound 4 servers to check - dispatching to queue[39m
+2026-01-27 14:07:00:70 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 4/4 jobs in 100ms[39m
+2026-01-27 14:07:00:70 [32minfo[39m: [32mJob 'smartCheckServers' completed in 101ms[39m
+2026-01-27 14:07:01:71 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769503020991 (Check StartupMela) processed in 440ms[39m
+2026-01-27 14:07:01:71 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769503020991 (Check Zeerostock Backend) processed in 521ms[39m
+2026-01-27 14:07:01:71 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769503020991 (Check Zeerostock Frontend) processed in 526ms[39m
+2026-01-27 14:07:01:71 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769503020991 (Check Zeerostock) processed in 526ms[39m
+2026-01-27 14:08:00:80 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:08:00:80 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:08:00:80 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:08:00:80 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 14:08:00:80 [32minfo[39m: [32mJob 'smartCheckServers' completed in 89ms[39m
+2026-01-27 14:09:01:91 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:09:01:91 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:09:01:91 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:09:01:91 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 14:09:01:91 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 72ms[39m
+2026-01-27 14:09:01:91 [32minfo[39m: [32mJob 'smartCheckServers' completed in 74ms[39m
+2026-01-27 14:09:01:91 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769503141113 (Check Zeerostock Frontend) processed in 422ms[39m
+2026-01-27 14:09:01:91 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769503141113 (Check Zeerostock) processed in 507ms[39m
+2026-01-27 14:09:01:91 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769503141113 (Check Zeerostock Backend) processed in 506ms[39m
+2026-01-27 14:10:00:100 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:10:00:100 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:10:00:100 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:10:00:100 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 14:10:00:100 [32minfo[39m: [32mJob 'smartCheckServers' completed in 90ms[39m
+2026-01-27 14:11:00:110 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:11:00:110 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:11:00:110 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:11:00:110 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 14:11:00:110 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 78ms[39m
+2026-01-27 14:11:00:110 [32minfo[39m: [32mJob 'smartCheckServers' completed in 78ms[39m
+2026-01-27 14:11:00:110 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769503260276 (Check Zeerostock) processed in 517ms[39m
+2026-01-27 14:11:00:110 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769503260276 (Check Zeerostock Backend) processed in 517ms[39m
+2026-01-27 14:11:00:110 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769503260276 (Check Zeerostock Frontend) processed in 517ms[39m
+2026-01-27 14:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:12:00:120 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:12:00:120 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 14:12:00:120 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 83ms[39m
+2026-01-27 14:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 84ms[39m
+2026-01-27 14:12:01:121 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769503320904 (Check Zeerostock Frontend) processed in 669ms[39m
+2026-01-27 14:12:01:121 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769503320904 (Check Zeerostock Backend) processed in 670ms[39m
+2026-01-27 14:12:01:121 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769503320904 (Check Zeerostock) processed in 672ms[39m
+2026-01-27 14:13:00:130 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:13:00:130 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:13:00:130 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:13:00:130 [32minfo[39m: [32mFound 1 servers to check - dispatching to queue[39m
+2026-01-27 14:13:00:130 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 1/1 jobs in 79ms[39m
+2026-01-27 14:13:00:130 [32minfo[39m: [32mJob 'smartCheckServers' completed in 79ms[39m
+2026-01-27 14:13:00:130 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769503380415 (Check StartupMela) processed in 471ms[39m
+2026-01-27 14:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:14:00:140 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:14:01:141 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 14:14:01:141 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 93ms[39m
+2026-01-27 14:14:01:141 [32minfo[39m: [32mJob 'smartCheckServers' completed in 94ms[39m
+2026-01-27 14:14:01:141 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769503441031 (Check Zeerostock Backend) processed in 482ms[39m
+2026-01-27 14:14:01:141 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769503441031 (Check Zeerostock) processed in 485ms[39m
+2026-01-27 14:14:01:141 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769503441031 (Check Zeerostock Frontend) processed in 484ms[39m
+2026-01-27 14:14:39:1439 [32minfo[39m: [32m❌ Socket disconnected: YzB6S_spPb2noJpPAAAE[39m
+2026-01-27 14:14:39:1439 [32minfo[39m: [32m🔌 Socket connected: p0XeL74PMJxdARCRAAAH[39m
+2026-01-27 14:15:00:150 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:15:00:150 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:15:00:150 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:15:00:150 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 14:15:00:150 [32minfo[39m: [32mJob 'smartCheckServers' completed in 74ms[39m
+2026-01-27 14:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2026-01-27 14:15:57:1557 [32minfo[39m: [32m❌ Socket disconnected: p0XeL74PMJxdARCRAAAH[39m
+2026-01-27 14:15:58:1558 [32minfo[39m: [32m🔌 Socket connected: wS5nw-Y844sJjTi7AAAK[39m
+2026-01-27 14:16:01:161 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:16:01:161 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:16:01:161 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:16:01:161 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 14:16:01:161 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 91ms[39m
+2026-01-27 14:16:01:161 [32minfo[39m: [32mJob 'smartCheckServers' completed in 91ms[39m
+2026-01-27 14:16:01:161 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769503561184 (Check Zeerostock) processed in 463ms[39m
+2026-01-27 14:16:01:161 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769503561184 (Check Zeerostock Backend) processed in 469ms[39m
+2026-01-27 14:16:01:161 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769503561184 (Check Zeerostock Frontend) processed in 474ms[39m
+2026-01-27 14:17:00:170 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:17:00:170 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:17:00:170 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:17:00:170 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 14:17:00:170 [32minfo[39m: [32mJob 'smartCheckServers' completed in 88ms[39m
+2026-01-27 14:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:18:00:180 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:18:00:180 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 14:18:00:180 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 87ms[39m
+2026-01-27 14:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 88ms[39m
+2026-01-27 14:18:00:180 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769503680364 (Check Zeerostock Backend) processed in 456ms[39m
+2026-01-27 14:18:00:180 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769503680364 (Check Zeerostock Frontend) processed in 460ms[39m
+2026-01-27 14:18:00:180 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769503680364 (Check Zeerostock) processed in 523ms[39m
+2026-01-27 14:19:00:190 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:19:00:190 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:19:00:190 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:19:00:190 [32minfo[39m: [32mFound 4 servers to check - dispatching to queue[39m
+2026-01-27 14:19:00:190 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 4/4 jobs in 85ms[39m
+2026-01-27 14:19:00:190 [32minfo[39m: [32mJob 'smartCheckServers' completed in 85ms[39m
+2026-01-27 14:19:01:191 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769503740972 (Check StartupMela) processed in 427ms[39m
+2026-01-27 14:19:01:191 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769503740972 (Check Zeerostock Frontend) processed in 477ms[39m
+2026-01-27 14:19:01:191 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769503740972 (Check Zeerostock Backend) processed in 513ms[39m
+2026-01-27 14:19:01:191 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769503740972 (Check Zeerostock) processed in 516ms[39m
+2026-01-27 14:19:10:1910 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:19:10:1910 [32minfo[39m: [32m✅ Analytics completed in 630ms[39m
+2026-01-27 14:19:11:1911 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:19:11:1911 [32minfo[39m: [32m✅ Analytics completed in 559ms[39m
+2026-01-27 14:19:17:1917 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:19:18:1918 [32minfo[39m: [32m✅ Analytics completed in 625ms[39m
+2026-01-27 14:19:18:1918 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:19:18:1918 [32minfo[39m: [32m✅ Analytics completed in 633ms[39m
+2026-01-27 14:19:36:1936 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:19:36:1936 [32minfo[39m: [32m✅ Analytics completed in 95ms[39m
+2026-01-27 14:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:20:00:200 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:20:00:200 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 14:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 83ms[39m
+2026-01-27 14:21:03:213 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:21:03:213 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:21:03:213 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:21:03:213 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 14:21:03:213 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 105ms[39m
+2026-01-27 14:21:03:213 [32minfo[39m: [32mJob 'smartCheckServers' completed in 107ms[39m
+2026-01-27 14:21:04:214 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769503863690 (Check Zeerostock Backend) processed in 714ms[39m
+2026-01-27 14:21:04:214 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769503863689 (Check Zeerostock) processed in 717ms[39m
+2026-01-27 14:21:04:214 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769503863690 (Check Zeerostock Frontend) processed in 769ms[39m
+2026-01-27 14:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:22:00:220 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:22:00:220 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-01-27 14:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 89ms[39m
+2026-01-27 14:22:52:2252 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:22:52:2252 [32minfo[39m: [32m✅ Analytics completed in 91ms[39m
+2026-01-27 14:22:52:2252 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:22:52:2252 [32minfo[39m: [32m✅ Analytics completed in 606ms[39m
+2026-01-27 14:23:00:230 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:23:00:230 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:23:00:230 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:23:00:230 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 14:23:00:230 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 142ms[39m
+2026-01-27 14:23:00:230 [32minfo[39m: [32mJob 'smartCheckServers' completed in 142ms[39m
+2026-01-27 14:23:00:230 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769503980341 (Check Zeerostock Frontend) processed in 511ms[39m
+2026-01-27 14:23:00:230 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769503980341 (Check Zeerostock) processed in 635ms[39m
+2026-01-27 14:23:00:230 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769503980341 (Check Zeerostock Backend) processed in 636ms[39m
+2026-01-27 14:23:11:2311 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:23:11:2311 [32minfo[39m: [32m✅ Analytics completed in 85ms[39m
+2026-01-27 14:23:11:2311 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:23:11:2311 [32minfo[39m: [32m✅ Analytics completed in 98ms[39m
+2026-01-27 14:23:13:2313 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:23:14:2314 [32minfo[39m: [32m✅ Analytics completed in 90ms[39m
+2026-01-27 14:23:14:2314 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:23:14:2314 [32minfo[39m: [32m✅ Analytics completed in 99ms[39m
+2026-01-27 14:23:24:2324 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:23:24:2324 [32minfo[39m: [32m✅ Analytics completed in 91ms[39m
+2026-01-27 14:23:26:2326 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:23:26:2326 [32minfo[39m: [32m✅ Analytics completed in 88ms[39m
+2026-01-27 14:23:29:2329 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:23:29:2329 [32minfo[39m: [32m✅ Analytics completed in 86ms[39m
+2026-01-27 14:23:58:2358 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:23:58:2358 [32minfo[39m: [32m✅ Analytics completed in 125ms[39m
+2026-01-27 14:23:58:2358 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:23:58:2358 [32minfo[39m: [32m✅ Analytics completed in 173ms[39m
+2026-01-27 14:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:24:00:240 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:24:00:240 [32minfo[39m: [32mFound 1 servers to check - dispatching to queue[39m
+2026-01-27 14:24:00:240 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 1/1 jobs in 87ms[39m
+2026-01-27 14:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 87ms[39m
+2026-01-27 14:24:01:241 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769504040922 (Check Zeerostock Frontend) processed in 478ms[39m
+2026-01-27 14:25:00:250 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:25:00:250 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:25:00:250 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:25:00:250 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-01-27 14:25:00:250 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 112ms[39m
+2026-01-27 14:25:00:250 [32minfo[39m: [32mJob 'smartCheckServers' completed in 112ms[39m
+2026-01-27 14:25:01:251 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769504100489 (Check Zeerostock) processed in 605ms[39m
+2026-01-27 14:25:01:251 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769504100489 (Check Zeerostock Backend) processed in 605ms[39m
+2026-01-27 14:25:01:251 [34mdebug[39m: [34mJob check-69785b5a21b1b5c90e1dac03-1769504100489 (Check StartupMela) processed in 608ms[39m
+2026-01-27 14:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:26:00:260 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:26:01:261 [32minfo[39m: [32mFound 1 servers to check - dispatching to queue[39m
+2026-01-27 14:26:01:261 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 1/1 jobs in 81ms[39m
+2026-01-27 14:26:01:261 [32minfo[39m: [32mJob 'smartCheckServers' completed in 82ms[39m
+2026-01-27 14:26:01:261 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769504161053 (Check Zeerostock Frontend) processed in 523ms[39m
+2026-01-27 14:26:39:2639 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:26:39:2639 [32minfo[39m: [32m✅ Analytics completed in 99ms[39m
+2026-01-27 14:26:39:2639 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:26:39:2639 [32minfo[39m: [32m✅ Analytics completed in 90ms[39m
+2026-01-27 14:26:57:2657 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:26:58:2658 [32minfo[39m: [32m✅ Analytics completed in 93ms[39m
+2026-01-27 14:27:00:270 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:27:00:270 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:27:00:270 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:27:00:270 [32minfo[39m: [32mFound 2 servers to check - dispatching to queue[39m
+2026-01-27 14:27:00:270 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 2/2 jobs in 103ms[39m
+2026-01-27 14:27:00:270 [32minfo[39m: [32mJob 'smartCheckServers' completed in 104ms[39m
+2026-01-27 14:27:00:270 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:27:00:270 [32minfo[39m: [32m✅ Analytics completed in 164ms[39m
+2026-01-27 14:27:00:270 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:27:01:271 [32minfo[39m: [32m✅ Analytics completed in 107ms[39m
+2026-01-27 14:27:01:271 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769504220694 (Check Zeerostock) processed in 524ms[39m
+2026-01-27 14:27:01:271 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769504220694 (Check Zeerostock Backend) processed in 534ms[39m
+2026-01-27 14:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:28:00:280 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:28:00:280 [32minfo[39m: [32mFound 1 servers to check - dispatching to queue[39m
+2026-01-27 14:28:00:280 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 1/1 jobs in 81ms[39m
+2026-01-27 14:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 81ms[39m
+2026-01-27 14:28:00:280 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769504280230 (Check Zeerostock Frontend) processed in 634ms[39m
+2026-01-27 14:28:41:2841 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:28:41:2841 [32minfo[39m: [32m✅ Analytics completed in 101ms[39m
+2026-01-27 14:28:41:2841 [32minfo[39m: [32m🚀 Starting analytics query for period: month[39m
+2026-01-27 14:28:41:2841 [32minfo[39m: [32m✅ Analytics completed in 97ms[39m
+2026-01-27 14:29:00:290 [34mdebug[39m: [34m🔄 Smart monitoring (peak mode)[39m
+2026-01-27 14:29:00:290 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-01-27 14:29:00:290 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-01-27 14:29:00:290 [32minfo[39m: [32mFound 2 servers to check - dispatching to queue[39m
+2026-01-27 14:29:00:290 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 2/2 jobs in 75ms[39m
+2026-01-27 14:29:00:290 [32minfo[39m: [32mJob 'smartCheckServers' completed in 75ms[39m
+2026-01-27 14:29:01:291 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1769504340846 (Check Zeerostock) processed in 501ms[39m
+2026-01-27 14:29:01:291 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769504340846 (Check Zeerostock Backend) processed in 503ms[39m
