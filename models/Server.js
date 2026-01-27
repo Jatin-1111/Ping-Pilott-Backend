@@ -92,7 +92,8 @@ const serverSchema = new mongoose.Schema({
         trim: true
     },
     uploadedBy: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: [true, 'User ID is required']
     },
     uploadedAt: {

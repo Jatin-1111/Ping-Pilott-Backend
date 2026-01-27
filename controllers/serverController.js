@@ -84,13 +84,21 @@ export const getServers = asyncHandler(async (req, res) => {
 
         // Execute queries in parallel for maximum performance
         const [servers, total] = await Promise.all([
-            Server.find(filter)
-                .select('-__v -verificationToken -resetToken') // Exclude unnecessary fields
-                .sort(sort)
-                .skip(skip)
-                .limit(limit)
-                .lean() // Use lean for 40% better performance
-                .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT),
+            (() => {
+                let query = Server.find(filter)
+                    .select('-__v -verificationToken -resetToken') // Exclude unnecessary fields
+                    .sort(sort)
+                    .skip(skip)
+                    .limit(limit);
+
+                // Populate user details for admin view
+                if (showAll) {
+                    query = query.populate('uploadedBy', 'displayName email');
+                }
+
+                return query.lean() // Use lean for 40% better performance
+                    .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT);
+            })(),
 
             Server.countDocuments(filter)
                 .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT)
@@ -476,7 +484,7 @@ export const updateServer = asyncHandler(async (req, res) => {
         }
 
         // Authorization check
-        if (server.uploadedBy !== userId && !isAdmin) {
+        if (String(server.uploadedBy) !== String(userId) && !isAdmin) {
             return res.status(403).json({
                 status: 'error',
                 message: 'Not authorized to update this server',
@@ -657,7 +665,7 @@ export const deleteServer = asyncHandler(async (req, res) => {
         }
 
         // Authorization check
-        if (server.uploadedBy !== userId && !isAdmin) {
+        if (String(server.uploadedBy) !== String(userId) && !isAdmin) {
             return res.status(403).json({
                 status: 'error',
                 message: 'Not authorized to delete this server',
@@ -756,7 +764,7 @@ export const checkServer = asyncHandler(async (req, res) => {
         }
 
         // Authorization check
-        if (server.uploadedBy !== userId && !isAdmin) {
+        if (String(server.uploadedBy) !== String(userId) && !isAdmin) {
             return res.status(403).json({
                 status: 'error',
                 message: 'Not authorized to check this server',
@@ -837,6 +845,15 @@ export const checkServer = asyncHandler(async (req, res) => {
             checkDuration
         });
 
+        // Publish update to Redis for real-time WebSocket clients
+        const updatePayload = {
+            serverId: server._id,
+            status: checkResult.status || 'unknown',
+            latency: checkResult.responseTime,
+            lastChecked: now
+        };
+        redisConnection.publish('monitor-updates', JSON.stringify(updatePayload));
+
         // Enhanced response with detailed information
         res.status(200).json({
             status: 'success',
@@ -894,7 +911,7 @@ export const getServerHistory = asyncHandler(async (req, res) => {
     const isAdmin = req.user.role === 'admin';
     const period = req.query.period || '24h';
     const includeStats = req.query.includeStats !== 'false';
-    const limit = Math.min(PERFORMANCE_CONFIG.MAX_HISTORY_POINTS, parseInt(req.query.limit) || 100);
+    const limit = Math.min(PERFORMANCE_CONFIG.MAX_HISTORY_POINTS, parseInt(req.query.limit) || 300);
 
     // Validate ObjectId
     if (!mongoose.Types.ObjectId.isValid(serverId)) {
@@ -924,7 +941,8 @@ export const getServerHistory = asyncHandler(async (req, res) => {
             });
         }
 
-        if (server.uploadedBy !== userId && !isAdmin) {
+        // Check authorization: Ensure IDs are compared as strings
+        if (String(server.uploadedBy) !== String(userId) && !isAdmin) {
             return res.status(403).json({
                 status: 'error',
                 message: 'Not authorized to view server history',
@@ -944,7 +962,7 @@ export const getServerHistory = asyncHandler(async (req, res) => {
                 }
             },
             {
-                $sort: { timestamp: 1 }
+                $sort: { timestamp: -1 } // Sort DESC first to get latest points
             }
         ];
 
@@ -962,16 +980,25 @@ export const getServerHistory = asyncHandler(async (req, res) => {
                             }
                         }
                     },
-                    status: { $last: '$status' },
+                    status: { $first: '$status' }, // Use first because we sorted DESC (so first is latest)
                     responseTime: { $avg: '$responseTime' },
-                    timestamp: { $last: '$timestamp' },
-                    error: { $last: '$error' },
+                    timestamp: { $first: '$timestamp' }, // Use first because we sorted DESC
+                    error: { $first: '$error' },
                     count: { $sum: 1 }
                 }
             });
         }
 
         pipeline.push({ $limit: limit });
+
+        // Restore chronological order (ASC) for the graph
+        pipeline.push({ $sort: { timestamp: 1 } }); // OR { "_id.interval": 1 } if grouped
+
+        // We need to handle the sort key based on whether we grouped or not
+        // If grouped, we sort by timestamp (which we preserved)
+        // If not grouped, we sort by timestamp
+        // Actually, since we grouped by interval, valid. But wait.
+        // If we grouped, the output documents have 'timestamp' field. So { timestamp: 1 } works.
 
         // Execute history query and stats in parallel if needed
         const [checks, statsResult] = await Promise.all([

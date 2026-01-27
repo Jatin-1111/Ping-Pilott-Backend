@@ -34,6 +34,14 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Create HTTP server for Socket.io
+import { createServer } from 'http';
+import { initializeSocket, broadcastServerUpdate } from './config/socket.js';
+import { Redis } from 'ioredis';
+
+const httpServer = createServer(app);
+const io = initializeSocket(httpServer);
+
 // Connect to MongoDB
 connectDB();
 
@@ -78,8 +86,38 @@ app.use('*', (req, res) => {
 // Global error handler
 app.use(errorMiddleware);
 
+// --- REDIS PUB/SUB FOR REAL-TIME UPDATES ---
+// Create a dedicated Redis connection for subscription
+const redisSubscriber = new Redis(process.env.REDIS_URL || {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: parseInt(process.env.REDIS_PORT) || 6379,
+    password: process.env.REDIS_PASSWORD || undefined,
+    // No maxRetriesPerRequest null needed here as it's not BullMQ
+});
+
+redisSubscriber.subscribe('monitor-updates', (err, count) => {
+    if (err) {
+        logger.error('Failed to subscribe to monitor-updates channel: %s', err.message);
+    } else {
+        logger.info(`📢 Subscribed to monitor-updates channel. Count: ${count}`);
+    }
+});
+
+redisSubscriber.on('message', (channel, message) => {
+    if (channel === 'monitor-updates') {
+        try {
+            const updateData = JSON.parse(message);
+            // logger.debug(`Received update for server ${updateData.serverId}`);
+            broadcastServerUpdate(updateData);
+        } catch (error) {
+            logger.error('Error parsing monitor update message:', error);
+        }
+    }
+});
+// -------------------------------------------
+
 // Start server
-const server = app.listen(PORT, () => {
+const server = httpServer.listen(PORT, () => {
     logger.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 
     // Initialize cron jobs after server starts

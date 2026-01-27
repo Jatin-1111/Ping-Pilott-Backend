@@ -310,6 +310,8 @@ const getResponseTimeOptimized = async (startDate, endDate, period) => {
             break;
         case 'month':
             groupStage = {
+                year: { $year: '$timestamp' },
+                month: { $month: '$timestamp' },
                 day: { $dayOfMonth: '$timestamp' },
                 hour: { $hour: '$timestamp' }
             };

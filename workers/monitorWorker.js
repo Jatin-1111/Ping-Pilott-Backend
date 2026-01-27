@@ -39,7 +39,48 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
         }
 
         // Perform the check
-        await checkServerStatus(server);
+        const checkResult = await checkServerStatus(server);
+
+        // Create enhanced check history document
+        const checkDoc = {
+            serverId: new mongoose.Types.ObjectId(serverId),
+            status: checkResult.status,
+            responseTime: checkResult.responseTime,
+            error: checkResult.error,
+            timestamp: new Date(),
+            checkType: 'automated'
+        };
+
+        // Prepare batch update data for Server
+        const updateData = {
+            status: checkResult.status,
+            responseTime: checkResult.responseTime,
+            error: checkResult.error,
+            lastChecked: new Date()
+        };
+
+        // Only update status change time if status actually changed
+        if (server.status !== checkResult.status) {
+            updateData.lastStatusChange = new Date();
+        }
+
+        // Execute database operations in parallel
+        await Promise.all([
+            Server.updateOne({ _id: serverId }, updateData),
+            ServerCheck.create(checkDoc)
+        ]);
+
+        // Publish update to Redis for real-time WebSocket clients
+        if (checkResult) {
+            const updatePayload = {
+                serverId: server._id,
+                status: checkResult.status || 'unknown',
+                latency: checkResult.responseTime,
+                lastChecked: new Date()
+            };
+
+            redisConnection.publish('monitor-updates', JSON.stringify(updatePayload));
+        }
 
         logger.debug(`Job ${job.id} (Check ${server.name}) processed in ${Date.now() - startTime}ms`);
 
