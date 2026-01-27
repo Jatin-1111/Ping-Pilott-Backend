@@ -36,9 +36,6 @@ pipeline {
     }
     
     post {
-        always {
-            bat 'docker system prune -af'
-        }
         success {
             echo '✅ Build & Push Successful!'
         }
