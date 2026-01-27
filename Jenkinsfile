@@ -4,9 +4,15 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', 
-                    url: 'https://github.com/Jatin-1111/Ping-Pilott-Backend.git',
-                    credentialsId: 'github-credentials'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    extensions: [[$class: 'WipeWorkspace']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/Jatin-1111/Ping-Pilott-Backend.git',
+                        credentialsId: 'github-credentials'
+                    ]]
+                ])
             }
         }
         
