@@ -29,10 +29,10 @@ pipeline {
 
     post {
         success {
-            githubNotify context: 'jenkins/build', status: 'SUCCESS', description: 'Build passed', targetUrl: env.BUILD_URL, credentialsId: 'github-credentials'
+            echo '✅ Build & Deploy Successful!'
         }
         failure {
-            githubNotify context: 'jenkins/build', status: 'FAILURE', description: 'Build failed', targetUrl: env.BUILD_URL, credentialsId: 'github-credentials'
+            echo '❌ Build Failed!'
         }
     }
 }
