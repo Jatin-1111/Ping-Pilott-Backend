@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
     subscription: {
         plan: {
             type: String,
-            enum: ['free', 'monthly', 'halfYearly', 'yearly', 'admin'],
+            enum: ['free', 'starter_monthly', 'starter_yearly', 'pro_monthly', 'pro_yearly', 'business_monthly', 'business_yearly', 'admin'],
             default: function () {
                 // Set default subscription plan based on role
                 return this.role === 'admin' ? 'admin' : 'free';
@@ -57,55 +57,72 @@ const userSchema = new mongoose.Schema({
             maxServers: {
                 type: Number,
                 default: function () {
-                    // Unlimited servers for admin (using -1 to represent unlimited)
-                    return this.role === 'admin' ? -1 : 1;
+                    if (this.role === 'admin') return -1;
+                    const plan = this.subscription?.plan || 'free';
+                    if (plan.startsWith('business')) return 100;
+                    if (plan.startsWith('pro')) return 30;
+                    if (plan.startsWith('starter')) return 10;
+                    return 1; // Free
                 }
             },
             minCheckFrequency: {
                 type: Number,
                 default: function () {
-                    // Admins can set check frequency as low as 1 minute
-                    return this.role === 'admin' ? 1 : 5;
+                    if (this.role === 'admin') return 1;
+                    const plan = this.subscription?.plan || 'free';
+                    if (plan.startsWith('business')) return 1; // 30s not supported by schema yet, sticking to 1m
+                    if (plan.startsWith('pro')) return 1;
+                    if (plan.startsWith('starter')) return 3;
+                    return 5; // Free
                 }
             },
             maxCheckFrequency: {
                 type: Number,
                 default: function () {
-                    // Admins have no upper limit for check frequency
-                    return this.role === 'admin' ? -1 : 30;
+                    if (this.role === 'admin') return -1;
+                    return 60;
                 }
             },
             advancedAlerts: {
                 type: Boolean,
                 default: function () {
-                    return this.role === 'admin';
+                    if (this.role === 'admin') return true;
+                    const plan = this.subscription?.plan || 'free';
+                    return !plan.startsWith('starter') && plan !== 'free'; // Pro and Business have advanced alerts
                 }
             },
             apiAccess: {
                 type: Boolean,
                 default: function () {
-                    return this.role === 'admin';
+                    if (this.role === 'admin') return true;
+                    const plan = this.subscription?.plan || 'free';
+                    return plan.startsWith('business');
                 }
             },
             prioritySupport: {
                 type: Boolean,
                 default: function () {
-                    return this.role === 'admin';
+                    if (this.role === 'admin') return true;
+                    const plan = this.subscription?.plan || 'free';
+                    return plan.startsWith('business') || plan.startsWith('pro');
                 }
             },
             webhookIntegrations: {
                 type: Boolean,
                 default: function () {
-                    return this.role === 'admin';
+                    if (this.role === 'admin') return true;
+                    const plan = this.subscription?.plan || 'free';
+                    return plan.startsWith('business');
                 }
             },
             historicalReporting: {
                 type: Boolean,
                 default: function () {
-                    return this.role === 'admin';
+                    if (this.role === 'admin') return true;
+                    const plan = this.subscription?.plan || 'free';
+                    return plan !== 'free';
                 }
             },
-            // New field for admin unlimited monitoring duration
             unlimitedMonitoring: {
                 type: Boolean,
                 default: function () {
@@ -130,9 +147,7 @@ const userSchema = new mongoose.Schema({
 
 // Hash password before saving
 userSchema.pre('save', async function (next) {
-    // Only hash the password if it's modified or new
     if (!this.isModified('password')) return next();
-
     try {
         const salt = await bcrypt.genSalt(12);
         this.password = await bcrypt.hash(this.password, salt);
@@ -145,12 +160,11 @@ userSchema.pre('save', async function (next) {
 // Ensure admin settings are always properly set
 userSchema.pre('save', function (next) {
     if (this.role === 'admin') {
-        // Ensure admin subscription is always set correctly
         this.subscription.plan = 'admin';
         this.subscription.status = 'unlimited';
-        this.subscription.features.maxServers = -1; // -1 represents unlimited
+        this.subscription.features.maxServers = -1;
         this.subscription.features.minCheckFrequency = 1;
-        this.subscription.features.maxCheckFrequency = -1; // -1 represents no upper limit
+        this.subscription.features.maxCheckFrequency = -1;
         this.subscription.features.advancedAlerts = true;
         this.subscription.features.apiAccess = true;
         this.subscription.features.prioritySupport = true;
@@ -158,41 +172,71 @@ userSchema.pre('save', function (next) {
         this.subscription.features.historicalReporting = true;
         this.subscription.features.unlimitedMonitoring = true;
     }
+    // Logic to enforce plan limits on save for non-admins could go here if we wanted strong consistency
+    // based on the plan string.
+    else if (this.isModified('subscription.plan')) {
+        const plan = this.subscription.plan;
+        if (plan.startsWith('business')) {
+            this.subscription.features.maxServers = 100;
+            this.subscription.features.minCheckFrequency = 1;
+            this.subscription.features.advancedAlerts = true;
+            this.subscription.features.apiAccess = true;
+            this.subscription.features.prioritySupport = true;
+            this.subscription.features.webhookIntegrations = true;
+            this.subscription.features.historicalReporting = true;
+        } else if (plan.startsWith('pro')) {
+            this.subscription.features.maxServers = 30;
+            this.subscription.features.minCheckFrequency = 1;
+            this.subscription.features.advancedAlerts = true;
+            this.subscription.features.apiAccess = false;
+            this.subscription.features.prioritySupport = true;
+            this.subscription.features.webhookIntegrations = false;
+            this.subscription.features.historicalReporting = true;
+        } else if (plan.startsWith('starter')) {
+            this.subscription.features.maxServers = 10;
+            this.subscription.features.minCheckFrequency = 3;
+            this.subscription.features.advancedAlerts = false;
+            this.subscription.features.apiAccess = false;
+            this.subscription.features.prioritySupport = false;
+            this.subscription.features.webhookIntegrations = false;
+            this.subscription.features.historicalReporting = true;
+        } else if (plan === 'free') {
+            this.subscription.features.maxServers = 1;
+            this.subscription.features.minCheckFrequency = 5;
+            this.subscription.features.advancedAlerts = false;
+            this.subscription.features.apiAccess = false;
+            this.subscription.features.prioritySupport = false;
+            this.subscription.features.webhookIntegrations = false;
+            this.subscription.features.historicalReporting = false;
+        }
+    }
     next();
 });
 
-// Method to compare passwords
 userSchema.methods.comparePassword = async function (candidatePassword) {
     return await bcrypt.compare(candidatePassword, this.password);
 };
 
-// Method to check if subscription is active
 userSchema.methods.hasActiveSubscription = function () {
-    // Admin plan is always active with unlimited privileges
     if (this.role === 'admin' || this.subscription.plan === 'admin') {
         return true;
     }
-
-    // Check if subscription has expired
     const now = Date.now();
     return this.subscription.status === 'active' &&
         (this.subscription.endDate === null || this.subscription.endDate > now);
 };
 
-// Add a method to check if a user has unlimited servers
 userSchema.methods.hasUnlimitedServers = function () {
     return this.role === 'admin' || this.subscription.features.maxServers === -1;
 };
 
-// Add a method to get the maximum number of servers
 userSchema.methods.getMaxServers = function () {
     if (this.hasUnlimitedServers()) {
-        return Number.MAX_SAFE_INTEGER; // Effectively unlimited
+        return Number.MAX_SAFE_INTEGER;
     }
     return this.subscription.features.maxServers;
 };
 
-// Method to check if the user can add more servers
 userSchema.methods.canAddMoreServers = async function (currentCount) {
     if (this.hasUnlimitedServers()) {
         return true;
@@ -200,19 +244,16 @@ userSchema.methods.canAddMoreServers = async function (currentCount) {
     return currentCount < this.subscription.features.maxServers;
 };
 
-// Method to get min check frequency (in minutes)
 userSchema.methods.getMinCheckFrequency = function () {
     return this.subscription.features.minCheckFrequency;
 };
 
-// Method to get max check frequency (in minutes)
 userSchema.methods.getMaxCheckFrequency = function () {
     if (this.role === 'admin' && this.subscription.features.maxCheckFrequency === -1) {
-        return Number.MAX_SAFE_INTEGER; // No practical upper limit
+        return Number.MAX_SAFE_INTEGER;
     }
     return this.subscription.features.maxCheckFrequency;
 };
 
-// Create and export the model
 const User = mongoose.model('User', userSchema);
 export default User;

@@ -67,7 +67,7 @@ export const getServers = asyncHandler(async (req, res) => {
         }
 
         // Plan filter (admin only)
-        if (isAdmin && req.query.plan && ['free', 'monthly', 'halfYearly', 'yearly', 'admin'].includes(req.query.plan)) {
+        if (isAdmin && req.query.plan && ['free', 'starter_monthly', 'starter_yearly', 'pro_monthly', 'pro_yearly', 'business_monthly', 'business_yearly', 'admin'].includes(req.query.plan)) {
             filter.uploadedPlan = req.query.plan;
         }
 
@@ -288,7 +288,8 @@ export const createServer = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const userRole = req.user.role;
     const userPlan = req.user.subscription?.plan || 'free';
-    const isPremium = ['monthly', 'halfYearly', 'yearly', 'admin'].includes(userPlan);
+    // Premium checks (Pro, Business, Admin)
+    const isPremium = ['pro_monthly', 'pro_yearly', 'business_monthly', 'business_yearly', 'admin'].includes(userPlan);
 
     try {
         // Zod Validation
