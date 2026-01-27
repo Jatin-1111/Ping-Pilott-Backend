@@ -2888,3 +2888,5 @@
 2026-01-27 10:20:03:203 [31merror[39m: [31mDatabase error saving monitoring job (attempt 2/3): read ECONNRESET[39m
 2026-01-27 10:20:06:206 [31merror[39m: [31mDatabase error saving monitoring job (attempt 3/3): read ECONNRESET[39m
 2026-01-27 13:34:47:3447 [31merror[39m: [31mAuth error: read ECONNRESET[39m
+2026-01-27 19:36:15:3615 [31merror[39m: [31mAuth error: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-02.1vc6nal.mongodb.net[39m
+2026-01-27 19:36:20:3620 [31merror[39m: [31mError refreshing token: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-02.1vc6nal.mongodb.net[39m
