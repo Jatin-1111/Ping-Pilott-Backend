@@ -20,16 +20,27 @@ pipeline {
             }
         }
         
-        stage('Deploy') {
+        stage('Build & Push to Docker Hub') {
             steps {
-                bat 'docker run -d -p 3000:3000 --name ping-pilot-%BUILD_NUMBER% ping-pilot:%BUILD_NUMBER%'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
+                    bat '''
+                    docker login -u %DH_USER% -p %DH_PASS%
+                    docker tag ping-pilot:%BUILD_NUMBER% %DH_USER%/ping-pilot:%BUILD_NUMBER%
+                    docker tag ping-pilot:%BUILD_NUMBER% %DH_USER%/ping-pilot:latest
+                    docker push %DH_USER%/ping-pilot:%BUILD_NUMBER%
+                    docker push %DH_USER%/ping-pilot:latest
+                    '''
+                }
             }
         }
     }
-
+    
     post {
+        always {
+            bat 'docker system prune -af'
+        }
         success {
-            echo '✅ Build & Deploy Successful!'
+            echo '✅ Build & Push Successful!'
         }
         failure {
             echo '❌ Build Failed!'
