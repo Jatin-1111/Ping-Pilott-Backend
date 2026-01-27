@@ -3,20 +3,21 @@ import { z } from 'zod';
 // Monitoring configuration schema
 const monitoringSchema = z.object({
     frequency: z.number().int().min(1).max(60).optional().default(5),
-    daysOfWeek: z.array(z.number().int().min(0).max(6)).optional().default([1, 2, 3, 4, 5]),
+    daysOfWeek: z.array(z.number().int().min(0).max(6)).optional().default([0, 1, 2, 3, 4, 5, 6]),
     timeWindows: z.array(z.object({
         start: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format (HH:MM)"),
         end: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format (HH:MM)")
-    })).optional().default([{ start: '09:00', end: '17:00' }]),
+    })).optional().default([{ start: '00:00', end: '23:59' }]),
     alerts: z.object({
         enabled: z.boolean().optional().default(false),
         email: z.boolean().optional().default(false),
         phone: z.boolean().optional().default(false),
+        webhookUrl: z.string().url("Invalid URL format").optional().or(z.literal('')),
         responseThreshold: z.number().int().min(10).optional().default(1000),
         timeWindow: z.object({
             start: z.string().optional(),
             end: z.string().optional()
-        }).optional()
+        }).optional().default({ start: '00:00', end: '23:59' })
     }).optional().default({})
 });
 

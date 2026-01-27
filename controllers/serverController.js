@@ -4,6 +4,7 @@ import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { checkServerStatus } from '../services/monitoringService.js';
+import { redisConnection } from '../config/redis.js';
 import logger from '../utils/logger.js';
 import mongoose from 'mongoose';
 import { createServerSchema, updateServerSchema } from '../utils/validations.js';
@@ -27,7 +28,20 @@ export const getServers = asyncHandler(async (req, res) => {
     const showAll = isAdmin && req.query.admin === 'true';
     const userId = req.user.id;
 
+    // Redis Cache Key Generation
+    const cacheKey = `api:servers:${userId}:${JSON.stringify(req.query)}`;
+
     try {
+        // 1. Try Cache
+        const cachedData = await redisConnection.get(cacheKey);
+        if (cachedData) {
+            const data = JSON.parse(cachedData);
+            // Add cache meta header
+            data.meta.cached = true;
+            data.meta.queryTime = 0; // Instant
+            return res.status(200).json(data);
+        }
+
         // Build optimized filter with early returns
         const filter = showAll ? {} : { uploadedBy: userId };
 
@@ -53,7 +67,7 @@ export const getServers = asyncHandler(async (req, res) => {
         }
 
         // Plan filter (admin only)
-        if (isAdmin && req.query.plan && ['free', 'monthly', 'halfYearly', 'yearly', 'admin'].includes(req.query.plan)) {
+        if (isAdmin && req.query.plan && ['free', 'starter_monthly', 'starter_yearly', 'pro_monthly', 'pro_yearly', 'business_monthly', 'business_yearly', 'admin'].includes(req.query.plan)) {
             filter.uploadedPlan = req.query.plan;
         }
 
@@ -70,13 +84,21 @@ export const getServers = asyncHandler(async (req, res) => {
 
         // Execute queries in parallel for maximum performance
         const [servers, total] = await Promise.all([
-            Server.find(filter)
-                .select('-__v -verificationToken -resetToken') // Exclude unnecessary fields
-                .sort(sort)
-                .skip(skip)
-                .limit(limit)
-                .lean() // Use lean for 40% better performance
-                .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT),
+            (() => {
+                let query = Server.find(filter)
+                    .select('-__v -verificationToken -resetToken') // Exclude unnecessary fields
+                    .sort(sort)
+                    .skip(skip)
+                    .limit(limit);
+
+                // Populate user details for admin view
+                if (showAll) {
+                    query = query.populate('uploadedBy', 'displayName email');
+                }
+
+                return query.lean() // Use lean for 40% better performance
+                    .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT);
+            })(),
 
             Server.countDocuments(filter)
                 .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT)
@@ -107,7 +129,7 @@ export const getServers = asyncHandler(async (req, res) => {
 
         const queryTime = Date.now() - startTime;
 
-        res.status(200).json({
+        const responseData = {
             status: 'success',
             results: servers.length,
             total,
@@ -121,7 +143,13 @@ export const getServers = asyncHandler(async (req, res) => {
                 cached: false,
                 filters: Object.keys(filter)
             }
-        });
+        };
+
+        // 2. Set Cache (10 seconds TTL)
+        // 10s is enough to save DB from polling spam, but keeps UI seemingly fresh on refresh
+        await redisConnection.set(cacheKey, JSON.stringify(responseData), 'EX', 10);
+
+        res.status(200).json(responseData);
 
         // Log slow queries for optimization
         if (queryTime > 1000) {
@@ -260,7 +288,8 @@ export const createServer = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const userRole = req.user.role;
     const userPlan = req.user.subscription?.plan || 'free';
-    const isPremium = ['monthly', 'halfYearly', 'yearly', 'admin'].includes(userPlan);
+    // Premium checks (Pro, Business, Admin)
+    const isPremium = ['pro_monthly', 'pro_yearly', 'business_monthly', 'business_yearly', 'admin'].includes(userPlan);
 
     try {
         // Zod Validation
@@ -456,7 +485,7 @@ export const updateServer = asyncHandler(async (req, res) => {
         }
 
         // Authorization check
-        if (server.uploadedBy !== userId && !isAdmin) {
+        if (String(server.uploadedBy) !== String(userId) && !isAdmin) {
             return res.status(403).json({
                 status: 'error',
                 message: 'Not authorized to update this server',
@@ -531,6 +560,11 @@ export const updateServer = asyncHandler(async (req, res) => {
         if (monitoring) {
             const monitoringUpdates = buildMonitoringUpdates(monitoring);
             Object.assign(updates, monitoringUpdates);
+            logger.info('Monitoring updates processed', {
+                serverId,
+                receivedMonitoring: monitoring,
+                generatedUpdates: monitoringUpdates
+            });
         }
 
         // Set update timestamp
@@ -632,7 +666,7 @@ export const deleteServer = asyncHandler(async (req, res) => {
         }
 
         // Authorization check
-        if (server.uploadedBy !== userId && !isAdmin) {
+        if (String(server.uploadedBy) !== String(userId) && !isAdmin) {
             return res.status(403).json({
                 status: 'error',
                 message: 'Not authorized to delete this server',
@@ -731,7 +765,7 @@ export const checkServer = asyncHandler(async (req, res) => {
         }
 
         // Authorization check
-        if (server.uploadedBy !== userId && !isAdmin) {
+        if (String(server.uploadedBy) !== String(userId) && !isAdmin) {
             return res.status(403).json({
                 status: 'error',
                 message: 'Not authorized to check this server',
@@ -812,6 +846,15 @@ export const checkServer = asyncHandler(async (req, res) => {
             checkDuration
         });
 
+        // Publish update to Redis for real-time WebSocket clients
+        const updatePayload = {
+            serverId: server._id,
+            status: checkResult.status || 'unknown',
+            latency: checkResult.responseTime,
+            lastChecked: now
+        };
+        redisConnection.publish('monitor-updates', JSON.stringify(updatePayload));
+
         // Enhanced response with detailed information
         res.status(200).json({
             status: 'success',
@@ -827,8 +870,8 @@ export const checkServer = asyncHandler(async (req, res) => {
                     responseTime: checkResult.responseTime,
                     error: checkResult.error,
                     timestamp: now,
-                    localTime: localMoment.format('YYYY-MM-DD HH:mm:ss'),
-                    timezone
+                    localTime: now.toLocaleString('sv-SE', { timeZone: server.timezone || 'UTC' }).replace('T', ' '),
+                    timezone: server.timezone || 'UTC'
                 },
                 changes: {
                     statusChanged: oldStatus !== checkResult.status,
@@ -869,7 +912,7 @@ export const getServerHistory = asyncHandler(async (req, res) => {
     const isAdmin = req.user.role === 'admin';
     const period = req.query.period || '24h';
     const includeStats = req.query.includeStats !== 'false';
-    const limit = Math.min(PERFORMANCE_CONFIG.MAX_HISTORY_POINTS, parseInt(req.query.limit) || 100);
+    const limit = Math.min(PERFORMANCE_CONFIG.MAX_HISTORY_POINTS, parseInt(req.query.limit) || 300);
 
     // Validate ObjectId
     if (!mongoose.Types.ObjectId.isValid(serverId)) {
@@ -899,7 +942,8 @@ export const getServerHistory = asyncHandler(async (req, res) => {
             });
         }
 
-        if (server.uploadedBy !== userId && !isAdmin) {
+        // Check authorization: Ensure IDs are compared as strings
+        if (String(server.uploadedBy) !== String(userId) && !isAdmin) {
             return res.status(403).json({
                 status: 'error',
                 message: 'Not authorized to view server history',
@@ -919,7 +963,7 @@ export const getServerHistory = asyncHandler(async (req, res) => {
                 }
             },
             {
-                $sort: { timestamp: 1 }
+                $sort: { timestamp: -1 } // Sort DESC first to get latest points
             }
         ];
 
@@ -937,16 +981,25 @@ export const getServerHistory = asyncHandler(async (req, res) => {
                             }
                         }
                     },
-                    status: { $last: '$status' },
+                    status: { $first: '$status' }, // Use first because we sorted DESC (so first is latest)
                     responseTime: { $avg: '$responseTime' },
-                    timestamp: { $last: '$timestamp' },
-                    error: { $last: '$error' },
+                    timestamp: { $first: '$timestamp' }, // Use first because we sorted DESC
+                    error: { $first: '$error' },
                     count: { $sum: 1 }
                 }
             });
         }
 
         pipeline.push({ $limit: limit });
+
+        // Restore chronological order (ASC) for the graph
+        pipeline.push({ $sort: { timestamp: 1 } }); // OR { "_id.interval": 1 } if grouped
+
+        // We need to handle the sort key based on whether we grouped or not
+        // If grouped, we sort by timestamp (which we preserved)
+        // If not grouped, we sort by timestamp
+        // Actually, since we grouped by interval, valid. But wait.
+        // If we grouped, the output documents have 'timestamp' field. So { timestamp: 1 } works.
 
         // Execute history query and stats in parallel if needed
         const [checks, statsResult] = await Promise.all([
@@ -1476,7 +1529,9 @@ const canBeCheckedNow = (server) => {
 
     // Check time windows
     if (server.monitoring?.timeWindows?.length > 0) {
-        const currentTime = now.format('HH:mm');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const currentTime = `${hours}:${minutes}`;
         const inWindow = server.monitoring.timeWindows.some(window =>
             currentTime >= window.start && currentTime <= window.end
         );
@@ -1532,14 +1587,15 @@ const normalizeUrl = (url) => {
 const buildMonitoringConfig = (monitoring, userRole, trialEnd) => {
     return {
         frequency: monitoring.frequency || 5,
-        daysOfWeek: monitoring.daysOfWeek || [1, 2, 3, 4, 5],
-        timeWindows: monitoring.timeWindows || [{ start: '09:00', end: '17:00' }],
+        daysOfWeek: monitoring.daysOfWeek || [0, 1, 2, 3, 4, 5, 6],
+        timeWindows: monitoring.timeWindows || [{ start: '00:00', end: '23:59' }],
         alerts: {
             enabled: monitoring.alerts?.enabled || false,
             email: monitoring.alerts?.email || false,
             phone: monitoring.alerts?.phone || false,
+            webhookUrl: monitoring.alerts?.webhookUrl || '',
             responseThreshold: monitoring.alerts?.responseThreshold || 1000,
-            timeWindow: monitoring.alerts?.timeWindow || { start: '09:00', end: '17:00' }
+            timeWindow: monitoring.alerts?.timeWindow || { start: '00:00', end: '23:59' }
         },
         trialEndsAt: userRole === 'admin' ? null : trialEnd
     };

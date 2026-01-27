@@ -28,6 +28,11 @@ const alertsSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    webhookUrl: {
+        type: String,
+        trim: true,
+        match: [/^https?:\/\/.+$/, 'Invalid URL format']
+    },
     responseThreshold: {
         type: Number,
         default: 1000,
@@ -35,7 +40,7 @@ const alertsSchema = new mongoose.Schema({
     },
     timeWindow: {
         type: timeWindowSchema,
-        default: () => ({ start: '09:00', end: '17:00' })
+        default: () => ({ start: '00:00', end: '23:59' })
     }
 }, { _id: false });
 
@@ -48,7 +53,7 @@ const monitoringSchema = new mongoose.Schema({
     },
     daysOfWeek: {
         type: [Number],
-        default: [1, 2, 3, 4, 5], // Monday through Friday
+        default: [0, 1, 2, 3, 4, 5, 6], // Monday through Sunday
         validate: {
             validator: function (days) {
                 return days.every(day => day >= 0 && day <= 7);
@@ -58,7 +63,7 @@ const monitoringSchema = new mongoose.Schema({
     },
     timeWindows: {
         type: [timeWindowSchema],
-        default: () => [{ start: '09:00', end: '17:00' }]
+        default: () => [{ start: '00:00', end: '23:59' }]
     },
     alerts: {
         type: alertsSchema,
@@ -92,7 +97,8 @@ const serverSchema = new mongoose.Schema({
         trim: true
     },
     uploadedBy: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: [true, 'User ID is required']
     },
     uploadedAt: {

@@ -71,15 +71,18 @@ export const sendAlertEmail = async (server, alertType, oldStatus, newStatus) =>
     const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
 
     // Send email to all contacts
-    for (const email of server.contactEmails) {
+    // Send email to all contacts at once (Batch)
+    if (server.contactEmails && server.contactEmails.length > 0) {
+      const toEmails = server.contactEmails.join(', ');
+
       const info = await mailer.sendMail({
         from: `"Ping Pilot" <${fromEmail}>`,
-        to: email,
+        to: toEmails,
         subject,
         html,
       });
 
-      logger.info(`Alert email sent to ${email}: ${info.messageId}`);
+      logger.info(`Alert email sent to [${toEmails}]: ${info.messageId}`);
     }
 
     return true;
