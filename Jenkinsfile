@@ -2,6 +2,14 @@ pipeline {
     agent any
     
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', 
+                    url: 'https://github.com/Jatin-1111/Ping-Pilott-Backend.git',
+                    credentialsId: 'github-credentials'
+            }
+        }
+        
         stage('Install Dependencies') {
             agent {
                 docker {
