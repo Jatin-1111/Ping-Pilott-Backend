@@ -1,6 +1,7 @@
 import logger from '../utils/logger.js';
 import { sendAlertEmail } from './emailService.js';
 import ServerCheck from '../models/ServerCheck.js';
+import axios from 'axios';
 
 /**
  * Check if we should send an alert based on smart logic
@@ -46,20 +47,45 @@ export const shouldSendAlert = async (server, oldStatus, newStatus, checkResult)
         }
     }
 
-    // Flapping check: simple check against recent history
-    if (statusChanged) {
-        // Fetch last 5 checks
-        const recentChecks = await ServerCheck.find({ serverId: server._id })
-            .sort({ timestamp: -1 })
-            .limit(5)
-            .lean();
-
-        // If we have mixed results recently, it might be flapping
-        // For simplicity: if we have > 2 status changes in last 5 checks, suppress?
-        // Let's keep it simple for now and rely on user settings (delay/retry handled by queue mostly)
-    }
-
     return true;
+};
+
+/**
+ * Execute a webhook for the alert
+ * @param {Object} server - Server data
+ * @param {String} alertType - Type of alert
+ * @param {Object} payload - Data to send
+ */
+const sendWebhookAlert = async (server, alertType, payload) => {
+    const webhookUrl = server.monitoring?.alerts?.webhookUrl;
+    if (!webhookUrl) return;
+
+    try {
+        logger.info(`Sending webhook for ${server.name} (${server._id}) to ${webhookUrl}`);
+
+        await axios.post(webhookUrl, {
+            event: alertType,
+            server: {
+                id: server._id,
+                name: server.name,
+                url: server.url,
+                status: server.status
+            },
+            ...payload,
+            timestamp: new Date().toISOString()
+        }, {
+            timeout: 5000, // 5s timeout for webhooks
+            headers: {
+                'Content-Type': 'application/json',
+                'User-Agent': 'PingPilott-Webhook-Bot/1.0'
+            }
+        });
+
+        logger.info(`Webhook sent successfully for ${server.name}`);
+    } catch (error) {
+        logger.error(`Failed to send webhook for ${server.name}: ${error.message}`);
+        // We could implement retry logic here or put it in a separate queue
+    }
 };
 
 /**
@@ -87,18 +113,33 @@ export const handleAlerts = async (server, oldStatus, newStatus, checkResult) =>
         }
 
         // Enhanced server object for email
+        // Logic to handle if server is mongoose doc or POJO
+        const serverObj = server.toObject ? server.toObject() : server;
         const enhancedServer = {
-            ...server.toObject ? server.toObject() : server, // Handle mongoose doc or POJO
+            ...serverObj,
             responseTime: checkResult.responseTime,
             error: checkResult.error,
             alertTime: new Date().toISOString()
         };
 
         const emailEnabled = server.monitoring?.alerts?.email ?? true;
+        const webhookUrl = server.monitoring?.alerts?.webhookUrl;
 
+        // Send Email
         if (emailEnabled && server.contactEmails?.length > 0) {
             await sendAlertEmail(enhancedServer, alertType, oldStatus, newStatus);
-            logger.info(`🔔 Smart alert sent for ${server.name}: ${alertType}`);
+            logger.info(`🔔 Smart alert email sent for ${server.name}: ${alertType}`);
+        }
+
+        // Send Webhook (Fire and Forget)
+        if (webhookUrl) {
+            // Non-blocking call
+            sendWebhookAlert(enhancedServer, alertType, {
+                oldStatus,
+                newStatus,
+                responseTime: checkResult.responseTime,
+                error: checkResult.error
+            });
         }
 
     } catch (error) {

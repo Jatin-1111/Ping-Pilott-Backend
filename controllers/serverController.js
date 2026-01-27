@@ -1593,6 +1593,7 @@ const buildMonitoringConfig = (monitoring, userRole, trialEnd) => {
             enabled: monitoring.alerts?.enabled || false,
             email: monitoring.alerts?.email || false,
             phone: monitoring.alerts?.phone || false,
+            webhookUrl: monitoring.alerts?.webhookUrl || '',
             responseThreshold: monitoring.alerts?.responseThreshold || 1000,
             timeWindow: monitoring.alerts?.timeWindow || { start: '00:00', end: '23:59' }
         },

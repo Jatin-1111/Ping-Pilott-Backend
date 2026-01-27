@@ -28,6 +28,11 @@ const alertsSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    webhookUrl: {
+        type: String,
+        trim: true,
+        match: [/^https?:\/\/.+$/, 'Invalid URL format']
+    },
     responseThreshold: {
         type: Number,
         default: 1000,

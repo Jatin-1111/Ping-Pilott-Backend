@@ -59,6 +59,12 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
             lastChecked: new Date()
         };
 
+        // Handle Alerts (Async, don't block check completion)
+        // Pass original server (with old status) and new status result
+        handleAlerts(server, server.status, checkResult.status, checkResult).catch(err => {
+            logger.error(`Error processing alerts for ${server.name}: ${err.message}`);
+        });
+
         // Only update status change time if status actually changed
         if (server.status !== checkResult.status) {
             updateData.lastStatusChange = new Date();

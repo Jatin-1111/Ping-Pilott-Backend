@@ -12,6 +12,7 @@ const monitoringSchema = z.object({
         enabled: z.boolean().optional().default(false),
         email: z.boolean().optional().default(false),
         phone: z.boolean().optional().default(false),
+        webhookUrl: z.string().url("Invalid URL format").optional().or(z.literal('')),
         responseThreshold: z.number().int().min(10).optional().default(1000),
         timeWindow: z.object({
             start: z.string().optional(),
