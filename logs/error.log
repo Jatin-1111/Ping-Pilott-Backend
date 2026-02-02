@@ -2933,3 +2933,39 @@
 2026-02-03 01:12:18:1218 [31merror[39m: [31m❌ Redis connection error:[39m
 2026-02-03 01:12:18:1218 [31merror[39m: [31mMonitor Queue Error:[39m
 2026-02-03 01:12:18:1218 [31merror[39m: [31mFailed to subscribe to monitor-updates channel: %s[39m
+2026-02-03 02:03:54:354 [31merror[39m: [31mAuth error: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:04:00:40 [31merror[39m: [31mError refreshing token: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:04:05:45 [31merror[39m: [31mFailed to save monitoring job record: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:04:10:410 [31merror[39m: [31m❌ SCHEDULER ERROR: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:04:15:415 [31merror[39m: [31mDatabase error saving monitoring job (attempt 1/3): connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:04:21:421 [31merror[39m: [31mDatabase error saving monitoring job (attempt 2/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:04:26:426 [31merror[39m: [31mDatabase error saving monitoring job (attempt 3/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:05:05:55 [31merror[39m: [31mFailed to save monitoring job record: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:05:10:510 [31merror[39m: [31m❌ SCHEDULER ERROR: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:05:15:515 [31merror[39m: [31mDatabase error saving monitoring job (attempt 1/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:05:20:520 [31merror[39m: [31mDatabase error saving monitoring job (attempt 2/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:05:26:526 [31merror[39m: [31mDatabase error saving monitoring job (attempt 3/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:06:05:65 [31merror[39m: [31mFailed to save monitoring job record: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:06:10:610 [31merror[39m: [31m❌ SCHEDULER ERROR: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:07:05:75 [31merror[39m: [31mFailed to save monitoring job record: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:07:10:710 [31merror[39m: [31m❌ SCHEDULER ERROR: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:07:15:715 [31merror[39m: [31mDatabase error saving monitoring job (attempt 1/3): connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:07:20:720 [31merror[39m: [31mDatabase error saving monitoring job (attempt 2/3): connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:07:26:726 [31merror[39m: [31mDatabase error saving monitoring job (attempt 3/3): connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:08:05:85 [31merror[39m: [31mFailed to save monitoring job record: Socket 'secureConnect' timed out after 35555ms (connectTimeoutMS: 30000)[39m
+2026-02-03 02:08:10:810 [31merror[39m: [31m❌ SCHEDULER ERROR: Socket 'secureConnect' timed out after 35555ms (connectTimeoutMS: 30000)[39m
+2026-02-03 02:08:15:815 [31merror[39m: [31mDatabase error saving monitoring job (attempt 1/3): Socket 'secureConnect' timed out after 35555ms (connectTimeoutMS: 30000)[39m
+2026-02-03 02:08:21:821 [31merror[39m: [31mDatabase error saving monitoring job (attempt 2/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:19:18:1918 [31merror[39m: [31mError response: POST /api/auth/login - 401 - 246.28ms[39m
+2026-02-03 02:28:22:2822 [31merror[39m: [31munhandledRejection: mongoose is not defined[39m
+[31mReferenceError: mongoose is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/index.js:78:9[39m
+[31m    at Layer.handle [as handle_request] (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\layer.js:95:5)[39m
+[31m    at next (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\route.js:149:13)[39m
+[31m    at Route.dispatch (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\route.js:119:3)[39m
+[31m    at Layer.handle [as handle_request] (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\layer.js:95:5)[39m
+[31m    at D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\index.js:284:15[39m
+[31m    at router.process_params (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\index.js:346:12)[39m
+[31m    at next (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\index.js:280:10)[39m
+[31m    at performanceMonitoring (file:///D:/Ping-Pilott/Ping-Pilott-Backend/middleware/performanceMonitoring.js:47:5)[39m
+[31m    at Layer.handle [as handle_request] (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\layer.js:95:5)[39m

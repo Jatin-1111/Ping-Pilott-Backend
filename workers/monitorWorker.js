@@ -1,47 +1,76 @@
-import './loadEnv.js'; // Must be first to load ENV before other imports
+import './loadEnv.js';
 import { Worker } from 'bullmq';
 import { redisConnection } from '../config/redis.js';
 import { checkServerStatus } from '../services/monitoringService.js';
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
-import { handleAlerts } from '../services/alertService.js';
+import { addAlertToQueue } from '../queues/alertQueue.js';
 import logger from '../utils/logger.js';
 import mongoose from 'mongoose';
 
 const QUEUE_NAME = 'monitor-server-queue';
 
-// Create the worker
+// Batch operation buffers
+const updateBatch = [];
+const checkBatch = [];
+let batchTimer = null;
+const BATCH_SIZE = 100;
+const BATCH_TIMEOUT = 5000;
+
+async function executeBatch() {
+    if (updateBatch.length === 0 && checkBatch.length === 0) return;
+
+    const updateCount = updateBatch.length;
+    const checkCount = checkBatch.length;
+
+    try {
+        logger.debug(`Executing batch: ${updateCount} updates, ${checkCount} checks`);
+        await Promise.all([
+            updateBatch.length > 0 ? Server.bulkWrite(updateBatch) : Promise.resolve(),
+            checkBatch.length > 0 ? ServerCheck.insertMany(checkBatch, { ordered: false }) : Promise.resolve()
+        ]);
+        logger.debug(`Batch executed: ${updateCount} updates, ${checkCount} checks`);
+    } catch (error) {
+        logger.error('Batch execution failed:', error);
+    } finally {
+        updateBatch.length = 0;
+        checkBatch.length = 0;
+    }
+}
+
+async function addToBatch(updateOp, checkDoc) {
+    updateBatch.push(updateOp);
+    checkBatch.push(checkDoc);
+
+    if (updateBatch.length >= BATCH_SIZE) {
+        clearTimeout(batchTimer);
+        await executeBatch();
+    } else {
+        clearTimeout(batchTimer);
+        batchTimer = setTimeout(executeBatch, BATCH_TIMEOUT);
+    }
+}
+
 export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
     const { serverId } = job.data;
     const startTime = Date.now();
 
     try {
-        // Ensure Database Connection (each worker process needs its own connection)
         if (mongoose.connection.readyState === 0) {
             await mongoose.connect(process.env.MONGO_URI);
         }
 
-        // Fetch fresh server data (optional, but safer to get latest config)
-        // Or just pass necessary data via job. For robustness, specific check might need latest DB state.
-        // For efficiency, we can assume job data is good enough? 
-        // Let's fetch the server document to ensure we have the full mongoose model if checkServerStatus expects it.
-        // checkServerStatus expects a Server document? Let's check service signature.
-
-        // Optimization: checking service signature in next validation step. 
-        // Assuming checkServerStatus takes a Server Document or ID.
-        // If it takes a document, we must fetch it.
-
-        const server = await Server.findById(serverId);
+        const server = await Server.findById(serverId)
+            .select('name url type monitoring status lastChecked uploadedBy contactEmails contactPhones priority alertSettings')
+            .lean();
 
         if (!server) {
             logger.warn(`Server ${serverId} not found, skipping check`);
             return;
         }
 
-        // Perform the check
         const checkResult = await checkServerStatus(server);
 
-        // Create enhanced check history document
         const checkDoc = {
             serverId: new mongoose.Types.ObjectId(serverId),
             status: checkResult.status,
@@ -51,7 +80,6 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
             checkType: 'automated'
         };
 
-        // Prepare batch update data for Server
         const updateData = {
             status: checkResult.status,
             responseTime: checkResult.responseTime,
@@ -59,32 +87,38 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
             lastChecked: new Date()
         };
 
-        // Handle Alerts (Async, don't block check completion)
-        // Pass original server (with old status) and new status result
-        handleAlerts(server, server.status, checkResult.status, checkResult).catch(err => {
-            logger.error(`Error processing alerts for ${server.name}: ${err.message}`);
-        });
-
-        // Only update status change time if status actually changed
         if (server.status !== checkResult.status) {
             updateData.lastStatusChange = new Date();
+            const priority = server.priority === 'high' ? 'high' : 'normal';
+
+            addAlertToQueue({
+                serverId: server._id.toString(),
+                oldStatus: server.status,
+                newStatus: checkResult.status,
+                checkResult,
+                serverData: server
+            }, priority).catch(err => {
+                logger.error(`Failed to queue alert for ${server.name}: ${err.message}`);
+            });
         }
 
-        // Execute database operations in parallel
-        await Promise.all([
-            Server.updateOne({ _id: serverId }, updateData),
-            ServerCheck.create(checkDoc)
-        ]);
+        const updateOp = {
+            updateOne: {
+                filter: { _id: serverId },
+                update: { $set: updateData }
+            }
+        };
 
-        // Publish update to Redis for real-time WebSocket clients
+        await addToBatch(updateOp, checkDoc);
+
         if (checkResult) {
             const updatePayload = {
                 serverId: server._id,
+                userId: server.uploadedBy,
                 status: checkResult.status || 'unknown',
                 latency: checkResult.responseTime,
                 lastChecked: new Date()
             };
-
             redisConnection.publish('monitor-updates', JSON.stringify(updatePayload));
         }
 
@@ -92,23 +126,27 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
 
     } catch (error) {
         logger.error(`Worker failed for job ${job.id}: ${error.message}`);
-        throw error; // Let BullMQ handle retry
+        throw error;
     }
 }, {
     connection: redisConnection,
-    concurrency: 50, // Process 50 checks safely in parallel per worker instance
+    concurrency: 50,
     limiter: {
-        max: 100, // Max 100 jobs
-        duration: 1000 // per second (Rate limit checks if needed)
+        max: 100,
+        duration: 1000
     }
 });
 
-monitorWorker.on('completed', (job) => {
-    // logger.info(`Job ${job.id} completed!`);
-});
+monitorWorker.on('completed', (job) => { });
 
 monitorWorker.on('failed', (job, err) => {
     logger.error(`Job ${job.id} has failed with ${err.message}`);
+});
+
+monitorWorker.on('closing', async () => {
+    logger.info('Worker closing, executing remaining batch operations...');
+    clearTimeout(batchTimer);
+    await executeBatch();
 });
 
 logger.info(`🚀 Monitor Worker started - listening on queue: ${QUEUE_NAME}`);

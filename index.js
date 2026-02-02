@@ -15,6 +15,7 @@ dotenv.config();
 import { connectDB } from './config/db.js';
 import logger from './utils/logger.js';
 import errorMiddleware from './middleware/error.js';
+import { performanceMonitoring } from './middleware/performanceMonitoring.js';
 
 // Import routes
 import authRoutes from './routes/authRoutes.js';
@@ -48,7 +49,16 @@ connectDB();
 // Middleware
 app.use(cors());
 app.use(helmet());
-app.use(compression());
+app.use(compression({
+    level: 6,              // Balance between speed and compression
+    threshold: 1024,       // Only compress responses > 1KB
+    filter: (req, res) => {
+        if (req.headers['x-no-compression']) {
+            return false;
+        }
+        return compression.filter(req, res);
+    }
+}));
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(mongoSanitize());
@@ -58,13 +68,43 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-    res.status(200).json({
-        status: 'success',
-        message: 'Server is healthy',
+// Performance monitoring for all requests
+app.use(performanceMonitoring);
+
+// Health check endpoint with system metrics
+app.get('/health', async (req, res) => {
+    const checks = await Promise.allSettled([
+        // MongoDB check
+        mongoose.connection.db.admin().ping(),
+
+        // Redis check
+        redisConnection.ping(),
+
+        // Memory and uptime
+        Promise.resolve({
+            uptime: process.uptime(),
+            memory: process.memoryUsage(),
+            cpu: process.cpuUsage()
+        })
+    ]);
+
+    const health = {
+        status: checks.slice(0, 2).every(c => c.status === 'fulfilled') ? 'healthy' : 'degraded',
         timestamp: new Date().toISOString(),
-    });
+        uptime: process.uptime(),
+        memory: {
+            heapUsed: `${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB`,
+            heapTotal: `${Math.round(process.memoryUsage().heapTotal / 1024 / 1024)}MB`,
+            rss: `${Math.round(process.memoryUsage().rss / 1024 / 1024)}MB`
+        },
+        checks: {
+            mongodb: checks[0].status === 'fulfilled' ? 'up' : 'down',
+            redis: checks[1].status === 'fulfilled' ? 'up' : 'down'
+        },
+        environment: process.env.NODE_ENV || 'development'
+    };
+
+    res.status(health.status === 'healthy' ? 200 : 503).json(health);
 });
 
 // API routes
@@ -124,21 +164,50 @@ const server = httpServer.listen(PORT, () => {
     initCronJobs();
 });
 
+// Enhanced graceful shutdown
+async function gracefulShutdown(signal) {
+    logger.info(`${signal} received. Starting graceful shutdown...`);
+
+    // Stop accepting new requests
+    server.close(async () => {
+        logger.info('HTTP server closed');
+
+        try {
+            // Close Redis connections
+            await redisConnection.quit();
+            await redisSubscriber.quit();
+            logger.info('Redis connections closed');
+
+            // Close MongoDB
+            await mongoose.connection.close();
+            logger.info('MongoDB connection closed');
+
+            logger.info('Graceful shutdown completed');
+            process.exit(0);
+        } catch (error) {
+            logger.error('Error during shutdown:', error);
+            process.exit(1);
+        }
+    });
+
+    // Force shutdown after 30 seconds
+    setTimeout(() => {
+        logger.error('Forced shutdown after timeout');
+        process.exit(1);
+    }, 30000);
+}
+
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
     logger.error('UNHANDLED REJECTION! 💥 Shutting down...');
     logger.error(err.name, err.message);
-    server.close(() => {
-        process.exit(1);
-    });
+    gracefulShutdown('UNHANDLED_REJECTION');
 });
 
 // Handle SIGTERM signal
-process.on('SIGTERM', () => {
-    logger.info('SIGTERM RECEIVED. Shutting down gracefully');
-    server.close(() => {
-        logger.info('Process terminated!');
-    });
-});
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+
+// Handle SIGINT signal (Ctrl+C)
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 export default app;

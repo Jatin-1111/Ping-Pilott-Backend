@@ -1,0 +1,12 @@
+2026-02-03 02:28:22:2822 [31merror[39m: [31munhandledRejection: mongoose is not defined[39m
+[31mReferenceError: mongoose is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/index.js:78:9[39m
+[31m    at Layer.handle [as handle_request] (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\layer.js:95:5)[39m
+[31m    at next (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\route.js:149:13)[39m
+[31m    at Route.dispatch (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\route.js:119:3)[39m
+[31m    at Layer.handle [as handle_request] (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\layer.js:95:5)[39m
+[31m    at D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\index.js:284:15[39m
+[31m    at router.process_params (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\index.js:346:12)[39m
+[31m    at next (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\index.js:280:10)[39m
+[31m    at performanceMonitoring (file:///D:/Ping-Pilott/Ping-Pilott-Backend/middleware/performanceMonitoring.js:47:5)[39m
+[31m    at Layer.handle [as handle_request] (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\layer.js:95:5)[39m

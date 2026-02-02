@@ -42,6 +42,10 @@ const serverCheckSchema = new mongoose.Schema({
 // Create compound indexes for efficient querying
 serverCheckSchema.index({ serverId: 1, timestamp: -1 });
 
+// Additional indexes for optimized queries
+serverCheckSchema.index({ serverId: 1, status: 1, timestamp: -1 }); // For status-filtered queries
+serverCheckSchema.index({ timestamp: 1, status: 1 }); // For global status aggregations
+
 // TTL Index: expire documents after 30 days (2592000 seconds)
 serverCheckSchema.index({ timestamp: 1 }, { expireAfterSeconds: 2592000 });
 

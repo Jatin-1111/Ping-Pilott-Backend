@@ -1,5 +1,3 @@
-// controllers/serverController.js - COMPLETE OPTIMIZED VERSION ⚡
-
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
@@ -8,6 +6,8 @@ import { redisConnection } from '../config/redis.js';
 import logger from '../utils/logger.js';
 import mongoose from 'mongoose';
 import { createServerSchema, updateServerSchema } from '../utils/validations.js';
+import { getCachedData, setCachedData, dedupedFetch } from '../utils/cacheManager.js';
+import { CACHE_STRATEGIES } from '../config/performance.js';
 
 // Performance monitoring
 const PERFORMANCE_CONFIG = {
@@ -32,14 +32,13 @@ export const getServers = asyncHandler(async (req, res) => {
     const cacheKey = `api:servers:${userId}:${JSON.stringify(req.query)}`;
 
     try {
-        // 1. Try Cache
-        const cachedData = await redisConnection.get(cacheKey);
+        // 1. Try Cache with new utility
+        const cachedData = await getCachedData(cacheKey);
         if (cachedData) {
-            const data = JSON.parse(cachedData);
             // Add cache meta header
-            data.meta.cached = true;
-            data.meta.queryTime = 0; // Instant
-            return res.status(200).json(data);
+            cachedData.meta.cached = true;
+            cachedData.meta.queryTime = 0; // Instant
+            return res.status(200).json(cachedData);
         }
 
         // Build optimized filter with early returns
@@ -82,27 +81,30 @@ export const getServers = asyncHandler(async (req, res) => {
         const sortDir = req.query.sortDir === 'asc' ? 1 : -1;
         const sort = { [sortBy]: sortDir };
 
-        // Execute queries in parallel for maximum performance
-        const [servers, total] = await Promise.all([
-            (() => {
-                let query = Server.find(filter)
-                    .select('-__v -verificationToken -resetToken') // Exclude unnecessary fields
-                    .sort(sort)
-                    .skip(skip)
-                    .limit(limit);
+        // Execute queries in parallel for maximum performance with deduplication
+        const [servers, total] = await dedupedFetch(
+            `servers-query:${userId}:${JSON.stringify(filter)}`,
+            async () => Promise.all([
+                (() => {
+                    let query = Server.find(filter)
+                        .select('-__v -verificationToken -resetToken') // Exclude unnecessary fields
+                        .sort(sort)
+                        .skip(skip)
+                        .limit(limit);
 
-                // Populate user details for admin view
-                if (showAll) {
-                    query = query.populate('uploadedBy', 'displayName email');
-                }
+                    // Populate user details for admin view
+                    if (showAll) {
+                        query = query.populate('uploadedBy', 'displayName email');
+                    }
 
-                return query.lean() // Use lean for 40% better performance
-                    .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT);
-            })(),
+                    return query.lean() // Use lean for 40% better performance
+                        .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT);
+                })(),
 
-            Server.countDocuments(filter)
-                .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT)
-        ]);
+                Server.countDocuments(filter)
+                    .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT)
+            ])
+        );
 
         // Enhance servers with computed fields efficiently
         const enhancedServers = servers.map(server => {
@@ -145,9 +147,8 @@ export const getServers = asyncHandler(async (req, res) => {
             }
         };
 
-        // 2. Set Cache (10 seconds TTL)
-        // 10s is enough to save DB from polling spam, but keeps UI seemingly fresh on refresh
-        await redisConnection.set(cacheKey, JSON.stringify(responseData), 'EX', 10);
+        // 2. Set Cache with tiered TTL (30 seconds for server lists)
+        await setCachedData(cacheKey, responseData, CACHE_STRATEGIES.serverList);
 
         res.status(200).json(responseData);
 

@@ -16036,3 +16036,587 @@
 2026-02-03 01:59:00:590 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770064140251 (Check Zeerostock Backend) processed in 338ms[39m
 2026-02-03 01:59:00:590 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770064140251 (Check Zeerostock) processed in 339ms[39m
 2026-02-03 01:59:00:590 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770064140251 (Check Zeerostock Frontend) processed in 354ms[39m
+2026-02-03 02:00:00:00 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:00:00:00 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:00:00:00 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:00:00:00 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 02:00:00:00 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 58ms[39m
+2026-02-03 02:00:00:00 [32minfo[39m: [32mJob 'smartCheckServers' completed in 60ms[39m
+2026-02-03 02:00:00:00 [34mdebug[39m: [34m💚 System health OK[39m
+2026-02-03 02:00:01:01 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770064200821 (Check Zeerostock Backend) processed in 281ms[39m
+2026-02-03 02:00:01:01 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770064200821 (Check Zeerostock) processed in 284ms[39m
+2026-02-03 02:00:01:01 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770064200821 (Check Zeerostock Frontend) processed in 402ms[39m
+2026-02-03 02:01:00:10 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:01:00:10 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:01:00:10 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:01:00:10 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 02:01:00:10 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2026-02-03 02:02:00:20 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:02:00:20 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:02:00:20 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:02:00:20 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 02:02:00:20 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 63ms[39m
+2026-02-03 02:02:00:20 [32minfo[39m: [32mJob 'smartCheckServers' completed in 64ms[39m
+2026-02-03 02:02:01:21 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770064320977 (Check Zeerostock) processed in 310ms[39m
+2026-02-03 02:02:01:21 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770064320977 (Check Zeerostock Backend) processed in 343ms[39m
+2026-02-03 02:02:01:21 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770064320977 (Check Zeerostock Frontend) processed in 402ms[39m
+2026-02-03 02:03:00:30 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:03:00:30 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:03:00:30 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:03:00:30 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 02:03:00:30 [32minfo[39m: [32mJob 'smartCheckServers' completed in 59ms[39m
+2026-02-03 02:03:48:348 [32minfo[39m: [32mMongoDB reconnected[39m
+2026-02-03 02:03:48:348 [32minfo[39m: [32mMongoDB reconnected[39m
+2026-02-03 02:03:54:354 [31merror[39m: [31mAuth error: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:04:00:40 [31merror[39m: [31mError refreshing token: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:04:05:45 [31merror[39m: [31mFailed to save monitoring job record: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:04:05:45 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:04:05:45 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:04:05:45 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:04:10:410 [31merror[39m: [31m❌ SCHEDULER ERROR: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:04:10:410 [32minfo[39m: [32mJob 'smartCheckServers' completed in 5008ms[39m
+2026-02-03 02:04:15:415 [31merror[39m: [31mDatabase error saving monitoring job (attempt 1/3): connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:04:21:421 [31merror[39m: [31mDatabase error saving monitoring job (attempt 2/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:04:26:426 [31merror[39m: [31mDatabase error saving monitoring job (attempt 3/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:05:05:55 [31merror[39m: [31mFailed to save monitoring job record: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:05:05:55 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:05:05:55 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:05:05:55 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:05:10:510 [31merror[39m: [31m❌ SCHEDULER ERROR: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:05:10:510 [32minfo[39m: [32mJob 'smartCheckServers' completed in 5001ms[39m
+2026-02-03 02:05:15:515 [31merror[39m: [31mDatabase error saving monitoring job (attempt 1/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:05:20:520 [31merror[39m: [31mDatabase error saving monitoring job (attempt 2/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:05:26:526 [31merror[39m: [31mDatabase error saving monitoring job (attempt 3/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:05:47:547 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2026-02-03 02:06:05:65 [31merror[39m: [31mFailed to save monitoring job record: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:06:05:65 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:06:05:65 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:06:05:65 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:06:10:610 [31merror[39m: [31m❌ SCHEDULER ERROR: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:06:10:610 [32minfo[39m: [32mJob 'smartCheckServers' completed in 5014ms[39m
+2026-02-03 02:06:11:611 [32minfo[39m: [32mMongoDB reconnected[39m
+2026-02-03 02:07:05:75 [31merror[39m: [31mFailed to save monitoring job record: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:07:05:75 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:07:05:75 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:07:05:75 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:07:10:710 [31merror[39m: [31m❌ SCHEDULER ERROR: connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:07:10:710 [32minfo[39m: [32mJob 'smartCheckServers' completed in 5013ms[39m
+2026-02-03 02:07:15:715 [31merror[39m: [31mDatabase error saving monitoring job (attempt 1/3): connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:07:20:720 [31merror[39m: [31mDatabase error saving monitoring job (attempt 2/3): connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:07:26:726 [31merror[39m: [31mDatabase error saving monitoring job (attempt 3/3): connection <monitor> to 159.41.196.35:27017 timed out[39m
+2026-02-03 02:08:05:85 [31merror[39m: [31mFailed to save monitoring job record: Socket 'secureConnect' timed out after 35555ms (connectTimeoutMS: 30000)[39m
+2026-02-03 02:08:05:85 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:08:05:85 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:08:05:85 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:08:10:810 [31merror[39m: [31m❌ SCHEDULER ERROR: Socket 'secureConnect' timed out after 35555ms (connectTimeoutMS: 30000)[39m
+2026-02-03 02:08:10:810 [32minfo[39m: [32mJob 'smartCheckServers' completed in 5005ms[39m
+2026-02-03 02:08:15:815 [31merror[39m: [31mDatabase error saving monitoring job (attempt 1/3): Socket 'secureConnect' timed out after 35555ms (connectTimeoutMS: 30000)[39m
+2026-02-03 02:08:21:821 [31merror[39m: [31mDatabase error saving monitoring job (attempt 2/3): getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:08:26:826 [33mwarn[39m: [33mMongoDB disconnected, trying to reconnect...[39m
+2026-02-03 02:08:26:826 [32minfo[39m: [32mMongoDB reconnected[39m
+2026-02-03 02:09:00:90 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:09:00:90 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:09:00:90 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:09:00:90 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 02:09:00:90 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 104ms[39m
+2026-02-03 02:09:00:90 [32minfo[39m: [32mJob 'smartCheckServers' completed in 105ms[39m
+2026-02-03 02:09:01:91 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770064740557 (Check Zeerostock) processed in 1328ms[39m
+2026-02-03 02:09:02:92 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770064740557 (Check Zeerostock Backend) processed in 1663ms[39m
+2026-02-03 02:09:02:92 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770064740557 (Check Zeerostock Frontend) processed in 1882ms[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:09:10:910 [32minfo[39m: [32m🔌 Socket connected: JJo3p2OFYH1D904TAAAB[39m
+2026-02-03 02:09:12:912 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:09:21:921 [32minfo[39m: [32m🔌 Socket connected: rkyeS5mTnY9hEBUNAAAB[39m
+2026-02-03 02:09:22:922 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:09:26:926 [32minfo[39m: [32m🔌 Socket connected: -QuWmXhqmfM_9rWfAAAB[39m
+2026-02-03 02:09:27:927 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:09:50:950 [32minfo[39m: [32m🔌 Socket connected: mAhXl5c7fS24yCwcAAAB[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:09:52:952 [32minfo[39m: [32m🔌 Socket connected: gr5XBMTsvuqXNyu2AAAB[39m
+2026-02-03 02:09:53:953 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-02.1vc6nal.mongodb.net[39m
+2026-02-03 02:10:01:101 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:10:01:101 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:10:01:101 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:10:01:101 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 02:10:01:101 [32minfo[39m: [32mJob 'smartCheckServers' completed in 84ms[39m
+2026-02-03 02:10:58:1058 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:10:58:1058 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:10:59:1059 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:11:00:110 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:11:00:110 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:11:01:111 [32minfo[39m: [32mClient connected: YFc_G-V6gvxNpPQpAAAB[39m
+2026-02-03 02:11:02:112 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-02.1vc6nal.mongodb.net[39m
+2026-02-03 02:11:41:1141 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:11:41:1141 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:11:42:1142 [32minfo[39m: [32mClient connected: Buc8kPYsR0Lza4VnAAAB[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:11:43:1143 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:11:44:1144 [32minfo[39m: [32mClient connected: qXujvXSYXmxvczS7AAAB[39m
+2026-02-03 02:11:45:1145 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:12:00:120 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:12:00:120 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:12:00:120 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:12:00:120 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 02:12:00:120 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 102ms[39m
+2026-02-03 02:12:00:120 [32minfo[39m: [32mJob 'smartCheckServers' completed in 103ms[39m
+2026-02-03 02:12:02:122 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770064920473 (Check Zeerostock) processed in 2075ms[39m
+2026-02-03 02:12:02:122 [34mdebug[39m: [34mBroadcasted update for server 69785385ef4154d9a3b3e0dc to targeted rooms[39m
+2026-02-03 02:12:02:122 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770064920474 (Check Zeerostock Backend) processed in 2251ms[39m
+2026-02-03 02:12:02:122 [34mdebug[39m: [34mBroadcasted update for server 6978682421b1b5c90e1dae81 to targeted rooms[39m
+2026-02-03 02:12:02:122 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770064920474 (Check Zeerostock Frontend) processed in 2476ms[39m
+2026-02-03 02:12:02:122 [34mdebug[39m: [34mBroadcasted update for server 697858c4d6bb37ccbe531c5c to targeted rooms[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:12:13:1213 [32minfo[39m: [32mClient connected: FFcyP1DcHBO0ByhNAAAB[39m
+2026-02-03 02:12:14:1214 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-02-03 02:12:15:1215 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:12:15:1215 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:12:16:1216 [32minfo[39m: [32mClient connected: YmAT5BEK8rLqt7oSAAAB[39m
+2026-02-03 02:12:17:1217 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-02.1vc6nal.mongodb.net[39m
+2026-02-03 02:12:23:1223 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:12:23:1223 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:12:24:1224 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:12:25:1225 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:12:25:1225 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:12:26:1226 [32minfo[39m: [32mClient connected: WxK35rTyNVK4N2PwAAAB[39m
+2026-02-03 02:12:27:1227 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:13:00:130 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:13:00:130 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:13:00:130 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:13:00:130 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 02:13:00:130 [32minfo[39m: [32mJob 'smartCheckServers' completed in 77ms[39m
+2026-02-03 02:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:14:00:140 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:14:00:140 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 02:14:00:140 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 104ms[39m
+2026-02-03 02:14:00:140 [32minfo[39m: [32mJob 'smartCheckServers' completed in 104ms[39m
+2026-02-03 02:14:01:141 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770065040278 (Check Zeerostock) processed in 1664ms[39m
+2026-02-03 02:14:01:141 [34mdebug[39m: [34mBroadcasted update for server 69785385ef4154d9a3b3e0dc to targeted rooms[39m
+2026-02-03 02:14:01:141 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770065040278 (Check Zeerostock Backend) processed in 1699ms[39m
+2026-02-03 02:14:01:141 [34mdebug[39m: [34mBroadcasted update for server 6978682421b1b5c90e1dae81 to targeted rooms[39m
+2026-02-03 02:14:02:142 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770065040278 (Check Zeerostock Frontend) processed in 1927ms[39m
+2026-02-03 02:14:02:142 [34mdebug[39m: [34mBroadcasted update for server 697858c4d6bb37ccbe531c5c to targeted rooms[39m
+2026-02-03 02:15:00:150 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:15:00:150 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:15:00:150 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:15:00:150 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 02:15:00:150 [32minfo[39m: [32mJob 'smartCheckServers' completed in 53ms[39m
+2026-02-03 02:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2026-02-03 02:16:01:161 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:16:01:161 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:16:01:161 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:16:01:161 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 02:16:01:161 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 125ms[39m
+2026-02-03 02:16:01:161 [32minfo[39m: [32mJob 'smartCheckServers' completed in 125ms[39m
+2026-02-03 02:16:01:161 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770065161228 (Check Zeerostock Backend) processed in 585ms[39m
+2026-02-03 02:16:01:161 [34mdebug[39m: [34mBroadcasted update for server 6978682421b1b5c90e1dae81 to targeted rooms[39m
+2026-02-03 02:16:01:161 [34mdebug[39m: [34mBroadcasted update for server 69785385ef4154d9a3b3e0dc to targeted rooms[39m
+2026-02-03 02:16:01:161 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770065161227 (Check Zeerostock) processed in 591ms[39m
+2026-02-03 02:16:02:162 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770065161228 (Check Zeerostock Frontend) processed in 1040ms[39m
+2026-02-03 02:16:02:162 [34mdebug[39m: [34mBroadcasted update for server 697858c4d6bb37ccbe531c5c to targeted rooms[39m
+2026-02-03 02:16:04:164 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:16:04:164 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:16:05:165 [32minfo[39m: [32mClient connected: IPzHKwLeKHd_YrzCAAAB[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:16:06:166 [32minfo[39m: [32mClient connected: djVf-LSB5PV2bvVoAAAB[39m
+2026-02-03 02:16:08:168 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-02-03 02:17:00:170 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:17:00:170 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:17:00:170 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:17:00:170 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 02:17:00:170 [32minfo[39m: [32mJob 'smartCheckServers' completed in 86ms[39m
+2026-02-03 02:17:42:1742 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:17:42:1742 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:17:43:1743 [32minfo[39m: [32mClient connected: kQWzgUQ-twnzRN7MAAAB[39m
+2026-02-03 02:17:44:1744 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-02-03 02:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:18:00:180 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:18:00:180 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 02:18:00:180 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 106ms[39m
+2026-02-03 02:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 106ms[39m
+2026-02-03 02:18:02:182 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770065280400 (Check Zeerostock Backend) processed in 2484ms[39m
+2026-02-03 02:18:02:182 [34mdebug[39m: [34mBroadcasted update for server 6978682421b1b5c90e1dae81 to targeted rooms[39m
+2026-02-03 02:18:03:183 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770065280400 (Check Zeerostock Frontend) processed in 2627ms[39m
+2026-02-03 02:18:03:183 [34mdebug[39m: [34mBroadcasted update for server 697858c4d6bb37ccbe531c5c to targeted rooms[39m
+2026-02-03 02:18:03:183 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770065280400 (Check Zeerostock) processed in 2694ms[39m
+2026-02-03 02:18:03:183 [34mdebug[39m: [34mBroadcasted update for server 69785385ef4154d9a3b3e0dc to targeted rooms[39m
+2026-02-03 02:19:00:190 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:19:00:190 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:19:00:190 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:19:00:190 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 02:19:00:190 [32minfo[39m: [32mJob 'smartCheckServers' completed in 104ms[39m
+2026-02-03 02:19:18:1918 [34mdebug[39m: [34mPOST /api/auth/login - 401 - 246.28ms[39m
+2026-02-03 02:19:18:1918 [31merror[39m: [31mError response: POST /api/auth/login - 401 - 246.28ms[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32m✅ Alert queue initialized[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:19:26:1926 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:19:27:1927 [32minfo[39m: [32mClient connected: wi_OO-WS3BH9ZiqDAAAB[39m
+2026-02-03 02:19:28:1928 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-02.1vc6nal.mongodb.net[39m
+2026-02-03 02:19:31:1931 [34mdebug[39m: [34mPOST /api/auth/login - 200 - 337.90ms[39m
+2026-02-03 02:19:33:1933 [34mdebug[39m: [34mDeduplicating request for key: servers-query:69763f9409c774ff7b1a5fe2:{}[39m
+2026-02-03 02:19:33:1933 [34mdebug[39m: [34mGET /api/servers - 200 - 202.84ms[39m
+2026-02-03 02:19:33:1933 [34mdebug[39m: [34mGET /api/servers - 200 - 195.13ms[39m
+2026-02-03 02:19:33:1933 [34mdebug[39m: [34mGET /api/users - 200 - 164.94ms[39m
+2026-02-03 02:19:33:1933 [34mdebug[39m: [34mGET /api/users - 200 - 186.10ms[39m
+2026-02-03 02:19:38:1938 [34mdebug[39m: [34mGET /api/servers - 200 - 140.48ms[39m
+2026-02-03 02:19:38:1938 [34mdebug[39m: [34mGET /api/servers - 200 - 72.74ms[39m
+2026-02-03 02:19:38:1938 [34mdebug[39m: [34mGET /api/servers - 304 - 57.72ms[39m
+2026-02-03 02:19:38:1938 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 182.78ms[39m
+2026-02-03 02:19:39:1939 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 165.62ms[39m
+2026-02-03 02:19:39:1939 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 181.56ms[39m
+2026-02-03 02:20:00:200 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:20:00:200 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:20:00:200 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:20:00:200 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 02:20:00:200 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 161ms[39m
+2026-02-03 02:20:00:200 [32minfo[39m: [32mJob 'smartCheckServers' completed in 162ms[39m
+2026-02-03 02:20:02:202 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770065400523 (Check Zeerostock Frontend) processed in 1775ms[39m
+2026-02-03 02:20:02:202 [34mdebug[39m: [34mBroadcasted update for server 697858c4d6bb37ccbe531c5c to targeted rooms[39m
+2026-02-03 02:20:02:202 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770065400522 (Check Zeerostock) processed in 2091ms[39m
+2026-02-03 02:20:02:202 [34mdebug[39m: [34mBroadcasted update for server 69785385ef4154d9a3b3e0dc to targeted rooms[39m
+2026-02-03 02:20:02:202 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770065400523 (Check Zeerostock Backend) processed in 2277ms[39m
+2026-02-03 02:20:02:202 [34mdebug[39m: [34mBroadcasted update for server 6978682421b1b5c90e1dae81 to targeted rooms[39m
+2026-02-03 02:20:07:207 [34mdebug[39m: [34mExecuting batch: 3 updates, 3 checks[39m
+2026-02-03 02:20:07:207 [34mdebug[39m: [34mBatch executed: 3 updates, 3 checks[39m
+2026-02-03 02:21:17:2117 [32minfo[39m: [32m✅ Alert queue initialized[39m
+2026-02-03 02:21:17:2117 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:21:17:2117 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:21:35:2135 [32minfo[39m: [32m✅ Alert queue initialized[39m
+2026-02-03 02:21:35:2135 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:21:35:2135 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:27:51:2751 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:27:52:2752 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:27:53:2753 [34mdebug[39m: [34mGET /api/servers - 200 - 1303.77ms[39m
+2026-02-03 02:27:53:2753 [33mwarn[39m: [33mSlow request detected: GET /api/servers - 1303.77ms[39m
+2026-02-03 02:27:53:2753 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 621.98ms[39m
+2026-02-03 02:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:28:00:280 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:28:00:280 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 02:28:01:281 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 132ms[39m
+2026-02-03 02:28:01:281 [32minfo[39m: [32mJob 'smartCheckServers' completed in 132ms[39m
+2026-02-03 02:28:22:2822 [31merror[39m: [31munhandledRejection: mongoose is not defined[39m
+[31mReferenceError: mongoose is not defined[39m
+[31m    at file:///D:/Ping-Pilott/Ping-Pilott-Backend/index.js:78:9[39m
+[31m    at Layer.handle [as handle_request] (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\layer.js:95:5)[39m
+[31m    at next (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\route.js:149:13)[39m
+[31m    at Route.dispatch (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\route.js:119:3)[39m
+[31m    at Layer.handle [as handle_request] (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\layer.js:95:5)[39m
+[31m    at D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\index.js:284:15[39m
+[31m    at router.process_params (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\index.js:346:12)[39m
+[31m    at next (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\index.js:280:10)[39m
+[31m    at performanceMonitoring (file:///D:/Ping-Pilott/Ping-Pilott-Backend/middleware/performanceMonitoring.js:47:5)[39m
+[31m    at Layer.handle [as handle_request] (D:\Ping-Pilott\Ping-Pilott-Backend\node_modules\express\lib\router\layer.js:95:5)[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32m✅ Socket.IO initialized with room-based broadcasting[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:29:08:298 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 02:29:10:2910 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 02:29:19:2919 [32minfo[39m: [32m✅ Alert queue initialized[39m
+2026-02-03 02:29:19:2919 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 02:29:19:2919 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 02:29:21:2921 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770065880962 (Check Zeerostock Frontend) processed in 2015ms[39m
+2026-02-03 02:29:21:2921 [34mdebug[39m: [34mBroadcasted update for server 697858c4d6bb37ccbe531c5c to targeted rooms[39m
+2026-02-03 02:29:21:2921 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770065880962 (Check Zeerostock) processed in 2045ms[39m
+2026-02-03 02:29:21:2921 [34mdebug[39m: [34mBroadcasted update for server 69785385ef4154d9a3b3e0dc to targeted rooms[39m
+2026-02-03 02:29:21:2921 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770065880962 (Check Zeerostock Backend) processed in 2185ms[39m
+2026-02-03 02:29:21:2921 [34mdebug[39m: [34mBroadcasted update for server 6978682421b1b5c90e1dae81 to targeted rooms[39m
+2026-02-03 02:29:21:2921 [34mdebug[39m: [34mGET /api/servers - 200 - 142.23ms[39m
+2026-02-03 02:29:21:2921 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 181.57ms[39m
+2026-02-03 02:29:24:2924 [34mdebug[39m: [34mGET /api/auth/me - 200 - 119.53ms[39m
+2026-02-03 02:29:24:2924 [32minfo[39m: [32mClient connected: NEwh8rMVWN2FLZAHAAAC[39m
+2026-02-03 02:29:25:2925 [34mdebug[39m: [34mGET /api/servers - 200 - 68.09ms[39m
+2026-02-03 02:29:25:2925 [34mdebug[39m: [34mGET /api/servers - 304 - 55.73ms[39m
+2026-02-03 02:29:25:2925 [34mdebug[39m: [34mGET /api/servers - 304 - 52.37ms[39m
+2026-02-03 02:29:25:2925 [34mdebug[39m: [34mGET /api/servers - 304 - 59.90ms[39m
+2026-02-03 02:29:25:2925 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 180.63ms[39m
+2026-02-03 02:29:25:2925 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 191.07ms[39m
+2026-02-03 02:29:25:2925 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 185.32ms[39m
+2026-02-03 02:29:25:2925 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 182.96ms[39m
+2026-02-03 02:29:26:2926 [34mdebug[39m: [34mExecuting batch: 3 updates, 3 checks[39m
+2026-02-03 02:29:26:2926 [34mdebug[39m: [34mBatch executed: 3 updates, 3 checks[39m
+2026-02-03 02:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:30:00:300 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:30:00:300 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 02:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 101ms[39m
+2026-02-03 02:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2026-02-03 02:30:26:3026 [34mdebug[39m: [34mGET /api/servers - 200 - 287.75ms[39m
+2026-02-03 02:30:26:3026 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 299.41ms[39m
+2026-02-03 02:31:00:310 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:31:00:310 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:31:00:310 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:31:00:310 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 02:31:01:311 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 153ms[39m
+2026-02-03 02:31:01:311 [32minfo[39m: [32mJob 'smartCheckServers' completed in 153ms[39m
+2026-02-03 02:31:01:311 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770066060974 (Check Zeerostock) processed in 671ms[39m
+2026-02-03 02:31:01:311 [34mdebug[39m: [34mBroadcasted update for server 69785385ef4154d9a3b3e0dc to targeted rooms[39m
+2026-02-03 02:31:01:311 [34mdebug[39m: [34mBroadcasted update for server 6978682421b1b5c90e1dae81 to targeted rooms[39m
+2026-02-03 02:31:01:311 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770066060974 (Check Zeerostock Backend) processed in 668ms[39m
+2026-02-03 02:31:01:311 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770066060974 (Check Zeerostock Frontend) processed in 670ms[39m
+2026-02-03 02:31:01:311 [34mdebug[39m: [34mBroadcasted update for server 697858c4d6bb37ccbe531c5c to targeted rooms[39m
+2026-02-03 02:31:06:316 [34mdebug[39m: [34mExecuting batch: 3 updates, 3 checks[39m
+2026-02-03 02:31:06:316 [34mdebug[39m: [34mBatch executed: 3 updates, 3 checks[39m
+2026-02-03 02:31:26:3126 [34mdebug[39m: [34mGET /api/servers - 200 - 294.20ms[39m
+2026-02-03 02:31:26:3126 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 304.85ms[39m
+2026-02-03 02:31:53:3153 [34mdebug[39m: [34mGET /api/servers - 200 - 180.90ms[39m
+2026-02-03 02:31:53:3153 [34mdebug[39m: [34mGET /api/servers/697858c4d6bb37ccbe531c5c/history - 200 - 635.44ms[39m
+2026-02-03 02:31:54:3154 [34mdebug[39m: [34mGET /api/servers/697858c4d6bb37ccbe531c5c/history - 200 - 286.46ms[39m
+2026-02-03 02:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 02:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 02:32:00:320 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 02:32:00:320 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 02:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 107ms[39m
+2026-02-03 02:32:00:320 [34mdebug[39m: [34mGET /api/servers - 200 - 262.57ms[39m
+2026-02-03 02:32:00:320 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 387.80ms[39m
+2026-02-03 02:32:01:321 [34mdebug[39m: [34mGET /api/servers/69785385ef4154d9a3b3e0dc/history - 200 - 615.17ms[39m
