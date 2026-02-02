@@ -2890,3 +2890,46 @@
 2026-01-27 13:34:47:3447 [31merror[39m: [31mAuth error: read ECONNRESET[39m
 2026-01-27 19:36:15:3615 [31merror[39m: [31mAuth error: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-02.1vc6nal.mongodb.net[39m
 2026-01-27 19:36:20:3620 [31merror[39m: [31mError refreshing token: getaddrinfo ENOTFOUND ac-ax0aeys-shard-00-02.1vc6nal.mongodb.net[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:09:129 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:09:129 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:09:129 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:09:129 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:10:1210 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:10:1210 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:10:1210 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:10:1210 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:11:1211 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:11:1211 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:11:1211 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:11:1211 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:12:1212 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:12:1212 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:13:1213 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:13:1213 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:13:1213 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:13:1213 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:14:1214 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:14:1214 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:15:1215 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:15:1215 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:16:1216 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:16:1216 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:17:1217 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:17:1217 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:18:1218 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:18:1218 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:18:1218 [31merror[39m: [31mFailed to subscribe to monitor-updates channel: %s[39m

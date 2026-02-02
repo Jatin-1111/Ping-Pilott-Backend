@@ -15437,3 +15437,602 @@
 2026-01-27 20:11:00:110 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1769524860390 (Check Zeerostock Backend) processed in 580ms[39m
 2026-01-27 20:11:00:110 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1769524860390 (Check Zeerostock Frontend) processed in 594ms[39m
 2026-01-27 20:11:17:1117 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2026-02-03 01:12:07:127 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 01:12:07:127 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 01:12:07:127 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 01:12:07:127 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:12:07:127 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:12:07:127 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 01:12:07:127 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 01:12:07:127 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 01:12:07:127 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-02-03 01:12:07:127 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:07:127 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:08:128 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:08:128 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:09:129 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:09:129 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:09:129 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:09:129 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:10:1210 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:10:1210 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:10:1210 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:10:1210 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:11:1211 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:11:1211 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:11:1211 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:11:1211 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:12:1212 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:12:1212 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:13:1213 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:13:1213 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:13:1213 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:13:1213 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:14:1214 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:14:1214 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:15:1215 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:15:1215 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:16:1216 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:16:1216 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:17:1217 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:17:1217 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:18:1218 [31merror[39m: [31m❌ Redis connection error:[39m
+2026-02-03 01:12:18:1218 [31merror[39m: [31mMonitor Queue Error:[39m
+2026-02-03 01:12:18:1218 [31merror[39m: [31mFailed to subscribe to monitor-updates channel: %s[39m
+2026-02-03 01:12:19:1219 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:13:00:130 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:13:04:134 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 01:13:05:135 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-02-03 01:13:41:1341 [32minfo[39m: [32m🔌 Socket connected: vEeHQVp_a9rExa1yAAAC[39m
+2026-02-03 01:13:45:1345 [32minfo[39m: [32m❌ Socket disconnected: vEeHQVp_a9rExa1yAAAC[39m
+2026-02-03 01:13:45:1345 [32minfo[39m: [32m🔌 Socket connected: nBfhBMAQxVkQeSfpAAAF[39m
+2026-02-03 01:14:00:140 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:14:00:140 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:14:00:140 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:14:00:140 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:14:01:141 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 142ms[39m
+2026-02-03 01:14:01:141 [32minfo[39m: [32mJob 'smartCheckServers' completed in 145ms[39m
+2026-02-03 01:15:00:150 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:15:00:150 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:15:00:150 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:15:00:150 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:15:00:150 [34mdebug[39m: [34m💚 System health OK[39m
+2026-02-03 01:15:00:150 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 61ms[39m
+2026-02-03 01:15:00:150 [32minfo[39m: [32mJob 'smartCheckServers' completed in 61ms[39m
+2026-02-03 01:15:23:1523 [32minfo[39m: [32mServer updated: Zeerostock Backend (6978682421b1b5c90e1dae81) by user 697867e3884df71a80ad2a00[39m
+2026-02-03 01:15:39:1539 [32minfo[39m: [32mMonitoring updates processed[39m
+2026-02-03 01:15:39:1539 [32minfo[39m: [32mServer updated: Zeerostock Backend (6978682421b1b5c90e1dae81) by user 697867e3884df71a80ad2a00[39m
+2026-02-03 01:16:00:160 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:16:00:160 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:16:00:160 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:16:00:160 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:16:00:160 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 62ms[39m
+2026-02-03 01:16:00:160 [32minfo[39m: [32mJob 'smartCheckServers' completed in 62ms[39m
+2026-02-03 01:16:09:169 [32minfo[39m: [32m❌ Socket disconnected: nBfhBMAQxVkQeSfpAAAF[39m
+2026-02-03 01:16:10:1610 [32minfo[39m: [32m🔌 Socket connected: yM9dGtBYH0xB-JyUAAAI[39m
+2026-02-03 01:16:20:1620 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:16:23:1623 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 01:16:25:1625 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-02.1vc6nal.mongodb.net[39m
+2026-02-03 01:16:26:1626 [32minfo[39m: [32m🔌 Socket connected: onBwCYJUSvSqzwvzAAAB[39m
+2026-02-03 01:17:00:170 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:17:00:170 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:17:00:170 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:17:00:170 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:17:00:170 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 119ms[39m
+2026-02-03 01:17:00:170 [32minfo[39m: [32mJob 'smartCheckServers' completed in 119ms[39m
+2026-02-03 01:18:00:180 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:18:00:180 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:18:00:180 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:18:00:180 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:18:00:180 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 62ms[39m
+2026-02-03 01:18:00:180 [32minfo[39m: [32mJob 'smartCheckServers' completed in 63ms[39m
+2026-02-03 01:19:00:190 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:19:00:190 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:19:00:190 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:19:00:190 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:19:00:190 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 67ms[39m
+2026-02-03 01:19:00:190 [32minfo[39m: [32mJob 'smartCheckServers' completed in 67ms[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32m🔌 Socket connected: sBivm9ovzxepVC0pAAAB[39m
+2026-02-03 01:19:05:195 [32minfo[39m: [32m❌ Socket disconnected: sBivm9ovzxepVC0pAAAB[39m
+2026-02-03 01:19:06:196 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-02.1vc6nal.mongodb.net[39m
+2026-02-03 01:19:07:197 [32minfo[39m: [32m🔌 Socket connected: I-Ck-yAwh6sOsSWIAAAE[39m
+2026-02-03 01:19:46:1946 [32minfo[39m: [32m❌ Socket disconnected: I-Ck-yAwh6sOsSWIAAAE[39m
+2026-02-03 01:19:47:1947 [32minfo[39m: [32m🔌 Socket connected: UgGeer5JNinPOIp6AAAH[39m
+2026-02-03 01:20:01:201 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:20:01:201 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:20:01:201 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:20:01:201 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:20:01:201 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 103ms[39m
+2026-02-03 01:20:01:201 [32minfo[39m: [32mJob 'smartCheckServers' completed in 103ms[39m
+2026-02-03 01:21:00:210 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:21:00:210 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:21:00:210 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:21:00:210 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:21:00:210 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 59ms[39m
+2026-02-03 01:21:00:210 [32minfo[39m: [32mJob 'smartCheckServers' completed in 60ms[39m
+2026-02-03 01:21:09:219 [32minfo[39m: [32m❌ Socket disconnected: UgGeer5JNinPOIp6AAAH[39m
+2026-02-03 01:21:10:2110 [32minfo[39m: [32m🔌 Socket connected: jWvmQkpKDlSs8GrTAAAK[39m
+2026-02-03 01:22:00:220 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:22:00:220 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:22:00:220 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:22:00:220 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:22:00:220 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 74ms[39m
+2026-02-03 01:22:00:220 [32minfo[39m: [32mJob 'smartCheckServers' completed in 74ms[39m
+2026-02-03 01:23:00:230 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:23:00:230 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:23:00:230 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:23:00:230 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:23:00:230 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 66ms[39m
+2026-02-03 01:23:00:230 [32minfo[39m: [32mJob 'smartCheckServers' completed in 66ms[39m
+2026-02-03 01:24:00:240 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:24:00:240 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:24:00:240 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:24:00:240 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:24:00:240 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 67ms[39m
+2026-02-03 01:24:00:240 [32minfo[39m: [32mJob 'smartCheckServers' completed in 67ms[39m
+2026-02-03 01:25:00:250 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:25:00:250 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:25:00:250 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:25:00:250 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:25:00:250 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 66ms[39m
+2026-02-03 01:25:00:250 [32minfo[39m: [32mJob 'smartCheckServers' completed in 67ms[39m
+2026-02-03 01:26:00:260 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:26:00:260 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:26:00:260 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:26:00:260 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:26:00:260 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 55ms[39m
+2026-02-03 01:26:00:260 [32minfo[39m: [32mJob 'smartCheckServers' completed in 55ms[39m
+2026-02-03 01:26:33:2633 [32minfo[39m: [32m❌ Socket disconnected: jWvmQkpKDlSs8GrTAAAK[39m
+2026-02-03 01:26:34:2634 [32minfo[39m: [32m🔌 Socket connected: pJK9j6gvRKBrUrUkAAAN[39m
+2026-02-03 01:27:33:2733 [32minfo[39m: [32m❌ Socket disconnected: pJK9j6gvRKBrUrUkAAAN[39m
+2026-02-03 01:27:34:2734 [32minfo[39m: [32m🔌 Socket connected: yZ4Ebu1PgNhWVImdAAAQ[39m
+2026-02-03 01:27:52:2752 [32minfo[39m: [32m❌ Socket disconnected: yZ4Ebu1PgNhWVImdAAAQ[39m
+2026-02-03 01:27:53:2753 [32minfo[39m: [32m🔌 Socket connected: gpUn0AxgK-b5HcPcAAAT[39m
+2026-02-03 01:28:00:280 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:28:00:280 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:28:00:280 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:28:00:280 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:28:00:280 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 57ms[39m
+2026-02-03 01:28:00:280 [32minfo[39m: [32mJob 'smartCheckServers' completed in 57ms[39m
+2026-02-03 01:28:13:2813 [32minfo[39m: [32m❌ Socket disconnected: gpUn0AxgK-b5HcPcAAAT[39m
+2026-02-03 01:28:14:2814 [32minfo[39m: [32m🔌 Socket connected: CSw75NghTsqInWrTAAAW[39m
+2026-02-03 01:29:00:290 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:29:00:290 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:29:00:290 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:29:00:290 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:29:00:290 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 57ms[39m
+2026-02-03 01:29:00:290 [32minfo[39m: [32mJob 'smartCheckServers' completed in 58ms[39m
+2026-02-03 01:30:00:300 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:30:00:300 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:30:00:300 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:30:00:300 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:30:00:300 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 72ms[39m
+2026-02-03 01:30:00:300 [32minfo[39m: [32mJob 'smartCheckServers' completed in 72ms[39m
+2026-02-03 01:30:00:300 [34mdebug[39m: [34m💚 System health OK[39m
+2026-02-03 01:31:00:310 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:31:00:310 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:31:00:310 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:31:00:310 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:31:00:310 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 73ms[39m
+2026-02-03 01:31:00:310 [32minfo[39m: [32mJob 'smartCheckServers' completed in 73ms[39m
+2026-02-03 01:31:04:314 [32minfo[39m: [32m❌ Socket disconnected: CSw75NghTsqInWrTAAAW[39m
+2026-02-03 01:31:05:315 [32minfo[39m: [32m🔌 Socket connected: DLhFopBt2rB2oS8_AAAZ[39m
+2026-02-03 01:32:00:320 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:32:00:320 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:32:00:320 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:32:00:320 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:32:00:320 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 69ms[39m
+2026-02-03 01:32:00:320 [32minfo[39m: [32mJob 'smartCheckServers' completed in 70ms[39m
+2026-02-03 01:33:00:330 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:33:00:330 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:33:00:330 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:33:00:330 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:33:00:330 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 61ms[39m
+2026-02-03 01:33:00:330 [32minfo[39m: [32mJob 'smartCheckServers' completed in 62ms[39m
+2026-02-03 01:34:01:341 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:34:01:341 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:34:01:341 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:34:01:341 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:34:01:341 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 78ms[39m
+2026-02-03 01:34:01:341 [32minfo[39m: [32mJob 'smartCheckServers' completed in 78ms[39m
+2026-02-03 01:34:12:3412 [32minfo[39m: [32m❌ Socket disconnected: DLhFopBt2rB2oS8_AAAZ[39m
+2026-02-03 01:34:13:3413 [32minfo[39m: [32m🔌 Socket connected: 8-yM5j73sKRRhQQRAAAc[39m
+2026-02-03 01:35:00:350 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:35:00:350 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:35:00:350 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:35:00:350 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:35:00:350 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 61ms[39m
+2026-02-03 01:35:00:350 [32minfo[39m: [32mJob 'smartCheckServers' completed in 62ms[39m
+2026-02-03 01:35:22:3522 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32m🔌 Socket connected: GDIJxNSgBA1QmQpDAAAB[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 01:35:26:3526 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-02-03 01:36:00:360 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:36:00:360 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:36:00:360 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:36:00:360 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:36:00:360 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 104ms[39m
+2026-02-03 01:36:00:360 [32minfo[39m: [32mJob 'smartCheckServers' completed in 105ms[39m
+2026-02-03 01:36:07:367 [32minfo[39m: [32m❌ Socket disconnected: GDIJxNSgBA1QmQpDAAAB[39m
+2026-02-03 01:36:08:368 [32minfo[39m: [32m🔌 Socket connected: 8m3Qd67lqT9WH1ZNAAAE[39m
+2026-02-03 01:37:00:370 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:37:00:370 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:37:00:370 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:37:00:370 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:37:00:370 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 55ms[39m
+2026-02-03 01:37:00:370 [32minfo[39m: [32mJob 'smartCheckServers' completed in 55ms[39m
+2026-02-03 01:38:00:380 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:38:00:380 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:38:00:380 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:38:00:380 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:38:00:380 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 62ms[39m
+2026-02-03 01:38:00:380 [32minfo[39m: [32mJob 'smartCheckServers' completed in 62ms[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32m📦 Data retention DISABLED - all data will be stored permanently[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 01:38:59:3859 [32minfo[39m: [32m🔌 Socket connected: w-LzjuvSdtUrjCXpAAAB[39m
+2026-02-03 01:39:00:390 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-02-03 01:39:00:390 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:39:00:390 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:39:00:390 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:39:00:390 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:39:01:391 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 592ms[39m
+2026-02-03 01:39:01:391 [32minfo[39m: [32mJob 'smartCheckServers' completed in 594ms[39m
+2026-02-03 01:40:00:400 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:40:00:400 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:40:00:400 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:40:00:400 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:40:00:400 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 59ms[39m
+2026-02-03 01:40:00:400 [32minfo[39m: [32mJob 'smartCheckServers' completed in 59ms[39m
+2026-02-03 01:40:04:404 [32minfo[39m: [32m❌ Socket disconnected: w-LzjuvSdtUrjCXpAAAB[39m
+2026-02-03 01:40:06:406 [32minfo[39m: [32m🔌 Socket connected: TmrIC6cgSJ8wQaUZAAAE[39m
+2026-02-03 01:41:00:410 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:41:00:410 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:41:00:410 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:41:00:410 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:41:00:410 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 65ms[39m
+2026-02-03 01:41:00:410 [32minfo[39m: [32mJob 'smartCheckServers' completed in 65ms[39m
+2026-02-03 01:41:04:414 [32minfo[39m: [32m❌ Socket disconnected: TmrIC6cgSJ8wQaUZAAAE[39m
+2026-02-03 01:41:05:415 [32minfo[39m: [32m🔌 Socket connected: J5lEvMrc4LRqu4d7AAAH[39m
+2026-02-03 01:42:01:421 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:42:01:421 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:42:01:421 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:42:01:421 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:42:01:421 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 52ms[39m
+2026-02-03 01:42:01:421 [32minfo[39m: [32mJob 'smartCheckServers' completed in 52ms[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32m📦 Data retention DISABLED - all data will be stored permanently[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 01:42:49:4249 [32minfo[39m: [32m🔌 Socket connected: 1x3fOLJuMOnNj5v7AAAB[39m
+2026-02-03 01:42:50:4250 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-02-03 01:42:51:4251 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770061500587 (Check Zeerostock) processed in 2344ms[39m
+2026-02-03 01:42:51:4251 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770061440989 (Check Zeerostock) processed in 2348ms[39m
+2026-02-03 01:42:51:4251 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770061740489 (Check Zeerostock) processed in 2416ms[39m
+2026-02-03 01:42:51:4251 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770061440990 (Check Zeerostock Backend) processed in 2423ms[39m
+2026-02-03 01:42:51:4251 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770061920193 (Check Zeerostock) processed in 2458ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770061980760 (Check Zeerostock) processed in 2477ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062100919 (Check Zeerostock) processed in 2478ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062040340 (Check Zeerostock) processed in 2551ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062280705 (Check Zeerostock) processed in 2553ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062160502 (Check Zeerostock) processed in 2554ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062340243 (Check Zeerostock) processed in 2607ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062400831 (Check Zeerostock) processed in 2610ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062460402 (Check Zeerostock) processed in 2612ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062520980 (Check Zeerostock) processed in 2661ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770061500587 (Check Zeerostock Backend) processed in 2664ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770061560160 (Check Zeerostock) processed in 2668ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062641132 (Check Zeerostock) processed in 2669ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062760786 (Check Zeerostock) processed in 2716ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770061620338 (Check Zeerostock) processed in 2728ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770061680938 (Check Zeerostock) processed in 2729ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770061740489 (Check Zeerostock Frontend) processed in 2730ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062820320 (Check Zeerostock) processed in 2761ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062880850 (Check Zeerostock) processed in 2778ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062400831 (Check Zeerostock Frontend) processed in 2789ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770061500587 (Check Zeerostock Frontend) processed in 2793ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770061440990 (Check Zeerostock Frontend) processed in 2814ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770061560160 (Check Zeerostock Frontend) processed in 2835ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770061801089 (Check Zeerostock Frontend) processed in 2843ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770061680938 (Check Zeerostock Frontend) processed in 2895ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770061920193 (Check Zeerostock Frontend) processed in 2897ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770061980760 (Check Zeerostock Frontend) processed in 2897ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062520980 (Check Zeerostock Frontend) processed in 2915ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062280705 (Check Zeerostock Frontend) processed in 2940ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062040340 (Check Zeerostock Frontend) processed in 3221ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062580521 (Check Zeerostock) processed in 3222ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062100919 (Check Zeerostock Frontend) processed in 3224ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062580521 (Check Zeerostock Frontend) processed in 3229ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062700589 (Check Zeerostock) processed in 3230ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062641132 (Check Zeerostock Frontend) processed in 3280ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770061801089 (Check Zeerostock) processed in 3283ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062700589 (Check Zeerostock Frontend) processed in 3283ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770061860610 (Check Zeerostock) processed in 3286ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062820320 (Check Zeerostock Frontend) processed in 3362ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062880850 (Check Zeerostock Frontend) processed in 3364ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770061860610 (Check Zeerostock Frontend) processed in 3414ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770061620338 (Check Zeerostock Frontend) processed in 3415ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062160502 (Check Zeerostock Frontend) processed in 3422ms[39m
+2026-02-03 01:42:52:4252 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062340243 (Check Zeerostock Frontend) processed in 3426ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770062940981 (Check Zeerostock) processed in 1222ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062940981 (Check Zeerostock Frontend) processed in 1224ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770063000946 (Check Zeerostock) processed in 1200ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770063060523 (Check Zeerostock) processed in 1161ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770063121108 (Check Zeerostock) processed in 1145ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770063000947 (Check Zeerostock Frontend) processed in 1210ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770063060523 (Check Zeerostock Frontend) processed in 1175ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770061620338 (Check Zeerostock Backend) processed in 1101ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770061560160 (Check Zeerostock Backend) processed in 1130ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770061680938 (Check Zeerostock Backend) processed in 1073ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770061740489 (Check Zeerostock Backend) processed in 1075ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770063121108 (Check Zeerostock Frontend) processed in 1136ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062460402 (Check Zeerostock Backend) processed in 1508ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062460402 (Check Zeerostock Frontend) processed in 4289ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770062760787 (Check Zeerostock Frontend) processed in 4290ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770061860610 (Check Zeerostock Backend) processed in 1629ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770061920193 (Check Zeerostock Backend) processed in 1630ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062940981 (Check Zeerostock Backend) processed in 1447ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062820320 (Check Zeerostock Backend) processed in 1449ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062880850 (Check Zeerostock Backend) processed in 1450ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770063121108 (Check Zeerostock Backend) processed in 1117ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770063000947 (Check Zeerostock Backend) processed in 1433ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062580521 (Check Zeerostock Backend) processed in 1557ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770061980760 (Check Zeerostock Backend) processed in 1721ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062100919 (Check Zeerostock Backend) processed in 1676ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062700589 (Check Zeerostock Backend) processed in 1561ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062760787 (Check Zeerostock Backend) processed in 1554ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062160502 (Check Zeerostock Backend) processed in 1678ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770061801089 (Check Zeerostock Backend) processed in 1794ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062400831 (Check Zeerostock Backend) processed in 1649ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062520980 (Check Zeerostock Backend) processed in 1645ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062040340 (Check Zeerostock Backend) processed in 1767ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062340243 (Check Zeerostock Backend) processed in 1718ms[39m
+2026-02-03 01:42:53:4253 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062641132 (Check Zeerostock Backend) processed in 1638ms[39m
+2026-02-03 01:42:54:4254 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770063060523 (Check Zeerostock Backend) processed in 1774ms[39m
+2026-02-03 01:42:54:4254 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770062280705 (Check Zeerostock Backend) processed in 2033ms[39m
+2026-02-03 01:43:00:430 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:43:00:430 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:43:00:430 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:43:00:430 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 01:43:00:430 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2026-02-03 01:43:56:4356 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2026-02-03 01:44:01:441 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32m📦 Data retention DISABLED - all data will be stored permanently[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-00.1vc6nal.mongodb.net[39m
+2026-02-03 01:44:02:442 [32minfo[39m: [32m🔌 Socket connected: i4dY9iN2hhPiqqHCAAAB[39m
+2026-02-03 01:44:14:4414 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 01:44:14:4414 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, aggressive mode)[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 01:44:55:4455 [32minfo[39m: [32m🔌 Socket connected: hj1JoFVFxwKcW0mPAAAB[39m
+2026-02-03 01:44:56:4456 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-02.1vc6nal.mongodb.net[39m
+2026-02-03 01:45:00:450 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:45:00:450 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:45:00:450 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:45:00:450 [34mdebug[39m: [34m💚 System health OK[39m
+2026-02-03 01:45:00:450 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:45:00:450 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 108ms[39m
+2026-02-03 01:45:00:450 [32minfo[39m: [32mJob 'smartCheckServers' completed in 109ms[39m
+2026-02-03 01:45:02:452 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770063300798 (Check Zeerostock) processed in 1179ms[39m
+2026-02-03 01:45:02:452 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770063300799 (Check Zeerostock Backend) processed in 1229ms[39m
+2026-02-03 01:45:02:452 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770063300799 (Check Zeerostock Frontend) processed in 1432ms[39m
+2026-02-03 01:46:00:460 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:46:00:460 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:46:00:460 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:46:00:460 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 01:46:00:460 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2026-02-03 01:47:00:470 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:47:00:470 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:47:00:470 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:47:00:470 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:47:00:470 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 54ms[39m
+2026-02-03 01:47:00:470 [32minfo[39m: [32mJob 'smartCheckServers' completed in 56ms[39m
+2026-02-03 01:47:01:471 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770063420906 (Check Zeerostock) processed in 321ms[39m
+2026-02-03 01:47:01:471 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770063420906 (Check Zeerostock Backend) processed in 324ms[39m
+2026-02-03 01:47:01:471 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770063420906 (Check Zeerostock Frontend) processed in 720ms[39m
+2026-02-03 01:47:51:4751 [32minfo[39m: [32m🚀 Monitor Worker started - listening on queue: monitor-server-queue[39m
+2026-02-03 01:47:51:4751 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:47:53:4753 [32minfo[39m: [32m🛑 Graceful shutdown initiated...[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32m✅ Socket.io initialized successfully[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32mServer running in development mode on port 5000[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32mInitializing cron jobs...[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32mJob 'smartCheckServers' added to queue with priority 1[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32mJob 'aggressiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32mJob 'selectiveDataRetention' added to queue with priority 2[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32mJob 'emergencyCleanup' added to queue with priority 3[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32m🚀 Monitoring System Started[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32m🧠 Starting ADAPTIVE monitoring system...[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32m🕛 Midnight cleanup scheduled for 00:00 daily (system time, selective mode)[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32m✅ All cron jobs initialized successfully[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32m🔌 Redis connection established successfully[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32m📢 Subscribed to monitor-updates channel. Count: 1[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32m🔌 Socket connected: VTC5znTNXi8g88EFAAAB[39m
+2026-02-03 01:47:57:4757 [32minfo[39m: [32mMongoDB Connected: ac-ax0aeys-shard-00-01.1vc6nal.mongodb.net[39m
+2026-02-03 01:48:00:480 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:48:00:480 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:48:00:480 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:48:00:480 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 01:48:00:480 [32minfo[39m: [32mJob 'smartCheckServers' completed in 72ms[39m
+2026-02-03 01:49:00:490 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:49:00:490 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:49:00:490 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:49:00:490 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:49:00:490 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 106ms[39m
+2026-02-03 01:49:00:490 [32minfo[39m: [32mJob 'smartCheckServers' completed in 107ms[39m
+2026-02-03 01:49:01:491 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770063540748 (Check Zeerostock) processed in 1139ms[39m
+2026-02-03 01:49:02:492 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770063540749 (Check Zeerostock Backend) processed in 1277ms[39m
+2026-02-03 01:49:02:492 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770063540749 (Check Zeerostock Frontend) processed in 1376ms[39m
+2026-02-03 01:50:00:500 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:50:00:500 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:50:00:500 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:50:00:500 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 01:50:00:500 [32minfo[39m: [32mJob 'smartCheckServers' completed in 58ms[39m
+2026-02-03 01:51:00:510 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:51:00:510 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:51:00:510 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:51:00:510 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:51:00:510 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 69ms[39m
+2026-02-03 01:51:00:510 [32minfo[39m: [32mJob 'smartCheckServers' completed in 70ms[39m
+2026-02-03 01:51:01:511 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770063660868 (Check Zeerostock) processed in 332ms[39m
+2026-02-03 01:51:01:511 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770063660868 (Check Zeerostock Backend) processed in 332ms[39m
+2026-02-03 01:51:01:511 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770063660868 (Check Zeerostock Frontend) processed in 710ms[39m
+2026-02-03 01:52:00:520 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:52:00:520 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:52:00:520 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:52:00:520 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 01:52:00:520 [32minfo[39m: [32mJob 'smartCheckServers' completed in 54ms[39m
+2026-02-03 01:53:00:530 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:53:00:530 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:53:00:530 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:53:00:530 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:53:00:530 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 71ms[39m
+2026-02-03 01:53:00:530 [32minfo[39m: [32mJob 'smartCheckServers' completed in 71ms[39m
+2026-02-03 01:53:01:531 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770063780995 (Check Zeerostock) processed in 316ms[39m
+2026-02-03 01:53:01:531 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770063780995 (Check Zeerostock Backend) processed in 317ms[39m
+2026-02-03 01:53:01:531 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770063780995 (Check Zeerostock Frontend) processed in 411ms[39m
+2026-02-03 01:54:00:540 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:54:00:540 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:54:00:540 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:54:00:540 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 01:54:00:540 [32minfo[39m: [32mJob 'smartCheckServers' completed in 69ms[39m
+2026-02-03 01:55:00:550 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:55:00:550 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:55:00:550 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:55:01:551 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:55:01:551 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 63ms[39m
+2026-02-03 01:55:01:551 [32minfo[39m: [32mJob 'smartCheckServers' completed in 63ms[39m
+2026-02-03 01:55:01:551 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770063901015 (Check Zeerostock Backend) processed in 311ms[39m
+2026-02-03 01:55:01:551 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770063901014 (Check Zeerostock) processed in 313ms[39m
+2026-02-03 01:55:01:551 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770063901015 (Check Zeerostock Frontend) processed in 407ms[39m
+2026-02-03 01:56:00:560 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:56:00:560 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:56:00:560 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:56:00:560 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 01:56:00:560 [32minfo[39m: [32mJob 'smartCheckServers' completed in 50ms[39m
+2026-02-03 01:57:01:571 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:57:01:571 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:57:01:571 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:57:01:571 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:57:01:571 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 61ms[39m
+2026-02-03 01:57:01:571 [32minfo[39m: [32mJob 'smartCheckServers' completed in 61ms[39m
+2026-02-03 01:57:01:571 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770064021084 (Check Zeerostock) processed in 327ms[39m
+2026-02-03 01:57:01:571 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770064021085 (Check Zeerostock Backend) processed in 354ms[39m
+2026-02-03 01:57:01:571 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770064021085 (Check Zeerostock Frontend) processed in 398ms[39m
+2026-02-03 01:58:00:580 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:58:00:580 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:58:00:580 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:58:00:580 [34mdebug[39m: [34mNo servers need checking right now[39m
+2026-02-03 01:58:00:580 [32minfo[39m: [32mJob 'smartCheckServers' completed in 61ms[39m
+2026-02-03 01:59:00:590 [34mdebug[39m: [34m🔄 Smart monitoring (quiet mode)[39m
+2026-02-03 01:59:00:590 [32minfo[39m: [32mExecuting job 'smartCheckServers'[39m
+2026-02-03 01:59:00:590 [32minfo[39m: [32m🧠 SCHEDULER: Starting check cycle via Redis Queue...[39m
+2026-02-03 01:59:00:590 [32minfo[39m: [32mFound 3 servers to check - dispatching to queue[39m
+2026-02-03 01:59:00:590 [32minfo[39m: [32m✅ SCHEDULER: Dispatched 3/3 jobs in 67ms[39m
+2026-02-03 01:59:00:590 [32minfo[39m: [32mJob 'smartCheckServers' completed in 67ms[39m
+2026-02-03 01:59:00:590 [34mdebug[39m: [34mJob check-6978682421b1b5c90e1dae81-1770064140251 (Check Zeerostock Backend) processed in 338ms[39m
+2026-02-03 01:59:00:590 [34mdebug[39m: [34mJob check-69785385ef4154d9a3b3e0dc-1770064140251 (Check Zeerostock) processed in 339ms[39m
+2026-02-03 01:59:00:590 [34mdebug[39m: [34mJob check-697858c4d6bb37ccbe531c5c-1770064140251 (Check Zeerostock Frontend) processed in 354ms[39m

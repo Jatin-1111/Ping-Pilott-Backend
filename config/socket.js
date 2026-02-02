@@ -7,9 +7,13 @@ let io;
 export const initializeSocket = (httpServer) => {
     io = new Server(httpServer, {
         cors: {
-            origin: process.env.CLIENT_URL || '*', // Allow all in dev/production if not strictly set
-            methods: ['GET', 'POST']
-        }
+            origin: process.env.CLIENT_URL || 'http://localhost:3000',
+            methods: ['GET', 'POST'],
+            credentials: true
+        },
+        transports: ['websocket', 'polling'], // Support both transports
+        pingTimeout: 60000,
+        pingInterval: 25000
     });
 
     io.on('connection', (socket) => {
@@ -18,8 +22,13 @@ export const initializeSocket = (httpServer) => {
         socket.on('disconnect', () => {
             logger.info(`❌ Socket disconnected: ${socket.id}`);
         });
+
+        socket.on('error', (error) => {
+            logger.error(`⚠️ Socket error for ${socket.id}:`, error);
+        });
     });
 
+    logger.info('✅ Socket.io initialized successfully');
     return io;
 };
 
