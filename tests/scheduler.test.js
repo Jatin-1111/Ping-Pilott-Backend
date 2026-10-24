@@ -6,7 +6,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { JobQueue } from '../utils/jobQueue.js';
 import { withTimeout, TimeoutError } from '../utils/timeout.js';
-import { resolveRetentionMode, retentionJobName, DEFAULT_RETENTION_MODE } from '../utils/retentionMode.js';
 import { evaluateScheduler, startSchedulerWatchdog, MAX_SILENCE_MS } from '../tasks/schedulerWatchdog.js';
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -159,29 +158,6 @@ test('a stopped queue or an unknown job runs nothing', async () => {
     assert.equal(await queue.execute('job'), false);
     queue.start();
     assert.equal(await queue.execute('job'), 1);
-});
-
-// ---- retention default --------------------------------------------------------------------------------------
-
-test('with nothing set, the cleanup keeps history (selective)', () => {
-    assert.equal(DEFAULT_RETENTION_MODE, 'selective');
-    for (const unset of [undefined, null, '', '   ']) {
-        assert.deepEqual(resolveRetentionMode(unset), { mode: 'selective', recognized: true });
-    }
-    assert.equal(retentionJobName(resolveRetentionMode(undefined).mode), 'selectiveDataRetention');
-});
-
-test('the three modes can still be chosen on purpose, in any case', () => {
-    assert.equal(resolveRetentionMode('aggressive').mode, 'aggressive');
-    assert.equal(resolveRetentionMode(' Emergency ').mode, 'emergency');
-    assert.equal(resolveRetentionMode('SELECTIVE').mode, 'selective');
-    assert.equal(retentionJobName('aggressive'), 'aggressiveDataRetention');
-    assert.equal(retentionJobName('emergency'), 'emergencyCleanup');
-});
-
-test('a typo falls back to the safe mode and is flagged, never to one that deletes everything', () => {
-    assert.deepEqual(resolveRetentionMode('agressive'), { mode: 'selective', recognized: false });
-    assert.equal(retentionJobName('nonsense'), 'selectiveDataRetention');
 });
 
 // ---- watchdog -----------------------------------------------------------------------------------------------

@@ -8,6 +8,8 @@ import { applyCheckResult } from '../services/checkRecorder.js';
 import logger from '../utils/logger.js';
 import { throttled, suppressedNote } from '../utils/logThrottle.js';
 import { startWorkerHeartbeat, createCheckCompletionRecorder } from '../utils/workerHealth.js';
+import { egressProbe } from '../services/egressProbe.js';
+import { EGRESS_DOWN_KEY } from '../utils/healthKeys.js';
 import mongoose from 'mongoose';
 
 const QUEUE_NAME = 'monitor-server-queue';
@@ -55,7 +57,11 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
     // scheduledFor is the scheduler tick; jobs queued by older versions only have the time they were added
     const queuedAt = job.data.scheduledFor || job.timestamp;
     if (queuedAt && startTime - queuedAt > STALE_JOB_MS) {
-        logger.debug(`Skipping stale check job ${job.id} (queued ${Math.round((startTime - queuedAt) / 60000)} min ago)`);
+        // One summary line a minute instead of a debug line each: how many checks were skipped says how far behind the
+        // workers are, and after an outage there can be thousands
+        throttled('stale-check-jobs', 60 * 1000, (n) => {
+            logger.warn(`Skipping stale check jobs (queued over ${STALE_JOB_MS / 60000} minutes ago; ${n + 1} in the last minute, the latest was queued ${Math.round((startTime - queuedAt) / 60000)} min ago)`);
+        });
         return;
     }
 
@@ -93,12 +99,22 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
         logger.debug(`Job ${job.id} (Check ${server.name}) processed in ${Date.now() - startTime}ms`);
 
     } catch (error) {
+        // Our own network is down (services/egressProbe.js): nothing was recorded, and retrying now would only fail
+        // again. The server keeps its slot in the schedule and is checked at its next one.
+        if (error.code === 'EGRESS_DOWN') {
+            throttled('egress-down-skip', 60 * 1000, (n) => {
+                logger.error(`Check skipped because this machine cannot reach the internet${suppressedNote(n, 60 * 1000)}`);
+            });
+            return;
+        }
         logger.error(`Worker failed for job ${job.id}: ${error.message}`);
         throw error;
     }
 }, {
     connection: redisConnection,
-    concurrency: 50,
+    // Checks wait on the network, not the CPU, and a failing one can hold its slot for 30 s, so a worker can be
+    // given more. Set MONITOR_CONCURRENCY (the rate limit below still applies).
+    concurrency: Math.max(1, parseInt(process.env.MONITOR_CONCURRENCY, 10) || 50),
     limiter: {
         max: 100,
         duration: 1000
@@ -115,6 +131,11 @@ monitorWorker.on('error', (err) => {
     throttled('monitor-worker-error', 30 * 1000, (n) => {
         logger.error(`Monitor worker error${suppressedNote(n, 30 * 1000)}:`, err);
     });
+});
+
+// While the control targets cannot be reached, say so for /health/monitoring (the key expires two minutes after the last failed probe)
+egressProbe.setReporter((up) => {
+    if (!up) redisConnection.set(EGRESS_DOWN_KEY, String(Date.now()), 'EX', 120).catch(() => {});
 });
 
 // Say "alive" every 15 s for /health and the container healthcheck; the key expires if this process stops

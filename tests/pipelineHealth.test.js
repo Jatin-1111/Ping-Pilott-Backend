@@ -134,6 +134,7 @@ const fakeRedis = (store = new Map(), { failSet = false } = {}) => ({
     async set(key, value, ...rest) { if (failSet) throw new Error('Redis down'); this.sets.push({ key, value, rest }); store.set(key, value); return 'OK'; },
     async del(key) { store.delete(key); return 1; },
     async get(key) { return store.has(key) ? store.get(key) : null; },
+    async exists(key) { return store.has(key) ? 1 : 0; },
     async scan(cursor, _match, pattern) {
         const prefix = pattern.replace(/\*$/, '');
         return ['0', [...store.keys()].filter((k) => k.startsWith(prefix))];
@@ -181,8 +182,8 @@ test('readWorkerState counts live workers by role and reads the last completed c
     const redis = fakeRedis(new Map([
         [beatKey('monitor', 'a:1'), '1'], [beatKey('monitor', 'b:2'), '1'], [beatKey('alert', 'a:3'), '1'], [LAST_CHECK_KEY, '1700000000000'],
     ]));
-    assert.deepEqual(await readWorkerState(redis), { monitorWorkers: 2, alertWorkers: 1, lastCheckCompletedAt: 1700000000000 });
-    assert.deepEqual(await readWorkerState(fakeRedis()), { monitorWorkers: 0, alertWorkers: 0, lastCheckCompletedAt: null });
+    assert.deepEqual(await readWorkerState(redis), { monitorWorkers: 2, alertWorkers: 1, lastCheckCompletedAt: 1700000000000, egressDown: false });
+    assert.deepEqual(await readWorkerState(fakeRedis()), { monitorWorkers: 0, alertWorkers: 0, lastCheckCompletedAt: null, egressDown: false });
 });
 
 test('a container looks for its own host only', () => {
@@ -210,7 +211,7 @@ test('getPipelineHealth reads the workers, uses this process\'s dispatches, and 
 
 test('an unreadable Redis gives cannot-read-state', async () => {
     resetPipelineCache();
-    const broken = { async scan() { throw new Error('Redis down'); }, async get() { throw new Error('Redis down'); } };
+    const broken = { async scan() { throw new Error('Redis down'); }, async get() { throw new Error('Redis down'); }, async exists() { throw new Error('Redis down'); } };
     const result = await getPipelineHealth({ redis: broken, schedulerStatus: 'ok', startedAt: LONG_RUNNING, now: NOW });
     assert.deepEqual(result.reasons, ['cannot-read-state']);
     resetPipelineCache();

@@ -7,7 +7,7 @@
 import logger from './logger.js';
 import { withTimeout } from './timeout.js';
 import { throttled } from './logThrottle.js';
-import { LAST_CHECK_KEY, beatKey, beatPattern } from './healthKeys.js';
+import { LAST_CHECK_KEY, EGRESS_DOWN_KEY, beatKey, beatPattern } from './healthKeys.js';
 
 export const BEAT_INTERVAL_MS = 15 * 1000;
 export const BEAT_TTL_SECONDS = 60;
@@ -77,17 +77,18 @@ const countKeys = async (redis, pattern) => {
 
 /**
  * What the workers have reported. Throws when Redis cannot be read in time.
- * @returns {Promise<{ monitorWorkers: number, alertWorkers: number, lastCheckCompletedAt: number|null }>}
+ * @returns {Promise<{ monitorWorkers: number, alertWorkers: number, lastCheckCompletedAt: number|null, egressDown: boolean }>}
  */
 export async function readWorkerState(redis, timeoutMs = REDIS_TIMEOUT_MS) {
     return withTimeout((async () => {
-        const [monitorWorkers, alertWorkers, last] = await Promise.all([
+        const [monitorWorkers, alertWorkers, last, egressDown] = await Promise.all([
             countKeys(redis, beatPattern('monitor')),
             countKeys(redis, beatPattern('alert')),
             redis.get(LAST_CHECK_KEY),
+            redis.exists(EGRESS_DOWN_KEY),
         ]);
         const parsed = last === null || last === undefined ? NaN : Number(last);
-        return { monitorWorkers, alertWorkers, lastCheckCompletedAt: Number.isFinite(parsed) ? parsed : null };
+        return { monitorWorkers, alertWorkers, lastCheckCompletedAt: Number.isFinite(parsed) ? parsed : null, egressDown: Number(egressDown) > 0 };
     })(), timeoutMs, 'Reading worker state');
 }
 

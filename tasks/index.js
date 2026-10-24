@@ -5,11 +5,11 @@ dotenv.config();
 
 import cron from 'node-cron';
 import logger from '../utils/logger.js';
-import istDataRetention from './dataRetention.js'; // You might want to rename this file too eventually
+import dataRetention from './dataRetention.js';
 import smartCheckServers from './checkServers.js';
 import jobQueue from '../utils/jobQueue.js';
 import CronJob from '../models/CronJob.js';
-import { resolveRetentionMode, retentionJobName } from '../utils/retentionMode.js';
+import { resolveRetentionDays, legacyRetentionModeNotice } from '../utils/retention.js';
 import { startSchedulerWatchdog } from './schedulerWatchdog.js';
 import { CHECK_CRON } from '../utils/checkSchedule.js';
 import PendingAlert from '../models/PendingAlert.js';
@@ -25,13 +25,12 @@ import { pauseExpiredTrials } from '../services/trialPause.js';
 import { sendTrialEndedEmail } from '../services/emailService.js';
 import { invalidateServerCache } from '../utils/cacheManager.js';
 
-const retention = resolveRetentionMode(process.env.DATA_RETENTION_MODE);
+const retention = resolveRetentionDays(process.env.CHECK_DATA_RETENTION_DAYS);
 
 // CONFIGURATION
 const CONFIG = {
-    // 'selective' unless told otherwise: it only removes checks older than CHECK_DATA_RETENTION_DAYS.
-    // (The old default, 'aggressive', deleted every check each midnight, so history never survived a day.)
-    DATA_RETENTION_MODE: retention.mode,
+    // Checks older than this many days are deleted each midnight (utils/retention.js)
+    RETENTION_DAYS: retention.days,
 
     // MIDNIGHT CRON (Runs at 00:00 system time)
     MIDNIGHT_CRON: '0 0 * * *'
@@ -73,16 +72,16 @@ export const initCronJobs = async () => {
         logger.info('Initializing cron jobs...');
 
         if (!retention.recognized) {
-            logger.warn(`DATA_RETENTION_MODE="${process.env.DATA_RETENTION_MODE}" is not a known mode (selective, aggressive, emergency); using selective`);
+            logger.warn(`CHECK_DATA_RETENTION_DAYS="${process.env.CHECK_DATA_RETENTION_DAYS}" must be a whole number of days from 1 to 30; using ${retention.days}`);
         }
+        const legacyMode = legacyRetentionModeNotice(process.env.DATA_RETENTION_MODE);
+        if (legacyMode) logger.warn(legacyMode);
 
         // Initialize job queue with all tasks. A scheduling cycle only queues work and normally takes well under a
         // second, so 2 minutes means it is stuck (usually waiting on Redis or the database) and the next cycle
         // must not be blocked by it. Cleanup jobs legitimately take longer.
         jobQueue.add('smartCheckServers', smartCheckServers.checkAllServersIntelligently, 1, { timeoutMs: 2 * 60 * 1000 });
-        jobQueue.add('aggressiveDataRetention', istDataRetention.runAggressiveDataRetention, 2, { timeoutMs: 30 * 60 * 1000 });
-        jobQueue.add('selectiveDataRetention', istDataRetention.runSelectiveDataRetention, 2, { timeoutMs: 30 * 60 * 1000 });
-        jobQueue.add('emergencyCleanup', istDataRetention.runEmergencyCleanup, 3, { timeoutMs: 30 * 60 * 1000 });
+        jobQueue.add('dataRetention', () => dataRetention.runDataRetention(CONFIG.RETENTION_DAYS), 2, { timeoutMs: 30 * 60 * 1000 });
         jobQueue.add('requeueAlerts', () => requeueUndelivered({ model: PendingAlert, queue: { add: addAlertToQueue } }), 1, { timeoutMs: 2 * 60 * 1000 });
         jobQueue.add('pauseExpiredTrials', runTrialPause, 2, { timeoutMs: 5 * 60 * 1000 });
 
@@ -122,7 +121,7 @@ export const initCronJobs = async () => {
  */
 const startMidnightCleanup = () => {
     cron.schedule(CONFIG.MIDNIGHT_CRON, async () => {
-        const jobName = getDataRetentionJobName();
+        const jobName = 'dataRetention';
 
         const cronJobRecord = createCronJob(jobName);
 
@@ -134,8 +133,7 @@ const startMidnightCleanup = () => {
         }
 
         try {
-            logger.info(`💀 Starting MIDNIGHT CLEANUP at ${new Date().toISOString()}`);
-            logger.info(`🎯 Cleanup mode: ${CONFIG.DATA_RETENTION_MODE.toUpperCase()}`);
+            logger.info(`Starting midnight clean-up at ${new Date().toISOString()} (keeping ${CONFIG.RETENTION_DAYS} days of checks)`);
 
             const result = await jobQueue.execute(jobName);
 
@@ -144,23 +142,10 @@ const startMidnightCleanup = () => {
                 cronJobRecord.status = 'skipped';
             } else {
                 const duration = Date.now() - cronJobRecord.startedAt.getTime();
-                logger.info('✅ MIDNIGHT CLEANUP completed successfully!', {
-                    ...result,
-                    duration,
-                    mode: CONFIG.DATA_RETENTION_MODE
-                });
+                logger.info('Midnight clean-up completed', { ...result, duration });
 
                 cronJobRecord.status = 'completed';
-                cronJobRecord.result = {
-                    ...result,
-                    duration,
-                    mode: CONFIG.DATA_RETENTION_MODE
-                };
-
-                // Log space savings if available
-                if (result.spaceSavedMB) {
-                    logger.info(`💾 Space saved: ${result.spaceSavedMB} MB`);
-                }
+                cronJobRecord.result = { ...result, duration };
             }
 
         } catch (error) {
@@ -168,10 +153,10 @@ const startMidnightCleanup = () => {
             cronJobRecord.status = 'failed';
             cronJobRecord.error = error.message;
 
-            // A failed cleanup used to trigger the 'emergency' one automatically, which deletes ALL history:
-            // a passing database error at midnight wiped everything. Retention failing is only a reason to tell
-            // a human; the TTL index on ServerCheck still bounds how much is kept, and tonight's run tries again.
-            logger.error('Retention cleanup failed and nothing was deleted as a fallback. Set DATA_RETENTION_MODE=emergency and restart only if you really want to clear everything.');
+            // A failed clean-up deletes nothing as a fallback. It is only a reason to tell a human: the TTL index on
+            // ServerCheck still bounds how much is kept, and tonight's run tries again. If it keeps failing, run
+            // scripts/checkRetention.js to see the state of the collection.
+            logger.error('Retention clean-up failed and nothing was deleted as a fallback; it will be tried again tomorrow night.');
 
         } finally {
             cronJobRecord.completedAt = new Date();
@@ -197,7 +182,7 @@ const startMidnightCleanup = () => {
         }
     });
 
-    logger.info(`🕛 Midnight cleanup scheduled for 00:00 daily (system time, ${CONFIG.DATA_RETENTION_MODE} mode)`);
+    logger.info(`Midnight clean-up scheduled for 00:00 daily (system time, keeping ${CONFIG.RETENTION_DAYS} days of checks)`);
 };
 
 /**
@@ -267,10 +252,9 @@ const startHealthMonitoring = () => {
                     time: new Date().toISOString()
                 });
 
-                // A large database is a reason to tell a human, not to delete every customer's history on a timer.
-                // Run the 'emergency' retention mode by hand (DATA_RETENTION_MODE) if it really is needed.
+                // A large database is a reason to tell a human, not to delete customers' history on a timer.
                 if (healthStats.dbSizeMB > 1000) {
-                    logger.error('🚨 Database size is critical (>1 GB). Free space or change DATA_RETENTION_MODE; nothing was deleted automatically.');
+                    logger.error('🚨 Database size is critical (>1 GB). Free space or lower CHECK_DATA_RETENTION_DAYS; nothing was deleted automatically.');
                 }
             } else {
                 logger.debug('💚 System health OK', {
@@ -346,8 +330,7 @@ const getSystemHealth = async () => {
         }
 
         // Check database size
-        const dbStats = await istDataRetention.getCleanupRecommendations();
-        health.dbSizeMB = dbStats.current.totalSizeMB || 0;
+        health.dbSizeMB = await dataRetention.getDatabaseSizeMB();
 
         if (health.dbSizeMB > 500) {
             health.issues.push(`Large database size: ${health.dbSizeMB} MB`);
@@ -367,18 +350,13 @@ const getSystemHealth = async () => {
 };
 
 /**
- * Get the appropriate data retention job name based on configuration
- */
-const getDataRetentionJobName = () => retentionJobName(CONFIG.DATA_RETENTION_MODE);
-
-/**
  * Log system information on startup
  */
 const logSystemInfo = async () => {
     try {
         logger.info('🚀 Monitoring System Started', {
             time: new Date().toISOString(),
-            dataRetentionMode: CONFIG.DATA_RETENTION_MODE,
+            retentionDays: CONFIG.RETENTION_DAYS,
             midnightCleanup: '00:00 daily (system time)',
             nodeVersion: process.version,
             platform: process.platform

@@ -46,7 +46,9 @@ serverCheckSchema.index({ serverId: 1, timestamp: -1 });
 serverCheckSchema.index({ serverId: 1, status: 1, timestamp: -1 }); // For status-filtered queries
 serverCheckSchema.index({ timestamp: 1, status: 1 }); // For global status aggregations
 
-// TTL Index: expire documents after 30 days (2592000 seconds)
+// TTL Index: expire documents after 30 days (2592000 seconds). A backstop only: the nightly job in
+// tasks/dataRetention.js deletes checks older than CHECK_DATA_RETENTION_DAYS (default 30, at most 30, which is why).
+// Whether MongoDB honours a TTL index on a time-series field depends on its version: run scripts/checkRetention.js.
 serverCheckSchema.index({ timestamp: 1 }, { expireAfterSeconds: 2592000 });
 
 // Create and export the model

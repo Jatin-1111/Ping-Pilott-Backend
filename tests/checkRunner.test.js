@@ -19,6 +19,7 @@ const harness = (...answers) => {
         options: {
             check: async () => answers[Math.min(calls++, answers.length - 1)],
             sleep: async (ms) => { waits.push(ms); },
+            isEgressUp: async () => true,
             delayMs: 10000,
         },
     };

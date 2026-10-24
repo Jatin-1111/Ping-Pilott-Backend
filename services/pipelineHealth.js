@@ -30,7 +30,7 @@ export const resetDispatches = () => { dispatches = []; };
  *   ok        monitoring is running
  *   starting  something is missing but the process only just started
  *   degraded  something is wrong
- * Reasons: scheduler-stalled, no-monitor-worker, no-alert-worker, checks-not-completing, cannot-read-state
+ * Reasons: scheduler-stalled, egress-down, no-monitor-worker, no-alert-worker, checks-not-completing, cannot-read-state
  * @param {Object} p
  * @param {number} p.now
  * @param {number} p.startedAt                 when this process started
@@ -40,10 +40,12 @@ export const resetDispatches = () => { dispatches = []; };
  * @param {number|null} p.lastCheckCompletedAt epoch ms of the last finished check, or null
  * @param {number[]} p.dispatches              epoch ms of recent cycles that queued checks
  */
-export function evaluatePipeline({ now = Date.now(), startedAt = 0, schedulerStatus, monitorWorkers, alertWorkers, lastCheckCompletedAt, dispatches: queued = [] }) {
+export function evaluatePipeline({ now = Date.now(), startedAt = 0, schedulerStatus, monitorWorkers, alertWorkers, lastCheckCompletedAt, egressDown = false, dispatches: queued = [] }) {
     const reasons = [];
 
     if (schedulerStatus === 'stalled') reasons.push('scheduler-stalled');
+    // A worker could not reach the control targets lately: its checks are being skipped, not recorded (egressProbe.js)
+    if (egressDown) reasons.push('egress-down');
 
     if (monitorWorkers === null || monitorWorkers === undefined) {
         reasons.push('cannot-read-state');
@@ -73,7 +75,7 @@ let cached = null;
 export async function getPipelineHealth({ redis, schedulerStatus, startedAt, now = Date.now() }) {
     if (cached && now - cached.at < CACHE_MS) return cached.value;
 
-    let state = { monitorWorkers: null, alertWorkers: null, lastCheckCompletedAt: null };
+    let state = { monitorWorkers: null, alertWorkers: null, lastCheckCompletedAt: null, egressDown: false };
     try {
         state = await readWorkerState(redis);
     } catch {

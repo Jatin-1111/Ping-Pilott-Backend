@@ -30,6 +30,8 @@ import alertRoutes from './routes/alertRoutes.js';
 
 import { initCronJobs, getSchedulerStatus, getPipelineState } from './tasks/index.js';
 import { withTimeout } from './utils/timeout.js';
+import { inspectRetention } from './services/retentionCheck.js';
+import { resolveRetentionDays } from './utils/retention.js';
 
 const HEALTH_PROBE_TIMEOUT_MS = 2000;
 
@@ -81,7 +83,21 @@ const startWorkers = async () => {
 connectDB().then(() => {
     reconcileOpenIncidents();
     startWorkers();
+    logRetentionState();
 });
+
+// One read-only look at whether old checks are really being removed (services/retentionCheck.js). Never stops start-up.
+function logRetentionState() {
+    inspectRetention({ db: mongoose.connection.db, retentionDays: resolveRetentionDays(process.env.CHECK_DATA_RETENTION_DAYS).days })
+        .then((report) => {
+            if (report.warnings.length === 0) {
+                logger.info(`Retention check: ${report.exists ? `oldest check ${report.facts.oldestAgeDays ?? 'none'} days old, TTL ${report.facts.ttlDays ?? 'none'} days, keeping ${report.facts.retentionDays}` : 'no checks saved yet'}`);
+            } else {
+                report.warnings.forEach((warning) => logger.warn(`Retention check: ${warning}`));
+            }
+        })
+        .catch((err) => logger.warn(`Retention check could not run: ${err.message}`));
+}
 
 // Behind nginx (docker-compose) every request arrives from the proxy's address. Trusting one proxy hop
 // makes req.ip the real client, which the rate limiters depend on. Set TRUST_PROXY=0 when not behind a proxy.

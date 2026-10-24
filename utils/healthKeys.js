@@ -8,6 +8,8 @@ import os from 'os';
 
 export const HEALTH_PREFIX = 'pp:health:';
 export const LAST_CHECK_KEY = `${HEALTH_PREFIX}last-check-completed`;
+/** Exists while a worker cannot reach the internet (set with a 2 minute expiry by each failed probe) */
+export const EGRESS_DOWN_KEY = `${HEALTH_PREFIX}egress-down`;
 
 /** 'monitor' or 'alert' */
 export const ROLES = ['monitor', 'alert'];
@@ -19,4 +21,4 @@ export const beatKey = (role, id = instanceId()) => `${HEALTH_PREFIX}${role}-wor
 /** Pattern matching every worker of a role, or only those on one host (what a container's healthcheck looks for) */
 export const beatPattern = (role, host = '*') => `${HEALTH_PREFIX}${role}-worker:${host}${host === '*' ? '' : ':*'}`;
 
-export default { HEALTH_PREFIX, LAST_CHECK_KEY, ROLES, instanceId, beatKey, beatPattern };
+export default { HEALTH_PREFIX, LAST_CHECK_KEY, EGRESS_DOWN_KEY, ROLES, instanceId, beatKey, beatPattern };

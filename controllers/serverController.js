@@ -939,6 +939,15 @@ export const checkServer = asyncHandler(async (req, res) => {
         });
 
     } catch (error) {
+        // The check failed and so did the control targets: this is our network, not the user's server (egressProbe.js)
+        if (error.code === 'EGRESS_DOWN') {
+            return res.status(503).json({
+                status: 'error',
+                message: error.message,
+                code: 'EGRESS_DOWN'
+            });
+        }
+
         logger.error(`Error checking server ${serverId}: ${error.message}`, {
             userId,
             stack: error.stack
