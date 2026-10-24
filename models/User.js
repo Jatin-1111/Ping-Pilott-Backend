@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { userCache } from '../utils/userCache.js';
+import logger from '../utils/logger.js';
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -168,13 +170,17 @@ const userSchema = new mongoose.Schema({
     toObject: { virtuals: true }
 });
 
+// bcrypt work factor. Each step doubles the time a hash takes, and sign-in and sign-up pay it once.
+// 10 is the lowest value current guidance accepts; 12 made both take over two seconds on a small server.
+export const passwordRounds = () => Math.min(14, Math.max(10, parseInt(process.env.BCRYPT_ROUNDS, 10) || 10));
+
 // Hash password before saving
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
     // (a brand new account has no earlier sessions to cut off)
     if (!this.isNew) this.passwordChangedAt = new Date();
     try {
-        const salt = await bcrypt.genSalt(12);
+        const salt = await bcrypt.genSalt(passwordRounds());
         this.password = await bcrypt.hash(this.password, salt);
         next();
     } catch (error) {
@@ -241,6 +247,27 @@ userSchema.pre('save', function (next) {
 userSchema.methods.comparePassword = async function (candidatePassword) {
     return await bcrypt.compare(candidatePassword, this.password);
 };
+
+// Hashes made at a higher cost than we use now make every sign-in slow. After a successful sign-in, re-hash in
+// the background at the current cost. It does not touch passwordChangedAt (no one is signed out), and it only
+// writes if the stored hash is still the one we checked, so it can never overwrite a password change.
+userSchema.methods.upgradePasswordHash = function (plainPassword) {
+    const rounds = passwordRounds();
+    const current = this.password;
+    if (!current || bcrypt.getRounds(current) <= rounds) return;
+    bcrypt
+        .hash(plainPassword, rounds)
+        .then((hash) => this.constructor.updateOne({ _id: this._id, password: current }, { $set: { password: hash } }))
+        .catch((err) => logger.error(`Could not upgrade password hash: ${err.message}`));
+};
+
+// Keep the auth cache honest: any change to a user drops its cached copy
+userSchema.post('save', function (doc) {
+    userCache.invalidate(doc._id);
+});
+userSchema.post(['updateOne', 'findOneAndUpdate', 'findOneAndDelete', 'findOneAndReplace', 'deleteOne', 'updateMany', 'deleteMany'], function () {
+    userCache.clear();
+});
 
 userSchema.methods.hasActiveSubscription = function () {
     if (this.role === 'admin' || this.subscription.plan === 'admin') {

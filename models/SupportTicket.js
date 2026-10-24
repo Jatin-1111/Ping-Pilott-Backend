@@ -60,6 +60,7 @@ const supportTicketSchema = new mongoose.Schema({
 // Add indexes for efficient queries
 supportTicketSchema.index({ status: 1, priority: 1 });
 supportTicketSchema.index({ userId: 1, status: 1 });
+supportTicketSchema.index({ userId: 1, updatedAt: -1 }); // a user's own list, newest first
 supportTicketSchema.index({ userPlan: 1, status: 1 });
 
 const SupportTicket = mongoose.model('SupportTicket', supportTicketSchema);

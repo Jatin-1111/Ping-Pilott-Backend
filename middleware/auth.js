@@ -3,6 +3,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import User from '../models/User.js';
 import logger from '../utils/logger.js';
 import { requireEmailVerification } from '../utils/emailVerification.js';
+import { userCache } from '../utils/userCache.js';
 
 /**
  * Protect routes - authentication middleware
@@ -29,8 +30,19 @@ export const protect = asyncHandler(async (req, res, next) => {
         // Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        // Find user by id
-        const user = await User.findById(decoded.id);
+        // Find user by id. Recently seen users come from a short in-process cache instead of the database;
+        // a fresh document is built per request, so nothing one request does leaks into another.
+        let user;
+        const cached = userCache.get(decoded.id);
+        if (cached) {
+            user = User.hydrate(cached);
+        } else {
+            const found = await User.findById(decoded.id).lean();
+            if (found) {
+                userCache.set(decoded.id, found);
+                user = User.hydrate(found);
+            }
+        }
 
         // Check if user exists
         if (!user) {

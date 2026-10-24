@@ -8,6 +8,18 @@ import { CACHE_STRATEGIES } from '../config/performance.js';
  * Delete every key matching a pattern. Uses SCAN (incremental) instead of KEYS, which blocks Redis
  * while it walks the whole keyspace.
  */
+// The Redis connection queues commands forever while Redis is unreachable (the job queues need that), so a cache
+// call must not be awaited without a limit: a slow or missing cache should cost one skipped lookup, not a hung request.
+const CACHE_TIMEOUT_MS = 300;
+
+function withTimeout(promise, ms = CACHE_TIMEOUT_MS) {
+    let timer;
+    const limit = new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`cache call timed out after ${ms}ms`)), ms);
+    });
+    return Promise.race([promise, limit]).finally(() => clearTimeout(timer));
+}
+
 async function deleteByPattern(pattern) {
     let removed = 0;
     const stream = redisConnection.scanStream({ match: pattern, count: 200 });
@@ -29,7 +41,7 @@ async function deleteByPattern(pattern) {
  */
 export async function invalidateServerCache(userId) {
     try {
-        const removed = await deleteByPattern(`api:servers:${userId}:*`);
+        const removed = await withTimeout(deleteByPattern(`api:servers:${userId}:*`), 2000);
         if (removed > 0) logger.debug(`Invalidated ${removed} cache keys for user ${userId}`);
     } catch (error) {
         logger.error(`Error invalidating cache: ${error.message}`);
@@ -42,7 +54,7 @@ export async function invalidateServerCache(userId) {
  */
 export async function invalidateAnalyticsCache(userId) {
     try {
-        const removed = await deleteByPattern(`api:analytics:${userId}:*`);
+        const removed = await withTimeout(deleteByPattern(`api:analytics:${userId}:*`), 2000);
         if (removed > 0) logger.debug(`Invalidated ${removed} analytics cache keys`);
     } catch (error) {
         logger.error(`Error invalidating analytics cache: ${error.message}`);
@@ -56,7 +68,7 @@ export async function invalidateAnalyticsCache(userId) {
  */
 export async function getCachedData(key) {
     try {
-        const cachedData = await redisConnection.get(key);
+        const cachedData = await withTimeout(redisConnection.get(key));
         if (cachedData) {
             return JSON.parse(cachedData);
         }
@@ -75,7 +87,7 @@ export async function getCachedData(key) {
  */
 export async function setCachedData(key, data, ttl = CACHE_STRATEGIES.serverList) {
     try {
-        await redisConnection.set(key, JSON.stringify(data), 'EX', ttl);
+        await withTimeout(redisConnection.set(key, JSON.stringify(data), 'EX', ttl));
     } catch (error) {
         logger.error(`Error setting cached data: ${error.message}`);
     }

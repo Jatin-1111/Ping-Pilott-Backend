@@ -44,6 +44,10 @@ import mongoose from 'mongoose';
 import { redisConnection } from './config/redis.js';
 
 const httpServer = createServer(app);
+// Render's proxy keeps connections open for about a minute. Node closes idle ones after 5 seconds by default, which
+// shows up as random failed or slow requests when the proxy reuses a connection Node just dropped.
+httpServer.keepAliveTimeout = 65 * 1000;
+httpServer.headersTimeout = 66 * 1000;
 const io = initializeSocket(httpServer);
 
 // Connect to MongoDB

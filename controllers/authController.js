@@ -122,6 +122,10 @@ export const login = asyncHandler(async (req, res) => {
         });
     }
 
+    // Old passwords were hashed at a higher cost than we use now, which made every sign-in slow.
+    // Re-hash in the background so the next one is quick.
+    user.upgradePasswordHash(password);
+
     // Check if email is verified (only when verification is switched on)
     if (requireEmailVerification() && !user.emailVerified) {
         return res.status(401).json({
@@ -419,12 +423,11 @@ export const refreshToken = asyncHandler(async (req, res) => {
  * @access  Private
  */
 export const getCurrentUser = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user.id);
-
+    // protect already loaded this user for the request; asking the database again returned the same thing
     res.status(200).json({
         status: 'success',
         data: {
-            user,
+            user: req.user,
         },
     });
 });
