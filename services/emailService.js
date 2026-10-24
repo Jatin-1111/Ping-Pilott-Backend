@@ -45,6 +45,10 @@ export const initTransporter = () => {
     maxConnections: 5,
     // Max number of messages to send per connection
     maxMessages: 100,
+    // Give up on a connection that never opens (a blocked or silently dropped SMTP port) after 10 seconds,
+    // instead of nodemailer's 2 minute default.
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
     // Number of milliseconds to wait for sending a message
     socketTimeout: 30000,
   });

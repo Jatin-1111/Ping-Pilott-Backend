@@ -49,8 +49,11 @@ export const register = asyncHandler(async (req, res) => {
         verificationTokenExpiry,
     });
 
-    // Send verification email
-    await sendVerificationEmail(user, verificationToken);
+    // The account exists now, so answer straight away. A slow mail server must not keep the browser waiting,
+    // and if the email fails the user can ask for a new link with "resend verification".
+    sendVerificationEmail(user, verificationToken).catch((err) =>
+        logger.error(`Verification email to ${user.email} failed: ${err?.message || err}`)
+    );
 
     // Remove password from response
     user.password = undefined;
@@ -231,8 +234,10 @@ export const resendVerification = asyncHandler(async (req, res) => {
     user.verificationTokenExpiry = verificationTokenExpiry;
     await user.save();
 
-    // Send verification email
-    await sendVerificationEmail(user, verificationToken);
+    // Answer first; the email is sent in the background
+    sendVerificationEmail(user, verificationToken).catch((err) =>
+        logger.error(`Verification email to ${user.email} failed: ${err?.message || err}`)
+    );
 
     return sameAnswer();
 });
@@ -265,7 +270,9 @@ export const forgotPassword = asyncHandler(async (req, res) => {
     await user.save();
 
     // Send password reset email
-    await sendPasswordResetEmail(user, resetToken);
+    sendPasswordResetEmail(user, resetToken).catch((err) =>
+        logger.error(`Password reset email to ${user.email} failed: ${err?.message || err}`)
+    );
 
     res.status(200).json({
         status: 'success',
