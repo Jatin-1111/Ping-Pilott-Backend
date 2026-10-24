@@ -126,6 +126,15 @@ export const login = asyncHandler(async (req, res) => {
     // Re-hash in the background so the next one is quick.
     user.upgradePasswordHash(password);
 
+    // With verification switched off, everyone counts as verified. Accounts made while it was on stay marked
+    // unverified in the database, so mark them now (and in this response) instead of leaving them half-verified.
+    if (!requireEmailVerification() && !user.emailVerified) {
+        user.emailVerified = true;
+        User.updateOne({ _id: user._id }, { $set: { emailVerified: true } }).catch((err) =>
+            logger.error(`Could not mark ${user.email} verified: ${err.message}`)
+        );
+    }
+
     // Check if email is verified (only when verification is switched on)
     if (requireEmailVerification() && !user.emailVerified) {
         return res.status(401).json({
