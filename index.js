@@ -39,6 +39,8 @@ const PORT = process.env.PORT || 5000;
 import { createServer } from 'http';
 import { initializeSocket, broadcastServerUpdate } from './config/socket.js';
 import { Redis } from 'ioredis';
+import mongoose from 'mongoose';
+import { redisConnection } from './config/redis.js';
 
 const httpServer = createServer(app);
 const io = initializeSocket(httpServer);
