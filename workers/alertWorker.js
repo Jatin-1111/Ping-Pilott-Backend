@@ -93,18 +93,21 @@ alertWorker.on('error', (err) => {
     logger.error('Alert worker error:', err);
 });
 
-// Graceful shutdown
-process.on('SIGTERM', async () => {
-    logger.info('SIGTERM received, closing alert worker...');
-    await alertWorker.close();
-    process.exit(0);
-});
+// Graceful shutdown. Only when this worker is its own process: embedded in the API (see index.js) the API
+// handles shutdown and closes the worker itself.
+if (!process.env.PP_WORKERS_EMBEDDED) {
+    process.on('SIGTERM', async () => {
+        logger.info('SIGTERM received, closing alert worker...');
+        await alertWorker.close();
+        process.exit(0);
+    });
 
-process.on('SIGINT', async () => {
-    logger.info('SIGINT received, closing alert worker...');
-    await alertWorker.close();
-    process.exit(0);
-});
+    process.on('SIGINT', async () => {
+        logger.info('SIGINT received, closing alert worker...');
+        await alertWorker.close();
+        process.exit(0);
+    });
+}
 
 logger.info('✅ Alert worker started');
 

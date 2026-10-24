@@ -16,6 +16,11 @@ const CONFIRM_DELAY_MS = process.env.DOWN_CONFIRM_DELAY_MS !== undefined
     ? parseInt(process.env.DOWN_CONFIRM_DELAY_MS, 10)
     : 10000;
 
+// A check job that has waited this long is out of date: the next scheduled check has already taken its place.
+// Skipping them matters after the workers have been down for a while, when thousands of old jobs are waiting and
+// running them all would hit the monitored sites in one burst and fill the history with checks stamped "now".
+const STALE_JOB_MS = 10 * 60 * 1000;
+
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Check history is written in batches (it is append-only, so a late write is harmless).
@@ -50,6 +55,13 @@ async function addToBatch(checkDoc) {
 export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
     const { serverId } = job.data;
     const startTime = Date.now();
+
+    // scheduledFor is the scheduler tick; jobs queued by older versions only have the time they were added
+    const queuedAt = job.data.scheduledFor || job.timestamp;
+    if (queuedAt && startTime - queuedAt > STALE_JOB_MS) {
+        logger.debug(`Skipping stale check job ${job.id} (queued ${Math.round((startTime - queuedAt) / 60000)} min ago)`);
+        return;
+    }
 
     try {
         if (mongoose.connection.readyState === 0) {
@@ -124,7 +136,11 @@ const shutdown = async (signal) => {
         process.exit(0);
     }
 };
-process.on('SIGTERM', () => shutdown('SIGTERM'));
-process.on('SIGINT', () => shutdown('SIGINT'));
+// As its own process this worker handles shutdown. Embedded in the API process (see index.js) the API does,
+// and closes the worker itself, so two handlers do not race to exit.
+if (!process.env.PP_WORKERS_EMBEDDED) {
+    process.on('SIGTERM', () => shutdown('SIGTERM'));
+    process.on('SIGINT', () => shutdown('SIGINT'));
+}
 
 logger.info(`🚀 Monitor Worker started - listening on queue: ${QUEUE_NAME}`);

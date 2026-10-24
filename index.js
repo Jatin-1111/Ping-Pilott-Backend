@@ -53,7 +53,30 @@ httpServer.headersTimeout = 66 * 1000;
 const io = initializeSocket(httpServer);
 
 // Connect to MongoDB
-connectDB().then(() => reconcileOpenIncidents());
+// The scheduler below only puts check jobs on a queue; something has to take them off and run them, and send the
+// alerts. In Docker and PM2 those are separate processes (docker-compose.yml, ecosystem.config.cjs set
+// RUN_WORKERS=false for the API). On a single-process host such as Render's free tier there is no other process,
+// so by default the API runs both workers itself. Without them servers were queued every minute and never checked.
+let inProcessWorkers = [];
+const startWorkers = async () => {
+    if (process.env.RUN_WORKERS === 'false') return;
+    try {
+        process.env.PP_WORKERS_EMBEDDED = '1'; // the workers must not install their own shutdown handlers
+        const [{ monitorWorker }, { default: alertWorker }] = await Promise.all([
+            import('./workers/monitorWorker.js'),
+            import('./workers/alertWorker.js')
+        ]);
+        inProcessWorkers = [monitorWorker, alertWorker];
+        logger.info('Monitor and alert workers are running inside the API process');
+    } catch (err) {
+        logger.error(`Could not start the in-process workers: ${err.message}`);
+    }
+};
+
+connectDB().then(() => {
+    reconcileOpenIncidents();
+    startWorkers();
+});
 
 // Behind nginx (docker-compose) every request arrives from the proxy's address. Trusting one proxy hop
 // makes req.ip the real client, which the rate limiters depend on. Set TRUST_PROXY=0 when not behind a proxy.
@@ -197,6 +220,9 @@ async function gracefulShutdown(signal) {
         logger.info('HTTP server closed');
 
         try {
+            // Stop taking check and alert jobs (the monitor worker also writes out its buffered history)
+            await Promise.allSettled(inProcessWorkers.map((w) => w.close()));
+
             // Close Redis connections
             await redisConnection.quit();
             await redisSubscriber.quit();

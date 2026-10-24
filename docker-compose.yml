@@ -22,6 +22,7 @@ services:
     environment:
       - PORT=5000
       - REDIS_URL=redis://redis:6379
+      - RUN_WORKERS=false # monitor-worker and alert-worker below do this
     ports:
       - "5000:5000"
     healthcheck:

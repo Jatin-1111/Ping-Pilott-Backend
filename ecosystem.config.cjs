@@ -9,9 +9,11 @@ module.exports = {
             max_memory_restart: '1G',
             env: {
                 NODE_ENV: "development",
+                RUN_WORKERS: "false", // the worker apps below do the checking and alerting
             },
             env_production: {
                 NODE_ENV: "production",
+                RUN_WORKERS: "false",
             }
         },
         {
