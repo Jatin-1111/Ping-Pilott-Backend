@@ -13,6 +13,7 @@ import { checkPlanLimits } from '../services/planLimits.js';
 import { isWithinCheckSchedule, timezoneOf } from '../utils/schedule.js';
 import { getCachedData, setCachedData, dedupedFetch } from '../utils/cacheManager.js';
 import { CACHE_STRATEGIES } from '../config/performance.js';
+import Incident from '../models/Incident.js';
 
 // Performance monitoring
 const PERFORMANCE_CONFIG = {
@@ -732,7 +733,8 @@ export const deleteServer = asyncHandler(async (req, res) => {
         // Delete server and cleanup checks in parallel
         const [deleteResult] = await Promise.all([
             Server.deleteOne({ _id: serverId }),
-            ServerCheck.deleteMany({ serverId }) // Cleanup all associated checks
+            ServerCheck.deleteMany({ serverId }), // Cleanup all associated checks
+            Incident.deleteMany({ serverId })
         ]);
 
         if (deleteResult.deletedCount === 0) {

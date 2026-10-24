@@ -9,6 +9,7 @@ import { redisConnection } from '../config/redis.js';
 import { decideAlert } from '../utils/alertDecision.js';
 import { invalidateServerCache } from '../utils/cacheManager.js';
 import logger from '../utils/logger.js';
+import { recordStatusChange } from './incidentService.js';
 
 /**
  * Save a check result on the server, tell the owner if it matters, and publish it for live clients.
@@ -47,6 +48,9 @@ export async function applyCheckResult(server, checkResult) {
 
     // The owner's cached server list now shows an outdated status
     if (changed && applied) await invalidateServerCache(String(server.uploadedBy));
+
+    // Going down opens an incident and recovering closes it. Only the check that won the update records it.
+    if (changed && applied) await recordStatusChange(server, previous, checkResult, now);
 
     if (alertType && applied) {
         try {

@@ -10,7 +10,7 @@
     "worker": "node workers/monitorWorker.js",
     "alert-worker": "node workers/alertWorker.js",
     "workers": "concurrently \"npm run worker\" \"npm run alert-worker\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test"
   },
   "keywords": [
     "monitoring",

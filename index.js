@@ -25,6 +25,7 @@ import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import adminAnalyticsRoutes from './routes/adminAnalyticsRoutes.js';
 import supportRoutes from './routes/supportRoutes.js';
+import incidentRoutes from './routes/incidentRoutes.js';
 
 import { initCronJobs } from './tasks/index.js';
 
@@ -42,6 +43,7 @@ import { initializeSocket, broadcastServerUpdate } from './config/socket.js';
 import { Redis } from 'ioredis';
 import mongoose from 'mongoose';
 import { redisConnection } from './config/redis.js';
+import { reconcileOpenIncidents } from './services/incidentService.js';
 
 const httpServer = createServer(app);
 // Render's proxy keeps connections open for about a minute. Node closes idle ones after 5 seconds by default, which
@@ -51,7 +53,7 @@ httpServer.headersTimeout = 66 * 1000;
 const io = initializeSocket(httpServer);
 
 // Connect to MongoDB
-connectDB();
+connectDB().then(() => reconcileOpenIncidents());
 
 // Behind nginx (docker-compose) every request arrives from the proxy's address. Trusting one proxy hop
 // makes req.ip the real client, which the rate limiters depend on. Set TRUST_PROXY=0 when not behind a proxy.
@@ -131,6 +133,7 @@ app.use('/api', apiLimiter);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/servers', serverRoutes);
+app.use('/api/incidents', incidentRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/analytics', adminAnalyticsRoutes);
