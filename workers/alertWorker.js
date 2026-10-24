@@ -6,7 +6,8 @@ import './loadEnv.js';
 import { Worker } from 'bullmq';
 import { redisConnection } from '../config/redis.js';
 import logger from '../utils/logger.js';
-import { handleAlerts } from '../services/alertService.js';
+import { handleAlerts, shouldSendAlert } from '../services/alertService.js';
+import { ALERT_CHANNEL, buildAlertMessage, toAlertItem } from '../utils/alertFeed.js';
 import Server from '../models/Server.js';
 import AlertEvent from '../models/AlertEvent.js';
 import mongoose from 'mongoose';
@@ -38,21 +39,36 @@ const alertWorker = new Worker(
                 }
             }
 
-            // Process alerts
-            const delivered = await handleAlerts(
-                { ...server, _id: serverId, status: oldStatus },
-                alertType,
-                checkResult
-            );
+            // Email and webhook. This throws when the email fails, so the job retries before anything below runs
+            // and a retry can never record (or push) the same alert twice.
+            const alertServer = { ...server, _id: serverId, status: oldStatus };
+            await handleAlerts(alertServer, alertType, checkResult);
 
-            // Keep a record of what was actually delivered: it feeds the admin analytics.
-            // A failure to record must never make the job fail and re-send the alert.
-            if (delivered) {
+            // Keep a record of every alert the user was told about: it is the feed behind the mobile app and
+            // feeds the admin analytics. Whether to tell them is the user's own setting (alerts on, inside their
+            // alert hours), so the app gets alerts even when no email or webhook is set up.
+            // A failure to record or push must never make the job fail and re-send the email.
+            if (alertType && shouldSendAlert(alertServer)) {
                 try {
                     if (mongoose.connection.readyState === 0) await mongoose.connect(process.env.MONGO_URI);
-                    await AlertEvent.create({ serverId, userId: server.uploadedBy, type: alertType });
+                    const event = await AlertEvent.create({
+                        serverId,
+                        userId: server.uploadedBy,
+                        type: alertType,
+                        serverName: server.name,
+                        serverUrl: server.url,
+                        message: buildAlertMessage(alertType, checkResult, server)
+                    });
+
+                    // The API process owns the sockets, so hand the alert over through Redis
+                    if (server.uploadedBy) {
+                        await redisConnection.publish(
+                            ALERT_CHANNEL,
+                            JSON.stringify({ userId: String(server.uploadedBy), alert: toAlertItem(event) })
+                        );
+                    }
                 } catch (recordError) {
-                    logger.error(`Could not record alert event for ${serverId}: ${recordError.message}`);
+                    logger.error(`Could not record or push alert event for ${serverId}: ${recordError.message}`);
                 }
             }
 

@@ -26,6 +26,7 @@ import adminRoutes from './routes/adminRoutes.js';
 import adminAnalyticsRoutes from './routes/adminAnalyticsRoutes.js';
 import supportRoutes from './routes/supportRoutes.js';
 import incidentRoutes from './routes/incidentRoutes.js';
+import alertRoutes from './routes/alertRoutes.js';
 
 import { initCronJobs } from './tasks/index.js';
 
@@ -39,7 +40,8 @@ const PORT = process.env.PORT || 5000;
 
 // Create HTTP server for Socket.io
 import { createServer } from 'http';
-import { initializeSocket, broadcastServerUpdate } from './config/socket.js';
+import { initializeSocket, broadcastServerUpdate, broadcastAlert } from './config/socket.js';
+import { ALERT_CHANNEL } from './utils/alertFeed.js';
 import { Redis } from 'ioredis';
 import mongoose from 'mongoose';
 import { redisConnection } from './config/redis.js';
@@ -157,6 +159,7 @@ app.use('/api', apiLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/servers', serverRoutes);
 app.use('/api/incidents', incidentRoutes);
+app.use('/api/alerts', alertRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/analytics', adminAnalyticsRoutes);
@@ -182,11 +185,11 @@ const redisSubscriber = new Redis(process.env.REDIS_URL || {
     // No maxRetriesPerRequest null needed here as it's not BullMQ
 });
 
-redisSubscriber.subscribe('monitor-updates', (err, count) => {
+redisSubscriber.subscribe('monitor-updates', ALERT_CHANNEL, (err, count) => {
     if (err) {
-        logger.error('Failed to subscribe to monitor-updates channel: %s', err.message);
+        logger.error('Failed to subscribe to the live update channels: %s', err.message);
     } else {
-        logger.info(`📢 Subscribed to monitor-updates channel. Count: ${count}`);
+        logger.info(`📢 Subscribed to monitor-updates and ${ALERT_CHANNEL} channels. Count: ${count}`);
     }
 });
 
@@ -198,6 +201,13 @@ redisSubscriber.on('message', (channel, message) => {
             broadcastServerUpdate(updateData);
         } catch (error) {
             logger.error('Error parsing monitor update message:', error);
+        }
+    } else if (channel === ALERT_CHANNEL) {
+        try {
+            const { userId, alert } = JSON.parse(message);
+            broadcastAlert(userId, alert);
+        } catch (error) {
+            logger.error('Error parsing alert event message:', error);
         }
     }
 });

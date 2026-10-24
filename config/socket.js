@@ -107,6 +107,22 @@ export function broadcastServerUpdate(updateData) {
 }
 
 /**
+ * Tell one user's connected devices about a new alert (the mobile app raises a notification from it).
+ * Only the owner's room hears it: unlike server updates, admins don't get other people's alerts.
+ * @param {string} userId - Owner of the server the alert is about
+ * @param {Object} alert - The alert as the app reads it (see utils/alertFeed.js toAlertItem)
+ */
+export function broadcastAlert(userId, alert) {
+    if (!io) {
+        logger.warn('Socket.IO not initialized, cannot broadcast alert');
+        return;
+    }
+    if (!userId) return;
+
+    io.to(`user:${userId}`).emit('alert:new', alert);
+}
+
+/**
  * Broadcast global notification (admin alerts, system messages) to every authenticated client
  * @param {string} event - Event name
  * @param {Object} data - Event data
@@ -131,4 +147,4 @@ export function getIO() {
     return io;
 }
 
-export default { initializeSocket, broadcastServerUpdate, broadcastGlobal, getIO };
+export default { initializeSocket, broadcastServerUpdate, broadcastAlert, broadcastGlobal, getIO };
