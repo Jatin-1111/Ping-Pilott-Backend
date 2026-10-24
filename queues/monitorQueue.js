@@ -1,9 +1,13 @@
 import { Queue } from 'bullmq';
 import { redisConnection } from '../config/redis.js';
 import logger from '../utils/logger.js';
+import { withTimeout } from '../utils/timeout.js';
 
 // Define the queue name
 const QUEUE_NAME = 'monitor-server-queue';
+
+// How long to wait for Redis to accept one check before treating it as failed
+const ADD_TIMEOUT_MS = 10_000;
 
 // Create the queue instance
 export const monitorQueue = new Queue(QUEUE_NAME, {
@@ -30,7 +34,9 @@ export const addCheckJob = async (server, scheduledFor = new Date()) => {
         const priorityScore = server.priority === 'high' ? 1 : server.priority === 'low' ? 3 : 2;
         const tick = new Date(scheduledFor).getTime();
 
-        await monitorQueue.add('check-server', {
+        // Redis commands wait forever while the connection is down. Give up after a while instead: the server is then
+        // not marked as dispatched, so the next scheduler cycle simply tries it again.
+        await withTimeout(monitorQueue.add('check-server', {
             serverId: server._id || server.id,
             url: server.url,
             name: server.name,
@@ -38,7 +44,7 @@ export const addCheckJob = async (server, scheduledFor = new Date()) => {
         }, {
             priority: priorityScore, // BullMQ supports priority (lower number = higher priority)
             jobId: `check-${server._id}-${tick}`
-        });
+        }), ADD_TIMEOUT_MS, `Queueing a check for ${server.name || server._id}`);
 
         return true;
     } catch (error) {

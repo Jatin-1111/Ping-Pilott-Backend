@@ -9,10 +9,16 @@ import istDataRetention from './dataRetention.js'; // You might want to rename t
 import smartCheckServers from './checkServers.js';
 import jobQueue from '../utils/jobQueue.js';
 import CronJob from '../models/CronJob.js';
+import { resolveRetentionMode, retentionJobName } from '../utils/retentionMode.js';
+import { startSchedulerWatchdog } from './schedulerWatchdog.js';
+
+const retention = resolveRetentionMode(process.env.DATA_RETENTION_MODE);
 
 // CONFIGURATION
 const CONFIG = {
-    DATA_RETENTION_MODE: process.env.DATA_RETENTION_MODE || 'aggressive',
+    // 'selective' unless told otherwise: it only removes checks older than CHECK_DATA_RETENTION_DAYS.
+    // (The old default, 'aggressive', deleted every check each midnight, so history never survived a day.)
+    DATA_RETENTION_MODE: retention.mode,
 
     // MIDNIGHT CRON (Runs at 00:00 system time)
     MIDNIGHT_CRON: '0 0 * * *',
@@ -25,6 +31,11 @@ const CONFIG = {
 
     SMART_MONITORING_ENABLED: process.env.SMART_MONITORING_ENABLED === 'true'
 };
+
+let watchdog = null;
+
+/** 'ok' | 'stalled' | 'starting' (cron jobs not initialised yet). Shown by /health. */
+export const getSchedulerStatus = () => watchdog?.status() ?? 'starting';
 
 /**
  * Create CronJob record (system time)
@@ -44,11 +55,17 @@ export const initCronJobs = async () => {
     try {
         logger.info('Initializing cron jobs...');
 
-        // Initialize job queue with all tasks
-        jobQueue.add('smartCheckServers', smartCheckServers.checkAllServersIntelligently, 1);
-        jobQueue.add('aggressiveDataRetention', istDataRetention.runAggressiveDataRetention, 2);
-        jobQueue.add('selectiveDataRetention', istDataRetention.runSelectiveDataRetention, 2);
-        jobQueue.add('emergencyCleanup', istDataRetention.runEmergencyCleanup, 3);
+        if (!retention.recognized) {
+            logger.warn(`DATA_RETENTION_MODE="${process.env.DATA_RETENTION_MODE}" is not a known mode (selective, aggressive, emergency); using selective`);
+        }
+
+        // Initialize job queue with all tasks. A scheduling cycle only queues work and normally takes well under a
+        // second, so 2 minutes means it is stuck (usually waiting on Redis or the database) and the next cycle
+        // must not be blocked by it. Cleanup jobs legitimately take longer.
+        jobQueue.add('smartCheckServers', smartCheckServers.checkAllServersIntelligently, 1, { timeoutMs: 2 * 60 * 1000 });
+        jobQueue.add('aggressiveDataRetention', istDataRetention.runAggressiveDataRetention, 2, { timeoutMs: 30 * 60 * 1000 });
+        jobQueue.add('selectiveDataRetention', istDataRetention.runSelectiveDataRetention, 2, { timeoutMs: 30 * 60 * 1000 });
+        jobQueue.add('emergencyCleanup', istDataRetention.runEmergencyCleanup, 3, { timeoutMs: 30 * 60 * 1000 });
 
         // Log system info
         await logSystemInfo();
@@ -65,6 +82,9 @@ export const initCronJobs = async () => {
 
         // Health monitoring
         startHealthMonitoring();
+
+        // Notice (and recover from) a scheduler that has stopped finishing cycles
+        watchdog = startSchedulerWatchdog({ queue: jobQueue });
 
         logger.info('✅ All cron jobs initialized successfully');
 
@@ -125,16 +145,10 @@ const startMidnightCleanup = () => {
             cronJobRecord.status = 'failed';
             cronJobRecord.error = error.message;
 
-            // Try emergency cleanup if regular cleanup fails
-            if (CONFIG.DATA_RETENTION_MODE !== 'emergency') {
-                logger.warn('🚨 Attempting emergency cleanup as fallback...');
-                try {
-                    const emergencyResult = await jobQueue.execute('emergencyCleanup');
-                    logger.info('🚨 Emergency cleanup completed', emergencyResult);
-                } catch (emergencyError) {
-                    logger.error(`🚨 Emergency cleanup also failed: ${emergencyError.message}`);
-                }
-            }
+            // A failed cleanup used to trigger the 'emergency' one automatically, which deletes ALL history:
+            // a passing database error at midnight wiped everything. Retention failing is only a reason to tell
+            // a human; the TTL index on ServerCheck still bounds how much is kept, and tonight's run tries again.
+            logger.error('Retention cleanup failed and nothing was deleted as a fallback. Set DATA_RETENTION_MODE=emergency and restart only if you really want to clear everything.');
 
         } finally {
             cronJobRecord.completedAt = new Date();
@@ -338,17 +352,7 @@ const getSystemHealth = async () => {
 /**
  * Get the appropriate data retention job name based on configuration
  */
-const getDataRetentionJobName = () => {
-    switch (CONFIG.DATA_RETENTION_MODE) {
-        case 'selective':
-            return 'selectiveDataRetention';
-        case 'emergency':
-            return 'emergencyCleanup';
-        case 'aggressive':
-        default:
-            return 'aggressiveDataRetention';
-    }
-};
+const getDataRetentionJobName = () => retentionJobName(CONFIG.DATA_RETENTION_MODE);
 
 /**
  * Log system information on startup

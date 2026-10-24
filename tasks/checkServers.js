@@ -79,7 +79,7 @@ const getDueServers = async (tick) => {
         lastChecked: 1,
         uploadedRole: 1,
         uploadedPlan: 1
-    }).lean();
+    }).lean().maxTimeMS(20000); // a database that stops answering must not hold the scheduler
 
     return servers.filter(shouldMonitorServer);
 };

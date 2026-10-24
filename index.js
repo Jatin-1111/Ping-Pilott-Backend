@@ -28,7 +28,7 @@ import supportRoutes from './routes/supportRoutes.js';
 import incidentRoutes from './routes/incidentRoutes.js';
 import alertRoutes from './routes/alertRoutes.js';
 
-import { initCronJobs } from './tasks/index.js';
+import { initCronJobs, getSchedulerStatus } from './tasks/index.js';
 
 // Get __dirname equivalent in ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -140,12 +140,16 @@ app.get('/health', async (req, res) => {
 
     // Public endpoint (load balancers and uptime checks call it), so it says only whether things are up.
     // Memory use, uptime and the environment name are not for strangers.
+    // A scheduler that has stopped finishing cycles means nobody is being monitored, even with the database and Redis
+    // up, so that counts as degraded too. 'starting' (just booted) is not a problem.
+    const scheduler = getSchedulerStatus();
     const health = {
-        status: checks.slice(0, 2).every(c => c.status === 'fulfilled') ? 'healthy' : 'degraded',
+        status: checks.slice(0, 2).every(c => c.status === 'fulfilled') && scheduler !== 'stalled' ? 'healthy' : 'degraded',
         timestamp: new Date().toISOString(),
         checks: {
             mongodb: checks[0].status === 'fulfilled' ? 'up' : 'down',
-            redis: checks[1].status === 'fulfilled' ? 'up' : 'down'
+            redis: checks[1].status === 'fulfilled' ? 'up' : 'down',
+            scheduler
         }
     };
 

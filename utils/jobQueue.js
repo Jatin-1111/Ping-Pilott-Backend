@@ -1,19 +1,31 @@
-// utils/jobQueue.js - FIXED WITH STOP METHOD
+// utils/jobQueue.js - runs named jobs one at a time each, with a time limit
+//
+// A job that never finishes used to keep its "running" flag set forever, so every later run was skipped with
+// "already running" and nothing was dispatched until the process restarted. Jobs can now be given a timeout:
+// when it passes, the run is abandoned, the flag is released and the next cycle goes ahead.
 
 import logger from './logger.js';
+import { withTimeout, TimeoutError } from './timeout.js';
 
-class JobQueue {
+export class JobQueue {
     constructor() {
         this.jobs = new Map();
+        // name -> { token, startedAt } while a run is in progress. The token lets a run that was given up on
+        // finish later without releasing the lock of the run that replaced it.
         this.running = new Map();
-        this.stopped = false; // Add stopped flag
-        console.log('[TROUBLESHOOTING] JobQueue initialized');
+        this.stopped = false;
     }
 
-    // Add a job to the queue
-    add(name, fn, priority = 1) {
+    /**
+     * Add a job to the queue
+     * @param {string} name
+     * @param {Function} fn
+     * @param {number} priority
+     * @param {{ timeoutMs?: number }} options  timeoutMs: give up on a run after this long (no limit when omitted)
+     */
+    add(name, fn, priority = 1, options = {}) {
         if (!this.jobs.has(name)) {
-            this.jobs.set(name, { fn, priority, lastRun: null });
+            this.jobs.set(name, { fn, priority, lastRun: null, timeoutMs: options.timeoutMs || null });
             logger.info(`Job '${name}' added to queue with priority ${priority}`);
         } else {
             logger.info(`Job '${name}' already exists in queue`);
@@ -22,8 +34,7 @@ class JobQueue {
 
     // Check if a job is currently running
     isRunning(name) {
-        const running = this.running.get(name) === true;
-        return running;
+        return this.running.has(name);
     }
 
     // Get all registered jobs
@@ -33,9 +44,26 @@ class JobQueue {
 
     // Get running jobs
     getRunningJobs() {
-        return Array.from(this.running.entries())
-            .filter(([_, isRunning]) => isRunning)
-            .map(([name]) => name);
+        return Array.from(this.running.keys());
+    }
+
+    /** When the job last finished successfully, or null */
+    lastRunOf(name) {
+        return this.jobs.get(name)?.lastRun ?? null;
+    }
+
+    /** How long the current run has been going, in ms, or null when it isn't running */
+    runningForMs(name, now = Date.now()) {
+        const run = this.running.get(name);
+        return run ? now - run.startedAt : null;
+    }
+
+    /**
+     * Release a job's lock by hand, so the next execute() isn't skipped. The abandoned run keeps going in the
+     * background (it can't be cancelled) but can no longer block the job. Returns true if it was running.
+     */
+    forceRelease(name) {
+        return this.running.delete(name);
     }
 
     // Stop the job queue (prevent new jobs)
@@ -57,45 +85,47 @@ class JobQueue {
 
     // Execute a job
     async execute(name) {
-        // Check if queue is stopped
         if (this.stopped) {
             logger.warn(`Job '${name}' rejected - queue is stopped`);
             return false;
         }
 
-        if (!this.jobs.has(name)) {
+        const job = this.jobs.get(name);
+        if (!job) {
             logger.warn(`Job '${name}' not found in queue`);
             return false;
         }
 
         if (this.isRunning(name)) {
-            logger.info(`Job '${name}' is already running, skipping execution`);
+            logger.info(`Job '${name}' is already running (${Math.round(this.runningForMs(name) / 1000)}s), skipping execution`);
             return false;
         }
 
-        this.running.set(name, true);
-        const job = this.jobs.get(name);
+        const token = Symbol(name);
         const startTime = Date.now();
+        this.running.set(name, { token, startedAt: startTime });
 
         logger.info(`Executing job '${name}'`);
 
         try {
-            const result = await job.fn();
-            const execTime = Date.now() - startTime;
+            const work = Promise.resolve().then(() => job.fn());
+            const result = job.timeoutMs ? await withTimeout(work, job.timeoutMs, `Job '${name}'`) : await work;
 
             job.lastRun = new Date();
-            logger.info(`Job '${name}' completed in ${execTime}ms`);
+            logger.info(`Job '${name}' completed in ${Date.now() - startTime}ms`);
 
             return result;
         } catch (error) {
             const execTime = Date.now() - startTime;
-
-            logger.error(`Error executing job '${name}' (${execTime}ms): ${error.message}`);
-            console.error(`[TROUBLESHOOTING] Error executing job '${name}' (${execTime}ms): ${error.message}`);
-
+            if (error instanceof TimeoutError) {
+                logger.error(`Job '${name}' gave up after ${execTime}ms and was released so the next run can start`);
+            } else {
+                logger.error(`Error executing job '${name}' (${execTime}ms): ${error.message}`);
+            }
             throw error;
         } finally {
-            this.running.set(name, false);
+            // Only release our own lock: after a timeout or forceRelease a newer run may hold it
+            if (this.running.get(name)?.token === token) this.running.delete(name);
         }
     }
 
