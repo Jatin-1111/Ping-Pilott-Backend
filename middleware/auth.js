@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import User from '../models/User.js';
 import logger from '../utils/logger.js';
+import { requireEmailVerification } from '../utils/emailVerification.js';
 
 /**
  * Protect routes - authentication middleware
@@ -47,8 +48,8 @@ export const protect = asyncHandler(async (req, res, next) => {
             });
         }
 
-        // Check if email is verified
-        if (!user.emailVerified) {
+        // Check if email is verified (only when verification is switched on)
+        if (requireEmailVerification() && !user.emailVerified) {
             return res.status(401).json({
                 status: 'error',
                 code: 'email_not_verified',

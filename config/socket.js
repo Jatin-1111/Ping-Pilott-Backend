@@ -11,6 +11,7 @@ import mongoose from 'mongoose';
 import User from '../models/User.js';
 import Server from '../models/Server.js';
 import logger from '../utils/logger.js';
+import { requireEmailVerification } from '../utils/emailVerification.js';
 
 let io;
 
@@ -38,7 +39,7 @@ export function initializeSocket(httpServer) {
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             const user = await User.findById(decoded.id).select('role emailVerified');
-            if (!user || !user.emailVerified) return next(new Error('Not authorized'));
+            if (!user || (requireEmailVerification() && !user.emailVerified)) return next(new Error('Not authorized'));
 
             socket.data.userId = String(user._id);
             socket.data.role = user.role;

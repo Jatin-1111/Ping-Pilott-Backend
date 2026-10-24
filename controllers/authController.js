@@ -4,6 +4,7 @@ import User from '../models/User.js';
 import logger from '../utils/logger.js';
 import { sendVerificationEmail, sendPasswordResetEmail } from '../services/emailService.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { requireEmailVerification } from '../utils/emailVerification.js';
 
 // Generate JWT token
 const generateToken = (id) => {
@@ -36,6 +37,8 @@ export const register = asyncHandler(async (req, res) => {
         });
     }
 
+    const verificationRequired = requireEmailVerification();
+
     // Generate verification token
     const verificationToken = uuidv4();
     const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
@@ -45,9 +48,25 @@ export const register = asyncHandler(async (req, res) => {
         email,
         password,
         displayName: name || '',
-        verificationToken,
-        verificationTokenExpiry,
+        ...(verificationRequired ? { verificationToken, verificationTokenExpiry } : { emailVerified: true }),
     });
+
+    if (!verificationRequired) {
+        // No email step: the account is ready, so sign the new user in straight away
+        const token = generateToken(user._id);
+        const refreshToken = generateRefreshToken(user._id);
+        user.password = undefined;
+
+        return res.status(201).json({
+            status: 'success',
+            message: 'Account created.',
+            data: {
+                user,
+                token,
+                refreshToken,
+            },
+        });
+    }
 
     // The account exists now, so answer straight away. A slow mail server must not keep the browser waiting,
     // and if the email fails the user can ask for a new link with "resend verification".
@@ -103,8 +122,8 @@ export const login = asyncHandler(async (req, res) => {
         });
     }
 
-    // Check if email is verified
-    if (!user.emailVerified) {
+    // Check if email is verified (only when verification is switched on)
+    if (requireEmailVerification() && !user.emailVerified) {
         return res.status(401).json({
             status: 'error',
             code: 'email_not_verified',
@@ -365,7 +384,7 @@ export const refreshToken = asyncHandler(async (req, res) => {
         // cannot be extended
         const passwordChangedSession = user.passwordChangedAt &&
             decoded.iat < Math.floor(user.passwordChangedAt.getTime() / 1000);
-        if (!user.emailVerified || passwordChangedSession) {
+        if ((requireEmailVerification() && !user.emailVerified) || passwordChangedSession) {
             return res.status(401).json({
                 status: 'error',
                 message: 'Invalid refresh token',
