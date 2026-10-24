@@ -1,22 +1,10 @@
 import { Redis } from 'ioredis';
 import logger from '../utils/logger.js';
+import { redisConnectionArgs } from './redisOptions.js';
 
-// Configuration for Redis connection
-const redisConfig = {
-    host: process.env.REDIS_HOST || 'localhost',
-    port: parseInt(process.env.REDIS_PORT) || 6379,
-    password: process.env.REDIS_PASSWORD || undefined,
-    // BullMQ requires maxRetriesPerRequest to be null
-    maxRetriesPerRequest: null,
-    enableReadyCheck: false,
-    retryStrategy(times) {
-        const delay = Math.min(times * 50, 2000);
-        return delay;
-    }
-};
-
-// Create a singleton connection instance
-export const redisConnection = new Redis(process.env.REDIS_URL || redisConfig);
+// Create a singleton connection instance. The options (BullMQ needs maxRetriesPerRequest: null) apply whether Redis is
+// configured with REDIS_URL or with host and port: see redisOptions.js.
+export const redisConnection = new Redis(...redisConnectionArgs());
 
 redisConnection.on('connect', () => {
     logger.info('🔌 Redis connection established successfully');
