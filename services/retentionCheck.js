@@ -52,7 +52,7 @@ export async function inspectRetention({ db, retentionDays, now = Date.now() }) 
     facts.ttlDays = ttlSeconds.length > 0 ? Math.round((Math.min(...ttlSeconds) / 86400) * 10) / 10 : null;
 
     if (facts.ttlDays === null) {
-        warnings.push('No TTL is set on serverchecks: only the nightly job removes old checks, so if it fails the collection grows without limit.');
+        warnings.push('No TTL is set on serverchecks: only the nightly job removes old checks, so if it fails the collection grows without limit. Run scripts/setRetentionTtl.js to set one.');
     } else if (facts.ttlDays < retentionDays) {
         warnings.push(`The TTL on serverchecks deletes after ${facts.ttlDays} days, earlier than the ${retentionDays} days configured, so the longer history is never kept.`);
     }
