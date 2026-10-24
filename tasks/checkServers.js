@@ -50,6 +50,8 @@ export const checkAllServersIntelligently = async () => {
  */
 const getDueServers = async (tick) => {
     const servers = await Server.find({
+        // Servers paused when their trial ended (services/trialPause.js) are not read again
+        pausedAt: null,
         $or: [
             { nextCheckAt: null },
             { nextCheckAt: { $lte: tick } }

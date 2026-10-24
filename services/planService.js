@@ -48,6 +48,9 @@ export async function applyPlanChange(user, plan, options = {}) {
         // A paid plan has no trial cut-off: servers that expired on the free trial start being checked again
         serverUpdate['monitoring.trialEndsAt'] = null;
         serverUpdate.nextCheckAt = null;
+        // ...and ones that were paused when the trial ended (services/trialPause.js) are resumed
+        serverUpdate.pausedAt = null;
+        serverUpdate.trialNoticeSentAt = null;
     }
     await Server.updateMany({ uploadedBy: user._id }, { $set: serverUpdate });
     await invalidateServerCache(user.id);

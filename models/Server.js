@@ -149,6 +149,17 @@ const serverSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    // Set when monitoring was stopped because the free trial ended (services/trialPause.js). A paused server is not
+    // checked, shows as "unknown", and has no open incident. Cleared when the owner moves to a paid plan.
+    pausedAt: {
+        type: Date,
+        default: null
+    },
+    // When the owner was emailed that the trial ended, so they are told once
+    trialNoticeSentAt: {
+        type: Date,
+        default: null
+    },
     // True while a "slow response" alert is open, so a slow streak sends one alert instead of one per check
     slowAlerted: {
         type: Boolean,
@@ -201,6 +212,8 @@ serverSchema.index({ uploadedBy: 1 });
 serverSchema.index({ status: 1 });
 serverSchema.index({ lastChecked: 1 });
 serverSchema.index({ nextCheckAt: 1 });
+// Finding free trials that have ended and not been paused yet
+serverSchema.index({ pausedAt: 1, 'monitoring.trialEndsAt': 1 });
 serverSchema.index({ uploadedAt: -1 });
 // Compound index for check scheduler (find by status + sort by lastChecked/calc)
 serverSchema.index({ status: 1, lastChecked: 1 });

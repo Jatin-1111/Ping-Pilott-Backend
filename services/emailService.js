@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import logger from '../utils/logger.js';
+import { maskCredentials } from '../utils/address.js';
 
 // Create a reusable transporter object
 let transporter = null;
@@ -454,9 +455,67 @@ export const sendResponseNotificationEmail = async (ticket, user, isToAdmin) => 
   }
 };
 
+/**
+ * Tell an account owner that monitoring stopped because the free trial ended.
+ * @param {Object} user - { email, displayName }
+ * @param {Array} servers - the paused servers: { name, url }
+ * @returns {Boolean} Whether the email was sent
+ */
+export const sendTrialEndedEmail = async (user, servers) => {
+  const mailer = initTransporter();
+  if (!mailer) {
+    logger.warn('Cannot send trial-ended email: email service not configured');
+    return false;
+  }
+
+  try {
+    const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
+    const upgradeLink = `${process.env.FRONTEND_URL || 'http://pingpilott.vercel.app'}/subscription`;
+    const many = servers.length > 1;
+    const list = servers
+      .map((server) => `<li><strong>${esc(server.name)}</strong> (${esc(maskCredentials(server.url))})</li>`)
+      .join('');
+
+    const info = await mailer.sendMail({
+      from: `"Ping Pilot" <${fromEmail}>`,
+      to: user.email,
+      subject: `Monitoring paused: your free trial ended`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background-color: #ff9800; color: white; padding: 15px; text-align: center;">
+            <h1 style="margin: 0;">Monitoring paused</h1>
+          </div>
+          <div style="padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9;">
+            <p>Hello${user.displayName ? ` ${esc(user.displayName)}` : ''},</p>
+            <p>Your free trial has ended, so Ping Pilot has stopped checking ${many ? 'these servers' : 'this server'}:</p>
+            <ul>${list}</ul>
+            <p>${many ? 'They' : 'It'} will show as pending and no alerts will be sent while monitoring is paused. Your settings and history are kept.</p>
+            <p>To start checking again, choose a plan:</p>
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${upgradeLink}" style="display: inline-block; padding: 10px 20px; background-color: #1D4ED8; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                Choose a plan
+              </a>
+            </div>
+            <p style="margin-top: 30px; font-size: 12px; color: #777;">
+              This is an automated message from Ping Pilot monitoring.
+            </p>
+          </div>
+        </div>
+      `,
+    });
+
+    logger.info(`Trial-ended email sent to ${user.email}: ${info.messageId}`);
+    return true;
+  } catch (error) {
+    logger.error(`Error sending trial-ended email: ${error.message}`);
+    return false;
+  }
+};
+
 export default {
   initTransporter,
   sendAlertEmail,
+  sendTrialEndedEmail,
   sendVerificationEmail,
   sendPasswordResetEmail,
   sendResponseNotificationEmail,

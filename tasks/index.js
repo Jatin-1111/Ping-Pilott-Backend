@@ -18,6 +18,12 @@ import { requeueUndelivered } from '../services/alertOutbox.js';
 import { getPipelineHealth, recordDispatch } from '../services/pipelineHealth.js';
 import { startHeartbeat } from './heartbeat.js';
 import { redisConnection } from '../config/redis.js';
+import Server from '../models/Server.js';
+import Incident from '../models/Incident.js';
+import User from '../models/User.js';
+import { pauseExpiredTrials } from '../services/trialPause.js';
+import { sendTrialEndedEmail } from '../services/emailService.js';
+import { invalidateServerCache } from '../utils/cacheManager.js';
 
 const retention = resolveRetentionMode(process.env.DATA_RETENTION_MODE);
 
@@ -78,6 +84,7 @@ export const initCronJobs = async () => {
         jobQueue.add('selectiveDataRetention', istDataRetention.runSelectiveDataRetention, 2, { timeoutMs: 30 * 60 * 1000 });
         jobQueue.add('emergencyCleanup', istDataRetention.runEmergencyCleanup, 3, { timeoutMs: 30 * 60 * 1000 });
         jobQueue.add('requeueAlerts', () => requeueUndelivered({ model: PendingAlert, queue: { add: addAlertToQueue } }), 1, { timeoutMs: 2 * 60 * 1000 });
+        jobQueue.add('pauseExpiredTrials', runTrialPause, 2, { timeoutMs: 5 * 60 * 1000 });
 
         // Log system info
         await logSystemInfo();
@@ -86,6 +93,9 @@ export const initCronJobs = async () => {
 
         // Alerts that were never queued, or whose job ran out of attempts, are queued again
         startAlertReconciler();
+
+        // Free trials that ended: pause the server and tell the owner, once
+        startTrialPause();
 
         // Midnight cleanup
         startMidnightCleanup();
@@ -198,6 +208,36 @@ const startMonitoring = () => {
     logger.info('Starting the check scheduler (every minute)');
 
     cron.schedule(CHECK_CRON, runCheckCycle);
+};
+
+/** Pause servers whose free trial ended and email their owners (see services/trialPause.js) */
+const runTrialPause = () => pauseExpiredTrials({
+    servers: Server,
+    incidents: Incident,
+    users: User,
+    sendNotice: sendTrialEndedEmail,
+    // Open dashboards and the cached server list should show the new status at once
+    onPaused: async (server) => {
+        await invalidateServerCache(String(server.uploadedBy));
+        redisConnection.publish('monitor-updates', JSON.stringify({
+            serverId: server._id,
+            userId: server.uploadedBy,
+            status: 'unknown',
+            latency: null,
+            error: null,
+            lastChecked: server.lastChecked
+        })).catch(() => {});
+    }
+});
+
+const startTrialPause = () => {
+    cron.schedule('*/5 * * * *', async () => {
+        try {
+            await jobQueue.execute('pauseExpiredTrials');
+        } catch (error) {
+            logger.error(`Trial pause failed: ${error.message}`);
+        }
+    });
 };
 
 /**
