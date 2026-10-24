@@ -1,0 +1,19 @@
+# Local development database, independent of the Atlas cluster that production uses.
+#   docker compose -f docker-compose.dev.yml up -d
+# then set MONGO_URI=mongodb://localhost:27017/pingpilott in your local .env (never commit that file).
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - mongo-dev-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mongo-dev-data:
