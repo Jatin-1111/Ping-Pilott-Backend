@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import logger from '../utils/logger.js';
 import { applyPlanChange } from '../services/planService.js';
 import { purgeUserData } from '../services/accountCleanup.js';
+import { requireEmailVerification } from '../utils/emailVerification.js';
 
 /**
  * @desc    Get all users
@@ -107,17 +108,22 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
             });
         }
 
-        const verificationToken = uuidv4();
-        updates.pendingEmail = wanted;
-        updates.verificationToken = verificationToken;
-        updates.verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
-        emailChangePending = true;
+        if (!requireEmailVerification()) {
+            // Verification is switched off: nothing to confirm, so the new address takes effect now
+            updates.email = wanted;
+        } else {
+            const verificationToken = uuidv4();
+            updates.pendingEmail = wanted;
+            updates.verificationToken = verificationToken;
+            updates.verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+            emailChangePending = true;
 
-        // The link goes to the NEW address, which is what proves it belongs to this person
-        await sendVerificationEmail(
-            { ...req.user.toObject(), email: wanted, id: req.user.id },
-            verificationToken
-        );
+            // The link goes to the NEW address, which is what proves it belongs to this person
+            await sendVerificationEmail(
+                { ...req.user.toObject(), email: wanted, id: req.user.id },
+                verificationToken
+            );
+        }
     }
 
     // Update user
