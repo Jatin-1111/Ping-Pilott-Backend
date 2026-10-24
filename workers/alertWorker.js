@@ -6,11 +6,71 @@ import './loadEnv.js';
 import { Worker } from 'bullmq';
 import { redisConnection } from '../config/redis.js';
 import logger from '../utils/logger.js';
-import { handleAlerts, shouldSendAlert } from '../services/alertService.js';
+import { throttled, suppressedNote } from '../utils/logThrottle.js';
+import { startWorkerHeartbeat } from '../utils/workerHealth.js';
+import { maskCredentials } from '../utils/address.js';
+import { sendAlertChannels } from '../services/alertService.js';
+import { deliverAlert } from '../services/alertDelivery.js';
 import { ALERT_CHANNEL, buildAlertMessage, toAlertItem } from '../utils/alertFeed.js';
 import Server from '../models/Server.js';
 import AlertEvent from '../models/AlertEvent.js';
+import PendingAlert from '../models/PendingAlert.js';
 import mongoose from 'mongoose';
+
+const ensureMongo = async () => {
+    if (mongoose.connection.readyState === 0) await mongoose.connect(process.env.MONGO_URI);
+};
+
+/**
+ * Keep a record of every alert the user was told about: it is the feed behind the mobile app and feeds the admin
+ * analytics. The app gets the alert even when no email or webhook is set up.
+ * Throws only when the row could not be written; the live push is best effort, because the app catches up from the feed.
+ */
+const recordFeed = async (pending, server) => {
+    const checkResult = pending.checkResult || {};
+    const event = await AlertEvent.create({
+        serverId: pending.serverId,
+        userId: server.uploadedBy,
+        type: pending.alertType,
+        serverName: server.name,
+        serverUrl: maskCredentials(server.url),
+        message: buildAlertMessage(pending.alertType, checkResult, server)
+    });
+
+    // The API process owns the sockets, so hand the alert over through Redis
+    if (server.uploadedBy) {
+        try {
+            await redisConnection.publish(
+                ALERT_CHANNEL,
+                JSON.stringify({ userId: String(server.uploadedBy), alert: toAlertItem(event) })
+            );
+        } catch (pushError) {
+            logger.error(`Could not push alert event for ${pending.serverId}: ${pushError.message}`);
+        }
+    }
+};
+
+const deps = {
+    findServer: (serverId) => Server.findById(serverId)
+        .select('name url uploadedBy contactEmails contactPhones monitoring timezone priority')
+        .lean(),
+    saveProgress: async (pendingId, set) => {
+        if (pendingId) await PendingAlert.updateOne({ _id: pendingId }, { $set: set });
+    },
+    recordFeed,
+    sendChannels: sendAlertChannels
+};
+
+/** Jobs queued before alerts were kept in the database carry the alert itself. Deliver them once, without a row. */
+const legacyPending = ({ serverId, alertType, oldStatus, newStatus, checkResult }) => ({
+    _id: null,
+    serverId,
+    alertType: alertType || (newStatus === 'down' ? 'server_down' : (oldStatus === 'down' && newStatus === 'up' ? 'server_recovery' : null)),
+    oldStatus,
+    newStatus,
+    checkResult,
+    done: {}
+});
 
 /**
  * Dedicated worker for processing alerts
@@ -19,60 +79,24 @@ import mongoose from 'mongoose';
 const alertWorker = new Worker(
     'alerts',
     async (job) => {
-        const { serverId, oldStatus, newStatus, checkResult, serverData } = job.data;
-        // Jobs queued before the worker started sending `alertType` still carry old/new status
-        const alertType = job.data.alertType
-            || (newStatus === 'down' ? 'server_down' : (oldStatus === 'down' && newStatus === 'up' ? 'server_recovery' : null));
+        const { pendingId, serverId } = job.data;
 
         try {
-            logger.info(`Processing alert for server ${serverId}: ${oldStatus} -> ${newStatus}`);
+            await ensureMongo();
 
-            // Fetch full server data if not provided
-            let server = serverData;
-            if (!server) {
-                server = await Server.findById(serverId)
-                    .select('name url uploadedBy contactEmails contactPhones monitoring alertSettings')
-                    .lean();
-
-                if (!server) {
-                    throw new Error(`Server ${serverId} not found`);
-                }
+            const pending = pendingId ? await PendingAlert.findById(pendingId).lean() : legacyPending(job.data);
+            if (!pending || !pending.alertType) {
+                logger.warn(`Alert job ${job.id} has nothing to deliver (alert ${pendingId || 'unknown'} not found)`);
+                return { success: true, serverId };
             }
+            if (pending.deliveredAt || pending.abandonedAt) return { success: true, serverId };
 
-            // Email and webhook. This throws when the email fails, so the job retries before anything below runs
-            // and a retry can never record (or push) the same alert twice.
-            const alertServer = { ...server, _id: serverId, status: oldStatus };
-            await handleAlerts(alertServer, alertType, checkResult);
+            logger.info(`Processing ${pending.alertType} alert for server ${pending.serverId}: ${pending.oldStatus} -> ${pending.newStatus}`);
 
-            // Keep a record of every alert the user was told about: it is the feed behind the mobile app and
-            // feeds the admin analytics. Whether to tell them is the user's own setting (alerts on, inside their
-            // alert hours), so the app gets alerts even when no email or webhook is set up.
-            // A failure to record or push must never make the job fail and re-send the email.
-            if (alertType && shouldSendAlert(alertServer)) {
-                try {
-                    if (mongoose.connection.readyState === 0) await mongoose.connect(process.env.MONGO_URI);
-                    const event = await AlertEvent.create({
-                        serverId,
-                        userId: server.uploadedBy,
-                        type: alertType,
-                        serverName: server.name,
-                        serverUrl: server.url,
-                        message: buildAlertMessage(alertType, checkResult, server)
-                    });
+            // Throws while any part is still undelivered, so the queue retries and only the missing parts are repeated
+            await deliverAlert(pending, deps);
 
-                    // The API process owns the sockets, so hand the alert over through Redis
-                    if (server.uploadedBy) {
-                        await redisConnection.publish(
-                            ALERT_CHANNEL,
-                            JSON.stringify({ userId: String(server.uploadedBy), alert: toAlertItem(event) })
-                        );
-                    }
-                } catch (recordError) {
-                    logger.error(`Could not record or push alert event for ${serverId}: ${recordError.message}`);
-                }
-            }
-
-            logger.info(`Alert processed successfully for server ${serverId}`);
+            logger.info(`Alert processed successfully for server ${pending.serverId}`);
             return { success: true, serverId };
 
         } catch (error) {
@@ -86,12 +110,6 @@ const alertWorker = new Worker(
         limiter: {
             max: 50, // Max 50 alerts per second
             duration: 1000
-        },
-        settings: {
-            backoffStrategy: (attemptsMade) => {
-                // Exponential backoff: 2s, 4s, 8s
-                return Math.min(Math.pow(2, attemptsMade) * 1000, 10000);
-            }
         }
     }
 );
@@ -102,12 +120,24 @@ alertWorker.on('completed', (job) => {
 });
 
 alertWorker.on('failed', (job, err) => {
-    logger.error(`Alert job ${job?.id} failed for server ${job?.data?.serverId}:`, err.message);
+    const attempts = job?.opts?.attempts ?? 1;
+    const lastAttempt = job && job.attemptsMade >= attempts;
+    logger.error(
+        `Alert job ${job?.id} for server ${job?.data?.serverId} failed (attempt ${job?.attemptsMade}/${attempts})` +
+        `${lastAttempt ? '; out of attempts, the alert stays pending and is queued again later' : ''}:`,
+        err.message
+    );
 });
 
 alertWorker.on('error', (err) => {
-    logger.error('Alert worker error:', err);
+    throttled('alert-worker-error', 30 * 1000, (n) => {
+        logger.error(`Alert worker error${suppressedNote(n, 30 * 1000)}:`, err);
+    });
 });
+
+// Say "alive" every 15 s for /health and the container healthcheck; the key expires if this process stops
+const heartbeat = startWorkerHeartbeat({ redis: redisConnection, role: 'alert', isRunning: () => alertWorker.isRunning() });
+alertWorker.on('closing', () => { heartbeat.stop(); });
 
 // Graceful shutdown. Only when this worker is its own process: embedded in the API (see index.js) the API
 // handles shutdown and closes the worker itself.

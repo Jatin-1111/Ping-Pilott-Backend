@@ -28,7 +28,10 @@ import supportRoutes from './routes/supportRoutes.js';
 import incidentRoutes from './routes/incidentRoutes.js';
 import alertRoutes from './routes/alertRoutes.js';
 
-import { initCronJobs, getSchedulerStatus } from './tasks/index.js';
+import { initCronJobs, getSchedulerStatus, getPipelineState } from './tasks/index.js';
+import { withTimeout } from './utils/timeout.js';
+
+const HEALTH_PROBE_TIMEOUT_MS = 2000;
 
 // Get __dirname equivalent in ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -125,10 +128,11 @@ app.get('/health', async (req, res) => {
     const checks = await Promise.allSettled([
         // MongoDB check
         // wrapped so a ping before Mongo has connected is a failed check, not a crash
-        Promise.resolve().then(() => mongoose.connection.db.admin().ping()),
+        withTimeout(Promise.resolve().then(() => mongoose.connection.db.admin().ping()), HEALTH_PROBE_TIMEOUT_MS, 'Mongo ping'),
 
-        // Redis check
-        redisConnection.ping(),
+        // Redis check. Its commands wait for ever while the connection is down, so without a limit /health hung
+        // instead of answering 503.
+        withTimeout(redisConnection.ping(), HEALTH_PROBE_TIMEOUT_MS, 'Redis ping'),
 
         // Memory and uptime
         Promise.resolve({
@@ -143,17 +147,38 @@ app.get('/health', async (req, res) => {
     // A scheduler that has stopped finishing cycles means nobody is being monitored, even with the database and Redis
     // up, so that counts as degraded too. 'starting' (just booted) is not a problem.
     const scheduler = getSchedulerStatus();
+    // Whether the workers are alive and finishing checks. Shown here, but it does not change the status code: a worker
+    // outage must not make a load balancer take the API (and its dashboards) out of rotation. /health/monitoring is
+    // the one that answers 503 for it.
+    const pipeline = await getPipelineState();
     const health = {
         status: checks.slice(0, 2).every(c => c.status === 'fulfilled') && scheduler !== 'stalled' ? 'healthy' : 'degraded',
         timestamp: new Date().toISOString(),
         checks: {
             mongodb: checks[0].status === 'fulfilled' ? 'up' : 'down',
             redis: checks[1].status === 'fulfilled' ? 'up' : 'down',
-            scheduler
+            scheduler,
+            monitoring: pipeline.state
         }
     };
 
     res.status(health.status === 'healthy' ? 200 : 503).json(health);
+});
+
+// Is monitoring really happening? 200 when the scheduler is running, a monitor worker and an alert worker are alive,
+// and queued checks are being finished; 503 otherwise. Point an outside uptime monitor at this one.
+// Public, so it says what is wrong in words but gives no counts or addresses; the details are in the log.
+let lastPipelineState = 'ok';
+app.get('/health/monitoring', async (req, res) => {
+    const { state, reasons } = await getPipelineState();
+    if (state !== lastPipelineState) {
+        // Said once per change, with the reasons, so the log shows when and why monitoring stopped
+        const message = `Monitoring pipeline is ${state}${reasons.length ? `: ${reasons.join(', ')}` : ''}`;
+        if (state === 'degraded') logger.error(message);
+        else logger.info(message);
+        lastPipelineState = state;
+    }
+    res.status(state === 'degraded' ? 503 : 200).json({ status: state, reasons, timestamp: new Date().toISOString() });
 });
 
 // API routes

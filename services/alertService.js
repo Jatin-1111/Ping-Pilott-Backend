@@ -4,7 +4,8 @@ import ServerCheck from '../models/ServerCheck.js';
 import axios from 'axios';
 import http from 'http';
 import https from 'https';
-import { safeLookup, assertPublicHost, blockPrivateRedirect } from '../utils/ssrfGuard.js';
+import { safeLookup, assertPublicHost, blockPrivateRedirect, hostFromTarget } from '../utils/ssrfGuard.js';
+import { maskCredentials } from '../utils/address.js';
 import { localParts, timeInWindow, timezoneOf } from '../utils/schedule.js';
 
 // Webhooks go to addresses users typed in, so they get the same private-network protection as checks,
@@ -36,6 +37,12 @@ export const shouldSendAlert = (server) => {
 };
 
 /**
+ * What to call a webhook in a log line: its host only. Slack, Discord and Teams webhook addresses carry a secret in
+ * the path, and anyone who has the address can post to that channel.
+ */
+export const webhookLabel = (webhookUrl) => hostFromTarget(webhookUrl) || 'the configured webhook';
+
+/**
  * Execute a webhook for the alert
  * @param {Object} server - Server data
  * @param {String} alertType - Type of alert
@@ -45,52 +52,59 @@ const sendWebhookAlert = async (server, alertType, payload) => {
     const webhookUrl = server.monitoring?.alerts?.webhookUrl;
     if (!webhookUrl) return;
 
-    try {
-        logger.info(`Sending webhook for ${server.name} (${server._id}) to ${webhookUrl}`);
+    logger.info(`Sending webhook for ${server.name} (${server._id}) to ${webhookLabel(webhookUrl)}`);
 
-        await assertPublicHost(webhookUrl);
+    await assertPublicHost(webhookUrl);
 
-        await webhookClient.post(webhookUrl, {
-            event: alertType,
-            server: {
-                id: server._id,
-                name: server.name,
-                url: server.url,
-                status: server.status
-            },
-            ...payload,
-            timestamp: new Date().toISOString()
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'User-Agent': 'PingPilott-Webhook-Bot/1.0'
-            }
-        });
+    await webhookClient.post(webhookUrl, {
+        event: alertType,
+        server: {
+            id: server._id,
+            name: server.name,
+            url: server.url,
+            status: server.status
+        },
+        ...payload,
+        timestamp: new Date().toISOString()
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+            'User-Agent': 'PingPilott-Webhook-Bot/1.0'
+        }
+    });
 
-        logger.info(`Webhook sent successfully for ${server.name}`);
-    } catch (error) {
-        logger.error(`Failed to send webhook for ${server.name}: ${error.message}`);
-        // We could implement retry logic here or put it in a separate queue
-    }
+    logger.info(`Webhook sent successfully for ${server.name}`);
 };
 
 /**
- * Handle sending the alert
- * @param {Object} server - The server document (snapshot from when the status changed)
+ * A webhook failure that another attempt cannot fix: the address is private, or the receiver answered that the request
+ * itself is wrong (404 gone, 401/403 refused, 400 bad). Timeouts, 408, 429 and 5xx are worth another try.
+ */
+export const isPermanentWebhookFailure = (error) => {
+    if (error?.code === 'PRIVATE_TARGET') return true;
+    const status = error?.response?.status;
+    return Number.isInteger(status) && status >= 400 && status < 500 && status !== 408 && status !== 429;
+};
+
+/**
+ * Send the alert on each channel that still has to go out.
+ * @param {Object} server - The server document; `status` is the status it moved away from
  * @param {String} alertType - 'server_down' | 'server_recovery' | 'slow_response'
  * @param {Object} checkResult - Result object
- *
- * Email failures are thrown, not swallowed: the alert queue retries with backoff, which is the whole
- * point of having a queue. The webhook runs after the email and never fails the job, so a retry cannot
- * send the same email twice because of a flaky webhook.
+ * @param {{ email?: boolean, webhook?: boolean }} done - channels that already succeeded, which are not sent again
+ * @param {{ sendEmail?: Function, sendWebhook?: Function }} senders - replaceable in tests
+ * @returns {Promise<{ email: boolean, webhook: boolean, errors: Error[] }>}
+ *   A channel is true when it was sent, was sent earlier, or has nothing to send (no contacts, no webhook, or a
+ *   webhook that can never work). It never throws: one channel failing must not stop the other.
  */
-export const handleAlerts = async (server, alertType, checkResult) => {
-    if (!alertType || !shouldSendAlert(server)) return false;
-
-    let delivered = false;
+export const sendAlertChannels = async (server, alertType, checkResult, done = {}, senders = {}) => {
+    const { sendEmail = sendAlertEmail, sendWebhook = sendWebhookAlert } = senders;
+    const result = { email: Boolean(done.email), webhook: Boolean(done.webhook), errors: [] };
 
     const enhancedServer = {
         ...(server.toObject ? server.toObject() : server),
+        // Alerts go to people other than the account holder: never carry a password that was saved in the address
+        url: maskCredentials(server.url),
         responseTime: checkResult.responseTime,
         error: checkResult.error,
         alertTime: new Date().toISOString()
@@ -101,23 +115,45 @@ export const handleAlerts = async (server, alertType, checkResult) => {
     const newStatus = checkResult.status;
     const oldStatus = server.status;
 
-    if (emailEnabled && server.contactEmails?.length > 0) {
-        await sendAlertEmail(enhancedServer, alertType, oldStatus, newStatus);
-        delivered = true;
-        logger.info(`🔔 Alert email sent for ${server.name}: ${alertType}`);
+    if (!result.email) {
+        if (emailEnabled && server.contactEmails?.length > 0) {
+            try {
+                await sendEmail(enhancedServer, alertType, oldStatus, newStatus);
+                result.email = true;
+                logger.info(`🔔 Alert email sent for ${server.name}: ${alertType}`);
+            } catch (error) {
+                result.errors.push(error);
+            }
+        } else {
+            result.email = true;
+        }
     }
 
-    if (webhookUrl) {
-        await sendWebhookAlert(enhancedServer, alertType, {
-            oldStatus,
-            newStatus,
-            responseTime: checkResult.responseTime,
-            error: checkResult.error
-        });
-        delivered = true;
+    if (!result.webhook) {
+        if (webhookUrl) {
+            try {
+                await sendWebhook(enhancedServer, alertType, {
+                    oldStatus,
+                    newStatus,
+                    responseTime: checkResult.responseTime,
+                    error: checkResult.error
+                });
+                result.webhook = true;
+            } catch (error) {
+                if (isPermanentWebhookFailure(error)) {
+                    // Retrying a dead address for a day would only hide the email that did go out
+                    logger.warn(`Webhook for ${server.name} (${server._id}) was refused and will not be retried: ${error.message}`);
+                    result.webhook = true;
+                } else {
+                    result.errors.push(error);
+                }
+            }
+        } else {
+            result.webhook = true;
+        }
     }
 
-    return delivered;
+    return result;
 };
 
-export default { shouldSendAlert, handleAlerts };
+export default { shouldSendAlert, sendAlertChannels, isPermanentWebhookFailure };

@@ -24,7 +24,13 @@ export const getIncidents = asyncHandler(async (req, res) => {
         // started inside the period, or still going on whenever it started
         $or: [{ startedAt: { $gte: since } }, { open: true }],
     };
-    if (req.query.serverId) filter.serverId = req.query.serverId;
+    if (req.query.serverId) {
+        // An id that is not one is a bad request, not a database error
+        if (typeof req.query.serverId !== 'string' || !/^[0-9a-fA-F]{24}$/.test(req.query.serverId)) {
+            return res.status(400).json({ status: 'error', message: 'Invalid server ID', code: 'INVALID_SERVER_ID' });
+        }
+        filter.serverId = req.query.serverId;
+    }
 
     const [rows, servers] = await Promise.all([
         Incident.find(filter).sort({ startedAt: -1 }).limit(MAX_ROWS).lean(),

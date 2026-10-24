@@ -205,13 +205,6 @@ serverSchema.index({ uploadedAt: -1 });
 // Compound index for check scheduler (find by status + sort by lastChecked/calc)
 serverSchema.index({ status: 1, lastChecked: 1 });
 
-// Calculate uptime percentage
-serverSchema.virtual('uptime24h').get(function () {
-    // This would normally be calculated from actual check history
-    // For demonstration purposes, we return a fixed value
-    return 99.8;
-});
-
 // Create and export the model
 const Server = mongoose.model('Server', serverSchema);
 export default Server;

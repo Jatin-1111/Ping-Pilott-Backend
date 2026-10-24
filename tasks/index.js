@@ -11,6 +11,13 @@ import jobQueue from '../utils/jobQueue.js';
 import CronJob from '../models/CronJob.js';
 import { resolveRetentionMode, retentionJobName } from '../utils/retentionMode.js';
 import { startSchedulerWatchdog } from './schedulerWatchdog.js';
+import { CHECK_CRON } from '../utils/checkSchedule.js';
+import PendingAlert from '../models/PendingAlert.js';
+import { addAlertToQueue } from '../queues/alertQueue.js';
+import { requeueUndelivered } from '../services/alertOutbox.js';
+import { getPipelineHealth, recordDispatch } from '../services/pipelineHealth.js';
+import { startHeartbeat } from './heartbeat.js';
+import { redisConnection } from '../config/redis.js';
 
 const retention = resolveRetentionMode(process.env.DATA_RETENTION_MODE);
 
@@ -21,21 +28,25 @@ const CONFIG = {
     DATA_RETENTION_MODE: retention.mode,
 
     // MIDNIGHT CRON (Runs at 00:00 system time)
-    MIDNIGHT_CRON: '0 0 * * *',
-
-    // Peak hours (server time)
-    PEAK_HOURS: {
-        start: parseInt(process.env.PEAK_HOURS_START) || 9,
-        end: parseInt(process.env.PEAK_HOURS_END) || 18
-    },
-
-    SMART_MONITORING_ENABLED: process.env.SMART_MONITORING_ENABLED === 'true'
+    MIDNIGHT_CRON: '0 0 * * *'
 };
 
 let watchdog = null;
 
 /** 'ok' | 'stalled' | 'starting' (cron jobs not initialised yet). Shown by /health. */
 export const getSchedulerStatus = () => watchdog?.status() ?? 'starting';
+
+const processStartedAt = Date.now();
+
+/**
+ * Is monitoring really happening: scheduler running, workers alive, checks finishing? { state, reasons }
+ * Shown by /health/monitoring and used by the outside heartbeat.
+ */
+export const getPipelineState = () => getPipelineHealth({
+    redis: redisConnection,
+    schedulerStatus: getSchedulerStatus(),
+    startedAt: processStartedAt
+});
 
 /**
  * Create CronJob record (system time)
@@ -66,16 +77,15 @@ export const initCronJobs = async () => {
         jobQueue.add('aggressiveDataRetention', istDataRetention.runAggressiveDataRetention, 2, { timeoutMs: 30 * 60 * 1000 });
         jobQueue.add('selectiveDataRetention', istDataRetention.runSelectiveDataRetention, 2, { timeoutMs: 30 * 60 * 1000 });
         jobQueue.add('emergencyCleanup', istDataRetention.runEmergencyCleanup, 3, { timeoutMs: 30 * 60 * 1000 });
+        jobQueue.add('requeueAlerts', () => requeueUndelivered({ model: PendingAlert, queue: { add: addAlertToQueue } }), 1, { timeoutMs: 2 * 60 * 1000 });
 
         // Log system info
         await logSystemInfo();
 
-        // Start monitoring based on configuration
-        if (CONFIG.SMART_MONITORING_ENABLED) {
-            startAdaptiveMonitoring();
-        } else {
-            startBasicMonitoring();
-        }
+        startMonitoring();
+
+        // Alerts that were never queued, or whose job ran out of attempts, are queued again
+        startAlertReconciler();
 
         // Midnight cleanup
         startMidnightCleanup();
@@ -85,6 +95,9 @@ export const initCronJobs = async () => {
 
         // Notice (and recover from) a scheduler that has stopped finishing cycles
         watchdog = startSchedulerWatchdog({ queue: jobQueue });
+
+        // Optional: ping an outside dead-man's-switch service while monitoring is healthy (HEARTBEAT_URL)
+        startHeartbeat({ url: process.env.HEARTBEAT_URL, isHealthy: async () => (await getPipelineState()).state === 'ok' });
 
         logger.info('✅ All cron jobs initialized successfully');
 
@@ -178,41 +191,25 @@ const startMidnightCleanup = () => {
 };
 
 /**
- * Adaptive monitoring based on server time of day
+ * Start the check scheduler. It wakes up every minute; which servers are due is decided in checkServers.js from each
+ * server's own frequency, so a 1-minute monitor is checked every minute whatever else is configured.
  */
-const startAdaptiveMonitoring = () => {
-    logger.info('🧠 Starting ADAPTIVE monitoring system...');
+const startMonitoring = () => {
+    logger.info('Starting the check scheduler (every minute)');
 
-    // Run every minute
-    cron.schedule('* * * * *', async () => {
-        const now = new Date();
-        const currentHour = now.getHours();
-        const currentMinute = now.getMinutes();
-
-        // Determine current period based on hours
-        let interval;
-        if (currentHour >= CONFIG.PEAK_HOURS.start &&
-            currentHour < CONFIG.PEAK_HOURS.end) {
-            interval = 'peak';
-        } else if (currentHour >= 22 || currentHour < 6) {
-            interval = 'quiet';
-        } else {
-            interval = 'normal';
-        }
-
-        // Run every minute - logic in checkServers.js handles the filtering
-        await executeSmartMonitoring(interval);
-    });
+    cron.schedule(CHECK_CRON, runCheckCycle);
 };
 
 /**
- * Basic monitoring - fallback when smart monitoring is disabled
+ * Alert reconciler - every 5 minutes, queue the alerts that have not been delivered (see services/alertOutbox.js)
  */
-const startBasicMonitoring = () => {
-    logger.info('⚡ Starting BASIC monitoring system (every 3 minutes)...');
-
-    cron.schedule('*/3 * * * *', async () => {
-        await executeSmartMonitoring('basic');
+const startAlertReconciler = () => {
+    cron.schedule('*/5 * * * *', async () => {
+        try {
+            await jobQueue.execute('requeueAlerts');
+        } catch (error) {
+            logger.error(`Alert reconciler failed: ${error.message}`);
+        }
     });
 };
 
@@ -249,41 +246,21 @@ const startHealthMonitoring = () => {
 };
 
 /**
- * Determine if we should run a check based on adaptive schedule
+ * One scheduler cycle: queue a check for every server that is due
  */
-const shouldRunAdaptiveCheck = (interval, currentMinute) => {
-    switch (interval) {
-        case 'peak':
-            return currentMinute % 2 === 0; // Every 2 minutes during peak hours
-        case 'normal':
-            return currentMinute % 3 === 0; // Every 3 minutes during normal hours
-        case 'quiet':
-            return currentMinute % 5 === 0; // Every 5 minutes during quiet hours
-        default:
-            return currentMinute % 3 === 0;
-    }
-};
-
-/**
- * Execute smart monitoring
- */
-const executeSmartMonitoring = async (interval) => {
+const runCheckCycle = async () => {
     const jobName = 'smartCheckServers';
 
     // Runs every minute: a database row per run (written twice) was 2,880 writes a day for nothing.
     // Only failures are recorded; normal runs are in the log.
     try {
-        if (interval !== 'basic') {
-            logger.debug(`🔄 Smart monitoring (${interval} mode)`);
-        }
-
+        // Throws when the cycle could not do its job (database or Redis down): see dispatchCycle.js
         const result = await jobQueue.execute(jobName);
 
-        if (result && (result.total > 0 || result.error)) {
-            logger.info(`✅ Monitoring (${interval}) dispatched ${result.dispatched}/${result.total} checks`, result.error ? { error: result.error } : undefined);
-        }
+        // /health compares this with the last finished check to see whether the workers are taking the jobs
+        if (result?.dispatched > 0) recordDispatch();
     } catch (error) {
-        logger.error(`❌ Monitoring error (${interval}): ${error.message}`);
+        logger.error(`❌ Monitoring error: ${error.message}`);
         try {
             await new CronJob({
                 name: jobName,
@@ -362,8 +339,6 @@ const logSystemInfo = async () => {
         logger.info('🚀 Monitoring System Started', {
             time: new Date().toISOString(),
             dataRetentionMode: CONFIG.DATA_RETENTION_MODE,
-            smartMonitoring: CONFIG.SMART_MONITORING_ENABLED,
-            peakHours: `${CONFIG.PEAK_HOURS.start}:00 - ${CONFIG.PEAK_HOURS.end}:00`,
             midnightCleanup: '00:00 daily (system time)',
             nodeVersion: process.version,
             platform: process.platform
@@ -371,32 +346,6 @@ const logSystemInfo = async () => {
 
     } catch (error) {
         logger.error(`Error logging system info: ${error.message}`);
-    }
-};
-
-/**
- * Log cleanup recommendations
- */
-const logCleanupRecommendations = async () => {
-    try {
-        const recommendations = await istDataRetention.getCleanupRecommendations();
-
-        logger.info('📊 Current Data Status:', {
-            serverChecks: recommendations.current.serverChecks,
-            cronJobs: recommendations.current.cronJobs,
-            databaseSize: `${recommendations.current.totalSizeMB} MB`,
-            recommendedMode: recommendations.recommendation,
-            currentMode: CONFIG.DATA_RETENTION_MODE,
-            reasoning: recommendations.reasoning
-        });
-
-        if (recommendations.recommendation !== CONFIG.DATA_RETENTION_MODE) {
-            logger.warn(`💡 Recommendation: Consider switching to '${recommendations.recommendation}' mode`);
-            logger.warn(`Reason: ${recommendations.reasoning}`);
-        }
-
-    } catch (error) {
-        logger.error(`Error getting cleanup recommendations: ${error.message}`);
     }
 };
 

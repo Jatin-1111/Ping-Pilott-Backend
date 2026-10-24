@@ -14,6 +14,7 @@ import User from '../models/User.js';
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
 import AlertEvent from '../models/AlertEvent.js';
+import { SCHEDULED_CHECKS_ONLY } from '../services/checkRunner.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { getCachedData, setCachedData } from '../utils/cacheManager.js';
 import { CACHE_STRATEGIES } from '../config/performance.js';
@@ -213,7 +214,7 @@ const getAvgResponseTimeOptimized = async (startDate, endDate) => {
 /** Share of checks that succeeded, or null when there were none (no data is not 100%) */
 const getUptimeOptimized = async (startDate, endDate) => {
     const result = await ServerCheck.aggregate([
-        { $match: { timestamp: { $gte: startDate, $lte: endDate } } },
+        { $match: { timestamp: { $gte: startDate, $lte: endDate }, ...SCHEDULED_CHECKS_ONLY } },
         {
             $group: {
                 _id: null,

@@ -31,13 +31,28 @@ services:
       timeout: 5s
       retries: 3
 
+  # These two have no HTTP port, so their healthcheck looks for the heartbeat each worker writes to Redis every 15 s
+  # (utils/workerHealth.js). Docker only marks an unhealthy container; point an outside monitor at
+  # https://<api>/health/monitoring, or run something like willfarrell/autoheal, to be told or have it restarted.
   monitor-worker:
     <<: *backend
     command: ["node", "workers/monitorWorker.js"]
+    healthcheck:
+      test: ["CMD", "node", "scripts/workerHealthcheck.js", "monitor"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   alert-worker:
     <<: *backend
     command: ["node", "workers/alertWorker.js"]
+    healthcheck:
+      test: ["CMD", "node", "scripts/workerHealthcheck.js", "alert"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   nginx:
     image: nginx:alpine

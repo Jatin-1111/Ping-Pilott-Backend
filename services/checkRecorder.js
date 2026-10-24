@@ -5,10 +5,11 @@
 
 import Server from '../models/Server.js';
 import { addAlertToQueue } from '../queues/alertQueue.js';
+import PendingAlert from '../models/PendingAlert.js';
+import { enqueueAlert } from './alertOutbox.js';
 import { redisConnection } from '../config/redis.js';
 import { decideAlert } from '../utils/alertDecision.js';
 import { invalidateServerCache } from '../utils/cacheManager.js';
-import logger from '../utils/logger.js';
 import { recordStatusChange } from './incidentService.js';
 
 /**
@@ -52,19 +53,9 @@ export async function applyCheckResult(server, checkResult) {
     // Going down opens an incident and recovering closes it. Only the check that won the update records it.
     if (changed && applied) await recordStatusChange(server, previous, checkResult, now);
 
+    // The alert is saved before it is queued, so a queue that is down or an email provider that is slow cannot lose it
     if (alertType && applied) {
-        try {
-            await addAlertToQueue({
-                serverId: server._id.toString(),
-                alertType,
-                oldStatus: previous,
-                newStatus: checkResult.status,
-                checkResult,
-                serverData: server
-            }, server.priority === 'high' ? 'high' : 'normal');
-        } catch (err) {
-            logger.error(`Failed to queue alert for ${server.name}: ${err.message}`);
-        }
+        await enqueueAlert({ server, alertType, previous, checkResult }, { model: PendingAlert, queue: { add: addAlertToQueue } });
     }
 
     redisConnection.publish('monitor-updates', JSON.stringify({

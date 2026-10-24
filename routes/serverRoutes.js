@@ -88,13 +88,6 @@ router.get('/:id/history', [
     validate
 ], serverController.getServerHistory);
 
-// Server statistics (uptime, response times, daily and hourly breakdown)
-router.get('/:id/stats', [
-    param('id').isMongoId().withMessage('Invalid server ID'),
-    query('period').optional().isIn(['1h', '6h', '12h', '24h', '7d', '30d']).withMessage('Invalid period'),
-    validate
-], serverController.getServerStats);
-
 // Batch check servers
 router.post('/batch-check', [
     body('serverIds').isArray({ min: 1, max: 10 }).withMessage('Server IDs array required (1-10 items)'),

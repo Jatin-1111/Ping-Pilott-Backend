@@ -1,7 +1,8 @@
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
-import { checkServerStatus } from '../services/monitoringService.js';
+import { runCheck, SCHEDULED_CHECKS_ONLY } from '../services/checkRunner.js';
+import { clampLimit, normalizeUrl, addressChangeUpdates, nextCheckEstimate } from '../utils/serverEdits.js';
 import { redisConnection } from '../config/redis.js';
 import logger from '../utils/logger.js';
 import mongoose from 'mongoose';
@@ -131,7 +132,7 @@ export const getServers = asyncHandler(async (req, res) => {
                 isHealthy,
                 trialExpired,
                 // Add next check estimation
-                nextCheckEstimate: getNextCheckEstimate(server)
+                nextCheckEstimate: nextCheckEstimate(server)
             };
         });
 
@@ -240,7 +241,7 @@ export const getServerById = asyncHandler(async (req, res) => {
             lastCheckedLocal: server.lastChecked ? new Date(server.lastChecked).toISOString() : null,
             lastStatusChangeLocal: server.lastStatusChange ? new Date(server.lastStatusChange).toISOString() : null,
             isHealthy: server.status === 'up' && (!server.responseTime || server.responseTime < 2000),
-            nextCheckEstimate: getNextCheckEstimate(server),
+            nextCheckEstimate: nextCheckEstimate(server),
             trialExpired: server.uploadedPlan === 'free' &&
                 server.monitoring?.trialEndsAt &&
                 server.monitoring.trialEndsAt < Date.now(),
@@ -429,7 +430,7 @@ export const createServer = asyncHandler(async (req, res) => {
             ...server.toObject(),
             isHealthy: false,
             trialExpired: false,
-            nextCheckEstimate: getNextCheckEstimate(server),
+            nextCheckEstimate: nextCheckEstimate(server),
             canBeChecked: true
         };
 
@@ -524,6 +525,7 @@ export const updateServer = asyncHandler(async (req, res) => {
 
         // Build optimized update object
         const updates = {};
+        let resetOpenIncident = false;
         const {
             name,
             url,
@@ -568,8 +570,11 @@ export const updateServer = asyncHandler(async (req, res) => {
 
             await assertPublicHost(normalizedUrl);
 
+            // Compared after normalising both, so saving an unchanged address that was stored with capitals is not a change
+            const addressChanged = normalizedUrl !== normalizeUrl(server.url);
+
             // Check for duplicate URL (excluding current server) - Logic maintained
-            if (normalizedUrl !== server.url) {
+            if (addressChanged) {
                 const existingServer = await Server.findOne({
                     uploadedBy: userId,
                     url: normalizedUrl,
@@ -585,6 +590,12 @@ export const updateServer = asyncHandler(async (req, res) => {
                 }
             }
             updates.url = normalizedUrl;
+
+            // The old status, response time and open incident described the old address
+            if (addressChanged) {
+                Object.assign(updates, addressChangeUpdates());
+                resetOpenIncident = true;
+            }
         }
         if (validatedData.type) updates.type = validatedData.type;
         if (validatedData.description !== undefined) updates.description = validatedData.description; // Allow empty string
@@ -624,9 +635,14 @@ export const updateServer = asyncHandler(async (req, res) => {
             }
         );
 
+        // An outage of the old address is over as far as this server is concerned; the new address starts clean
+        if (resetOpenIncident) {
+            await Incident.updateOne({ serverId, open: true }, { $set: { open: false, endedAt: new Date() } });
+        }
+
         await Promise.all([invalidateServerCache(String(server.uploadedBy)), invalidateServerCache(userId)]);
 
-        logger.info(`Server updated: ${updatedServer.name} (${serverId}) by user ${userId}`, {
+        logger.info(`Server updated:${updatedServer.name} (${serverId}) by user ${userId}`, {
             updatedFields: Object.keys(updates)
         });
 
@@ -635,7 +651,7 @@ export const updateServer = asyncHandler(async (req, res) => {
             ...updatedServer.toObject(),
             isHealthy: updatedServer.status === 'up' &&
                 (!updatedServer.responseTime || updatedServer.responseTime < 2000),
-            nextCheckEstimate: getNextCheckEstimate(updatedServer),
+            nextCheckEstimate: nextCheckEstimate(updatedServer),
             canBeChecked: canBeCheckedNow(updatedServer)
         };
 
@@ -865,8 +881,8 @@ export const checkServer = asyncHandler(async (req, res) => {
         const oldStatus = server.status;
         const checkStartTime = Date.now();
 
-        // Perform the check
-        const checkResult = await checkServerStatus(server);
+        // Perform the check. A failure is confirmed first, as on the schedule, so this can take a few seconds longer
+        const checkResult = await runCheck(server);
         const checkDuration = Date.now() - checkStartTime;
 
         // Save it, alert if it matters, and publish it for live clients (same path as scheduled checks)
@@ -948,7 +964,7 @@ export const getServerHistory = asyncHandler(async (req, res) => {
     const isAdmin = req.user.role === 'admin';
     const period = req.query.period || '24h';
     const includeStats = req.query.includeStats !== 'false';
-    const limit = Math.min(PERFORMANCE_CONFIG.MAX_HISTORY_POINTS, parseInt(req.query.limit) || 300);
+    const limit = clampLimit(req.query.limit, { max: PERFORMANCE_CONFIG.MAX_HISTORY_POINTS, fallback: 300 });
 
     // Validate ObjectId
     if (!mongoose.Types.ObjectId.isValid(serverId)) {
@@ -1053,7 +1069,9 @@ export const getServerHistory = asyncHandler(async (req, res) => {
                 {
                     $match: {
                         serverId: new mongoose.Types.ObjectId(serverId),
-                        timestamp: { $gte: startTimeRange }
+                        timestamp: { $gte: startTimeRange },
+                        // uptime describes the monitor, not how often someone pressed "Check now"
+                        ...SCHEDULED_CHECKS_ONLY
                     }
                 },
                 {
@@ -1316,248 +1334,9 @@ export const batchCheckServers = asyncHandler(async (req, res) => {
     }
 });
 
-/**
- * @desc    Get server statistics - NEW ENDPOINT
- * @route   GET /api/servers/:id/stats
- * @access  Private
- */
-export const getServerStats = asyncHandler(async (req, res) => {
-    const serverId = req.params.id;
-    const userId = req.user.id;
-    const isAdmin = req.user.role === 'admin';
-    const period = req.query.period || '7d';
-
-    // Validate ObjectId
-    if (!mongoose.Types.ObjectId.isValid(serverId)) {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Invalid server ID format',
-            code: 'INVALID_SERVER_ID'
-        });
-    }
-
-    try {
-        // Check authorization
-        const server = await Server.findById(serverId, {
-            uploadedBy: 1,
-            name: 1,
-            status: 1,
-            createdAt: 1,
-            lastChecked: 1,
-            responseTime: 1
-        }).lean();
-
-        if (!server) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'Server not found',
-                code: 'SERVER_NOT_FOUND'
-            });
-        }
-
-        if (String(server.uploadedBy) !== String(userId) && !isAdmin) {
-            return res.status(403).json({
-                status: 'error',
-                message: 'Not authorized to view server statistics',
-                code: 'UNAUTHORIZED_STATS'
-            });
-        }
-
-        const { startTimeRange } = calculateHistoryRange(period);
-
-        // Get comprehensive statistics
-        const [overallStats, dailyStats, hourlyStats] = await Promise.all([
-            // Overall statistics
-            ServerCheck.aggregate([
-                {
-                    $match: {
-                        serverId: new mongoose.Types.ObjectId(serverId),
-                        timestamp: { $gte: startTimeRange }
-                    }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        totalChecks: { $sum: 1 },
-                        upChecks: { $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] } },
-                        downChecks: { $sum: { $cond: [{ $eq: ['$status', 'down'] }, 1, 0] } },
-                        avgResponseTime: {
-                            $avg: {
-                                $cond: [
-                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
-                                    '$responseTime',
-                                    null
-                                ]
-                            }
-                        },
-                        maxResponseTime: {
-                            $max: {
-                                $cond: [
-                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
-                                    '$responseTime',
-                                    null
-                                ]
-                            }
-                        },
-                        minResponseTime: {
-                            $min: {
-                                $cond: [
-                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
-                                    '$responseTime',
-                                    null
-                                ]
-                            }
-                        }
-                    }
-                }
-            ]),
-
-            // Daily breakdown
-            ServerCheck.aggregate([
-                {
-                    $match: {
-                        serverId: new mongoose.Types.ObjectId(serverId),
-                        timestamp: { $gte: startTimeRange }
-                    }
-                },
-                {
-                    $group: {
-                        _id: { $dateToString: { format: "%Y-%m-%d", date: "$timestamp" } },
-                        totalChecks: { $sum: 1 },
-                        upChecks: { $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] } },
-                        avgResponseTime: {
-                            $avg: {
-                                $cond: [
-                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
-                                    '$responseTime',
-                                    null
-                                ]
-                            }
-                        }
-                    }
-                },
-                { $sort: { '_id': 1 } }
-            ]),
-
-            // Hourly breakdown for recent data
-            ServerCheck.aggregate([
-                {
-                    $match: {
-                        serverId: new mongoose.Types.ObjectId(serverId),
-                        timestamp: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) }
-                    }
-                },
-                {
-                    $group: {
-                        _id: { $dateToString: { format: "%H", date: "$timestamp" } },
-                        totalChecks: { $sum: 1 },
-                        upChecks: { $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] } },
-                        avgResponseTime: {
-                            $avg: {
-                                $cond: [
-                                    { $and: [{ $eq: ['$status', 'up'] }, { $gt: ['$responseTime', 0] }] },
-                                    '$responseTime',
-                                    null
-                                ]
-                            }
-                        }
-                    }
-                },
-                { $sort: { '_id': 1 } }
-            ])
-        ]);
-
-        // Process results
-        const overall = overallStats[0] || {
-            totalChecks: 0,
-            upChecks: 0,
-            downChecks: 0,
-            avgResponseTime: 0,
-            maxResponseTime: 0,
-            minResponseTime: 0
-        };
-
-        const uptimePercent = overall.totalChecks > 0 ?
-            Math.round((overall.upChecks / overall.totalChecks) * 100 * 10) / 10 : 100;
-
-        const dailyBreakdown = dailyStats.map(day => ({
-            date: day._id,
-            totalChecks: day.totalChecks,
-            upChecks: day.upChecks,
-            uptimePercent: day.totalChecks > 0 ?
-                Math.round((day.upChecks / day.totalChecks) * 100 * 10) / 10 : 100,
-            avgResponseTime: Math.round(day.avgResponseTime || 0)
-        }));
-
-        const hourlyBreakdown = hourlyStats.map(hour => ({
-            hour: hour._id,
-            totalChecks: hour.totalChecks,
-            upChecks: hour.upChecks,
-            uptimePercent: hour.totalChecks > 0 ?
-                Math.round((hour.upChecks / hour.totalChecks) * 100 * 10) / 10 : 100,
-            avgResponseTime: Math.round(hour.avgResponseTime || 0)
-        }));
-
-        res.status(200).json({
-            status: 'success',
-            data: {
-                server: {
-                    id: serverId,
-                    name: server.name,
-                    currentStatus: server.status,
-                    lastChecked: server.lastChecked,
-                    currentResponseTime: server.responseTime
-                },
-                period,
-                overall: {
-                    totalChecks: overall.totalChecks,
-                    upChecks: overall.upChecks,
-                    downChecks: overall.downChecks,
-                    uptimePercent,
-                    avgResponseTime: Math.round(overall.avgResponseTime || 0),
-                    minResponseTime: Math.round(overall.minResponseTime || 0),
-                    maxResponseTime: Math.round(overall.maxResponseTime || 0),
-                    reliabilityScore: calculateReliabilityScore(overall)
-                },
-                breakdowns: {
-                    daily: dailyBreakdown,
-                    hourly: hourlyBreakdown
-                }
-            }
-        });
-
-    } catch (error) {
-        logger.error(`Error fetching server stats ${serverId}: ${error.message}`, {
-            userId,
-            period,
-            stack: error.stack
-        });
-
-        res.status(500).json({
-            status: 'error',
-            message: 'Failed to fetch server statistics',
-            code: 'FETCH_STATS_ERROR'
-        });
-    }
-});
-
 // ===============================
 // HELPER FUNCTIONS
 // ===============================
-
-/**
- * Calculate next check estimate based on server settings
- */
-const getNextCheckEstimate = (server) => {
-    if (!server.lastChecked) return 'Never checked';
-
-    const frequency = server.monitoring?.frequency || 5; // minutes
-    const nextCheck = new Date(server.lastChecked.getTime() + frequency * 60 * 1000);
-
-    if (nextCheck <= new Date()) return 'Due now';
-
-    return nextCheck.toISOString();
-};
 
 /**
  * Check if server can be checked now based on monitoring windows
@@ -1581,27 +1360,6 @@ const canServerBeMonitored = (server) => {
     }
 
     return true;
-};
-
-/**
- * Normalize URL for consistency
- */
-const normalizeUrl = (url) => {
-    try {
-        // https is the default, so it is dropped; an explicit http:// is kept so plain-http sites are checked over http
-        let normalized = url.replace(/^https:\/\//i, '');
-
-        // Remove trailing slash
-        normalized = normalized.replace(/\/$/, '');
-
-        // Basic validation
-        if (!normalized || normalized.length < 3) return null;
-
-        return normalized;
-
-    } catch (error) {
-        return null;
-    }
 };
 
 /**
@@ -1748,7 +1506,7 @@ const processServersBatched = async (servers, maxConcurrent, userId) => {
                 const oldStatus = server.status;
                 const checkStartTime = Date.now();
 
-                const checkResult = await checkServerStatus(server);
+                const checkResult = await runCheck(server);
                 const checkDuration = Date.now() - checkStartTime;
 
                 const { now } = await applyCheckResult(server, checkResult);
@@ -1821,6 +1579,5 @@ export default {
     deleteServer,
     checkServer,
     getServerHistory,
-    batchCheckServers,
-    getServerStats
+    batchCheckServers
 };

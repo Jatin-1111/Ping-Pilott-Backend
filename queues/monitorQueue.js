@@ -2,6 +2,7 @@ import { Queue } from 'bullmq';
 import { redisConnection } from '../config/redis.js';
 import logger from '../utils/logger.js';
 import { withTimeout } from '../utils/timeout.js';
+import { throttled, suppressedNote } from '../utils/logThrottle.js';
 
 // Define the queue name
 const QUEUE_NAME = 'monitor-server-queue';
@@ -55,7 +56,9 @@ export const addCheckJob = async (server, scheduledFor = new Date()) => {
 
 // Handle queue errors
 monitorQueue.on('error', (err) => {
-    logger.error('Monitor Queue Error:', err);
+    throttled('monitor-queue-error', 30 * 1000, (n) => {
+        logger.error(`Monitor Queue Error${suppressedNote(n, 30 * 1000)}:`, err);
+    });
 });
 
 export default monitorQueue;

@@ -3,6 +3,8 @@ import logger from '../utils/logger.js';
 import Server from '../models/Server.js';
 import { addCheckJob } from '../queues/monitorQueue.js';
 import { isWithinCheckSchedule, timezoneOf } from '../utils/schedule.js';
+import { tickOf, nextCheckSlot } from '../utils/checkSchedule.js';
+import { dispatchCycle } from './dispatchCycle.js';
 
 /**
  * MAIN: Dispatch server checks to the queue
@@ -15,47 +17,31 @@ import { isWithinCheckSchedule, timezoneOf } from '../utils/schedule.js';
 export const checkAllServersIntelligently = async () => {
     const startTime = Date.now();
     // The minute this run belongs to; it is the clock every schedule is counted from
-    const tick = new Date(Math.floor(startTime / 60000) * 60000);
+    const tick = tickOf(startTime);
 
     logger.info('🧠 SCHEDULER: Starting check cycle via Redis Queue...');
 
-    try {
-        const servers = await getDueServers(tick);
-
-        if (!servers?.length) {
-            logger.debug('No servers need checking right now');
-            return { total: 0, dispatched: 0 };
-        }
-
-        logger.info(`Found ${servers.length} servers to check - dispatching to queue`);
-
-        const dispatchedServers = [];
-        await Promise.all(servers.map(async (server) => {
-            if (await addCheckJob(server, tick)) dispatchedServers.push(server);
-        }));
-
+    // A failed cycle throws (see dispatchCycle.js): the job queue logs it and the watchdog and /health see it
+    const result = await dispatchCycle({
+        tick,
+        findDue: getDueServers,
+        addJob: addCheckJob,
         // Book the next slot right away. If a worker is slow or dies, the next cycle will not dispatch a duplicate.
-        if (dispatchedServers.length > 0) {
-            await Server.bulkWrite(dispatchedServers.map((server) => {
-                const frequency = server.monitoring?.frequency || 5;
-                return {
-                    updateOne: {
-                        filter: { _id: server._id },
-                        update: { $set: { nextCheckAt: new Date(tick.getTime() + frequency * 60000) } }
-                    }
-                };
-            }), { ordered: false });
-        }
+        bookNext: (servers) => Server.bulkWrite(servers.map((server) => ({
+            updateOne: {
+                filter: { _id: server._id },
+                update: { $set: { nextCheckAt: nextCheckSlot(tick, server.monitoring?.frequency) } }
+            }
+        })), { ordered: false })
+    });
 
-        const duration = Date.now() - startTime;
-        logger.info(`✅ SCHEDULER: Dispatched ${dispatchedServers.length}/${servers.length} jobs in ${duration}ms`);
-
-        return { total: servers.length, dispatched: dispatchedServers.length };
-
-    } catch (error) {
-        logger.error(`❌ SCHEDULER ERROR: ${error.message}`);
-        return { total: 0, dispatched: 0, error: error.message };
+    if (result.total === 0) {
+        logger.debug('No servers need checking right now');
+    } else {
+        logger.info(`✅ SCHEDULER: Dispatched ${result.dispatched}/${result.total} jobs in ${Date.now() - startTime}ms`);
     }
+
+    return result;
 };
 
 /**

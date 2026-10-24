@@ -3,6 +3,10 @@
 import { Queue } from 'bullmq';
 import { redisConnection } from '../config/redis.js';
 import logger from '../utils/logger.js';
+import { ALERT_JOB_OPTIONS } from './alertJobOptions.js';
+import { withTimeout } from '../utils/timeout.js';
+
+const ADD_TIMEOUT_MS = 10_000;
 
 /**
  * Dedicated queue for alert processing
@@ -10,33 +14,17 @@ import logger from '../utils/logger.js';
  */
 export const alertQueue = new Queue('alerts', {
     connection: redisConnection,
-    defaultJobOptions: {
-        attempts: 3, // Retry failed alerts up to 3 times
-        backoff: {
-            type: 'exponential',
-            delay: 2000 // Start with 2 second delay
-        },
-        removeOnComplete: {
-            age: 3600, // Keep completed jobs for 1 hour
-            count: 1000 // Keep last 1000 completed jobs
-        },
-        removeOnFail: {
-            age: 86400 // Keep failed jobs for 24 hours
-        }
-    }
+    // Retries are slow on purpose and a PendingAlert row backs them: see queues/alertJobOptions.js
+    defaultJobOptions: ALERT_JOB_OPTIONS
 });
 
 /**
  * Add alert to queue
- * @param {Object} alertData - Alert data
- * @param {string} alertData.serverId - Server ID
- * @param {string} alertData.oldStatus - Previous status
- * @param {string} alertData.newStatus - New status
- * @param {Object} alertData.checkResult - Check result data
- * @param {Object} alertData.serverData - Optional server data to avoid DB lookup
+ * @param {Object} alertData - { pendingId, serverId }: the PendingAlert row to deliver
  * @param {string} priority - Priority level: 'high', 'normal', 'low'
+ * @param {string} [jobId] - Same id twice is one job, so queueing an alert again cannot send it twice
  */
-export async function addAlertToQueue(alertData, priority = 'normal') {
+export async function addAlertToQueue(alertData, priority = 'normal', jobId = `alert-${alertData.pendingId || alertData.serverId}-${Date.now()}`) {
     try {
         const priorityMap = {
             high: 1,
@@ -44,14 +32,16 @@ export async function addAlertToQueue(alertData, priority = 'normal') {
             low: 10
         };
 
-        const job = await alertQueue.add(
+        // Redis commands wait forever while the connection is down. Give up instead: the PendingAlert row is
+        // already saved, so the reconciler queues the alert when Redis is back.
+        const job = await withTimeout(alertQueue.add(
             'process-alert',
             alertData,
             {
                 priority: priorityMap[priority] || 5,
-                jobId: `alert-${alertData.serverId}-${Date.now()}` // Unique job ID
+                jobId
             }
-        );
+        ), ADD_TIMEOUT_MS, 'Queueing an alert');
 
         logger.debug(`Alert queued for server ${alertData.serverId} with priority ${priority}`);
         return job;

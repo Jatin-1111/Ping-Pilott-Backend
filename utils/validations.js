@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { isValidTimezone } from './schedule.js';
+import { containsCredentials } from './address.js';
 
 const TIME = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -31,7 +32,8 @@ const monitoringShape = z.object({
 
 const serverShape = {
     name: z.string().min(1, "Name is required").max(100),
-    url: z.string().min(3, "URL is required"), // Basic length check, robust check via normalization later
+    url: z.string().min(3, "URL is required") // Basic length check, robust check via normalization later
+        .refine((value) => !containsCredentials(value), 'Remove the username and password from the address. They would be stored and shown in alert emails and feeds.'),
     type: z.enum(['website', 'api', 'tcp', 'database']),
     description: z.string().max(500),
     priority: z.enum(['high', 'medium', 'low']),

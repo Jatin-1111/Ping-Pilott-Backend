@@ -1,27 +1,23 @@
 import './loadEnv.js';
 import { Worker } from 'bullmq';
 import { redisConnection } from '../config/redis.js';
-import { checkServerStatus } from '../services/monitoringService.js';
+import { runCheck } from '../services/checkRunner.js';
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
 import { applyCheckResult } from '../services/checkRecorder.js';
 import logger from '../utils/logger.js';
+import { throttled, suppressedNote } from '../utils/logThrottle.js';
+import { startWorkerHeartbeat, createCheckCompletionRecorder } from '../utils/workerHealth.js';
 import mongoose from 'mongoose';
 
 const QUEUE_NAME = 'monitor-server-queue';
 
-// A server that was up and fails is checked once more before it is declared down, so one dropped
-// request does not page anyone. Set DOWN_CONFIRM_DELAY_MS=0 to disable.
-const CONFIRM_DELAY_MS = process.env.DOWN_CONFIRM_DELAY_MS !== undefined
-    ? parseInt(process.env.DOWN_CONFIRM_DELAY_MS, 10)
-    : 10000;
+const markCheckCompleted = createCheckCompletionRecorder({ redis: redisConnection });
 
 // A check job that has waited this long is out of date: the next scheduled check has already taken its place.
 // Skipping them matters after the workers have been down for a while, when thousands of old jobs are waiting and
 // running them all would hit the monitored sites in one burst and fill the history with checks stamped "now".
 const STALE_JOB_MS = 10 * 60 * 1000;
-
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Check history is written in batches (it is append-only, so a late write is harmless).
 // The server's own status is NOT batched: it must be written atomically, see below.
@@ -77,13 +73,8 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
             return;
         }
 
-        let checkResult = await checkServerStatus(server);
-
-        // Confirm a first failure before acting on it
-        if (checkResult.status === 'down' && server.status === 'up' && CONFIRM_DELAY_MS > 0) {
-            await sleep(CONFIRM_DELAY_MS);
-            checkResult = await checkServerStatus(server);
-        }
+        // A first failure is confirmed before it is acted on (see services/checkRunner.js)
+        const checkResult = await runCheck(server);
 
         const { now } = await applyCheckResult(server, checkResult);
 
@@ -95,6 +86,9 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
             timestamp: now,
             checkType: 'automated'
         });
+
+        // /health uses this to tell "checks are being queued" from "checks are being done"
+        markCheckCompleted();
 
         logger.debug(`Job ${job.id} (Check ${server.name}) processed in ${Date.now() - startTime}ms`);
 
@@ -118,10 +112,16 @@ monitorWorker.on('failed', (job, err) => {
 });
 
 monitorWorker.on('error', (err) => {
-    logger.error(`Monitor worker error: ${err.message}`);
+    throttled('monitor-worker-error', 30 * 1000, (n) => {
+        logger.error(`Monitor worker error${suppressedNote(n, 30 * 1000)}:`, err);
+    });
 });
 
+// Say "alive" every 15 s for /health and the container healthcheck; the key expires if this process stops
+const heartbeat = startWorkerHeartbeat({ redis: redisConnection, role: 'monitor', isRunning: () => monitorWorker.isRunning() });
+
 monitorWorker.on('closing', async () => {
+    heartbeat.stop();
     logger.info('Worker closing, writing remaining check history...');
     clearTimeout(batchTimer);
     await executeBatch();
