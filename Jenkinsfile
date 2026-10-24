@@ -28,7 +28,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'npm install'
+                sh 'npm ci'
             }
         }
         
@@ -42,7 +42,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
                     sh '''
-                    docker login -u $DH_USER -p $DH_PASS
+                    echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
                     docker tag ping-pilot:${BUILD_NUMBER} $DH_USER/ping-pilot:${BUILD_NUMBER}
                     docker tag ping-pilot:${BUILD_NUMBER} $DH_USER/ping-pilot:latest
                     docker push $DH_USER/ping-pilot:${BUILD_NUMBER}

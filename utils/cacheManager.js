@@ -5,21 +5,32 @@ import logger from './logger.js';
 import { CACHE_STRATEGIES } from '../config/performance.js';
 
 /**
- * Invalidate cache for a specific user's servers
- * @param {string} userId - User ID
- * @param {string} serverId - Optional specific server ID
+ * Delete every key matching a pattern. Uses SCAN (incremental) instead of KEYS, which blocks Redis
+ * while it walks the whole keyspace.
  */
-export async function invalidateServerCache(userId, serverId = null) {
-    try {
-        const pattern = serverId
-            ? `api:servers:${userId}:*:${serverId}*`
-            : `api:servers:${userId}:*`;
-
-        const keys = await redisConnection.keys(pattern);
+async function deleteByPattern(pattern) {
+    let removed = 0;
+    const stream = redisConnection.scanStream({ match: pattern, count: 200 });
+    for await (const keys of stream) {
         if (keys.length > 0) {
             await redisConnection.del(...keys);
-            logger.debug(`Invalidated ${keys.length} cache keys for user ${userId}`);
+            removed += keys.length;
         }
+    }
+    return removed;
+}
+
+/**
+ * Invalidate the cached server lists of a user. Call it after anything that changes what that user's
+ * list shows: a server added, edited, deleted, checked, or its status changing.
+ * (Cache keys are `api:servers:<userId>:<query>`; the old pattern never matched them, and nothing called it,
+ * so a server you had just added was missing from the list for up to 30 seconds.)
+ * @param {string} userId - owner of the servers
+ */
+export async function invalidateServerCache(userId) {
+    try {
+        const removed = await deleteByPattern(`api:servers:${userId}:*`);
+        if (removed > 0) logger.debug(`Invalidated ${removed} cache keys for user ${userId}`);
     } catch (error) {
         logger.error(`Error invalidating cache: ${error.message}`);
     }
@@ -31,12 +42,8 @@ export async function invalidateServerCache(userId, serverId = null) {
  */
 export async function invalidateAnalyticsCache(userId) {
     try {
-        const pattern = `api:analytics:${userId}:*`;
-        const keys = await redisConnection.keys(pattern);
-        if (keys.length > 0) {
-            await redisConnection.del(...keys);
-            logger.debug(`Invalidated ${keys.length} analytics cache keys`);
-        }
+        const removed = await deleteByPattern(`api:analytics:${userId}:*`);
+        if (removed > 0) logger.debug(`Invalidated ${removed} analytics cache keys`);
     } catch (error) {
         logger.error(`Error invalidating analytics cache: ${error.message}`);
     }

@@ -39,6 +39,14 @@ export const protect = asyncHandler(async (req, res, next) => {
             });
         }
 
+        // A password change or reset signs out every session that existed before it
+        if (user.passwordChangedAt && decoded.iat < Math.floor(user.passwordChangedAt.getTime() / 1000)) {
+            return res.status(401).json({
+                status: 'error',
+                message: 'Your password was changed. Please sign in again.',
+            });
+        }
+
         // Check if email is verified
         if (!user.emailVerified) {
             return res.status(401).json({

@@ -117,6 +117,8 @@ cronJobSchema.statics.getStats = async function (hoursBack = 24) {
 cronJobSchema.index({ name: 1, startedAt: -1 });
 cronJobSchema.index({ status: 1, startedAt: -1 });
 cronJobSchema.index({ startedAt: -1 });
+// Job history is for debugging; let MongoDB drop rows after two weeks even if the cleanup job is off
+cronJobSchema.index({ startedAt: 1 }, { expireAfterSeconds: 14 * 24 * 60 * 60 });
 
 // Create and export the model
 const CronJob = mongoose.model('CronJob', cronJobSchema);

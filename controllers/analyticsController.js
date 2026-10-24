@@ -1,500 +1,277 @@
-// controllers/analyticsController.js - OPTIMIZED FOR SPEED ⚡
+// controllers/analyticsController.js - admin analytics
+//
+// What changed from the first version:
+//  - The date range comes from `period` on the server. Clients used to send their own dates, which also
+//    meant no two requests ever shared a cache entry.
+//  - Results are cached for 5 minutes. The admin overview polls every minute and each call ran a dozen
+//    aggregations over every check ever stored.
+//  - "Alerts" counts alerts that were actually delivered (AlertEvent), not servers that are down right now.
+//  - "Active servers" / "active users" mean what they say: servers still being monitored, and users who
+//    own at least one server. They used to be all-time counts of everything ever created.
+//  - Uptime is null when there is no data, instead of a reassuring 100%.
 
-import mongoose from 'mongoose';
 import User from '../models/User.js';
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
+import AlertEvent from '../models/AlertEvent.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { getCachedData, setCachedData } from '../utils/cacheManager.js';
+import { CACHE_STRATEGIES } from '../config/performance.js';
 import logger from '../utils/logger.js';
 
+const DAY = 24 * 60 * 60 * 1000;
+const PERIOD_DAYS = { week: 7, month: 30, year: 365 };
+const QUERY_TIMEOUT = 20000;
+
+/** Current and previous period for `period` (week | month | year). Unknown values mean month. */
+const resolveRange = (query) => {
+    const period = PERIOD_DAYS[query.period] ? query.period : 'month';
+    const span = PERIOD_DAYS[period] * DAY;
+    const end = new Date();
+    const start = new Date(end.getTime() - span);
+    return {
+        period,
+        start,
+        end,
+        prevStart: new Date(start.getTime() - span),
+        prevEnd: new Date(start.getTime() - 1)
+    };
+};
+
+/** Servers that are still being checked: not past a free trial. */
+const monitoredFilter = (extra = {}) => ({
+    ...extra,
+    $nor: [{ uploadedPlan: 'free', 'monitoring.trialEndsAt': { $lt: new Date() } }]
+});
+
 /**
- * @desc    Get admin dashboard analytics data - OPTIMIZED
+ * @desc    Get admin dashboard analytics data
  * @route   GET /api/admin/analytics
  * @access  Private/Admin
  */
 export const getAnalytics = asyncHandler(async (req, res) => {
     const startTime = Date.now();
+    const range = resolveRange(req.query);
+    const cacheKey = `api:analytics:admin:${range.period}`;
 
-    // Parse and validate date parameters
-    const {
-        startDate,
-        endDate,
-        prevStartDate,
-        prevEndDate,
-        period = 'month'
-    } = req.query;
-
-    const start = startDate ? new Date(startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-    const end = endDate ? new Date(endDate) : new Date();
-    const prevStart = prevStartDate ? new Date(prevStartDate) : new Date(start.getTime() - 30 * 24 * 60 * 60 * 1000);
-    const prevEnd = prevEndDate ? new Date(prevEndDate) : new Date(start.getTime() - 1);
+    const cached = await getCachedData(cacheKey);
+    if (cached) {
+        return res.status(200).json({ ...cached, meta: { ...cached.meta, cached: true } });
+    }
 
     try {
-        logger.info(`🚀 Starting analytics query for period: ${period}`);
-
-        // Execute ALL analytics queries in parallel - maximum speed
-        const [
-            userStats,
-            serverStats,
-            alertStats,
-            responseTimeStats,
-            kpiStats
-        ] = await Promise.all([
-            getUserGrowthOptimized(start, end, period),
+        const [userStats, serverStats, alertStats, responseTimeStats, kpiStats] = await Promise.all([
+            getUserGrowthOptimized(range.start, range.end, range.period),
             getServerStatusOptimized(),
-            getAlertsByTypeOptimized(),
-            getResponseTimeOptimized(start, end, period),
-            getKPIsOptimized(start, end, prevStart, prevEnd)
+            getAlertsByTypeOptimized(range.start, range.end),
+            getResponseTimeOptimized(range.start, range.end, range.period),
+            getKPIsOptimized(range.start, range.end, range.prevStart, range.prevEnd)
         ]);
 
-        const analyticsData = {
-            userGrowth: userStats,
-            serverStatus: serverStats,
-            alertsByType: alertStats,
-            responseTime: responseTimeStats,
-            kpis: kpiStats,
-            meta: {
-                queryTime: Date.now() - startTime,
-                period,
-                dateRange: { start, end }
-            }
-        };
-
-        logger.info(`✅ Analytics completed in ${Date.now() - startTime}ms`);
-
-        res.status(200).json({
+        const body = {
             status: 'success',
             message: 'Analytics data retrieved successfully',
-            data: analyticsData
-        });
+            data: {
+                userGrowth: userStats,
+                serverStatus: serverStats,
+                alertsByType: alertStats,
+                responseTime: responseTimeStats,
+                kpis: kpiStats,
+                meta: {
+                    queryTime: Date.now() - startTime,
+                    period: range.period,
+                    dateRange: { start: range.start, end: range.end }
+                }
+            },
+            meta: { cached: false }
+        };
 
+        await setCachedData(cacheKey, body, CACHE_STRATEGIES.analytics);
+        res.status(200).json(body);
     } catch (error) {
+        // The reason stays in the log; callers get a generic message
         logger.error(`❌ Analytics error: ${error.message}`);
         res.status(500).json({
             status: 'error',
-            message: 'Failed to retrieve analytics data',
-            error: error.message
+            message: 'Failed to retrieve analytics data'
         });
     }
 });
 
-/**
- * @desc    Get just KPI data
- * @route   GET /api/admin/analytics/kpi
- * @access  Private/Admin
- */
 export const getAnalyticsKPIs = asyncHandler(async (req, res) => {
-    const { startDate, endDate, prevStartDate, prevEndDate } = req.query;
-    const start = startDate ? new Date(startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-    const end = endDate ? new Date(endDate) : new Date();
-    const prevStart = prevStartDate ? new Date(prevStartDate) : new Date(start.getTime() - 30 * 24 * 60 * 60 * 1000);
-    const prevEnd = prevEndDate ? new Date(prevEndDate) : new Date(start.getTime() - 1);
-
-    const stats = await getKPIsOptimized(start, end, prevStart, prevEnd);
-
-    res.status(200).json({ status: 'success', data: stats });
+    const r = resolveRange(req.query);
+    res.status(200).json({ status: 'success', data: await getKPIsOptimized(r.start, r.end, r.prevStart, r.prevEnd) });
 });
 
-/**
- * @desc    Get user growth chart data
- * @route   GET /api/admin/analytics/users
- * @access  Private/Admin
- */
 export const getAnalyticsUserGrowth = asyncHandler(async (req, res) => {
-    const { startDate, endDate, period = 'month' } = req.query;
-    const start = startDate ? new Date(startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-    const end = endDate ? new Date(endDate) : new Date();
-
-    const stats = await getUserGrowthOptimized(start, end, period);
-
-    res.status(200).json({ status: 'success', data: stats });
+    const r = resolveRange(req.query);
+    res.status(200).json({ status: 'success', data: await getUserGrowthOptimized(r.start, r.end, r.period) });
 });
 
-/**
- * @desc    Get server status breakdown
- * @route   GET /api/admin/analytics/servers
- * @access  Private/Admin
- */
 export const getAnalyticsServerStatus = asyncHandler(async (req, res) => {
-    const stats = await getServerStatusOptimized();
-    res.status(200).json({ status: 'success', data: stats });
+    res.status(200).json({ status: 'success', data: await getServerStatusOptimized() });
 });
 
-/**
- * @desc    Get alerts by type
- * @route   GET /api/admin/analytics/alerts
- * @access  Private/Admin
- */
 export const getAnalyticsAlerts = asyncHandler(async (req, res) => {
-    const stats = await getAlertsByTypeOptimized();
-    res.status(200).json({ status: 'success', data: stats });
+    const r = resolveRange(req.query);
+    res.status(200).json({ status: 'success', data: await getAlertsByTypeOptimized(r.start, r.end) });
 });
 
-/**
- * @desc    Get response time chart
- * @route   GET /api/admin/analytics/response-time
- * @access  Private/Admin
- */
 export const getAnalyticsResponseTime = asyncHandler(async (req, res) => {
-    const { startDate, endDate, period = 'month' } = req.query;
-    const start = startDate ? new Date(startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-    const end = endDate ? new Date(endDate) : new Date();
-
-    const stats = await getResponseTimeOptimized(start, end, period);
-
-    res.status(200).json({ status: 'success', data: stats });
+    const r = resolveRange(req.query);
+    res.status(200).json({ status: 'success', data: await getResponseTimeOptimized(r.start, r.end, r.period) });
 });
 
-/**
- * OPTIMIZED: User growth with minimal data transfer
- */
+/** New accounts per day (per month for a year) */
 const getUserGrowthOptimized = async (startDate, endDate, period) => {
-    let groupStage, dateFormat;
+    const format = period === 'year' ? '%Y-%m' : '%Y-%m-%d';
 
-    // Optimize grouping based on period
-    switch (period) {
-        case 'week':
-            groupStage = {
-                $dateToString: { format: '%Y-%m-%d', date: '$createdAt' }
-            };
-            break;
-        case 'year':
-            groupStage = {
-                $dateToString: { format: '%Y-%m', date: '$createdAt' }
-            };
-            break;
-        default: // month
-            groupStage = {
-                $dateToString: { format: '%Y-%m-%d', date: '$createdAt' }
-            };
-    }
-
-    const pipeline = [
-        {
-            $match: {
-                createdAt: { $gte: startDate, $lte: endDate }
-            }
-        },
-        {
-            $group: {
-                _id: groupStage,
-                users: { $sum: 1 }
-            }
-        },
-        {
-            $sort: { '_id': 1 }
-        },
-        {
-            $project: {
-                _id: 0,
-                name: '$_id',
-                users: 1
-            }
-        }
-    ];
-
-    return await User.aggregate(pipeline).allowDiskUse(true);
+    return User.aggregate([
+        { $match: { createdAt: { $gte: startDate, $lte: endDate } } },
+        { $group: { _id: { $dateToString: { format, date: '$createdAt' } }, users: { $sum: 1 } } },
+        { $sort: { _id: 1 } },
+        { $project: { _id: 0, name: '$_id', users: 1 } }
+    ]).option({ maxTimeMS: QUERY_TIMEOUT });
 };
 
-/**
- * OPTIMIZED: Server status with single aggregation
- */
+/** Up / down / pending right now */
 const getServerStatusOptimized = async () => {
-    const pipeline = [
-        {
-            $group: {
-                _id: '$status',
-                count: { $sum: 1 }
-            }
-        },
-        {
-            $project: {
-                _id: 0,
-                name: { $toUpper: '$_id' },
-                value: '$count'
-            }
-        }
-    ];
+    const results = await Server.aggregate([
+        { $group: { _id: '$status', count: { $sum: 1 } } }
+    ]).option({ maxTimeMS: QUERY_TIMEOUT });
 
-    const results = await Server.aggregate(pipeline);
-
-    // Ensure all statuses are represented
     const statusMap = { UP: 0, DOWN: 0, UNKNOWN: 0 };
-    results.forEach(item => {
-        statusMap[item.name] = item.value;
+    results.forEach((item) => {
+        statusMap[String(item._id).toUpperCase()] = item.count;
     });
 
     return Object.entries(statusMap).map(([name, value]) => ({ name, value }));
 };
 
-/**
- * OPTIMIZED: Alerts by type using efficient regex matching
- */
-const getAlertsByTypeOptimized = async () => {
-    const pipeline = [
-        {
-            $match: {
-                $or: [
-                    { status: 'down' },
-                    { error: { $ne: null, $ne: '' } }
-                ]
-            }
-        },
-        {
-            $addFields: {
-                errorType: {
-                    $switch: {
-                        branches: [
-                            {
-                                case: { $regexMatch: { input: { $ifNull: ['$error', ''] }, regex: /timeout|slow|response/i } },
-                                then: 'Response Time'
-                            },
-                            {
-                                case: { $regexMatch: { input: { $ifNull: ['$error', ''] }, regex: /connect|refused/i } },
-                                then: 'Connection Failed'
-                            },
-                            {
-                                case: { $regexMatch: { input: { $ifNull: ['$error', ''] }, regex: /certificate|SSL/i } },
-                                then: 'Certificate Error'
-                            },
-                            {
-                                case: { $regexMatch: { input: { $ifNull: ['$error', ''] }, regex: /DNS|resolve/i } },
-                                then: 'DNS Error'
-                            }
-                        ],
-                        default: 'Other'
-                    }
-                }
-            }
-        },
-        {
-            $group: {
-                _id: '$errorType',
-                value: { $sum: 1 }
-            }
-        },
-        {
-            $project: {
-                _id: 0,
-                name: '$_id',
-                value: 1
-            }
-        }
-    ];
+/** Alerts that were delivered in the period, by kind */
+const getAlertsByTypeOptimized = async (startDate, endDate) => {
+    const results = await AlertEvent.aggregate([
+        { $match: { createdAt: { $gte: startDate, $lte: endDate } } },
+        { $group: { _id: '$type', value: { $sum: 1 } } }
+    ]).option({ maxTimeMS: QUERY_TIMEOUT });
 
-    const results = await Server.aggregate(pipeline);
-
-    // Ensure all error types exist
-    const errorTypes = ['Response Time', 'Connection Failed', 'Certificate Error', 'DNS Error', 'Other'];
-    const errorMap = {};
-    errorTypes.forEach(type => errorMap[type] = 0);
-
-    results.forEach(item => {
-        errorMap[item.name] = item.value;
+    const labels = { server_down: 'Server down', server_recovery: 'Recovered', slow_response: 'Slow response' };
+    const counts = Object.fromEntries(Object.values(labels).map((label) => [label, 0]));
+    results.forEach((item) => {
+        if (labels[item._id]) counts[labels[item._id]] = item.value;
     });
 
-    return Object.entries(errorMap).map(([name, value]) => ({ name, value }));
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
 };
 
-/**
- * OPTIMIZED: Response time with smart sampling
- */
+/** Average response time of successful checks, bucketed by hour (week, month) or month (year) */
 const getResponseTimeOptimized = async (startDate, endDate, period) => {
-    let groupStage, sampleRate = 1;
+    const groupStage = period === 'year'
+        ? { year: { $year: '$timestamp' }, month: { $month: '$timestamp' } }
+        : {
+            year: { $year: '$timestamp' },
+            month: { $month: '$timestamp' },
+            day: { $dayOfMonth: '$timestamp' },
+            // A week is read hour by hour, a month day by day: 720 hourly points would not fit a chart
+            ...(period === 'week' ? { hour: { $hour: '$timestamp' } } : {})
+        };
 
-    // Smart sampling based on period to avoid overloading
-    switch (period) {
-        case 'week':
-            groupStage = { $hour: '$timestamp' };
-            sampleRate = 1; // All data for week
-            break;
-        case 'month':
-            groupStage = {
-                year: { $year: '$timestamp' },
-                month: { $month: '$timestamp' },
-                day: { $dayOfMonth: '$timestamp' },
-                hour: { $hour: '$timestamp' }
-            };
-            sampleRate = 0.5; // 50% sample for month
-            break;
-        case 'year':
-            groupStage = {
-                year: { $year: '$timestamp' },
-                month: { $month: '$timestamp' }
-            };
-            sampleRate = 0.1; // 10% sample for year
-            break;
-        default:
-            groupStage = { $hour: '$timestamp' };
-            sampleRate = 1;
-    }
-
-    const pipeline = [
+    const results = await ServerCheck.aggregate([
         {
             $match: {
                 timestamp: { $gte: startDate, $lte: endDate },
                 status: 'up',
-                responseTime: { $exists: true, $gt: 0 }
-            }
-        }
-    ];
-
-    // Add sampling for large datasets
-    if (sampleRate < 1) {
-        pipeline.push({
-            $sample: { size: Math.floor(100000 * sampleRate) }
-        });
-    }
-
-    pipeline.push(
-        {
-            $group: {
-                _id: groupStage,
-                avgTime: { $avg: '$responseTime' },
-                count: { $sum: 1 }
+                responseTime: { $gt: 0 }
             }
         },
-        {
-            $match: { count: { $gte: 3 } } // Only include periods with sufficient data
-        },
-        {
-            $sort: {
-                '_id.year': 1,
-                '_id.month': 1,
-                '_id.day': 1,
-                '_id.hour': 1
-            }
-        }
-    );
+        { $group: { _id: groupStage, avgTime: { $avg: '$responseTime' }, count: { $sum: 1 } } },
+        { $match: { count: { $gte: 3 } } }, // only periods with enough data to mean something
+        { $sort: { '_id.year': 1, '_id.month': 1, '_id.day': 1, '_id.hour': 1 } }
+    ]).option({ maxTimeMS: QUERY_TIMEOUT, allowDiskUse: true });
 
-    const results = await ServerCheck.aggregate(pipeline).allowDiskUse(true);
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    // Format results based on period
-    return results.map(item => {
+    return results.map(({ _id: id, avgTime, count }) => {
         let name;
-        const id = item._id;
+        if (period === 'year') name = `${months[id.month - 1]} ${id.year}`;
+        else if (period === 'week') name = `${months[id.month - 1]} ${id.day}, ${String(id.hour).padStart(2, '0')}:00`;
+        else name = `${months[id.month - 1]} ${id.day}`;
 
-        if (period === 'week') {
-            name = `${id}:00`;
-        } else if (period === 'month') {
-            name = `Day ${id.day}, ${id.hour}:00`;
-        } else if (period === 'year') {
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            name = `${months[id.month - 1]} ${id.year}`;
-        } else {
-            name = `${id}:00`;
-        }
-
-        return {
-            name,
-            avgTime: Math.round(item.avgTime || 0),
-            dataPoints: item.count
-        };
+        return { name, avgTime: Math.round(avgTime || 0), dataPoints: count };
     });
 };
 
-/**
- * OPTIMIZED: KPIs with parallel execution and efficient queries
- */
+const getAvgResponseTimeOptimized = async (startDate, endDate) => {
+    const result = await ServerCheck.aggregate([
+        { $match: { timestamp: { $gte: startDate, $lte: endDate }, status: 'up', responseTime: { $gt: 0 } } },
+        { $group: { _id: null, avgResponseTime: { $avg: '$responseTime' } } }
+    ]).option({ maxTimeMS: QUERY_TIMEOUT });
+
+    return result.length > 0 ? result[0].avgResponseTime : 0;
+};
+
+/** Share of checks that succeeded, or null when there were none (no data is not 100%) */
+const getUptimeOptimized = async (startDate, endDate) => {
+    const result = await ServerCheck.aggregate([
+        { $match: { timestamp: { $gte: startDate, $lte: endDate } } },
+        {
+            $group: {
+                _id: null,
+                totalChecks: { $sum: 1 },
+                upChecks: { $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] } }
+            }
+        }
+    ]).option({ maxTimeMS: QUERY_TIMEOUT });
+
+    if (result.length === 0 || result[0].totalChecks === 0) return null;
+    return (result[0].upChecks / result[0].totalChecks) * 100;
+};
+
 const getKPIsOptimized = async (startDate, endDate, prevStartDate, prevEndDate) => {
-    // Execute all KPI queries in parallel for maximum speed
     const [
-        [currentUsers, prevUsers],
+        [currentOwners, prevOwners],
         [currentServers, prevServers],
         [currentAvgResponse, prevAvgResponse],
         [currentUptime, prevUptime]
     ] = await Promise.all([
-        // User counts - efficient single query per period
+        // Users who own at least one server, now and at the end of the previous period
         Promise.all([
-            User.countDocuments({ createdAt: { $lte: endDate } }),
-            User.countDocuments({ createdAt: { $lte: prevEndDate } })
+            Server.distinct('uploadedBy', monitoredFilter({ createdAt: { $lte: endDate } })),
+            Server.distinct('uploadedBy', monitoredFilter({ createdAt: { $lte: prevEndDate } }))
+        ]).then(([a, b]) => [a.length, b.length]),
+
+        // Servers still being monitored
+        Promise.all([
+            Server.countDocuments(monitoredFilter({ createdAt: { $lte: endDate } })),
+            Server.countDocuments(monitoredFilter({ createdAt: { $lte: prevEndDate } }))
         ]),
 
-        // Server counts
-        Promise.all([
-            Server.countDocuments({ createdAt: { $lte: endDate } }),
-            Server.countDocuments({ createdAt: { $lte: prevEndDate } })
-        ]),
-
-        // Average response times
         Promise.all([
             getAvgResponseTimeOptimized(startDate, endDate),
             getAvgResponseTimeOptimized(prevStartDate, prevEndDate)
         ]),
 
-        // Uptime percentages
         Promise.all([
             getUptimeOptimized(startDate, endDate),
             getUptimeOptimized(prevStartDate, prevEndDate)
         ])
     ]);
 
-    // Calculate changes efficiently
     const calculateChange = (current, previous) => {
-        if (previous === 0) return current === 0 ? 0 : 100;
+        if (!previous) return current === 0 ? 0 : 100;
         return Math.round(((current - previous) / previous) * 100);
     };
 
     return {
         avgResponseTime: Math.round(currentAvgResponse),
-        uptime: Math.round(currentUptime * 10) / 10, // 1 decimal place
+        uptime: currentUptime === null ? null : Math.round(currentUptime * 10) / 10,
         activeServers: currentServers,
-        activeUsers: currentUsers,
+        activeUsers: currentOwners,
         responseTimeChange: calculateChange(currentAvgResponse, prevAvgResponse),
-        uptimeChange: Math.round((currentUptime - prevUptime) * 10) / 10,
+        uptimeChange: currentUptime === null || prevUptime === null ? 0 : Math.round((currentUptime - prevUptime) * 10) / 10,
         serversChange: calculateChange(currentServers, prevServers),
-        usersChange: calculateChange(currentUsers, prevUsers)
+        usersChange: calculateChange(currentOwners, prevOwners)
     };
-};
-
-/**
- * Ultra-fast average response time calculation
- */
-const getAvgResponseTimeOptimized = async (startDate, endDate) => {
-    const result = await ServerCheck.aggregate([
-        {
-            $match: {
-                timestamp: { $gte: startDate, $lte: endDate },
-                status: 'up',
-                responseTime: { $exists: true, $gt: 0 }
-            }
-        },
-        {
-            $group: {
-                _id: null,
-                avgResponseTime: { $avg: '$responseTime' }
-            }
-        }
-    ]);
-
-    return result.length > 0 ? result[0].avgResponseTime : 0;
-};
-
-/**
- * Ultra-fast uptime calculation
- */
-const getUptimeOptimized = async (startDate, endDate) => {
-    const result = await ServerCheck.aggregate([
-        {
-            $match: {
-                timestamp: { $gte: startDate, $lte: endDate }
-            }
-        },
-        {
-            $group: {
-                _id: null,
-                totalChecks: { $sum: 1 },
-                upChecks: {
-                    $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] }
-                }
-            }
-        }
-    ]);
-
-    if (result.length === 0) return 100;
-
-    const { totalChecks, upChecks } = result[0];
-    return totalChecks > 0 ? (upChecks / totalChecks) * 100 : 100;
 };
 
 export default {

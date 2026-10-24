@@ -4,6 +4,15 @@ import logger from '../utils/logger.js';
 // Create a reusable transporter object
 let transporter = null;
 
+// Everything a user (or a monitored server's error text) can control must be escaped before it goes
+// into an HTML email, otherwise a server called "<a href=phish>" becomes a link in our mail.
+const esc = (value) => String(value ?? '')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
+
 /**
  * Initialize the email transporter
  * @returns {Object} Email transporter
@@ -56,13 +65,11 @@ export const sendAlertEmail = async (server, alertType, oldStatus, newStatus) =>
   // Get or initialize transporter
   const mailer = initTransporter();
   if (!mailer) {
-    logger.warn('Cannot send alert email: email service not configured');
-    return false;
+    // Not configured is a deployment problem, not a transient one: fail loudly so it is noticed
+    throw new Error('Cannot send alert email: email service not configured');
   }
 
   try {
-    // Verify SMTP connection
-    await mailer.verify();
 
     // Prepare email content
     const { subject, html } = getAlertEmailContent(server, alertType, oldStatus, newStatus);
@@ -87,8 +94,9 @@ export const sendAlertEmail = async (server, alertType, oldStatus, newStatus) =>
 
     return true;
   } catch (error) {
+    // Rethrown on purpose: the alert queue retries failed jobs with backoff
     logger.error(`Error sending alert email for ${server.name}: ${error.message}`);
-    return false;
+    throw error;
   }
 };
 
@@ -101,19 +109,19 @@ export const sendAlertEmail = async (server, alertType, oldStatus, newStatus) =>
  * @returns {Object} Email subject and HTML content
  */
 const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
-  const serverName = server.name;
-  const serverUrl = server.url;
+  const serverName = esc(server.name);
+  const serverUrl = esc(server.url);
   const currentTime = new Date().toLocaleString();
   const responseTime = server.responseTime ? `${server.responseTime}ms` : 'Unknown';
   const responseThreshold = server.monitoring?.alerts?.responseThreshold || 1000;
-  const errorMessage = server.error || 'Unknown error';
+  const errorMessage = esc(server.error || 'Unknown error');
 
   let subject;
   let html;
 
   switch (alertType) {
     case 'server_down':
-      subject = `🚨 ALERT: ${serverName} is DOWN`;
+      subject = `🚨 ALERT: ${server.name} is DOWN`;
       html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #f44336; color: white; padding: 15px; text-align: center;">
@@ -134,7 +142,7 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
       break;
 
     case 'server_recovery':
-      subject = `✅ RESOLVED: ${serverName} is back UP`;
+      subject = `✅ RESOLVED: ${server.name} is back UP`;
       html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #4CAF50; color: white; padding: 15px; text-align: center;">
@@ -154,7 +162,7 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
       break;
 
     case 'slow_response':
-      subject = `⚠️ WARNING: ${serverName} is responding slowly`;
+      subject = `⚠️ WARNING: ${server.name} is responding slowly`;
       html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #ff9800; color: white; padding: 15px; text-align: center;">
@@ -174,7 +182,7 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
       break;
 
     default:
-      subject = `🔔 NOTIFICATION: ${serverName} status update`;
+      subject = `🔔 NOTIFICATION: ${server.name} status update`;
       html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #2196F3; color: white; padding: 15px; text-align: center;">
@@ -211,8 +219,6 @@ export const sendVerificationEmail = async (user, verificationToken) => {
   }
 
   try {
-    // Verify SMTP connection
-    await mailer.verify();
 
     // Get from email or use default
     const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
@@ -230,7 +236,7 @@ export const sendVerificationEmail = async (user, verificationToken) => {
             <h1 style="margin: 0;">Email Verification</h1>
           </div>
           <div style="padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9;">
-            <h2>Hello${user.name ? ` ${user.name}` : ''},</h2>
+            <h2>Hello${(user.displayName || user.name) ? ` ${esc(user.displayName || user.name)}` : ''},</h2>
             <p>Thank you for signing up for Ping Pilot. Please verify your email by clicking the button below:</p>
             <div style="text-align: center; margin: 30px 0;">
               <a href="${verificationLink}" style="display: inline-block; padding: 10px 20px; background-color: #1D4ED8; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
@@ -268,8 +274,6 @@ export const sendPasswordResetEmail = async (user, resetToken) => {
   }
 
   try {
-    // Verify SMTP connection
-    await mailer.verify();
 
     // Get from email or use default
     const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
@@ -287,7 +291,7 @@ export const sendPasswordResetEmail = async (user, resetToken) => {
             <h1 style="margin: 0;">Password Reset</h1>
           </div>
           <div style="padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9;">
-            <h2>Hello${user.name ? ` ${user.name}` : ''},</h2>
+            <h2>Hello${(user.displayName || user.name) ? ` ${esc(user.displayName || user.name)}` : ''},</h2>
             <p>We received a request to reset your password for your Ping Pilot account. Click the button below to reset your password:</p>
             <div style="text-align: center; margin: 30px 0;">
               <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; background-color: #1D4ED8; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
@@ -326,18 +330,16 @@ export const sendSupportNotificationEmail = async (ticket, user) => {
   }
 
   try {
-    // Verify SMTP connection
-    await mailer.verify();
 
     // Get from email or use default
     const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
 
     // Get admin email from environment or use default
-    const adminEmail = process.env.ADMIN_EMAIL || 'support@pingpilot.com';
+    const adminEmail = process.env.ADMIN_EMAIL || process.env.SMTP_FROM_EMAIL || 'support@pingpilott.com';
 
     // Highlight priority based on user's plan
     let priorityLabel = '';
-    if (ticket.userPlan === 'yearly' || ticket.userPlan === 'admin') {
+    if (ticket.priority === 'high') {
       priorityLabel = ' [PRIORITY]';
     }
 
@@ -351,14 +353,14 @@ export const sendSupportNotificationEmail = async (ticket, user) => {
             <h1 style="margin: 0;">New Support Ticket</h1>
           </div>
           <div style="padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9;">
-            <p><strong>From:</strong> ${user.email} (${user.displayName || 'Unnamed User'})</p>
+            <p><strong>From:</strong> ${esc(user.email)} (${esc(user.displayName || 'Unnamed User')})</p>
             <p><strong>Plan:</strong> ${ticket.userPlan}</p>
             <p><strong>Category:</strong> ${ticket.category}</p>
             <p><strong>Priority:</strong> ${ticket.priority}</p>
-            <p><strong>Subject:</strong> ${ticket.subject}</p>
+            <p><strong>Subject:</strong> ${esc(ticket.subject)}</p>
             <p><strong>Message:</strong></p>
             <div style="background-color: #fff; padding: 15px; border-left: 4px solid #2196F3; margin: 10px 0;">
-              ${ticket.description.replace(/\n/g, '<br>')}
+              ${esc(ticket.description).replace(/\n/g, '<br>')}
             </div>
             <div style="text-align: center; margin: 30px 0;">
               <a href="${process.env.FRONTEND_URL || 'http://pingpilott.vercel.app'}/admin/support/tickets/${ticket._id}" 
@@ -398,15 +400,13 @@ export const sendResponseNotificationEmail = async (ticket, user, isToAdmin) => 
   }
 
   try {
-    // Verify SMTP connection
-    await mailer.verify();
 
     // Get from email or use default
     const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@pingpilot.com';
 
     // Get recipient email
     const toEmail = isToAdmin
-      ? (process.env.ADMIN_EMAIL || 'support@pingpilot.com')
+      ? (process.env.ADMIN_EMAIL || process.env.SMTP_FROM_EMAIL || 'support@pingpilott.com')
       : user.email;
 
     // Get latest response
@@ -421,12 +421,12 @@ export const sendResponseNotificationEmail = async (ticket, user, isToAdmin) => 
           <div style="background-color: #2196F3; color: white; padding: 15px; text-align: center;">
             <h1 style="margin: 0;">New Support Response</h1>
           </div>
-          <div style="padding: 20px; border: l px solid #ddd; background-color: #f9f9f9;">
-            <p><strong>Ticket:</strong> ${ticket.subject}</p>
-            <p><strong>From:</strong> ${isToAdmin ? user.email : 'Support Team'}</p>
+          <div style="padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9;">
+            <p><strong>Ticket:</strong> ${esc(ticket.subject)}</p>
+            <p><strong>From:</strong> ${isToAdmin ? esc(user.email) : 'Support Team'}</p>
             <p><strong>Message:</strong></p>
             <div style="background-color: #fff; padding: 15px; border-left: 4px solid #2196F3; margin: 10px 0;">
-              ${latestResponse.message.replace(/\n/g, '<br>')}
+              ${esc(latestResponse.message).replace(/\n/g, '<br>')}
             </div>
             <div style="text-align: center; margin: 30px 0;">
               <a href="${process.env.FRONTEND_URL || 'http://pingpilott.vercel.app'}/${isToAdmin ? 'admin/' : ''}support/tickets/${ticket._id}" 

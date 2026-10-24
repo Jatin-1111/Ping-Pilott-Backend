@@ -23,23 +23,50 @@ const createRateLimiter = (options = {}) => {
     });
 };
 
-/**
- * Standard API rate limiter
- * Limits requests to 100 per 15 minutes
- */
-export const apiLimiter = createRateLimiter();
+const WINDOW_15_MIN = 15 * 60 * 1000;
+const tooMany = (message) => ({ status: 'error', message });
+const emailKey = (req) => `${req.ip}:${String(req.body?.email || '').toLowerCase().trim()}`;
 
 /**
- * Authentication routes rate limiter
- * More strict: 10 requests per 15 minutes
+ * General API limiter, per IP. Generous: a dashboard polls every minute and several people can share
+ * an office IP. It exists to stop floods, not to meter normal use.
+ */
+export const apiLimiter = createRateLimiter({
+    windowMs: 60 * 1000,
+    max: parseInt(process.env.RATE_LIMIT_MAX, 10) || 300,
+    message: tooMany('Too many requests, please slow down and try again in a minute')
+});
+
+/**
+ * Sign-in and sign-up: slows password guessing. Keyed by IP + email, so one attacker cannot lock out
+ * everyone behind the same IP, and a successful login does not count against the limit.
  */
 export const authLimiter = createRateLimiter({
-    windowMs: 15 * 60 * 1000,
-    max: 10,
-    message: {
-        status: 'error',
-        message: 'Too many authentication attempts, please try again after 15 minutes',
-    }
+    windowMs: WINDOW_15_MIN,
+    max: parseInt(process.env.AUTH_RATE_LIMIT_MAX, 10) || 10,
+    keyGenerator: emailKey,
+    skipSuccessfulRequests: true,
+    message: tooMany('Too many attempts, please try again in 15 minutes')
+});
+
+/**
+ * Endpoints that send an email (verification, password reset). Stops them being used to flood
+ * someone's inbox or burn the SMTP quota: 5 per hour per address.
+ */
+export const emailLimiter = createRateLimiter({
+    windowMs: 60 * 60 * 1000,
+    max: 5,
+    keyGenerator: emailKey,
+    message: tooMany('We already sent several emails to this address. Please wait an hour before asking again')
+});
+
+/**
+ * Token endpoints (verify email, reset password, refresh): per IP, to stop token guessing.
+ */
+export const tokenLimiter = createRateLimiter({
+    windowMs: WINDOW_15_MIN,
+    max: 30,
+    message: tooMany('Too many attempts, please try again later')
 });
 
 /**
@@ -69,6 +96,8 @@ export const createUserRateLimiter = (options = {}) => {
 export default {
     apiLimiter,
     authLimiter,
+    emailLimiter,
+    tokenLimiter,
     createUserRateLimiter,
     createRateLimiter
 };

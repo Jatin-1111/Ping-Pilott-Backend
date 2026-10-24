@@ -5,7 +5,12 @@ import { checkServerStatus } from '../services/monitoringService.js';
 import { redisConnection } from '../config/redis.js';
 import logger from '../utils/logger.js';
 import mongoose from 'mongoose';
-import { createServerSchema, updateServerSchema } from '../utils/validations.js';
+import { createServerSchema, updateServerSchema, formatZodIssues } from '../utils/validations.js';
+import { assertPublicHost } from '../utils/ssrfGuard.js';
+import { applyCheckResult } from '../services/checkRecorder.js';
+import { invalidateServerCache } from '../utils/cacheManager.js';
+import { checkPlanLimits } from '../services/planLimits.js';
+import { isWithinCheckSchedule, timezoneOf } from '../utils/schedule.js';
 import { getCachedData, setCachedData, dedupedFetch } from '../utils/cacheManager.js';
 import { CACHE_STRATEGIES } from '../config/performance.js';
 
@@ -83,7 +88,7 @@ export const getServers = asyncHandler(async (req, res) => {
 
         // Execute queries in parallel for maximum performance with deduplication
         const [servers, total] = await dedupedFetch(
-            `servers-query:${userId}:${JSON.stringify(filter)}`,
+            `servers-query:${userId}:${JSON.stringify(filter)}:${page}:${limit}:${sortBy}:${sortDir}:${showAll}`,
             async () => Promise.all([
                 (() => {
                     let query = Server.find(filter)
@@ -301,10 +306,7 @@ export const createServer = asyncHandler(async (req, res) => {
                 status: 'error',
                 message: 'Validation error',
                 code: 'VALIDATION_ERROR',
-                errors: validationResult.error.errors.map(err => ({
-                    field: err.path.join('.'),
-                    message: err.message
-                }))
+                errors: formatZodIssues(validationResult.error)
             });
         }
 
@@ -319,6 +321,16 @@ export const createServer = asyncHandler(async (req, res) => {
             priority
         } = validationResult.data;
 
+        // Plan rules (check frequency, webhooks) apply to API callers too, not just to the dashboard
+        const planError = checkPlanLimits(req.user, monitoring);
+        if (planError) {
+            return res.status(403).json({
+                status: 'error',
+                message: planError,
+                code: 'PLAN_LIMIT'
+            });
+        }
+
         // URL validation and normalization
         const normalizedUrl = normalizeUrl(url.trim());
         if (!normalizedUrl) {
@@ -328,6 +340,10 @@ export const createServer = asyncHandler(async (req, res) => {
                 code: 'INVALID_URL'
             });
         }
+
+        // Refuse private/internal addresses (localhost, 10.x, cloud metadata...) and webhooks aimed at them
+        await assertPublicHost(normalizedUrl);
+        if (monitoring?.alerts?.webhookUrl) await assertPublicHost(monitoring.alerts.webhookUrl);
 
         // Check for duplicate URL for this user
         const existingServer = await Server.findOne({
@@ -376,6 +392,7 @@ export const createServer = asyncHandler(async (req, res) => {
             url: normalizedUrl,
             type,
             description: description.trim(),
+            timezone: validationResult.data.timezone || process.env.TIMEZONE || 'UTC',
             uploadedBy: userId,
             uploadedAt: new Date(),
             uploadedRole: userRole,
@@ -385,8 +402,9 @@ export const createServer = asyncHandler(async (req, res) => {
                 ...buildMonitoringConfig(monitoring, userRole, trialEnd), // Keep existing monitoring config logic
                 alerts: {
                     ...monitoring?.alerts,
-                    // Force disable advanced alerts for free users
-                    email: isPremium ? (monitoring?.alerts?.email ?? true) : true, // Free users get email
+                    // Email alerts are on unless the user turned them off. (They used to be forced on for
+                    // free and starter users, so unticking the box had no effect.)
+                    email: monitoring?.alerts?.email ?? true,
                     phone: isPremium ? (monitoring?.alerts?.phone ?? false) : false // Only premium get phone
                 }
             },
@@ -397,6 +415,7 @@ export const createServer = asyncHandler(async (req, res) => {
 
         // Create server
         const server = await Server.create(serverData);
+        await invalidateServerCache(userId);
 
         logger.info(`Server created: ${server.name} (${server._id}) by user ${userId}`, {
             serverType: type,
@@ -426,6 +445,14 @@ export const createServer = asyncHandler(async (req, res) => {
             requestBody: { name, url, type },
             stack: error.stack
         });
+
+        if (error.code === 'PRIVATE_TARGET') {
+            return res.status(400).json({
+                status: 'error',
+                message: error.message,
+                code: 'PRIVATE_TARGET'
+            });
+        }
 
         if (error.name === 'ValidationError') {
             const errors = Object.values(error.errors).map(err => ({
@@ -515,14 +542,20 @@ export const updateServer = asyncHandler(async (req, res) => {
                 status: 'error',
                 message: 'Validation error',
                 code: 'VALIDATION_ERROR',
-                errors: validationResult.error.errors.map(err => ({
-                    field: err.path.join('.'),
-                    message: err.message
-                }))
+                errors: formatZodIssues(validationResult.error)
             });
         }
 
         const validatedData = validationResult.data;
+
+        const planError = checkPlanLimits(req.user, validatedData.monitoring);
+        if (planError) {
+            return res.status(403).json({
+                status: 'error',
+                message: planError,
+                code: 'PLAN_LIMIT'
+            });
+        }
 
         // Map validated data to updates object
         if (validatedData.name) updates.name = validatedData.name;
@@ -531,6 +564,8 @@ export const updateServer = asyncHandler(async (req, res) => {
             if (!normalizedUrl) { // Double check url validity
                 return res.status(400).json({ status: 'error', message: 'Invalid URL', code: 'INVALID_URL' });
             }
+
+            await assertPublicHost(normalizedUrl);
 
             // Check for duplicate URL (excluding current server) - Logic maintained
             if (normalizedUrl !== server.url) {
@@ -553,9 +588,15 @@ export const updateServer = asyncHandler(async (req, res) => {
         if (validatedData.type) updates.type = validatedData.type;
         if (validatedData.description !== undefined) updates.description = validatedData.description; // Allow empty string
         if (validatedData.priority) updates.priority = validatedData.priority;
+        if (validatedData.timezone) updates.timezone = validatedData.timezone;
 
-        if (validatedData.contactEmails) updates.contactEmails = validatedData.contactEmails; // Already validated by Zod
-        if (validatedData.contactPhones) updates.contactPhones = validatedData.contactPhones;
+        // Same cleaning as on create: lower-case, de-duplicated, digits only, and the same maximum counts
+        if (validatedData.contactEmails) updates.contactEmails = [...new Set(sanitizeEmails(validatedData.contactEmails))];
+        if (validatedData.contactPhones) updates.contactPhones = [...new Set(sanitizePhones(validatedData.contactPhones))];
+
+        if (validatedData.monitoring?.alerts?.webhookUrl) {
+            await assertPublicHost(validatedData.monitoring.alerts.webhookUrl);
+        }
 
         // Handle nested monitoring updates efficiently
         if (monitoring) {
@@ -581,6 +622,8 @@ export const updateServer = asyncHandler(async (req, res) => {
                 select: '-__v'
             }
         );
+
+        await Promise.all([invalidateServerCache(String(server.uploadedBy)), invalidateServerCache(userId)]);
 
         logger.info(`Server updated: ${updatedServer.name} (${serverId}) by user ${userId}`, {
             updatedFields: Object.keys(updates)
@@ -608,6 +651,14 @@ export const updateServer = asyncHandler(async (req, res) => {
             userId,
             stack: error.stack
         });
+
+        if (error.code === 'PRIVATE_TARGET') {
+            return res.status(400).json({
+                status: 'error',
+                message: error.message,
+                code: 'PRIVATE_TARGET'
+            });
+        }
 
         if (error.name === 'ValidationError') {
             const errors = Object.values(error.errors).map(err => ({
@@ -692,6 +743,8 @@ export const deleteServer = asyncHandler(async (req, res) => {
             });
         }
 
+        await Promise.all([invalidateServerCache(String(server.uploadedBy)), invalidateServerCache(userId)]);
+
         logger.info(`Server deleted: ${server.name} (${serverId}) by user ${userId}`, {
             checksDeleted: checkCount
         });
@@ -731,7 +784,8 @@ export const checkServer = asyncHandler(async (req, res) => {
     const serverId = req.params.id;
     const userId = req.user.id;
     const isAdmin = req.user.role === 'admin';
-    const force = req.body.force === true; // Force check even if recently checked
+    // Only admins may skip the 30s throttle: letting anyone do it turns this endpoint into an unlimited request cannon
+    const force = req.body.force === true && isAdmin;
 
     // Validate ObjectId
     if (!mongoose.Types.ObjectId.isValid(serverId)) {
@@ -754,7 +808,11 @@ export const checkServer = asyncHandler(async (req, res) => {
             timezone: 1,
             monitoring: 1,
             uploadedPlan: 1,
-            uploadedRole: 1
+            uploadedRole: 1,
+            slowAlerted: 1,
+            priority: 1,
+            contactEmails: 1,
+            contactPhones: 1
         }).lean();
 
         if (!server) {
@@ -803,41 +861,25 @@ export const checkServer = asyncHandler(async (req, res) => {
         }
 
         const oldStatus = server.status;
-        const now = new Date();
         const checkStartTime = Date.now();
 
         // Perform the check
         const checkResult = await checkServerStatus(server);
         const checkDuration = Date.now() - checkStartTime;
 
-        // Prepare batch update data
-        const updateData = {
-            status: checkResult.status,
-            responseTime: checkResult.responseTime,
-            error: checkResult.error,
-            lastChecked: now
-        };
+        // Save it, alert if it matters, and publish it for live clients (same path as scheduled checks)
+        const { now } = await applyCheckResult(server, checkResult);
 
-        // Only update status change time if status actually changed
-        if (oldStatus !== checkResult.status) {
-            updateData.lastStatusChange = now;
-        }
-
-        // Create enhanced check history document
-        const checkDoc = {
+        await ServerCheck.create({
             serverId: new mongoose.Types.ObjectId(serverId),
             status: checkResult.status,
             responseTime: checkResult.responseTime,
             error: checkResult.error,
             timestamp: now,
             checkType: 'manual'
-        };
+        });
 
-        // Execute database operations in parallel
-        await Promise.all([
-            Server.updateOne({ _id: serverId }, updateData),
-            ServerCheck.create(checkDoc)
-        ]);
+        await Promise.all([invalidateServerCache(String(server.uploadedBy)), invalidateServerCache(userId)]);
 
         logger.info(`Manual check completed: ${server.name} (${serverId}) - ${checkResult.status}`, {
             userId,
@@ -846,15 +888,6 @@ export const checkServer = asyncHandler(async (req, res) => {
             responseTime: checkResult.responseTime,
             checkDuration
         });
-
-        // Publish update to Redis for real-time WebSocket clients
-        const updatePayload = {
-            serverId: server._id,
-            status: checkResult.status || 'unknown',
-            latency: checkResult.responseTime,
-            lastChecked: now
-        };
-        redisConnection.publish('monitor-updates', JSON.stringify(updatePayload));
 
         // Enhanced response with detailed information
         res.status(200).json({
@@ -871,8 +904,8 @@ export const checkServer = asyncHandler(async (req, res) => {
                     responseTime: checkResult.responseTime,
                     error: checkResult.error,
                     timestamp: now,
-                    localTime: now.toLocaleString('sv-SE', { timeZone: server.timezone || 'UTC' }).replace('T', ' '),
-                    timezone: server.timezone || 'UTC'
+                    localTime: now.toLocaleString('sv-SE', { timeZone: timezoneOf(server) }).replace('T', ' '),
+                    timezone: timezoneOf(server)
                 },
                 changes: {
                     statusChanged: oldStatus !== checkResult.status,
@@ -968,39 +1001,47 @@ export const getServerHistory = asyncHandler(async (req, res) => {
             }
         ];
 
-        // Add sampling for large datasets
+        // Sampling for long periods: one point per bucket of `sampleInterval` minutes.
+        // A bucket is reported as down if ANY check inside it failed. (It used to show only the latest
+        // status, so an outage that recovered within the bucket vanished from the history.) Response time
+        // is the average of the successful checks only, so failures do not drag it down.
         if (sampleInterval > 1) {
-            pipeline.push({
-                $group: {
-                    _id: {
-                        interval: {
-                            $floor: {
-                                $divide: [
-                                    { $subtract: ['$timestamp', startTimeRange] },
-                                    sampleInterval * 60000 // Convert minutes to milliseconds
-                                ]
+            pipeline.push(
+                {
+                    $group: {
+                        _id: {
+                            interval: {
+                                $floor: {
+                                    $divide: [
+                                        { $subtract: ['$timestamp', startTimeRange] },
+                                        sampleInterval * 60000 // minutes to milliseconds
+                                    ]
+                                }
                             }
+                        },
+                        ups: { $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] } },
+                        downs: { $sum: { $cond: [{ $eq: ['$status', 'down'] }, 1, 0] } },
+                        responseTime: { $avg: { $cond: [{ $eq: ['$status', 'up'] }, '$responseTime', null] } },
+                        timestamp: { $max: '$timestamp' },
+                        error: { $max: { $cond: [{ $eq: ['$status', 'down'] }, '$error', null] } },
+                        count: { $sum: 1 }
+                    }
+                },
+                {
+                    $addFields: {
+                        status: {
+                            $cond: [{ $gt: ['$downs', 0] }, 'down', { $cond: [{ $gt: ['$ups', 0] }, 'up', 'unknown'] }]
                         }
-                    },
-                    status: { $first: '$status' }, // Use first because we sorted DESC (so first is latest)
-                    responseTime: { $avg: '$responseTime' },
-                    timestamp: { $first: '$timestamp' }, // Use first because we sorted DESC
-                    error: { $first: '$error' },
-                    count: { $sum: 1 }
+                    }
                 }
-            });
+            );
         }
 
+        // Newest `limit` points, then back into chronological order for the chart.
+        // ($group does not keep order, so the sort has to come after it and before the limit.)
+        pipeline.push({ $sort: { timestamp: -1 } });
         pipeline.push({ $limit: limit });
-
-        // Restore chronological order (ASC) for the graph
-        pipeline.push({ $sort: { timestamp: 1 } }); // OR { "_id.interval": 1 } if grouped
-
-        // We need to handle the sort key based on whether we grouped or not
-        // If grouped, we sort by timestamp (which we preserved)
-        // If not grouped, we sort by timestamp
-        // Actually, since we grouped by interval, valid. But wait.
-        // If we grouped, the output documents have 'timestamp' field. So { timestamp: 1 } works.
+        pipeline.push({ $sort: { timestamp: 1 } });
 
         // Execute history query and stats in parallel if needed
         const [checks, statsResult] = await Promise.all([
@@ -1087,7 +1128,7 @@ export const getServerHistory = asyncHandler(async (req, res) => {
         }
 
         const queryTime = Date.now() - startTime;
-        const timezone = server.timezone || PERFORMANCE_CONFIG.DEFAULT_TIMEZONE;
+        const timezone = timezoneOf(server);
 
         res.status(200).json({
             status: 'success',
@@ -1135,9 +1176,10 @@ export const getServerHistory = asyncHandler(async (req, res) => {
  * @access  Private
  */
 export const batchCheckServers = asyncHandler(async (req, res) => {
-    const { serverIds, force = false } = req.body;
+    const { serverIds } = req.body;
     const userId = req.user.id;
     const isAdmin = req.user.role === 'admin';
+    const force = req.body.force === true && isAdmin; // see checkServer
     const maxConcurrent = Math.min(5, PERFORMANCE_CONFIG.BATCH_CHECK_LIMIT); // Limit concurrent checks
 
     // Input validation
@@ -1175,7 +1217,7 @@ export const batchCheckServers = asyncHandler(async (req, res) => {
         const servers = await Server.find({
             _id: { $in: validIds },
             ...(isAdmin ? {} : { uploadedBy: userId })
-        }).select('name url type status lastChecked timezone monitoring uploadedBy uploadedPlan uploadedRole').lean();
+        }).select('name url type status lastChecked timezone monitoring uploadedBy uploadedPlan uploadedRole slowAlerted priority contactEmails contactPhones').lean();
 
         if (servers.length === 0) {
             return res.status(404).json({
@@ -1311,7 +1353,7 @@ export const getServerStats = asyncHandler(async (req, res) => {
             });
         }
 
-        if (server.uploadedBy !== userId && !isAdmin) {
+        if (String(server.uploadedBy) !== String(userId) && !isAdmin) {
             return res.status(403).json({
                 status: 'error',
                 message: 'Not authorized to view server statistics',
@@ -1518,29 +1560,7 @@ const getNextCheckEstimate = (server) => {
 /**
  * Check if server can be checked now based on monitoring windows
  */
-const canBeCheckedNow = (server) => {
-    const now = new Date();
-
-    // Check days of week
-    if (server.monitoring?.daysOfWeek?.length > 0) {
-        if (!server.monitoring.daysOfWeek.includes(now.getDay())) {
-            return false;
-        }
-    }
-
-    // Check time windows
-    if (server.monitoring?.timeWindows?.length > 0) {
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const currentTime = `${hours}:${minutes}`;
-        const inWindow = server.monitoring.timeWindows.some(window =>
-            currentTime >= window.start && currentTime <= window.end
-        );
-        if (!inWindow) return false;
-    }
-
-    return true;
-};
+const canBeCheckedNow = (server) => isWithinCheckSchedule(server.monitoring, timezoneOf(server));
 
 /**
  * Check if server can be monitored (subscription check)
@@ -1566,8 +1586,8 @@ const canServerBeMonitored = (server) => {
  */
 const normalizeUrl = (url) => {
     try {
-        // Remove protocol for consistency
-        let normalized = url.replace(/^https?:\/\//, '');
+        // https is the default, so it is dropped; an explicit http:// is kept so plain-http sites are checked over http
+        let normalized = url.replace(/^https:\/\//i, '');
 
         // Remove trailing slash
         normalized = normalized.replace(/\/$/, '');
@@ -1610,6 +1630,8 @@ const buildMonitoringUpdates = (monitoring) => {
 
     if (monitoring.frequency !== undefined) {
         updates['monitoring.frequency'] = monitoring.frequency;
+        // A new interval takes effect at the next scheduler run instead of after the old one runs out
+        updates.nextCheckAt = null;
     }
     if (monitoring.daysOfWeek !== undefined) {
         updates['monitoring.daysOfWeek'] = monitoring.daysOfWeek;
@@ -1722,39 +1744,21 @@ const processServersBatched = async (servers, maxConcurrent, userId) => {
         const batchPromises = batch.map(async (server) => {
             try {
                 const oldStatus = server.status;
-                const now = new Date();
                 const checkStartTime = Date.now();
 
                 const checkResult = await checkServerStatus(server);
                 const checkDuration = Date.now() - checkStartTime;
 
-                // Update server
-                const updateData = {
-                    status: checkResult.status,
-                    responseTime: checkResult.responseTime,
-                    error: checkResult.error,
-                    lastChecked: now
-                };
+                const { now } = await applyCheckResult(server, checkResult);
 
-                if (oldStatus !== checkResult.status) {
-                    updateData.lastStatusChange = now;
-                }
-
-                const checkDoc = {
+                await ServerCheck.create({
                     serverId: server._id,
                     status: checkResult.status,
                     responseTime: checkResult.responseTime,
                     error: checkResult.error,
                     timestamp: now,
-                    checkType: 'batch',
-                    userId: userId
-                };
-
-                // Execute updates in parallel
-                await Promise.all([
-                    Server.updateOne({ _id: server._id }, updateData),
-                    ServerCheck.create(checkDoc)
-                ]);
+                    checkType: 'batch'
+                });
 
                 return {
                     serverId: server._id,

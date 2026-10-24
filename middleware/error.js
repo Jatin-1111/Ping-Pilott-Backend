@@ -57,13 +57,16 @@ const errorMiddleware = (err, req, res, next) => {
         error = new ErrorResponse('Token expired', 401);
     }
 
-    // Default to 500 if no status code
-    const statusCode = error.statusCode || 500;
+    // body-parser reports malformed JSON and oversized bodies as err.status (400/413), not err.statusCode
+    const clientStatus = [err.statusCode, err.status].find((c) => Number.isInteger(c) && c >= 400 && c < 500);
+    const statusCode = error.statusCode || clientStatus || 500;
 
-    // Format response
+    // Format response. Internal error text stays in the log; clients get a generic message for 5xx in production.
     const response = {
         status: 'error',
-        message: error.message || 'Server Error',
+        message: statusCode >= 500 && process.env.NODE_ENV === 'production'
+            ? 'Server Error'
+            : (error.message || 'Server Error'),
     };
 
     // Add stack trace in development

@@ -1,7 +1,12 @@
 // scripts/createAdmin.js - Standalone script to create an admin account
 
 import dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Load .env from the backend root regardless of the directory the script is run from
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 import mongoose from 'mongoose';
 import User from '../models/User.js';

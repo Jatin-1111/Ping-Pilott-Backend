@@ -1,3 +1,8 @@
 node_modules
 
-logs
+# Secrets and runtime files must never be committed
+.env
+.env.*
+!.env.example
+logs/
+*.log

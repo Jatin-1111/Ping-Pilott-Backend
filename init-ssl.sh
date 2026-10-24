@@ -1,6 +1,6 @@
 #!/bin/bash
 
-domains=(pingpilott.jatinx.tech)
+domains=(api.pingpilott.com)
 rsa_key_size=4096
 data_path="./certbot"
 email="offjatin@gmail.com" # Adding a default email for notifications, can be changed

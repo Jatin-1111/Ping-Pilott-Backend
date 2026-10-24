@@ -2,19 +2,25 @@
 import logger from '../utils/logger.js';
 import Server from '../models/Server.js';
 import { addCheckJob } from '../queues/monitorQueue.js';
+import { isWithinCheckSchedule, timezoneOf } from '../utils/schedule.js';
 
 /**
  * MAIN: Dispatch server checks to the queue
- * Finds servers due for checking and adds them to BullMQ
+ * Finds servers whose `nextCheckAt` has passed and adds them to BullMQ.
+ *
+ * Each server is due at (previous tick + its frequency). Comparing against a fixed schedule instead of
+ * "now - lastChecked" matters: lastChecked is written after the check finishes, so that comparison was
+ * always a few seconds short and a 1-minute monitor ended up checked every 2 minutes.
  */
 export const checkAllServersIntelligently = async () => {
     const startTime = Date.now();
+    // The minute this run belongs to; it is the clock every schedule is counted from
+    const tick = new Date(Math.floor(startTime / 60000) * 60000);
 
     logger.info('🧠 SCHEDULER: Starting check cycle via Redis Queue...');
 
     try {
-        // Get servers with intelligent prioritization
-        const servers = await getServersWithPriority();
+        const servers = await getDueServers(tick);
 
         if (!servers?.length) {
             logger.debug('No servers need checking right now');
@@ -23,19 +29,28 @@ export const checkAllServersIntelligently = async () => {
 
         logger.info(`Found ${servers.length} servers to check - dispatching to queue`);
 
-        // Dispatch jobs in parallel but await completeness
-        let dispatched = 0;
-        const promises = servers.map(async (server) => {
-            const added = await addCheckJob(server, server.priority);
-            if (added) dispatched++;
-        });
+        const dispatchedServers = [];
+        await Promise.all(servers.map(async (server) => {
+            if (await addCheckJob(server, tick)) dispatchedServers.push(server);
+        }));
 
-        await Promise.all(promises);
+        // Book the next slot right away. If a worker is slow or dies, the next cycle will not dispatch a duplicate.
+        if (dispatchedServers.length > 0) {
+            await Server.bulkWrite(dispatchedServers.map((server) => {
+                const frequency = server.monitoring?.frequency || 5;
+                return {
+                    updateOne: {
+                        filter: { _id: server._id },
+                        update: { $set: { nextCheckAt: new Date(tick.getTime() + frequency * 60000) } }
+                    }
+                };
+            }), { ordered: false });
+        }
 
         const duration = Date.now() - startTime;
-        logger.info(`✅ SCHEDULER: Dispatched ${dispatched}/${servers.length} jobs in ${duration}ms`);
+        logger.info(`✅ SCHEDULER: Dispatched ${dispatchedServers.length}/${servers.length} jobs in ${duration}ms`);
 
-        return { total: servers.length, dispatched };
+        return { total: servers.length, dispatched: dispatchedServers.length };
 
     } catch (error) {
         logger.error(`❌ SCHEDULER ERROR: ${error.message}`);
@@ -44,41 +59,23 @@ export const checkAllServersIntelligently = async () => {
 };
 
 /**
- * Get servers with intelligent prioritization (system time)
+ * Servers that are due: never scheduled (no nextCheckAt, e.g. just created or created before this field
+ * existed) or whose slot has arrived. Uses the nextCheckAt index instead of scanning every server.
  */
-const getServersWithPriority = async () => {
-    const now = new Date();
-
-    // Smart query - only get servers that ACTUALLY need checking
-    const query = {
+const getDueServers = async (tick) => {
+    const servers = await Server.find({
         $or: [
-            { lastChecked: null },
-            {
-                $expr: {
-                    $gte: [
-                        { $subtract: [now, '$lastChecked'] },
-                        {
-                            $multiply: [
-                                {
-                                    // Strictly follow user's configured frequency
-                                    $ifNull: ['$monitoring.frequency', 5]
-                                },
-                                60000 // Convert to milliseconds
-                            ]
-                        }
-                    ]
-                }
-            }
+            { nextCheckAt: null },
+            { nextCheckAt: { $lte: tick } }
         ]
-    };
-
-    const servers = await Server.find(query, {
+    }, {
         name: 1,
         url: 1,
         type: 1,
         priority: 1,
         status: 1,
         monitoring: 1,
+        timezone: 1,
         lastChecked: 1,
         uploadedRole: 1,
         uploadedPlan: 1
@@ -103,40 +100,8 @@ const shouldMonitorServer = (server) => {
         return false;
     }
 
-    // Check time windows if defined
-    if (server.monitoring?.timeWindows?.length || server.monitoring?.daysOfWeek?.length) {
-        const now = new Date();
-        const currentDay = now.getDay();
-        const currentTime = now.getHours().toString().padStart(2, '0') + ':' +
-            now.getMinutes().toString().padStart(2, '0');
-
-        // Check days of week
-        if (server.monitoring?.daysOfWeek?.length > 0) {
-            if (!server.monitoring.daysOfWeek.includes(currentDay)) {
-                return false;
-            }
-        }
-
-        // Check time windows
-        if (server.monitoring?.timeWindows?.length > 0) {
-            // Special case: 00:00 to 00:00 means 24/7
-            if (server.monitoring.timeWindows.some(w => w.start === '00:00' && w.end === '00:00')) {
-                return true;
-            }
-
-            return server.monitoring.timeWindows.some(window => {
-                if (window.start <= window.end) {
-                    // Standard window (e.g. 09:00 to 17:00)
-                    return currentTime >= window.start && currentTime <= window.end;
-                } else {
-                    // Overnight window (e.g. 22:00 to 06:00)
-                    return currentTime >= window.start || currentTime <= window.end;
-                }
-            });
-        }
-    }
-
-    return true;
+    // Check days and hours, read in the server's own timezone
+    return isWithinCheckSchedule(server.monitoring, timezoneOf(server));
 };
 
 export default { checkAllServersIntelligently };

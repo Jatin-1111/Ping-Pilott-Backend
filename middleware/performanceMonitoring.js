@@ -33,14 +33,17 @@ export const performanceMonitoring = (req, res, next) => {
             });
         }
 
-        // Log errors
-        if (statusCode >= 400) {
+        // Only 5xx are errors. A wrong password or an expired token (401/404) is normal traffic; logging it as an
+        // error buried the real ones (3,600 lines of it in error.log).
+        if (statusCode >= 500) {
             logger.error(`Error response: ${method} ${path} - ${statusCode} - ${duration.toFixed(2)}ms`, {
                 method,
                 path,
                 duration: `${duration.toFixed(2)}ms`,
                 statusCode
             });
+        } else if (statusCode >= 400 && statusCode !== 401 && statusCode !== 404) {
+            logger.warn(`Client error: ${method} ${path} - ${statusCode} - ${duration.toFixed(2)}ms`);
         }
     });
 

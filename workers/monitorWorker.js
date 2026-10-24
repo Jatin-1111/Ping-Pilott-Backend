@@ -4,49 +4,45 @@ import { redisConnection } from '../config/redis.js';
 import { checkServerStatus } from '../services/monitoringService.js';
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
-import { addAlertToQueue } from '../queues/alertQueue.js';
+import { applyCheckResult } from '../services/checkRecorder.js';
 import logger from '../utils/logger.js';
 import mongoose from 'mongoose';
 
 const QUEUE_NAME = 'monitor-server-queue';
 
-// Batch operation buffers
-const updateBatch = [];
+// A server that was up and fails is checked once more before it is declared down, so one dropped
+// request does not page anyone. Set DOWN_CONFIRM_DELAY_MS=0 to disable.
+const CONFIRM_DELAY_MS = process.env.DOWN_CONFIRM_DELAY_MS !== undefined
+    ? parseInt(process.env.DOWN_CONFIRM_DELAY_MS, 10)
+    : 10000;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Check history is written in batches (it is append-only, so a late write is harmless).
+// The server's own status is NOT batched: it must be written atomically, see below.
 const checkBatch = [];
 let batchTimer = null;
 const BATCH_SIZE = 100;
 const BATCH_TIMEOUT = 5000;
 
 async function executeBatch() {
-    if (updateBatch.length === 0 && checkBatch.length === 0) return;
+    if (checkBatch.length === 0) return;
 
-    const updateCount = updateBatch.length;
-    const checkCount = checkBatch.length;
-
+    const docs = checkBatch.splice(0, checkBatch.length);
     try {
-        logger.debug(`Executing batch: ${updateCount} updates, ${checkCount} checks`);
-        await Promise.all([
-            updateBatch.length > 0 ? Server.bulkWrite(updateBatch) : Promise.resolve(),
-            checkBatch.length > 0 ? ServerCheck.insertMany(checkBatch, { ordered: false }) : Promise.resolve()
-        ]);
-        logger.debug(`Batch executed: ${updateCount} updates, ${checkCount} checks`);
+        await ServerCheck.insertMany(docs, { ordered: false });
     } catch (error) {
-        logger.error('Batch execution failed:', error);
-    } finally {
-        updateBatch.length = 0;
-        checkBatch.length = 0;
+        logger.error(`Check history batch failed (${docs.length} checks): ${error.message}`);
     }
 }
 
-async function addToBatch(updateOp, checkDoc) {
-    updateBatch.push(updateOp);
+async function addToBatch(checkDoc) {
     checkBatch.push(checkDoc);
+    clearTimeout(batchTimer);
 
-    if (updateBatch.length >= BATCH_SIZE) {
-        clearTimeout(batchTimer);
+    if (checkBatch.length >= BATCH_SIZE) {
         await executeBatch();
     } else {
-        clearTimeout(batchTimer);
         batchTimer = setTimeout(executeBatch, BATCH_TIMEOUT);
     }
 }
@@ -61,7 +57,7 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
         }
 
         const server = await Server.findById(serverId)
-            .select('name url type monitoring status lastChecked uploadedBy contactEmails contactPhones priority alertSettings')
+            .select('name url type timezone monitoring status lastChecked uploadedBy contactEmails contactPhones priority slowAlerted')
             .lean();
 
         if (!server) {
@@ -69,58 +65,24 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
             return;
         }
 
-        const checkResult = await checkServerStatus(server);
+        let checkResult = await checkServerStatus(server);
 
-        const checkDoc = {
+        // Confirm a first failure before acting on it
+        if (checkResult.status === 'down' && server.status === 'up' && CONFIRM_DELAY_MS > 0) {
+            await sleep(CONFIRM_DELAY_MS);
+            checkResult = await checkServerStatus(server);
+        }
+
+        const { now } = await applyCheckResult(server, checkResult);
+
+        await addToBatch({
             serverId: new mongoose.Types.ObjectId(serverId),
             status: checkResult.status,
             responseTime: checkResult.responseTime,
             error: checkResult.error,
-            timestamp: new Date(),
+            timestamp: now,
             checkType: 'automated'
-        };
-
-        const updateData = {
-            status: checkResult.status,
-            responseTime: checkResult.responseTime,
-            error: checkResult.error,
-            lastChecked: new Date()
-        };
-
-        if (server.status !== checkResult.status) {
-            updateData.lastStatusChange = new Date();
-            const priority = server.priority === 'high' ? 'high' : 'normal';
-
-            addAlertToQueue({
-                serverId: server._id.toString(),
-                oldStatus: server.status,
-                newStatus: checkResult.status,
-                checkResult,
-                serverData: server
-            }, priority).catch(err => {
-                logger.error(`Failed to queue alert for ${server.name}: ${err.message}`);
-            });
-        }
-
-        const updateOp = {
-            updateOne: {
-                filter: { _id: serverId },
-                update: { $set: updateData }
-            }
-        };
-
-        await addToBatch(updateOp, checkDoc);
-
-        if (checkResult) {
-            const updatePayload = {
-                serverId: server._id,
-                userId: server.uploadedBy,
-                status: checkResult.status || 'unknown',
-                latency: checkResult.responseTime,
-                lastChecked: new Date()
-            };
-            redisConnection.publish('monitor-updates', JSON.stringify(updatePayload));
-        }
+        });
 
         logger.debug(`Job ${job.id} (Check ${server.name}) processed in ${Date.now() - startTime}ms`);
 
@@ -137,16 +99,32 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
     }
 });
 
-monitorWorker.on('completed', (job) => { });
+monitorWorker.on('completed', () => { });
 
 monitorWorker.on('failed', (job, err) => {
-    logger.error(`Job ${job.id} has failed with ${err.message}`);
+    logger.error(`Job ${job?.id} has failed with ${err.message}`);
+});
+
+monitorWorker.on('error', (err) => {
+    logger.error(`Monitor worker error: ${err.message}`);
 });
 
 monitorWorker.on('closing', async () => {
-    logger.info('Worker closing, executing remaining batch operations...');
+    logger.info('Worker closing, writing remaining check history...');
     clearTimeout(batchTimer);
     await executeBatch();
 });
+
+// Flush buffered history and stop taking jobs when the process is asked to stop
+const shutdown = async (signal) => {
+    logger.info(`${signal} received, closing monitor worker...`);
+    try {
+        await monitorWorker.close();
+    } finally {
+        process.exit(0);
+    }
+};
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
 
 logger.info(`🚀 Monitor Worker started - listening on queue: ${QUEUE_NAME}`);

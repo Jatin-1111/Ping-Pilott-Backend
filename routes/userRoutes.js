@@ -3,6 +3,7 @@ import { body, param } from 'express-validator';
 import userController from '../controllers/userController.js';
 import { protect, authorize } from '../middleware/auth.js';
 import validate from '../middleware/validator.js';
+import { PLAN_IDS } from '../services/planService.js';
 
 const router = express.Router();
 
@@ -40,7 +41,8 @@ router.patch('/:id', [
     body('email').optional().isEmail().withMessage('Please provide a valid email'),
     body('role').optional().isIn(['user', 'admin']).withMessage('Invalid role'),
     body('subscription').optional().isObject().withMessage('Subscription must be an object'),
-    body('subscription.plan').optional().isIn(['free', 'monthly', 'halfYearly', 'yearly', 'admin']).withMessage('Invalid subscription plan'),
+    body('subscription.plan').optional().isIn(PLAN_IDS).withMessage('Invalid subscription plan'),
+    body('subscription.status').optional().isIn(['trial', 'active', 'expired', 'cancelled', 'unlimited']).withMessage('Invalid subscription status'),
     validate
 ], userController.updateUser);
 

@@ -31,6 +31,14 @@ const userSchema = new mongoose.Schema({
     },
     verificationToken: String,
     verificationTokenExpiry: Date,
+    // A new address waiting to be confirmed. The account keeps working with the old one until then.
+    pendingEmail: {
+        type: String,
+        lowercase: true,
+        trim: true
+    },
+    // Set whenever the password changes; tokens issued before it are no longer accepted
+    passwordChangedAt: Date,
     resetToken: String,
     resetTokenExpiry: Date,
     subscription: {
@@ -141,13 +149,30 @@ const userSchema = new mongoose.Schema({
     }
 }, {
     timestamps: true,
-    toJSON: { virtuals: true },
+    toJSON: {
+        virtuals: true,
+        // Everything that is sent to a client (login, /me, /users, admin lists, register...) goes through
+        // here, so secrets can never leak by accident. Before, /register returned the email verification
+        // token, which let anyone verify an address they did not own.
+        transform: (doc, ret) => {
+            delete ret.password;
+            delete ret.verificationToken;
+            delete ret.verificationTokenExpiry;
+            delete ret.resetToken;
+            delete ret.resetTokenExpiry;
+            delete ret.passwordChangedAt;
+            delete ret.__v;
+            return ret;
+        }
+    },
     toObject: { virtuals: true }
 });
 
 // Hash password before saving
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
+    // (a brand new account has no earlier sessions to cut off)
+    if (!this.isNew) this.passwordChangedAt = new Date();
     try {
         const salt = await bcrypt.genSalt(12);
         this.password = await bcrypt.hash(this.password, salt);

@@ -15,10 +15,8 @@ export const createTicket = asyncHandler(async (req, res) => {
     const userPlan = req.user.subscription?.plan || 'free';
 
     // Determine priority based on plan
-    let priority = 'medium';
-    if (userPlan === 'yearly' || userPlan === 'admin') {
-        priority = 'high';
-    }
+    // Paid-support plans (Pro, Business) and admins are answered first
+    const priority = /^(pro|business)_/.test(userPlan) || userPlan === 'admin' ? 'high' : 'medium';
 
     const ticket = await SupportTicket.create({
         userId,
@@ -136,6 +134,14 @@ export const addResponse = asyncHandler(async (req, res) => {
         });
     }
 
+    // A closed ticket takes no more replies from the customer (admins can still write, or reopen it)
+    if (ticket.status === 'closed' && !isAdmin) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'This ticket is closed. Open a new ticket if you still need help.'
+        });
+    }
+
     // Add response
     ticket.responses.push({
         message,
@@ -143,9 +149,12 @@ export const addResponse = asyncHandler(async (req, res) => {
         createdAt: new Date()
     });
 
-    // Update status if admin is responding
+    // Update status: an admin reply starts work on an open ticket; a customer reply to a resolved
+    // ticket means it was not resolved, so it goes back to the queue instead of staying hidden as "resolved"
     if (isAdmin && ticket.status === 'open') {
         ticket.status = 'in_progress';
+    } else if (!isAdmin && ticket.status === 'resolved') {
+        ticket.status = 'open';
     }
 
     await ticket.save();
@@ -219,8 +228,8 @@ export const updateTicketStatus = asyncHandler(async (req, res) => {
 export const getAllTickets = asyncHandler(async (req, res) => {
     const status = req.query.status || 'all';
     const priority = req.query.priority || 'all';
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+    const limit = Math.min(200, Math.max(1, parseInt(req.query.limit, 10) || 50));
     const skip = (page - 1) * limit;
 
     const filter = {};
@@ -236,12 +245,29 @@ export const getAllTickets = asyncHandler(async (req, res) => {
     const totalTickets = await SupportTicket.countDocuments(filter);
     const totalPages = Math.ceil(totalTickets / limit);
 
-    // Optimize query with lean()
-    const tickets = await SupportTicket.find(filter)
-        .sort({ priority: -1, createdAt: 1 })
-        .skip(skip)
-        .limit(limit)
-        .lean();
+    // Most urgent first, then oldest first. Sorting the stored text would put "medium" and "low" before
+    // "high" (alphabetical), so priority is ranked explicitly.
+    const tickets = await SupportTicket.aggregate([
+        { $match: filter },
+        {
+            $addFields: {
+                priorityRank: {
+                    $switch: {
+                        branches: [
+                            { case: { $eq: ['$priority', 'urgent'] }, then: 0 },
+                            { case: { $eq: ['$priority', 'high'] }, then: 1 },
+                            { case: { $eq: ['$priority', 'medium'] }, then: 2 }
+                        ],
+                        default: 3
+                    }
+                }
+            }
+        },
+        { $sort: { priorityRank: 1, createdAt: 1 } },
+        { $skip: skip },
+        { $limit: limit },
+        { $project: { priorityRank: 0 } }
+    ]);
 
     res.status(200).json({
         status: 'success',

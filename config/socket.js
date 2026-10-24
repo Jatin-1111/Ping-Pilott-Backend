@@ -1,12 +1,21 @@
-// config/socket.js - Enhanced Socket.IO with room-based broadcasting
+// config/socket.js - Socket.IO with authenticated, room-based live updates
+//
+// Every connection must present a valid access token. A client is put in its own `user:<id>` room
+// automatically and receives updates for its own servers only; admins also join `admins` to see everything.
+// Nothing about who may hear what is decided by the client: the earlier version let any visitor join
+// `user:<anyone>` or `server:<anyone>` and read that account's live status.
 
 import { Server as SocketServer } from 'socket.io';
+import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+import User from '../models/User.js';
+import Server from '../models/Server.js';
 import logger from '../utils/logger.js';
 
 let io;
 
 /**
- * Initialize Socket.IO with room-based broadcasting support
+ * Initialize Socket.IO
  * @param {http.Server} httpServer - HTTP server instance
  * @returns {SocketServer} Socket.IO server instance
  */
@@ -21,31 +30,46 @@ export function initializeSocket(httpServer) {
         pingInterval: 25000
     });
 
-    io.on('connection', (socket) => {
-        logger.info(`Client connected: ${socket.id}`);
+    // Authenticate before the connection is accepted
+    io.use(async (socket, next) => {
+        try {
+            const token = socket.handshake.auth?.token;
+            if (!token) return next(new Error('Not authorized'));
 
-        // Subscribe to specific server updates
-        socket.on('subscribe-server', (serverId) => {
-            socket.join(`server:${serverId}`);
-            logger.debug(`Client ${socket.id} subscribed to server:${serverId}`);
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const user = await User.findById(decoded.id).select('role emailVerified');
+            if (!user || !user.emailVerified) return next(new Error('Not authorized'));
+
+            socket.data.userId = String(user._id);
+            socket.data.role = user.role;
+            next();
+        } catch (error) {
+            next(new Error('Not authorized'));
+        }
+    });
+
+    io.on('connection', (socket) => {
+        const { userId, role } = socket.data;
+        logger.info(`Client connected: ${socket.id} (user ${userId})`);
+
+        socket.join(`user:${userId}`);
+        if (role === 'admin') socket.join('admins');
+
+        // Optional: follow one server's room. Only for servers the user owns (admins: any).
+        socket.on('subscribe-server', async (serverId) => {
+            try {
+                if (!mongoose.Types.ObjectId.isValid(serverId)) return;
+                const server = await Server.findById(serverId).select('uploadedBy').lean();
+                if (server && (role === 'admin' || String(server.uploadedBy) === userId)) {
+                    socket.join(`server:${serverId}`);
+                }
+            } catch (error) {
+                logger.error(`subscribe-server failed for ${socket.id}: ${error.message}`);
+            }
         });
 
-        // Unsubscribe from server updates
         socket.on('unsubscribe-server', (serverId) => {
             socket.leave(`server:${serverId}`);
-            logger.debug(`Client ${socket.id} unsubscribed from server:${serverId}`);
-        });
-
-        // Subscribe to user-specific updates
-        socket.on('subscribe-user', (userId) => {
-            socket.join(`user:${userId}`);
-            logger.debug(`Client ${socket.id} subscribed to user:${userId}`);
-        });
-
-        // Unsubscribe from user updates
-        socket.on('unsubscribe-user', (userId) => {
-            socket.leave(`user:${userId}`);
-            logger.debug(`Client ${socket.id} unsubscribed from user:${userId}`);
         });
 
         socket.on('disconnect', (reason) => {
@@ -57,13 +81,15 @@ export function initializeSocket(httpServer) {
         });
     });
 
-    logger.info('✅ Socket.IO initialized with room-based broadcasting');
+    logger.info('✅ Socket.IO initialized with authenticated room-based broadcasting');
     return io;
 }
 
 /**
- * Broadcast server update to interested clients only
- * @param {Object} updateData - Server update data
+ * Send a server's new status to the people who may see it: its owner, anyone following that server's
+ * room, and admins. Chaining the rooms in one call delivers once per socket even if it is in several.
+ * The event is named `server:update`, which is what the dashboard listens for.
+ * @param {Object} updateData - { serverId, userId, status, latency, error, lastChecked }
  */
 export function broadcastServerUpdate(updateData) {
     if (!io) {
@@ -72,22 +98,15 @@ export function broadcastServerUpdate(updateData) {
     }
 
     const { serverId, userId } = updateData;
+    const rooms = ['admins'];
+    if (userId) rooms.push(`user:${userId}`);
+    if (serverId) rooms.push(`server:${serverId}`);
 
-    // Broadcast to specific server room
-    if (serverId) {
-        io.to(`server:${serverId}`).emit('server-update', updateData);
-    }
-
-    // Broadcast to user room
-    if (userId) {
-        io.to(`user:${userId}`).emit('server-update', updateData);
-    }
-
-    logger.debug(`Broadcasted update for server ${serverId} to targeted rooms`);
+    io.to(rooms).emit('server:update', updateData);
 }
 
 /**
- * Broadcast global notification (admin alerts, system messages)
+ * Broadcast global notification (admin alerts, system messages) to every authenticated client
  * @param {string} event - Event name
  * @param {Object} data - Event data
  */
@@ -98,7 +117,6 @@ export function broadcastGlobal(event, data) {
     }
 
     io.emit(event, data);
-    logger.debug(`Broadcasted global event: ${event}`);
 }
 
 /**

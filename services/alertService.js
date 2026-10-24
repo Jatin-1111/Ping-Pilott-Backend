@@ -2,49 +2,34 @@ import logger from '../utils/logger.js';
 import { sendAlertEmail } from './emailService.js';
 import ServerCheck from '../models/ServerCheck.js';
 import axios from 'axios';
+import http from 'http';
+import https from 'https';
+import { safeLookup, assertPublicHost, blockPrivateRedirect } from '../utils/ssrfGuard.js';
+import { localParts, timeInWindow, timezoneOf } from '../utils/schedule.js';
+
+// Webhooks go to addresses users typed in, so they get the same private-network protection as checks,
+// and redirects are not followed.
+const webhookClient = axios.create({
+    timeout: 5000,
+    maxRedirects: 0,
+    beforeRedirect: blockPrivateRedirect,
+    httpAgent: new http.Agent({ lookup: safeLookup }),
+    httpsAgent: new https.Agent({ lookup: safeLookup })
+});
 
 /**
- * Check if we should send an alert based on smart logic
- * @param {Object} server - The server document
- * @param {String} oldStatus - Previous status (up/down)
- * @param {String} newStatus - New status (up/down)
- * @param {Object} checkResult - Result object (error, responseTime)
- * @returns {Boolean} - Whether to send alert
+ * Should this server's owner be told right now? Only the user's own settings decide that:
+ * alerts must be switched on, and "now" must be inside their alert window.
+ * (What happened - down, recovery, slow - is decided once, in the monitor worker.)
  */
-export const shouldSendAlert = async (server, oldStatus, newStatus, checkResult) => {
-    // Basic checks
+export const shouldSendAlert = (server) => {
     if (!server.monitoring?.alerts?.enabled) return false;
 
-    const statusChanged = oldStatus !== newStatus;
-    const hasSlowResponse = newStatus === 'up' && checkResult.error?.includes('Slow response');
-
-    if (!statusChanged && !hasSlowResponse) return false;
-
-    const now = new Date();
-
-    // Check time window for alerts
-    const alertTimeWindow = server.monitoring?.alerts?.timeWindow;
-    if (alertTimeWindow?.start && alertTimeWindow?.end) {
-        // 00:00 to 00:00 means 24/7 alerts
-        if (alertTimeWindow.start === '00:00' && alertTimeWindow.end === '00:00') {
-            // Allowed
-        } else {
-            const currentTime = now.getHours().toString().padStart(2, '0') + ':' +
-                now.getMinutes().toString().padStart(2, '0');
-
-            if (alertTimeWindow.start <= alertTimeWindow.end) {
-                // Standard window
-                if (currentTime < alertTimeWindow.start || currentTime > alertTimeWindow.end) {
-                    return false;
-                }
-            } else {
-                // Overnight window (e.g. 23:00 to 07:00)
-                // If NOT in start-to-midnight AND NOT in midnight-to-end, then we are outside
-                if (currentTime < alertTimeWindow.start && currentTime > alertTimeWindow.end) {
-                    return false;
-                }
-            }
-        }
+    // Alert hours are the user's own clock, not the server's
+    const window = server.monitoring?.alerts?.timeWindow;
+    if (window?.start && window?.end) {
+        const { time } = localParts(new Date(), timezoneOf(server));
+        return timeInWindow(time, window.start, window.end);
     }
 
     return true;
@@ -63,7 +48,9 @@ const sendWebhookAlert = async (server, alertType, payload) => {
     try {
         logger.info(`Sending webhook for ${server.name} (${server._id}) to ${webhookUrl}`);
 
-        await axios.post(webhookUrl, {
+        await assertPublicHost(webhookUrl);
+
+        await webhookClient.post(webhookUrl, {
             event: alertType,
             server: {
                 id: server._id,
@@ -74,7 +61,6 @@ const sendWebhookAlert = async (server, alertType, payload) => {
             ...payload,
             timestamp: new Date().toISOString()
         }, {
-            timeout: 5000, // 5s timeout for webhooks
             headers: {
                 'Content-Type': 'application/json',
                 'User-Agent': 'PingPilott-Webhook-Bot/1.0'
@@ -90,61 +76,48 @@ const sendWebhookAlert = async (server, alertType, payload) => {
 
 /**
  * Handle sending the alert
- * @param {Object} server - The server document
- * @param {String} oldStatus - Previous status
- * @param {String} newStatus - New status
+ * @param {Object} server - The server document (snapshot from when the status changed)
+ * @param {String} alertType - 'server_down' | 'server_recovery' | 'slow_response'
  * @param {Object} checkResult - Result object
+ *
+ * Email failures are thrown, not swallowed: the alert queue retries with backoff, which is the whole
+ * point of having a queue. The webhook runs after the email and never fails the job, so a retry cannot
+ * send the same email twice because of a flaky webhook.
  */
-export const handleAlerts = async (server, oldStatus, newStatus, checkResult) => {
-    try {
-        const shouldSend = await shouldSendAlert(server, oldStatus, newStatus, checkResult);
-        if (!shouldSend) return;
+export const handleAlerts = async (server, alertType, checkResult) => {
+    if (!alertType || !shouldSendAlert(server)) return false;
 
-        let alertType;
+    let delivered = false;
 
-        if (oldStatus === 'up' && newStatus === 'down') {
-            alertType = 'server_down';
-        } else if (oldStatus !== 'up' && newStatus === 'up') {
-            alertType = 'server_recovery';
-        } else if (checkResult.error?.includes('Slow response')) {
-            alertType = 'slow_response';
-        } else {
-            return;
-        }
+    const enhancedServer = {
+        ...(server.toObject ? server.toObject() : server),
+        responseTime: checkResult.responseTime,
+        error: checkResult.error,
+        alertTime: new Date().toISOString()
+    };
 
-        // Enhanced server object for email
-        // Logic to handle if server is mongoose doc or POJO
-        const serverObj = server.toObject ? server.toObject() : server;
-        const enhancedServer = {
-            ...serverObj,
-            responseTime: checkResult.responseTime,
-            error: checkResult.error,
-            alertTime: new Date().toISOString()
-        };
+    const emailEnabled = server.monitoring?.alerts?.email ?? true;
+    const webhookUrl = server.monitoring?.alerts?.webhookUrl;
+    const newStatus = checkResult.status;
+    const oldStatus = server.status;
 
-        const emailEnabled = server.monitoring?.alerts?.email ?? true;
-        const webhookUrl = server.monitoring?.alerts?.webhookUrl;
-
-        // Send Email
-        if (emailEnabled && server.contactEmails?.length > 0) {
-            await sendAlertEmail(enhancedServer, alertType, oldStatus, newStatus);
-            logger.info(`🔔 Smart alert email sent for ${server.name}: ${alertType}`);
-        }
-
-        // Send Webhook (Fire and Forget)
-        if (webhookUrl) {
-            // Non-blocking call
-            sendWebhookAlert(enhancedServer, alertType, {
-                oldStatus,
-                newStatus,
-                responseTime: checkResult.responseTime,
-                error: checkResult.error
-            });
-        }
-
-    } catch (error) {
-        logger.error(`Failed to handle alerts for ${server.name}: ${error.message}`);
+    if (emailEnabled && server.contactEmails?.length > 0) {
+        await sendAlertEmail(enhancedServer, alertType, oldStatus, newStatus);
+        delivered = true;
+        logger.info(`🔔 Alert email sent for ${server.name}: ${alertType}`);
     }
+
+    if (webhookUrl) {
+        await sendWebhookAlert(enhancedServer, alertType, {
+            oldStatus,
+            newStatus,
+            responseTime: checkResult.responseTime,
+            error: checkResult.error
+        });
+        delivered = true;
+    }
+
+    return delivered;
 };
 
 export default { shouldSendAlert, handleAlerts };

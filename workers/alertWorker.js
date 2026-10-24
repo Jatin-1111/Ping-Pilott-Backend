@@ -1,10 +1,15 @@
 // workers/alertWorker.js - Dedicated worker for alert processing
 
+// Must stay first: SMTP and Redis settings come from .env
+import './loadEnv.js';
+
 import { Worker } from 'bullmq';
 import { redisConnection } from '../config/redis.js';
 import logger from '../utils/logger.js';
 import { handleAlerts } from '../services/alertService.js';
 import Server from '../models/Server.js';
+import AlertEvent from '../models/AlertEvent.js';
+import mongoose from 'mongoose';
 
 /**
  * Dedicated worker for processing alerts
@@ -14,6 +19,9 @@ const alertWorker = new Worker(
     'alerts',
     async (job) => {
         const { serverId, oldStatus, newStatus, checkResult, serverData } = job.data;
+        // Jobs queued before the worker started sending `alertType` still carry old/new status
+        const alertType = job.data.alertType
+            || (newStatus === 'down' ? 'server_down' : (oldStatus === 'down' && newStatus === 'up' ? 'server_recovery' : null));
 
         try {
             logger.info(`Processing alert for server ${serverId}: ${oldStatus} -> ${newStatus}`);
@@ -31,12 +39,22 @@ const alertWorker = new Worker(
             }
 
             // Process alerts
-            await handleAlerts(
+            const delivered = await handleAlerts(
                 { ...server, _id: serverId, status: oldStatus },
-                oldStatus,
-                newStatus,
+                alertType,
                 checkResult
             );
+
+            // Keep a record of what was actually delivered: it feeds the admin analytics.
+            // A failure to record must never make the job fail and re-send the alert.
+            if (delivered) {
+                try {
+                    if (mongoose.connection.readyState === 0) await mongoose.connect(process.env.MONGO_URI);
+                    await AlertEvent.create({ serverId, userId: server.uploadedBy, type: alertType });
+                } catch (recordError) {
+                    logger.error(`Could not record alert event for ${serverId}: ${recordError.message}`);
+                }
+            }
 
             logger.info(`Alert processed successfully for server ${serverId}`);
             return { success: true, serverId };

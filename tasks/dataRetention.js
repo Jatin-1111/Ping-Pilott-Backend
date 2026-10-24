@@ -106,10 +106,12 @@ export const runAggressiveDataRetention = async () => {
 /**
  * SELECTIVE data retention - keeps recent data for analytics
  * Use this when you want to retain some data for dashboards
- * @param {Number} hoursToKeep - Hours of data to retain (default: 24)
+ * @param {Number} hoursToKeep - Hours of data to retain (default: CHECK_DATA_RETENTION_DAYS, 7 days).
+ *   The history API serves up to 30 days, so keeping only 24 hours made the 7d/30d views and the paid
+ *   "historical reporting" feature show a single day.
  * @returns {Object} Statistics about the cleanup process
  */
-export const runSelectiveDataRetention = async (hoursToKeep = 24) => {
+export const runSelectiveDataRetention = async (hoursToKeep = (parseInt(process.env.CHECK_DATA_RETENTION_DAYS, 10) || 7) * 24) => {
     const startTime = Date.now();
     logger.info(`🎯 Starting SELECTIVE data cleanup (keeping last ${hoursToKeep} hours)...`);
 
@@ -135,10 +137,10 @@ export const runSelectiveDataRetention = async (hoursToKeep = 24) => {
         // Count remaining records
         stats.serverChecksKept = await ServerCheck.countDocuments();
 
-        // Delete old CronJob logs (keep last 48 hours)
-        const fortyEightHoursAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
+        // Delete old CronJob logs (keep a week)
+        const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         const cronJobResult = await CronJob.deleteMany({
-            startedAt: { $lt: fortyEightHoursAgo }
+            startedAt: { $lt: weekAgo }
         });
         stats.cronJobsDeleted = cronJobResult.deletedCount;
 

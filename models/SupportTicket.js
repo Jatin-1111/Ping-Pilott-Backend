@@ -42,7 +42,15 @@ const supportTicketSchema = new mongoose.Schema({
     }],
     userPlan: {
         type: String,
-        enum: ['free', 'monthly', 'halfYearly', 'yearly', 'admin'],
+        // Current plan ids, plus the retired ones so tickets created before the plan rename still load
+        enum: [
+            'free',
+            'starter_monthly', 'starter_yearly',
+            'pro_monthly', 'pro_yearly',
+            'business_monthly', 'business_yearly',
+            'admin',
+            'monthly', 'halfYearly', 'yearly'
+        ],
         default: 'free'
     }
 }, {

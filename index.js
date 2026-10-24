@@ -16,6 +16,7 @@ import { connectDB } from './config/db.js';
 import logger from './utils/logger.js';
 import errorMiddleware from './middleware/error.js';
 import { performanceMonitoring } from './middleware/performanceMonitoring.js';
+import { apiLimiter } from './middleware/rateLimiter.js';
 
 // Import routes
 import authRoutes from './routes/authRoutes.js';
@@ -48,8 +49,23 @@ const io = initializeSocket(httpServer);
 // Connect to MongoDB
 connectDB();
 
+// Behind nginx (docker-compose) every request arrives from the proxy's address. Trusting one proxy hop
+// makes req.ip the real client, which the rate limiters depend on. Set TRUST_PROXY=0 when not behind a proxy.
+app.set('trust proxy', parseInt(process.env.TRUST_PROXY ?? '1', 10));
+
 // Middleware
-app.use(cors());
+// Only our own frontends may call the API from a browser. Requests with no Origin (curl, server-to-server,
+// the health check) are not browser requests and are allowed. Add more with CORS_ORIGINS (comma separated).
+const allowedOrigins = [process.env.CLIENT_URL, process.env.FRONTEND_URL, ...(process.env.CORS_ORIGINS || '').split(',')]
+    .map((o) => (o || '').trim().replace(/\/$/, ''))
+    .filter(Boolean);
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+        return callback(null, false);
+    },
+    credentials: true
+}));
 app.use(helmet());
 app.use(compression({
     level: 6,              // Balance between speed and compression
@@ -77,7 +93,8 @@ app.use(performanceMonitoring);
 app.get('/health', async (req, res) => {
     const checks = await Promise.allSettled([
         // MongoDB check
-        mongoose.connection.db.admin().ping(),
+        // wrapped so a ping before Mongo has connected is a failed check, not a crash
+        Promise.resolve().then(() => mongoose.connection.db.admin().ping()),
 
         // Redis check
         redisConnection.ping(),
@@ -90,26 +107,24 @@ app.get('/health', async (req, res) => {
         })
     ]);
 
+    // Public endpoint (load balancers and uptime checks call it), so it says only whether things are up.
+    // Memory use, uptime and the environment name are not for strangers.
     const health = {
         status: checks.slice(0, 2).every(c => c.status === 'fulfilled') ? 'healthy' : 'degraded',
         timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        memory: {
-            heapUsed: `${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB`,
-            heapTotal: `${Math.round(process.memoryUsage().heapTotal / 1024 / 1024)}MB`,
-            rss: `${Math.round(process.memoryUsage().rss / 1024 / 1024)}MB`
-        },
         checks: {
             mongodb: checks[0].status === 'fulfilled' ? 'up' : 'down',
             redis: checks[1].status === 'fulfilled' ? 'up' : 'down'
-        },
-        environment: process.env.NODE_ENV || 'development'
+        }
     };
 
     res.status(health.status === 'healthy' ? 200 : 503).json(health);
 });
 
 // API routes
+// Flood protection for everything under /api (auth routes add stricter limits of their own)
+app.use('/api', apiLimiter);
+
 app.use('/api/auth', authRoutes);
 app.use('/api/servers', serverRoutes);
 app.use('/api/users', userRoutes);
@@ -200,10 +215,16 @@ async function gracefulShutdown(signal) {
 }
 
 // Handle unhandled promise rejections
+// A rejected promise nobody handled is a bug to fix, but it is not a reason to drop every user's connection
+// (it used to shut the whole API down). Log it loudly and keep serving. A real crash (uncaughtException)
+// still shuts down so the process manager can restart a clean process.
 process.on('unhandledRejection', (err) => {
-    logger.error('UNHANDLED REJECTION! 💥 Shutting down...');
-    logger.error(err.name, err.message);
-    gracefulShutdown('UNHANDLED_REJECTION');
+    logger.error(`UNHANDLED REJECTION: ${err?.stack || err}`);
+});
+
+process.on('uncaughtException', (err) => {
+    logger.error(`UNCAUGHT EXCEPTION: ${err?.stack || err}`);
+    gracefulShutdown('UNCAUGHT_EXCEPTION');
 });
 
 // Handle SIGTERM signal

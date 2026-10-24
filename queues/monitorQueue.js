@@ -22,22 +22,24 @@ export const monitorQueue = new Queue(QUEUE_NAME, {
 /**
  * Add a server check job to the queue
  * @param {Object} server - The server object (must contain _id)
- * @param {number} priority - Optional priority (default: 1)
+ * @param {Date} scheduledFor - The scheduler tick this check belongs to
+ *   The job id includes the tick, so dispatching the same server twice for one tick is a no-op.
  */
-export const addCheckJob = async (server, priority = 1) => {
+export const addCheckJob = async (server, scheduledFor = new Date()) => {
     try {
         const priorityScore = server.priority === 'high' ? 1 : server.priority === 'low' ? 3 : 2;
+        const tick = new Date(scheduledFor).getTime();
 
         await monitorQueue.add('check-server', {
             serverId: server._id || server.id,
             url: server.url,
-            name: server.name
+            name: server.name,
+            scheduledFor: tick
         }, {
             priority: priorityScore, // BullMQ supports priority (lower number = higher priority)
-            jobId: `check-${server._id}-${Date.now()}` // Unique ID prevent duplicates in same millisecond
+            jobId: `check-${server._id}-${tick}`
         });
 
-        // logger.debug(`Added check job for ${server.name} to queue`);
         return true;
     } catch (error) {
         logger.error(`Failed to add job to queue: ${error.message}`);

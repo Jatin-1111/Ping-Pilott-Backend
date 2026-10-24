@@ -152,6 +152,15 @@ export const verifyEmail = asyncHandler(async (req, res) => {
         });
     }
 
+    // Already confirmed (usually: an email security scanner opened the link first, then the person did).
+    // Telling them "invalid link" for an account that is in fact verified would be wrong.
+    if (user.emailVerified && !user.pendingEmail && !user.verificationToken) {
+        return res.status(200).json({
+            status: 'success',
+            message: 'Email already verified',
+        });
+    }
+
     // Check if token matches
     if (user.verificationToken !== token) {
         return res.status(400).json({
@@ -166,6 +175,19 @@ export const verifyEmail = asyncHandler(async (req, res) => {
             status: 'error',
             message: 'Verification link has expired',
         });
+    }
+
+    // Confirming a changed address: only now does it replace the old one
+    if (user.pendingEmail) {
+        const taken = await User.findOne({ email: user.pendingEmail, _id: { $ne: user._id } });
+        if (taken) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'That email address is now used by another account',
+            });
+        }
+        user.email = user.pendingEmail;
+        user.pendingEmail = undefined;
     }
 
     // Mark email as verified and clear verification token
@@ -188,21 +210,16 @@ export const verifyEmail = asyncHandler(async (req, res) => {
 export const resendVerification = asyncHandler(async (req, res) => {
     const { email } = req.body;
 
-    // Find user
-    const user = await User.findOne({ email });
-    if (!user) {
-        return res.status(404).json({
-            status: 'error',
-            message: 'User not found',
-        });
-    }
+    // The answer is identical whether the address is unknown, already verified or pending. Different answers
+    // let anyone test which email addresses have an account.
+    const sameAnswer = () => res.status(200).json({
+        status: 'success',
+        message: 'If that account needs verification, we have sent a new link',
+    });
 
-    // Check if email is already verified
-    if (user.emailVerified) {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Email already verified',
-        });
+    const user = await User.findOne({ email });
+    if (!user || user.emailVerified) {
+        return sameAnswer();
     }
 
     // Generate new verification token
@@ -217,10 +234,7 @@ export const resendVerification = asyncHandler(async (req, res) => {
     // Send verification email
     await sendVerificationEmail(user, verificationToken);
 
-    res.status(200).json({
-        status: 'success',
-        message: 'Verification email sent successfully',
-    });
+    return sameAnswer();
 });
 
 /**
@@ -334,6 +348,17 @@ export const refreshToken = asyncHandler(async (req, res) => {
         // Find user
         const user = await User.findById(decoded.id);
         if (!user) {
+            return res.status(401).json({
+                status: 'error',
+                message: 'Invalid refresh token',
+            });
+        }
+
+        // Same rules as a normal request: unverified accounts and sessions older than a password change
+        // cannot be extended
+        const passwordChangedSession = user.passwordChangedAt &&
+            decoded.iat < Math.floor(user.passwordChangedAt.getTime() / 1000);
+        if (!user.emailVerified || passwordChangedSession) {
             return res.status(401).json({
                 status: 'error',
                 message: 'Invalid refresh token',

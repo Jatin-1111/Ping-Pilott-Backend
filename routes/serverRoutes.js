@@ -21,7 +21,7 @@ router.post('/', [
     body('monitoring').optional().isObject().withMessage('Monitoring must be an object'),
     body('monitoring.frequency').optional().isInt({ min: 1, max: 60 }).withMessage('Frequency must be between 1 and 60 minutes'),
     body('monitoring.daysOfWeek').optional().isArray().withMessage('Days of week must be an array'),
-    body('monitoring.daysOfWeek.*').optional().isInt({ min: 0, max: 7 }).withMessage('Days must be between 0 and 7'),
+    body('monitoring.daysOfWeek.*').optional().isInt({ min: 0, max: 6 }).withMessage('Days must be between 0 (Sunday) and 6 (Saturday)'),
     body('monitoring.timeWindows').optional().isArray().withMessage('Time windows must be an array'),
     body('monitoring.timeWindows.*.start').optional().matches(/^([01]\d|2[0-3]):([0-5]\d)$/).withMessage('Start time must be in format HH:MM'),
     body('monitoring.timeWindows.*.end').optional().matches(/^([01]\d|2[0-3]):([0-5]\d)$/).withMessage('End time must be in format HH:MM'),
@@ -33,7 +33,7 @@ router.post('/', [
     body('contactEmails').optional().isArray().withMessage('Contact emails must be an array'),
     body('contactEmails.*').optional().isEmail().withMessage('Invalid email format'),
     body('contactPhones').optional().isArray().withMessage('Contact phones must be an array'),
-    body('contactPhones.*').optional().matches(/^\d{10}$/).withMessage('Phone must be 10 digits'),
+    body('contactPhones.*').optional().matches(/^\d{10,15}$/).withMessage('Phone must be 10 to 15 digits'),
     validate
 ], serverController.createServer);
 
@@ -53,7 +53,7 @@ router.patch('/:id', [
     body('monitoring').optional().isObject().withMessage('Monitoring must be an object'),
     body('monitoring.frequency').optional().isInt({ min: 1, max: 60 }).withMessage('Frequency must be between 1 and 60 minutes'),
     body('monitoring.daysOfWeek').optional().isArray().withMessage('Days of week must be an array'),
-    body('monitoring.daysOfWeek.*').optional().isInt({ min: 0, max: 7 }).withMessage('Days must be between 0 and 7'),
+    body('monitoring.daysOfWeek.*').optional().isInt({ min: 0, max: 6 }).withMessage('Days must be between 0 (Sunday) and 6 (Saturday)'),
     body('monitoring.timeWindows').optional().isArray().withMessage('Time windows must be an array'),
     body('monitoring.timeWindows.*.start').optional().matches(/^([01]\d|2[0-3]):([0-5]\d)$/).withMessage('Start time must be in format HH:MM'),
     body('monitoring.timeWindows.*.end').optional().matches(/^([01]\d|2[0-3]):([0-5]\d)$/).withMessage('End time must be in format HH:MM'),
@@ -65,7 +65,7 @@ router.patch('/:id', [
     body('contactEmails').optional().isArray().withMessage('Contact emails must be an array'),
     body('contactEmails.*').optional().isEmail().withMessage('Invalid email format'),
     body('contactPhones').optional().isArray().withMessage('Contact phones must be an array'),
-    body('contactPhones.*').optional().matches(/^\d{10}$/).withMessage('Phone must be 10 digits'),
+    body('contactPhones.*').optional().matches(/^\d{10,15}$/).withMessage('Phone must be 10 to 15 digits'),
     validate
 ], serverController.updateServer);
 
@@ -87,6 +87,13 @@ router.get('/:id/history', [
     query('period').optional().isIn(['1h', '6h', '12h', '24h', '7d', '30d']).withMessage('Invalid period'),
     validate
 ], serverController.getServerHistory);
+
+// Server statistics (uptime, response times, daily and hourly breakdown)
+router.get('/:id/stats', [
+    param('id').isMongoId().withMessage('Invalid server ID'),
+    query('period').optional().isIn(['1h', '6h', '12h', '24h', '7d', '30d']).withMessage('Invalid period'),
+    validate
+], serverController.getServerStats);
 
 // Batch check servers
 router.post('/batch-check', [

@@ -216,14 +216,10 @@ const startHealthMonitoring = () => {
                     time: new Date().toISOString()
                 });
 
-                // Auto-trigger emergency cleanup if database is too large
+                // A large database is a reason to tell a human, not to delete every customer's history on a timer.
+                // Run the 'emergency' retention mode by hand (DATA_RETENTION_MODE) if it really is needed.
                 if (healthStats.dbSizeMB > 1000) {
-                    logger.warn('🚨 Database size critical, scheduling emergency cleanup...');
-                    try {
-                        await jobQueue.execute('emergencyCleanup');
-                    } catch (cleanupError) {
-                        logger.error(`Emergency cleanup failed: ${cleanupError.message}`);
-                    }
+                    logger.error('🚨 Database size is critical (>1 GB). Free space or change DATA_RETENTION_MODE; nothing was deleted automatically.');
                 }
             } else {
                 logger.debug('💚 System health OK', {
@@ -259,15 +255,9 @@ const shouldRunAdaptiveCheck = (interval, currentMinute) => {
  */
 const executeSmartMonitoring = async (interval) => {
     const jobName = 'smartCheckServers';
-    const cronJobRecord = createCronJob(jobName);
 
-    try {
-        await cronJobRecord.save();
-    } catch (saveError) {
-        logger.error(`Failed to save monitoring job record: ${saveError.message}`);
-        // Continue execution even if logging fails
-    }
-
+    // Runs every minute: a database row per run (written twice) was 2,880 writes a day for nothing.
+    // Only failures are recorded; normal runs are in the log.
     try {
         if (interval !== 'basic') {
             logger.debug(`🔄 Smart monitoring (${interval} mode)`);
@@ -275,55 +265,21 @@ const executeSmartMonitoring = async (interval) => {
 
         const result = await jobQueue.execute(jobName);
 
-        if (result === false) {
-            cronJobRecord.status = 'skipped';
-        } else {
-            const duration = Date.now() - cronJobRecord.startedAt.getTime();
-
-            // Only log detailed results for significant activity
-            if (result.checked > 0 || result.alertsSent > 0) {
-                logger.info(`✅ Monitoring (${interval}) completed`, {
-                    checked: result.checked,
-                    up: result.up,
-                    down: result.down,
-                    alerts: result.alertsSent,
-                    duration: `${duration}ms`
-                });
-            }
-
-            cronJobRecord.status = 'completed';
-            cronJobRecord.result = {
-                ...result,
-                interval,
-                duration
-            };
+        if (result && (result.total > 0 || result.error)) {
+            logger.info(`✅ Monitoring (${interval}) dispatched ${result.dispatched}/${result.total} checks`, result.error ? { error: result.error } : undefined);
         }
-
     } catch (error) {
         logger.error(`❌ Monitoring error (${interval}): ${error.message}`);
-        cronJobRecord.status = 'failed';
-        cronJobRecord.error = error.message;
-
-    } finally {
-        cronJobRecord.completedAt = new Date();
-
-        // Try to save with retry
-        let saveAttempts = 0;
-        const maxAttempts = 3;
-
-        while (saveAttempts < maxAttempts) {
-            try {
-                await cronJobRecord.save();
-                break; // Success, exit loop
-            } catch (dbError) {
-                saveAttempts++;
-                logger.error(`Database error saving monitoring job (attempt ${saveAttempts}/${maxAttempts}): ${dbError.message}`);
-
-                if (saveAttempts < maxAttempts) {
-                    // Wait before retry
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                }
-            }
+        try {
+            await new CronJob({
+                name: jobName,
+                status: 'failed',
+                startedAt: new Date(),
+                completedAt: new Date(),
+                error: error.message
+            }).save();
+        } catch (saveError) {
+            logger.error(`Failed to save monitoring failure record: ${saveError.message}`);
         }
     }
 };

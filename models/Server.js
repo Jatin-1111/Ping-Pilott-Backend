@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { isValidTimezone } from '../utils/schedule.js';
 
 // Define a schema for the time window
 const timeWindowSchema = new mongoose.Schema({
@@ -56,9 +57,9 @@ const monitoringSchema = new mongoose.Schema({
         default: [0, 1, 2, 3, 4, 5, 6], // Monday through Sunday
         validate: {
             validator: function (days) {
-                return days.every(day => day >= 0 && day <= 7);
+                return days.every(day => day >= 0 && day <= 6);
             },
-            message: 'Days must be between 0 (Sunday) and 7 (Sunday)'
+            message: 'Days must be between 0 (Sunday) and 6 (Saturday)'
         }
     },
     timeWindows: {
@@ -96,6 +97,16 @@ const serverSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    // IANA timezone ("Asia/Kolkata") that this server's check days/hours and alert hours are read in.
+    // Servers created before this field existed fall back to the TIMEZONE setting (see utils/schedule.js).
+    timezone: {
+        type: String,
+        trim: true,
+        validate: {
+            validator: isValidTimezone,
+            message: 'Unknown timezone'
+        }
+    },
     uploadedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -132,6 +143,17 @@ const serverSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    // When the scheduler should dispatch the next check. Set at dispatch time to (tick + frequency),
+    // so the interval does not drift by the time each check takes. null/missing = due now.
+    nextCheckAt: {
+        type: Date,
+        default: null
+    },
+    // True while a "slow response" alert is open, so a slow streak sends one alert instead of one per check
+    slowAlerted: {
+        type: Boolean,
+        default: false
+    },
     responseTime: {
         type: Number,
         default: null
@@ -161,11 +183,11 @@ const serverSchema = new mongoose.Schema({
         default: [],
         validate: {
             validator: function (phones) {
-                // Simple regex for phone numbers (10 digits)
-                const phoneRegex = /^\d{10}$/;
+                // Digits only, 10 to 15 (country code allowed)
+                const phoneRegex = /^\d{10,15}$/;
                 return phones.every(phone => phoneRegex.test(phone));
             },
-            message: 'Invalid phone format (must be 10 digits)'
+            message: 'Invalid phone format (must be 10 to 15 digits)'
         }
     }
 }, {
@@ -178,6 +200,7 @@ const serverSchema = new mongoose.Schema({
 serverSchema.index({ uploadedBy: 1 });
 serverSchema.index({ status: 1 });
 serverSchema.index({ lastChecked: 1 });
+serverSchema.index({ nextCheckAt: 1 });
 serverSchema.index({ uploadedAt: -1 });
 // Compound index for check scheduler (find by status + sort by lastChecked/calc)
 serverSchema.index({ status: 1, lastChecked: 1 });
