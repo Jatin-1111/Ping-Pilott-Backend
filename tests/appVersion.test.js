@@ -7,18 +7,26 @@ import assert from 'node:assert/strict';
 import { buildVersionInfo } from '../utils/appVersion.js';
 
 test('with nothing configured, everything is null', () => {
-    assert.deepEqual(buildVersionInfo({}), { latestVersionCode: null, minVersionCode: null, downloadUrl: null, notes: null });
+    assert.deepEqual(buildVersionInfo({}), {
+        latestVersionCode: null,
+        latestVersionName: null,
+        minVersionCode: null,
+        downloadUrl: null,
+        notes: null,
+    });
 });
 
 test('configured values come through', () => {
     const info = buildVersionInfo({
         APP_LATEST_VERSION_CODE: '7',
+        APP_LATEST_VERSION_NAME: ' 1.4.0 ',
         APP_MIN_VERSION_CODE: ' 5 ',
         APP_DOWNLOAD_URL: 'https://expo.dev/accounts/me/projects/app/builds/abc',
         APP_RELEASE_NOTES: '  Snooze buttons on alerts  ',
     });
     assert.deepEqual(info, {
         latestVersionCode: 7,
+        latestVersionName: '1.4.0',
         minVersionCode: 5,
         downloadUrl: 'https://expo.dev/accounts/me/projects/app/builds/abc',
         notes: 'Snooze buttons on alerts',
@@ -30,6 +38,13 @@ test('version codes must be whole positive numbers', () => {
         assert.equal(buildVersionInfo({ APP_LATEST_VERSION_CODE: bad }).latestVersionCode, null, `"${bad}"`);
     }
     assert.equal(buildVersionInfo({ APP_LATEST_VERSION_CODE: '12' }).latestVersionCode, 12);
+});
+
+test('the version name must look like a version, so nothing odd is ever displayed', () => {
+    assert.equal(buildVersionInfo({ APP_LATEST_VERSION_NAME: '2.0.0-beta.1' }).latestVersionName, '2.0.0-beta.1');
+    for (const bad of ['', '   ', '<script>alert(1)</script>', 'v 1.0', '1.0.0\n2.0.0', 'x'.repeat(41), '.hidden']) {
+        assert.equal(buildVersionInfo({ APP_LATEST_VERSION_NAME: bad }).latestVersionName, null, JSON.stringify(bad));
+    }
 });
 
 test('only https download links are passed on', () => {

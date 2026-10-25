@@ -4,6 +4,7 @@
 // environment variables, so shipping a new APK is: build it, then set these in the host's dashboard.
 //
 //   APP_LATEST_VERSION_CODE  the newest build's Android versionCode (a whole number, bumped for every build)
+//   APP_LATEST_VERSION_NAME  the same build's readable version, e.g. 1.1.0 (shown on the dashboard)
 //   APP_MIN_VERSION_CODE     builds older than this must update before using the app (optional)
 //   APP_DOWNLOAD_URL         https link to the build page or APK
 //   APP_RELEASE_NOTES        one line on what's new (optional)
@@ -18,6 +19,12 @@ const asVersionCode = (value) => {
 const asText = (value, max) => {
     const text = String(value ?? '').trim();
     return text ? text.slice(0, max) : null;
+};
+
+/** "1.1.0", "2.0.0-beta.1": what people read. Anything else is dropped rather than shown. */
+const asVersionName = (value) => {
+    const text = String(value ?? '').trim();
+    return /^[0-9A-Za-z][0-9A-Za-z.+_-]{0,39}$/.test(text) ? text : null;
 };
 
 /** Only ever hand out web links: the app opens this URL, so it must not be something else */
@@ -35,6 +42,7 @@ const asHttpsUrl = (value) => {
 export function buildVersionInfo(env = process.env) {
     return {
         latestVersionCode: asVersionCode(env.APP_LATEST_VERSION_CODE),
+        latestVersionName: asVersionName(env.APP_LATEST_VERSION_NAME),
         minVersionCode: asVersionCode(env.APP_MIN_VERSION_CODE),
         downloadUrl: asHttpsUrl(env.APP_DOWNLOAD_URL),
         notes: asText(env.APP_RELEASE_NOTES, 300),
