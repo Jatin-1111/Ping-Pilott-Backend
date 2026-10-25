@@ -4,6 +4,7 @@ import { maskCredentials } from '../utils/address.js';
 import { describeDominantPhase } from '../utils/timings.js';
 import { describeFlap } from '../utils/flapDamping.js';
 import { cleanCert } from '../utils/certExpiry.js';
+import { diagnose } from '../utils/diagnosis.js';
 
 // Create a reusable transporter object
 let transporter = null;
@@ -123,6 +124,16 @@ export const getAlertEmailContent = (server, alertType, oldStatus, newStatus) =>
   const responseTime = server.responseTime ? `${server.responseTime}ms` : 'Unknown';
   const responseThreshold = server.monitoring?.alerts?.responseThreshold || 1000;
   const errorMessage = esc(server.error || 'Unknown error');
+  // The failure in plain words (utils/diagnosis.js), above the raw error, which stays. Nothing when the kind is unknown.
+  const diagnosis = alertType === 'server_down'
+    ? diagnose({ kind: server.failureKind, statusCode: server.statusCode, error: server.error })
+    : null;
+  const diagnosisHtml = diagnosis ? `
+            <div style="margin: 16px 0; padding: 12px 14px; background-color: #fff; border-left: 4px solid #f44336;">
+              <p style="margin: 0 0 6px;"><strong>${esc(diagnosis.title)}</strong></p>
+              <p style="margin: 0 0 6px;"><strong>Likely cause:</strong> ${esc(diagnosis.cause)}</p>
+              <p style="margin: 0;"><strong>Try first:</strong> ${esc(diagnosis.action)}</p>
+            </div>` : '';
   // Which part of the response was slow, when one part was most of it (utils/timings.js)
   const slowWhere = alertType === 'slow_response' ? describeDominantPhase(server.timings, server.responseTime) : null;
   // The alert that starts or ends a flap hold says so (utils/flapDamping.js)
@@ -144,6 +155,7 @@ export const getAlertEmailContent = (server, alertType, oldStatus, newStatus) =>
             <p>Your server <strong>${serverName}</strong> is currently <strong style="color: red;">DOWN</strong>.</p>
             <p>URL: ${serverUrl}</p>
             <p>Time of detection: ${currentTime}</p>
+            ${diagnosisHtml}
             <p>Error: ${errorMessage}</p>
             ${flapHtml}
             <p>We'll notify you when the server is back online.</p>

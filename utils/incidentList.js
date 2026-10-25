@@ -2,6 +2,8 @@
 //
 // Pure functions (no database), so the summary and paging rules can be tested on their own.
 
+import { diagnose } from './diagnosis.js';
+
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 export const PERIOD_DAYS = [7, 30];
@@ -58,6 +60,8 @@ export function buildIncidentList(rows, servers, { status = 'all', days = DEFAUL
             durationMs: r.open ? null : Math.max(0, ms(r.endedAt) - ms(r.startedAt)),
             error: r.error || null,
             failureKind: r.failureKind || null,
+            // The error in plain words: what happened, the likely cause, what to try first. The error above stays as it was.
+            diagnosis: diagnose({ kind: r.failureKind, error: r.error }),
         };
     });
 

@@ -10,6 +10,7 @@ import { localParts, timeInWindow, timezoneOf } from '../utils/schedule.js';
 import { cleanTimings } from '../utils/timings.js';
 import { cleanFlap } from '../utils/flapDamping.js';
 import { cleanCert } from '../utils/certExpiry.js';
+import { diagnose } from '../utils/diagnosis.js';
 
 // Webhooks go to addresses users typed in, so they get the same private-network protection as checks,
 // and redirects are not followed.
@@ -110,6 +111,8 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
         url: maskCredentials(server.url),
         responseTime: checkResult.responseTime,
         error: checkResult.error,
+        failureKind: checkResult.failureKind,
+        statusCode: checkResult.statusCode,
         slowStreak: checkResult.slowStreak,
         timings: checkResult.timings,
         flap: checkResult.flap,
@@ -136,6 +139,10 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
         }
     }
 
+    const downDiagnosis = alertType === 'server_down'
+        ? diagnose({ kind: checkResult.failureKind, statusCode: checkResult.statusCode, error: checkResult.error })
+        : null;
+
     if (!result.webhook) {
         if (webhookUrl) {
             try {
@@ -149,6 +156,8 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
                     ...(alertType === 'cert_expiring' && cleanCert(checkResult.cert) ? { cert: cleanCert(checkResult.cert) } : {}),
                     ...(checkResult.failureKind ? { failureKind: checkResult.failureKind } : {}),
                     ...(Number.isInteger(checkResult.statusCode) ? { statusCode: checkResult.statusCode } : {}),
+                    // A down alert also says it in plain words; the fields above are unchanged
+                    ...(downDiagnosis ? { diagnosis: downDiagnosis } : {}),
                     ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {}),
                     // A slow alert says where the time went; other alerts keep the payload they always had
                     ...(alertType === 'slow_response' && cleanTimings(checkResult.timings) ? { timings: cleanTimings(checkResult.timings) } : {})

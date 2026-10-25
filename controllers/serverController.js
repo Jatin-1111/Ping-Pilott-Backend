@@ -9,6 +9,7 @@ import mongoose from 'mongoose';
 import { createServerSchema, updateServerSchema, formatZodIssues } from '../utils/validations.js';
 import { assertPublicHost } from '../utils/ssrfGuard.js';
 import { cleanTimings } from '../utils/timings.js';
+import { diagnose } from '../utils/diagnosis.js';
 import { checkExtras } from '../utils/checkRecord.js';
 import { buildMonitoringConfig, buildMonitoringUpdates } from '../utils/monitoringSettings.js';
 import { applyCheckResult } from '../services/checkRecorder.js';
@@ -134,6 +135,8 @@ export const getServers = asyncHandler(async (req, res) => {
                 lastCheckedLocal,
                 isHealthy,
                 trialExpired,
+                // Why it is down, in plain words. null for a server that is not down or whose failure has no kind.
+                diagnosis: server.status === 'down' ? diagnose({ kind: server.failureKind, error: server.error }) : null,
                 // Add next check estimation
                 nextCheckEstimate: nextCheckEstimate(server)
             };
@@ -249,6 +252,7 @@ export const getServerById = asyncHandler(async (req, res) => {
                 server.monitoring?.trialEndsAt &&
                 server.monitoring.trialEndsAt < Date.now(),
             canBeChecked: canBeCheckedNow(server),
+            diagnosis: server.status === 'down' ? diagnose({ kind: server.failureKind, error: server.error }) : null,
             ...(includeRecent && { recentChecks })
         };
 
@@ -944,6 +948,7 @@ export const checkServer = asyncHandler(async (req, res) => {
                     // the server's own part of it; the rest is the network's. null when it cannot be told
                     serverTime: Number.isFinite(checkResult.serverTime) ? Math.round(checkResult.serverTime) : null,
                     error: checkResult.error,
+                    diagnosis: diagnose({ kind: checkResult.failure?.kind, statusCode: checkResult.statusCode, error: checkResult.error }),
                     timestamp: now,
                     localTime: now.toLocaleString('sv-SE', { timeZone: timezoneOf(server) }).replace('T', ' '),
                     timezone: timezoneOf(server)
@@ -1163,6 +1168,9 @@ export const getServerHistory = asyncHandler(async (req, res) => {
             timestamp: check.timestamp,
             error: check.error,
             ...(check.failureKind && { failureKind: check.failureKind }),
+            ...(diagnose({ kind: check.failureKind, statusCode: check.statusCode, error: check.error }) && {
+                diagnosis: diagnose({ kind: check.failureKind, statusCode: check.statusCode, error: check.error })
+            }),
             // A bucket of several checks (long periods) has no single status code
             ...(Number.isInteger(check.statusCode) && { statusCode: check.statusCode }),
             // Only single checks have a breakdown; a bucket of several (long periods) is an average of them
