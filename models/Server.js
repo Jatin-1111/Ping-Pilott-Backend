@@ -258,6 +258,28 @@ const serverSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    // The rest of the last failure, for the server page: the step it stopped in (utils/failurePhase.js), the HTTP status
+    // the server answered with, the steps that finished (utils/timings.js) and what it said (utils/evidence.js). All null
+    // while the server is up.
+    failedPhase: {
+        type: String,
+        default: null
+    },
+    failureStatusCode: {
+        type: Number,
+        default: null
+    },
+    failureTimings: {
+        type: mongoose.Schema.Types.Mixed,
+        default: null
+    },
+    // Somebody else's page, so it is not in a server's fields unless asked for (select('+failureEvidence')): the
+    // detail is a plan feature, and this keeps every other way of reading a server from handing it out.
+    failureEvidence: {
+        type: mongoose.Schema.Types.Mixed,
+        default: null,
+        select: false
+    },
     monitoring: {
         type: monitoringSchema,
         default: () => ({})

@@ -10,6 +10,8 @@ import { createServerSchema, updateServerSchema, formatZodIssues } from '../util
 import { assertPublicHost } from '../utils/ssrfGuard.js';
 import { cleanTimings } from '../utils/timings.js';
 import { diagnose } from '../utils/diagnosis.js';
+import { failureView } from '../utils/failureDetail.js';
+import { hasDetailedDiagnosis } from '../utils/planFeatures.js';
 import { checkExtras } from '../utils/checkRecord.js';
 import { buildMonitoringConfig, buildMonitoringUpdates } from '../utils/monitoringSettings.js';
 import { applyCheckResult } from '../services/checkRecorder.js';
@@ -19,6 +21,20 @@ import { isWithinCheckSchedule, timezoneOf } from '../utils/schedule.js';
 import { getCachedData, setCachedData, dedupedFetch } from '../utils/cacheManager.js';
 import { CACHE_STRATEGIES } from '../config/performance.js';
 import Incident from '../models/Incident.js';
+
+/** The diagnosis and failure detail of a server that is down, from what its last failing check stored */
+const failureViewOf = (server, evidence, detailed) => failureView({
+    failure: {
+        kind: server.failureKind,
+        statusCode: server.failureStatusCode,
+        error: server.error,
+        failedPhase: server.failedPhase,
+        timings: server.failureTimings,
+        evidence
+    },
+    server,
+    detailed
+});
 
 // Performance monitoring
 const PERFORMANCE_CONFIG = {
@@ -98,7 +114,7 @@ export const getServers = asyncHandler(async (req, res) => {
             async () => Promise.all([
                 (() => {
                     let query = Server.find(filter)
-                        .select('-__v -verificationToken -resetToken') // Exclude unnecessary fields
+                        .select('-__v -verificationToken -resetToken +failureEvidence') // Exclude unnecessary fields
                         .sort(sort)
                         .skip(skip)
                         .limit(limit);
@@ -117,6 +133,9 @@ export const getServers = asyncHandler(async (req, res) => {
             ])
         );
 
+        // Whether this account's plan includes the detailed diagnosis (causes, things to check, what the server said)
+        const detailed = hasDetailedDiagnosis(req.user);
+
         // Enhance servers with computed fields efficiently
         const enhancedServers = servers.map(server => {
             const lastCheckedLocal = server.lastChecked ? new Date(server.lastChecked).toISOString() : null;
@@ -130,13 +149,17 @@ export const getServers = asyncHandler(async (req, res) => {
                 server.monitoring?.trialEndsAt &&
                 server.monitoring.trialEndsAt < Date.now();
 
+            // Why it is down, in plain words, and where it stopped. Nothing for a server that is not down.
+            const { failureEvidence, ...fields } = server;
+            const view = server.status === 'down' ? failureViewOf(server, failureEvidence, detailed) : null;
+
             return {
-                ...server,
+                ...fields,
                 lastCheckedLocal,
                 isHealthy,
                 trialExpired,
-                // Why it is down, in plain words. null for a server that is not down or whose failure has no kind.
-                diagnosis: server.status === 'down' ? diagnose({ kind: server.failureKind, error: server.error }) : null,
+                diagnosis: view?.diagnosis ?? null,
+                ...(view?.failureDetail && { failureDetail: view.failureDetail }),
                 // Add next check estimation
                 nextCheckEstimate: nextCheckEstimate(server)
             };
@@ -210,7 +233,7 @@ export const getServerById = asyncHandler(async (req, res) => {
         // Query server with potential recent checks in parallel
         const [server, recentChecks] = await Promise.all([
             Server.findById(serverId)
-                .select('-__v')
+                .select('-__v +failureEvidence')
                 .lean()
                 .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT),
 
@@ -218,7 +241,7 @@ export const getServerById = asyncHandler(async (req, res) => {
                 ServerCheck.find({ serverId: new mongoose.Types.ObjectId(serverId) })
                     .sort({ timestamp: -1 })
                     .limit(10)
-                    .select('status responseTime serverTime timestamp error failureKind statusCode timings')
+                    .select('status responseTime serverTime timestamp error failureKind failedPhase statusCode timings')
                     .lean()
                     .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT)
                 : Promise.resolve([])
@@ -242,8 +265,10 @@ export const getServerById = asyncHandler(async (req, res) => {
         }
 
         // Enhance server data
+        const { failureEvidence, ...serverFields } = server;
+        const view = server.status === 'down' ? failureViewOf(server, failureEvidence, hasDetailedDiagnosis(req.user)) : null;
         const enhancedServer = {
-            ...server,
+            ...serverFields,
             lastCheckedLocal: server.lastChecked ? new Date(server.lastChecked).toISOString() : null,
             lastStatusChangeLocal: server.lastStatusChange ? new Date(server.lastStatusChange).toISOString() : null,
             isHealthy: server.status === 'up' && (!server.responseTime || server.responseTime < 2000),
@@ -252,7 +277,8 @@ export const getServerById = asyncHandler(async (req, res) => {
                 server.monitoring?.trialEndsAt &&
                 server.monitoring.trialEndsAt < Date.now(),
             canBeChecked: canBeCheckedNow(server),
-            diagnosis: server.status === 'down' ? diagnose({ kind: server.failureKind, error: server.error }) : null,
+            diagnosis: view?.diagnosis ?? null,
+            ...(view?.failureDetail && { failureDetail: view.failureDetail }),
             ...(includeRecent && { recentChecks })
         };
 
@@ -931,6 +957,22 @@ export const checkServer = asyncHandler(async (req, res) => {
             checkDuration
         });
 
+        // Why it failed and where it stopped, as the server page shows it (nothing when the check worked)
+        const view = checkResult.failure
+            ? failureView({
+                failure: {
+                    kind: checkResult.failure.kind,
+                    statusCode: checkResult.statusCode,
+                    error: checkResult.error,
+                    failedPhase: checkResult.failedPhase,
+                    timings: checkResult.timings,
+                    evidence: checkResult.evidence
+                },
+                server,
+                detailed: hasDetailedDiagnosis(req.user)
+            })
+            : null;
+
         // Enhanced response with detailed information
         res.status(200).json({
             status: 'success',
@@ -947,7 +989,8 @@ export const checkServer = asyncHandler(async (req, res) => {
                     // the server's own part of it; the rest is the network's. null when it cannot be told
                     serverTime: Number.isFinite(checkResult.serverTime) ? Math.round(checkResult.serverTime) : null,
                     error: checkResult.error,
-                    diagnosis: diagnose({ kind: checkResult.failure?.kind, statusCode: checkResult.statusCode, error: checkResult.error }),
+                    diagnosis: view?.diagnosis ?? null,
+                    ...(view?.failureDetail && { failureDetail: view.failureDetail }),
                     timestamp: now,
                     localTime: now.toLocaleString('sv-SE', { timeZone: timezoneOf(server) }).replace('T', ' '),
                     timezone: timezoneOf(server)
@@ -1080,6 +1123,7 @@ export const getServerHistory = asyncHandler(async (req, res) => {
                         timestamp: { $max: '$timestamp' },
                         error: { $max: { $cond: [{ $eq: ['$status', 'down'] }, '$error', null] } },
                         failureKind: { $max: { $cond: [{ $eq: ['$status', 'down'] }, '$failureKind', null] } },
+                        failedPhase: { $max: { $cond: [{ $eq: ['$status', 'down'] }, '$failedPhase', null] } },
                         count: { $sum: 1 }
                     }
                 },
@@ -1167,6 +1211,9 @@ export const getServerHistory = asyncHandler(async (req, res) => {
             timestamp: check.timestamp,
             error: check.error,
             ...(check.failureKind && { failureKind: check.failureKind }),
+            // The step it stopped in. The rest of the detail (what the server said, the causes) is on the server and
+            // incident responses: sent with every failed point of a day it would be a lot of data nobody opens.
+            ...(check.failedPhase && { failedPhase: check.failedPhase }),
             ...(diagnose({ kind: check.failureKind, statusCode: check.statusCode, error: check.error }) && {
                 diagnosis: diagnose({ kind: check.failureKind, statusCode: check.statusCode, error: check.error })
             }),

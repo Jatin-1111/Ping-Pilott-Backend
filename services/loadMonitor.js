@@ -120,7 +120,9 @@ export function createLoadMonitor({ now = () => performance.now(), source = time
         recordCheck(result) {
             minute.checks += 1;
             const dns = Number(result?.timings?.dns);
-            if (result?.timings && Number.isFinite(dns) && dns >= 0) minute.dns.push(dns);
+            // Only a check that got through: a failed one carries partial timings, and a lookup that never finished is
+            // not a reading of how fast the resolver is
+            if (result?.timings && !result?.failure && Number.isFinite(dns) && dns >= 0) minute.dns.push(dns);
             if (result?.loadSuspect) minute.setAside += 1;
             const kind = result?.failure?.kind;
             if (kind) minute.failures[kind] = (minute.failures[kind] || 0) + 1;

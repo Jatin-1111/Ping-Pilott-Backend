@@ -3,11 +3,31 @@
 import Incident from '../models/Incident.js';
 import Server from '../models/Server.js';
 import logger from '../utils/logger.js';
+import { cleanTimings } from '../utils/timings.js';
+import { FAILED_PHASES } from '../utils/failurePhase.js';
+import { cleanEvidence } from '../utils/evidence.js';
 
 const MAX_ERROR_LENGTH = 300;
 
 /** Check errors can be long (whole response bodies, stack traces). Keep enough to say what went wrong. */
 export const trimError = (error) => (error ? String(error).slice(0, MAX_ERROR_LENGTH) : null);
+
+/**
+ * What the first failing check found, in the form an incident keeps it. Only what is usable is returned, so an incident
+ * without detail is saved exactly as it was before the detail existed.
+ * @param {{ failedPhase?: string, statusCode?: number, timings?: Object, evidence?: Object }} found
+ * @returns {{ failedPhase?: string, statusCode?: number, timings?: Object, evidence?: Object }}
+ */
+export const failureFields = (found = {}) => {
+    const fields = {};
+    if (FAILED_PHASES.includes(found.failedPhase)) fields.failedPhase = found.failedPhase;
+    if (Number.isInteger(found.statusCode)) fields.statusCode = found.statusCode;
+    const timings = cleanTimings(found.timings);
+    if (timings) fields.timings = timings;
+    const evidence = cleanEvidence(found.evidence);
+    if (evidence) fields.evidence = evidence;
+    return fields;
+};
 
 /**
  * What a status change means for incidents.
@@ -37,6 +57,7 @@ export async function recordStatusChange(server, previous, checkResult, now = ne
                 startedAt: now,
                 error: trimError(checkResult.error),
                 failureKind: checkResult.failure?.kind ?? null,
+                ...failureFields(checkResult),
                 open: true
             });
         } else {
@@ -57,7 +78,7 @@ export async function recordStatusChange(server, previous, checkResult, now = ne
  */
 export async function reconcileOpenIncidents() {
     try {
-        const down = await Server.find({ status: 'down' }).select('_id uploadedBy lastStatusChange error failureKind').lean();
+        const down = await Server.find({ status: 'down' }).select('_id uploadedBy lastStatusChange error failureKind failedPhase failureStatusCode failureTimings failureEvidence').lean();
         const downIds = down.map((s) => s._id);
 
         const open = downIds.length
@@ -75,6 +96,7 @@ export async function reconcileOpenIncidents() {
                     startedAt: server.lastStatusChange || new Date(),
                     error: trimError(server.error),
                     failureKind: server.failureKind ?? null,
+                    ...failureFields({ failedPhase: server.failedPhase, statusCode: server.failureStatusCode, timings: server.failureTimings, evidence: server.failureEvidence }),
                     open: true
                 });
                 opened += 1;
@@ -98,4 +120,4 @@ export async function reconcileOpenIncidents() {
     }
 }
 
-export default { trimError, incidentAction, recordStatusChange, reconcileOpenIncidents };
+export default { trimError, failureFields, incidentAction, recordStatusChange, reconcileOpenIncidents };

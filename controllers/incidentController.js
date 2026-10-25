@@ -2,6 +2,7 @@ import Incident from '../models/Incident.js';
 import Server from '../models/Server.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { buildIncidentList, periodStart, DEFAULT_DAYS } from '../utils/incidentList.js';
+import { hasDetailedDiagnosis } from '../utils/planFeatures.js';
 
 // A user's incidents in a period are a handful in practice. This bounds the worst case (a flapping server
 // over 30 days) so one request can never read an unbounded number of rows.
@@ -33,11 +34,12 @@ export const getIncidents = asyncHandler(async (req, res) => {
     }
 
     const [rows, servers] = await Promise.all([
-        Incident.find(filter).sort({ startedAt: -1 }).limit(MAX_ROWS).lean(),
-        Server.find({ uploadedBy: req.user._id }).select('name url').sort({ name: 1 }).lean(),
+        Incident.find(filter).select('+evidence').sort({ startedAt: -1 }).limit(MAX_ROWS).lean(),
+        Server.find({ uploadedBy: req.user._id }).select('name url type').sort({ name: 1 }).lean(),
     ]);
 
-    const result = buildIncidentList(rows, servers, { status, days, page, limit });
+    // The causes, things to check and what the server said are part of the plan; the rest of an incident is for everyone
+    const result = buildIncidentList(rows, servers, { status, days, page, limit, detailed: hasDetailedDiagnosis(req.user) });
 
     res.status(200).json({
         status: 'success',

@@ -141,6 +141,8 @@ test('a scheduled slow check writes the counters, and the alert that opens it is
     assert.equal(plan.slowStreak, 3);
     assert.deepEqual(plan.$set, {
         status: 'up', responseTime: 2000, serverTime: null, error: 'Slow response', failureKind: null, lastChecked: NOW,
+        // a check that did not fail clears what the last failure left (tests/failureDetail.test.js)
+        failedPhase: null, failureStatusCode: null, failureTimings: null, failureEvidence: null,
         slowAlerted: true, slowStreak: 3, fastStreak: 0
     });
     assert.deepEqual(plan.filter, { _id: 's1', slowAlerted: { $ne: true } }, 'two racing checks cannot both open the alert');

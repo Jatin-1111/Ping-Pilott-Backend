@@ -36,6 +36,27 @@ const incidentSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    // What the first failing check found, for the incident page: the step it stopped in (utils/failurePhase.js), the HTTP
+    // status, the steps that finished (utils/timings.js) and what the server said (utils/evidence.js). The evidence is
+    // removed after the check retention period (tasks/dataRetention.js); the rest stays as long as the incident.
+    failedPhase: {
+        type: String,
+        default: null
+    },
+    statusCode: {
+        type: Number,
+        default: null
+    },
+    timings: {
+        type: mongoose.Schema.Types.Mixed,
+        default: null
+    },
+    // Not in the fields unless asked for (select('+evidence')): it is a plan feature (see Server.failureEvidence)
+    evidence: {
+        type: mongoose.Schema.Types.Mixed,
+        default: null,
+        select: false
+    },
     // true only while the incident is ongoing. A flag rather than "endedAt is null" because a unique partial
     // index can match on it, which guarantees a server never has two ongoing incidents.
     open: {

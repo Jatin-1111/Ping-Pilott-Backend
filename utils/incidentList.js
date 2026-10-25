@@ -2,7 +2,7 @@
 //
 // Pure functions (no database), so the summary and paging rules can be tested on their own.
 
-import { diagnose } from './diagnosis.js';
+import { failureView } from './failureDetail.js';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -23,12 +23,13 @@ export const downtimeWithin = (incident, since, now = Date.now()) => {
 /**
  * @param {Array} rows     incidents of one user, newest first (lean documents)
  * @param {Array} servers  that user's servers: { _id, name, url }
- * @param {Object} options { status: 'all'|'ongoing'|'resolved', days, page, limit, now }
+ * @param {Object} options { status: 'all'|'ongoing'|'resolved', days, page, limit, now, detailed }
+ *   detailed: the account's plan includes the detailed diagnosis (utils/planFeatures.js)
  *
  * The summary describes the whole period and ignores the status filter, so the filter chips can show
  * "All 12 / Ongoing 1 / Resolved 11" and stay put while you switch between them.
  */
-export function buildIncidentList(rows, servers, { status = 'all', days = DEFAULT_DAYS, page = 1, limit = 20, now = Date.now() } = {}) {
+export function buildIncidentList(rows, servers, { status = 'all', days = DEFAULT_DAYS, page = 1, limit = 20, now = Date.now(), detailed = false } = {}) {
     const since = periodStart(days, now);
     const inPeriod = rows.filter((r) => r.open || ms(r.startedAt) >= since.getTime());
     const byId = new Map(servers.map((s) => [String(s._id), s]));
@@ -48,6 +49,13 @@ export function buildIncidentList(rows, servers, { status = 'all', days = DEFAUL
 
     const incidents = pageRows.map((r) => {
         const server = byId.get(String(r.serverId));
+        // The error in plain words (what happened, the likely cause, what to try first) and where it stopped. The error
+        // below stays as it was.
+        const view = failureView({
+            failure: { kind: r.failureKind, statusCode: r.statusCode, error: r.error, failedPhase: r.failedPhase, timings: r.timings, evidence: r.evidence },
+            server,
+            detailed
+        });
         return {
             id: String(r._id),
             serverId: String(r.serverId),
@@ -60,8 +68,8 @@ export function buildIncidentList(rows, servers, { status = 'all', days = DEFAUL
             durationMs: r.open ? null : Math.max(0, ms(r.endedAt) - ms(r.startedAt)),
             error: r.error || null,
             failureKind: r.failureKind || null,
-            // The error in plain words: what happened, the likely cause, what to try first. The error above stays as it was.
-            diagnosis: diagnose({ kind: r.failureKind, error: r.error }),
+            diagnosis: view.diagnosis,
+            ...(view.failureDetail && { failureDetail: view.failureDetail }),
         };
     });
 

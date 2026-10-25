@@ -4,6 +4,9 @@
 // usually the network, and a site that hovers around its threshold used to send an alert every time it crossed.
 
 import { dampAlert, flapConfig } from './flapDamping.js';
+import { cleanTimings } from './timings.js';
+import { FAILED_PHASES } from './failurePhase.js';
+import { cleanEvidence } from './evidence.js';
 
 /** Slow checks in a row, counting only scheduled checks, before a slow alert is raised. Fewer for slower schedules. */
 export const slowChecksNeeded = (frequencyMinutes) => {
@@ -117,6 +120,11 @@ export const planCheckUpdate = ({ server, checkResult, checkType = 'automated', 
         serverTime: Number.isFinite(checkResult.serverTime) ? Math.round(checkResult.serverTime) : null,
         error: checkResult.error,
         failureKind: checkResult.failure?.kind ?? null,
+        // The rest of a failure, for the server page; all cleared by the next check that works
+        failedPhase: checkResult.failure && FAILED_PHASES.includes(checkResult.failedPhase) ? checkResult.failedPhase : null,
+        failureStatusCode: checkResult.failure && Number.isInteger(checkResult.statusCode) ? checkResult.statusCode : null,
+        failureTimings: checkResult.failure ? cleanTimings(checkResult.timings) : null,
+        failureEvidence: checkResult.failure ? cleanEvidence(checkResult.evidence) : null,
         lastChecked: now
     };
     if (decision.touchStreak) {

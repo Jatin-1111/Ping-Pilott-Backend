@@ -3,10 +3,12 @@ import axios from 'axios';
 import net from 'net';
 import { performance } from 'perf_hooks';
 import logger from '../utils/logger.js';
-import { TimedHttpAgent, TimedHttpsAgent, timedRequest, connectTimings } from '../utils/requestTiming.js';
+import { TimedHttpAgent, TimedHttpsAgent, timedRequest, connectTimings, partialTimings, stageOf } from '../utils/requestTiming.js';
 import { classifyFailure, failureOf, HttpStatusError, ContentError, InvalidAddressError } from '../utils/failures.js';
 import { cleanKeyword, describeKeywordFailure, findInBody } from '../utils/keyword.js';
-import { serverTimeOf } from '../utils/timings.js';
+import { serverTimeOf, cleanTimings } from '../utils/timings.js';
+import { failedPhaseOf } from '../utils/failurePhase.js';
+import { readSnippet, buildEvidence, MAX_SNIPPET_BYTES } from '../utils/evidence.js';
 import { DEFAULT_RANGES, acceptedRanges, statusAccepted } from '../utils/statusSpec.js';
 import {
     safeLookup,
@@ -83,7 +85,7 @@ const parseTcpTarget = (target) => {
 /**
  * Check the status of a server
  * @param {Object} server - Server to check
- * @returns {Object} { status, responseTime, error, slow, timings, serverTime, certExpiresAt, statusCode, failure }
+ * @returns {Object} { status, responseTime, error, slow, timings, serverTime, certExpiresAt, statusCode, failedPhase, resolvedAddress, evidence, failure }
  *   certExpiresAt is when the certificate the site presented expires (a Date), or null: plain HTTP, TCP, or no answer
  *   at all. It is the certificate of the page the check ended on. It is reported for failures too.
  *   responseTime is only set for a successful check; a failure has no meaningful response time.
@@ -118,8 +120,14 @@ export const checkServerStatus = async (server) => {
             responseTime: null,
             error: classified.message,
             slow: false,
-            timings: null,
+            // The steps that finished before it failed, and how long the one it stopped in had run (utils/requestTiming.js);
+            // null when there was no connection to measure. A failed check has no server time: it never answered.
+            timings: cleanTimings(err?.timings),
             serverTime: null,
+            failedPhase: failedPhaseOf({ kind: classified.kind, stage: err?.failedStage }),
+            resolvedAddress: typeof err?.resolvedAddress === 'string' ? err.resolvedAddress : null,
+            // What the server said (utils/evidence.js) plus where the name resolved; null when there is neither
+            evidence: buildEvidence({ ...err?.evidenceParts, address: err?.resolvedAddress }),
             // a site that answers with an error over TLS still has a certificate that is running out
             certExpiresAt: asDate(err?.certExpiresAt),
             statusCode: classified.statusCode,
@@ -140,6 +148,9 @@ export const checkServerStatus = async (server) => {
         serverTime: serverTimeOf(measured.timings),
         certExpiresAt: asDate(measured.certExpiresAt),
         statusCode: measured.status ?? null,
+        failedPhase: null,
+        resolvedAddress: measured.address ?? null,
+        evidence: null,
         failure: null
     };
 };
@@ -159,9 +170,13 @@ export const checkTcpServer = async (url) => {
     await assertPublicHost(host, { resolve: false });
 
     return new Promise((resolve, reject) => {
-        const hop = { startedAt: performance.now(), lookupAt: null };
+        const hop = { startedAt: performance.now(), lookupAt: null, lookupFailed: false, address: null, connectAt: null, secure: false, named: net.isIP(host) === 0 };
         const socket = net.connect({ host, port, lookup: safeLookup });
-        socket.once('lookup', () => { hop.lookupAt = performance.now(); }); // not for an IP address
+        socket.once('lookup', (err, address) => { // not for an IP address; it fires on failure too, with the error first
+            hop.lookupAt = performance.now();
+            if (err) hop.lookupFailed = true;
+            else if (typeof address === 'string') hop.address = address;
+        });
         let settled = false;
 
         const finish = (err) => {
@@ -169,15 +184,34 @@ export const checkTcpServer = async (url) => {
             settled = true;
             const endedAt = performance.now();
             socket.destroy();
-            err ? reject(err) : resolve({ ms: Math.round(endedAt - hop.startedAt), timings: connectTimings(hop, endedAt) });
+            if (!err) return resolve({ ms: Math.round(endedAt - hop.startedAt), timings: connectTimings(hop, endedAt), address: hop.address });
+            err.failedStage = stageOf(hop);
+            const partial = partialTimings(hop, hop.startedAt, endedAt);
+            if (partial) {
+                delete partial.redirects; // a plain socket has no redirects, and a TCP check never reports them
+                err.timings = partial;
+            }
+            if (hop.address) err.resolvedAddress = hop.address;
+            reject(err);
         };
 
         socket.setTimeout(HTTP_TIMEOUT);
-        socket.once('connect', () => finish());
+        socket.once('connect', () => { hop.connectAt = performance.now(); finish(); });
         socket.once('timeout', () => finish(Object.assign(new Error('Connection timeout'), { code: 'ETIMEDOUT' })));
         socket.once('error', (err) => finish(err));
     });
 };
+
+/**
+ * The error for a server that answered, but not acceptably: what it said travels with it, for the evidence of the failed
+ * check (utils/evidence.js). `body` is the start of the page, when it was read.
+ */
+const answerError = (error, get, body = null, bodyWasCut = false) => Object.assign(error, {
+    certExpiresAt: get.certExpiresAt,
+    timings: get.timings,
+    resolvedAddress: get.address,
+    evidenceParts: { statusCode: get.response.status, headers: get.response.headers, body, bodyWasCut }
+});
 
 /**
  * One HTTP attempt. HEAD first (cheap); some servers answer HEAD wrongly, so a 4xx/5xx or reset
@@ -201,17 +235,19 @@ const attempt = async (targetUrl, { accepted = DEFAULT_RANGES, keyword = null, b
     }
 
     if (head && statusAccepted(head.response.status, accepted)) {
-        return { status: head.response.status, method: 'HEAD', ms: head.ms, timings: head.timings, certExpiresAt: head.certExpiresAt };
+        return { status: head.response.status, method: 'HEAD', ms: head.ms, timings: head.timings, certExpiresAt: head.certExpiresAt, address: head.address };
     }
 
     // The stream resolves when the headers arrive, which is when the clock stops
     const get = await timedRequest(() => monitoringAxios.get(targetUrl, { headers, responseType: 'stream' }));
-    get.response.data.destroy(); // headers are enough
     if (statusAccepted(get.response.status, accepted)) {
-        return { status: get.response.status, method: 'GET', ms: get.ms, timings: get.timings, certExpiresAt: get.certExpiresAt };
+        get.response.data.destroy(); // headers are enough
+        return { status: get.response.status, method: 'GET', ms: get.ms, timings: get.timings, certExpiresAt: get.certExpiresAt, address: get.address };
     }
 
-    throw Object.assign(new HttpStatusError(get.response.status, get.response.statusText), { certExpiresAt: get.certExpiresAt });
+    // A failure is worth a look at what the server said, so the start of the page is read (a moment, at most 1 KB)
+    const { bytes, wasCut } = await readSnippet(get.response.data);
+    throw answerError(new HttpStatusError(get.response.status, get.response.statusText), get, bytes, wasCut);
 };
 
 /**
@@ -224,16 +260,16 @@ const attemptWithKeyword = async (targetUrl, { headers, accepted, keyword, bodyT
     const stream = get.response.data;
 
     if (!statusAccepted(get.response.status, accepted)) {
-        stream.destroy();
-        throw Object.assign(new HttpStatusError(get.response.status, get.response.statusText), { certExpiresAt: get.certExpiresAt });
+        const { bytes, wasCut } = await readSnippet(stream);
+        throw answerError(new HttpStatusError(get.response.status, get.response.statusText), get, bytes, wasCut);
     }
 
     const budget = bodyTimeoutMs ?? Math.max(1000, HTTP_TIMEOUT - get.ms);
-    const { found } = await findInBody(stream, keyword.text, { timeoutMs: budget });
+    const { found, head, bytes } = await findInBody(stream, keyword.text, { timeoutMs: budget, headBytes: MAX_SNIPPET_BYTES });
     if (keyword.mode === 'absent' ? found : !found) {
-        throw Object.assign(new ContentError(describeKeywordFailure(keyword), get.response.status), { certExpiresAt: get.certExpiresAt });
+        throw answerError(new ContentError(describeKeywordFailure(keyword), get.response.status), get, head, bytes > MAX_SNIPPET_BYTES);
     }
-    return { status: get.response.status, method: 'GET', ms: get.ms, timings: get.timings, certExpiresAt: get.certExpiresAt };
+    return { status: get.response.status, method: 'GET', ms: get.ms, timings: get.timings, certExpiresAt: get.certExpiresAt, address: get.address };
 };
 
 /**

@@ -30,14 +30,24 @@ const serverCheckSchema = new mongoose.Schema({
     // How much of responseTime was the server's own time (time to first byte minus the connect: utils/timings.js).
     // The rest is the network's. Only HTTP checks that answered have it; older rows do not.
     serverTime: Number,
-    // Where the response time went, in ms (utils/requestTiming.js). Only successful checks have it; a TCP check has
-    // dns and connect only. Older rows have none.
+    // Where the response time went, in ms (utils/requestTiming.js). A TCP check has dns and connect only. A failed check
+    // has the steps it got through, and the one it stopped in as far as it had run. Older rows have none.
     timings: {
         dns: Number,
         connect: Number,
         tls: Number,
         ttfb: Number,
         redirects: Number
+    },
+    // Which step a failed check stopped in (utils/failurePhase.js: dns, connect, tls, response, content), and what the
+    // server said (utils/evidence.js). Only failed checks have them; their `timings` are the steps that finished.
+    failedPhase: String,
+    evidence: {
+        statusCode: Number,
+        headers: mongoose.Schema.Types.Mixed,
+        address: String,
+        snippet: String,
+        snippetTruncated: Boolean
     },
     // True when this check was slow while the checking process's own event loop was stalled, so the time is not
     // trusted: it is shown, but never counted toward a slow alert (services/loadMonitor.js). Absent otherwise.

@@ -187,7 +187,7 @@ test('checks running at the same time each get their own timings, not each other
     });
 });
 
-test('a TCP check reports dns and connect only, and a failed check has no timings', async () => {
+test('a TCP check reports dns and connect only, and a failed one the steps it got through', async () => {
     const tcp = net.createServer((socket) => socket.end());
     await new Promise((resolve) => tcp.listen(0, '127.0.0.1', resolve));
     const port = tcp.address().port;
@@ -200,7 +200,8 @@ test('a TCP check reports dns and connect only, and a failed check has no timing
     await new Promise((resolve) => tcp.close(resolve));
     const down = await checkServerStatus({ url: `127.0.0.1:${port}`, type: 'tcp', monitoring: {} });
     assert.equal(down.status, 'down');
-    assert.equal(down.timings, null);
+    // what it got through before it failed: the lookup and the connection that was refused (tests/failedPhase.test.js)
+    assert.deepEqual(Object.keys(down.timings).sort(), ['connect', 'dns']);
 });
 
 // ── server time: the true reading ──

@@ -33,16 +33,20 @@ export const describeKeywordFailure = (keyword) => (keyword.mode === 'absent'
  * been read, when the body ends, or when `timeoutMs` has passed. The stream is always destroyed afterwards.
  * @param {import('stream').Readable} stream  the response body (already decompressed)
  * @param {string} text
- * @param {{ maxBytes?: number, timeoutMs: number }} options
- * @returns {Promise<{ found: boolean, bytes: number, capped: boolean }>}
+ * @param {{ maxBytes?: number, timeoutMs: number, headBytes?: number }} options
+ *   headBytes: also keep the first this-many bytes of the page (for the evidence of a failed check, utils/evidence.js)
+ * @returns {Promise<{ found: boolean, bytes: number, capped: boolean, head?: Buffer }>}  `head` only when headBytes is given
  * @throws a timeout (code ETIMEDOUT) if the body does not finish in time, or the stream's own error (a reset, say)
  */
-export async function findInBody(stream, text, { maxBytes = MAX_BODY_BYTES, timeoutMs }) {
+export async function findInBody(stream, text, { maxBytes = MAX_BODY_BYTES, timeoutMs, headBytes = 0 }) {
     const needle = text.toLowerCase();
     const decoder = new TextDecoder('utf-8', { fatal: false }); // a character split between two chunks is held back, not broken
     let tail = ''; // the end of what has been read, so text split between two chunks is still found
     let bytes = 0;
     let timer;
+    const head = [];
+    let headLength = 0;
+    const result = (found, capped) => ({ found, bytes, capped, ...(headBytes > 0 ? { head: Buffer.concat(head) } : {}) });
 
     const timedOut = new Promise((_, reject) => {
         timer = setTimeout(() => {
@@ -54,12 +58,17 @@ export async function findInBody(stream, text, { maxBytes = MAX_BODY_BYTES, time
     const reading = (async () => {
         for await (const chunk of stream) {
             bytes += chunk.length;
+            if (headLength < headBytes) {
+                const part = chunk.subarray(0, headBytes - headLength);
+                head.push(part);
+                headLength += part.length;
+            }
             const window = tail + decoder.decode(chunk, { stream: true }).toLowerCase();
-            if (window.includes(needle)) return { found: true, bytes, capped: false };
+            if (window.includes(needle)) return result(true, false);
             tail = needle.length > 1 ? window.slice(-(needle.length - 1)) : '';
-            if (bytes >= maxBytes) return { found: false, bytes, capped: true };
+            if (bytes >= maxBytes) return result(false, true);
         }
-        return { found: false, bytes, capped: false };
+        return result(false, false);
     })();
     reading.catch(() => {}); // if the deadline wins, the read ending in an error afterwards is not news
 

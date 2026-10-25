@@ -72,4 +72,19 @@ export function statusPageAllowance(plan = 'free') {
     return { ...(STATUS_PAGES[tier] || STATUS_PAGES.free) };
 }
 
-export default { planFeatures, statusPageAllowance };
+// The detailed diagnosis of a failed check (causes, things to check, what the server said). Free accounts keep the plain
+// one-line diagnosis, the step that failed and the timings. Kept apart from FEATURES, like the status pages: it is looked
+// up by plan when a failure is shown, so accounts that already exist need no change to get it.
+const DETAILED_DIAGNOSIS = { free: false, starter: true, pro: true, business: true };
+
+/**
+ * @param {{ role?: string, subscription?: { plan?: string } }|null|undefined} user
+ * @returns {boolean}  admins always; otherwise by plan, and an unknown plan is treated as free
+ */
+export function hasDetailedDiagnosis(user) {
+    if (user?.role === 'admin') return true;
+    const tier = String(user?.subscription?.plan || 'free').split('_')[0];
+    return DETAILED_DIAGNOSIS[tier] === true;
+}
+
+export default { planFeatures, statusPageAllowance, hasDetailedDiagnosis };
