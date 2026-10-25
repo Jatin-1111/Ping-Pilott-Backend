@@ -19,16 +19,17 @@ import { FAILED_PHASES } from './failurePhase.js';
  *           timings?: Object|null, evidence?: Object|null }} p.failure  as stored (utils/failures.js and the rest)
  * @param {{ url?: string, type?: string }} [p.server]  the monitor, for the commands
  * @param {boolean} p.detailed  whether the plan includes the detail (utils/planFeatures.js)
+ * @param {Object|null} [p.host]  what the host agent saw around the failure (utils/hostContext.js summariseHost); only used when detailed
  * @returns {{ diagnosis: Object|null, failureDetail: Object|null }}
  */
-export function failureView({ failure = {}, server = {}, detailed = false } = {}) {
+export function failureView({ failure = {}, server = {}, detailed = false, host = null } = {}) {
     const phase = FAILED_PHASES.includes(failure.failedPhase) ? failure.failedPhase : null;
     const timings = cleanTimings(failure.timings);
     const evidence = cleanEvidence(failure.evidence);
     const statusCode = Number.isInteger(failure.statusCode) ? failure.statusCode : null;
 
     const diagnosis = detailed
-        ? diagnoseDetailed({ kind: failure.kind, statusCode, error: failure.error, failedPhase: phase, timings, evidence, url: server.url, type: server.type })
+        ? diagnoseDetailed({ kind: failure.kind, statusCode, error: failure.error, failedPhase: phase, timings, evidence, url: server.url, type: server.type, host })
         : diagnose({ kind: failure.kind, statusCode, error: failure.error });
 
     const failureDetail = {};

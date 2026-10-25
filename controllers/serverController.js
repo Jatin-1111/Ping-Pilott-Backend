@@ -22,10 +22,11 @@ import { getCachedData, setCachedData, dedupedFetch } from '../utils/cacheManage
 import { CACHE_STRATEGIES } from '../config/performance.js';
 import Incident from '../models/Incident.js';
 import HostMetric from '../models/HostMetric.js';
+import { hostContextFor, wantsHostContext } from '../services/hostContext.js';
 import HostMetric5m from '../models/HostMetric5m.js';
 
 /** The diagnosis and failure detail of a server that is down, from what its last failing check stored */
-const failureViewOf = (server, evidence, detailed) => failureView({
+const failureViewOf = (server, evidence, detailed, host = null) => failureView({
     failure: {
         kind: server.failureKind,
         statusCode: server.failureStatusCode,
@@ -35,8 +36,13 @@ const failureViewOf = (server, evidence, detailed) => failureView({
         evidence
     },
     server,
-    detailed
+    detailed,
+    host
 });
+
+/** What the host agent saw when this server's last check failed (null when there is no agent or no readings) */
+const hostContextOf = (server, detailed) =>
+    server.status === 'down' && wantsHostContext(server, detailed) ? hostContextFor({ serverId: server._id, at: server.lastChecked }) : null;
 
 // Performance monitoring
 const PERFORMANCE_CONFIG = {
@@ -138,6 +144,9 @@ export const getServers = asyncHandler(async (req, res) => {
         // Whether this account's plan includes the detailed diagnosis (causes, things to check, what the server said)
         const detailed = hasDetailedDiagnosis(req.user);
 
+        // The host agent's readings around each failure, for servers that are down and have an agent
+        const hosts = new Map(await Promise.all(servers.map(async (s) => [String(s._id), await hostContextOf(s, detailed)])));
+
         // Enhance servers with computed fields efficiently
         const enhancedServers = servers.map(server => {
             const lastCheckedLocal = server.lastChecked ? new Date(server.lastChecked).toISOString() : null;
@@ -153,7 +162,7 @@ export const getServers = asyncHandler(async (req, res) => {
 
             // Why it is down, in plain words, and where it stopped. Nothing for a server that is not down.
             const { failureEvidence, ...fields } = server;
-            const view = server.status === 'down' ? failureViewOf(server, failureEvidence, detailed) : null;
+            const view = server.status === 'down' ? failureViewOf(server, failureEvidence, detailed, hosts.get(String(server._id))) : null;
 
             return {
                 ...fields,
@@ -268,7 +277,8 @@ export const getServerById = asyncHandler(async (req, res) => {
 
         // Enhance server data
         const { failureEvidence, ...serverFields } = server;
-        const view = server.status === 'down' ? failureViewOf(server, failureEvidence, hasDetailedDiagnosis(req.user)) : null;
+        const detailedDiagnosis = hasDetailedDiagnosis(req.user);
+        const view = server.status === 'down' ? failureViewOf(server, failureEvidence, detailedDiagnosis, await hostContextOf(server, detailedDiagnosis)) : null;
         const enhancedServer = {
             ...serverFields,
             lastCheckedLocal: server.lastChecked ? new Date(server.lastChecked).toISOString() : null,
@@ -973,7 +983,8 @@ export const checkServer = asyncHandler(async (req, res) => {
                     evidence: checkResult.evidence
                 },
                 server,
-                detailed: hasDetailedDiagnosis(req.user)
+                detailed: hasDetailedDiagnosis(req.user),
+                host: wantsHostContext(server, hasDetailedDiagnosis(req.user)) ? await hostContextFor({ serverId: server._id, at: Date.now() }) : null
             })
             : null;
 

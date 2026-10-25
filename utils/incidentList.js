@@ -23,13 +23,13 @@ export const downtimeWithin = (incident, since, now = Date.now()) => {
 /**
  * @param {Array} rows     incidents of one user, newest first (lean documents)
  * @param {Array} servers  that user's servers: { _id, name, url }
- * @param {Object} options { status: 'all'|'ongoing'|'resolved', days, page, limit, now, detailed }
+ * @param {Object} options { status: 'all'|'ongoing'|'resolved', days, page, limit, now, detailed, hosts }
  *   detailed: the account's plan includes the detailed diagnosis (utils/planFeatures.js)
  *
  * The summary describes the whole period and ignores the status filter, so the filter chips can show
  * "All 12 / Ongoing 1 / Resolved 11" and stay put while you switch between them.
  */
-export function buildIncidentList(rows, servers, { status = 'all', days = DEFAULT_DAYS, page = 1, limit = 20, now = Date.now(), detailed = false } = {}) {
+export function buildIncidentList(rows, servers, { status = 'all', days = DEFAULT_DAYS, page = 1, limit = 20, now = Date.now(), detailed = false, hosts = null } = {}) {
     const since = periodStart(days, now);
     const inPeriod = rows.filter((r) => r.open || ms(r.startedAt) >= since.getTime());
     const byId = new Map(servers.map((s) => [String(s._id), s]));
@@ -54,7 +54,8 @@ export function buildIncidentList(rows, servers, { status = 'all', days = DEFAUL
         const view = failureView({
             failure: { kind: r.failureKind, statusCode: r.statusCode, error: r.error, failedPhase: r.failedPhase, timings: r.timings, evidence: r.evidence },
             server,
-            detailed
+            detailed,
+            host: hosts?.get(String(r._id)) ?? null
         });
         return {
             id: String(r._id),

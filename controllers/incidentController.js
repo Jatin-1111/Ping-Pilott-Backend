@@ -3,6 +3,11 @@ import Server from '../models/Server.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { buildIncidentList, periodStart, DEFAULT_DAYS } from '../utils/incidentList.js';
 import { hasDetailedDiagnosis } from '../utils/planFeatures.js';
+import { hostContextFor, wantsHostContext } from '../services/hostContext.js';
+
+const RAW_HOST_READINGS_MS = 24 * 60 * 60 * 1000;
+// Incidents in a day are few; this bounds a flapping server so one request never makes an unbounded number of reads
+const MAX_HOST_LOOKUPS = 50;
 
 // A user's incidents in a period are a handful in practice. This bounds the worst case (a flapping server
 // over 30 days) so one request can never read an unbounded number of rows.
@@ -35,11 +40,20 @@ export const getIncidents = asyncHandler(async (req, res) => {
 
     const [rows, servers] = await Promise.all([
         Incident.find(filter).select('+evidence').sort({ startedAt: -1 }).limit(MAX_ROWS).lean(),
-        Server.find({ uploadedBy: req.user._id }).select('name url type').sort({ name: 1 }).lean(),
+        Server.find({ uploadedBy: req.user._id }).select('name url type agent.enabled').sort({ name: 1 }).lean(),
     ]);
 
     // The causes, things to check and what the server said are part of the plan; the rest of an incident is for everyone
-    const result = buildIncidentList(rows, servers, { status, days, page, limit, detailed: hasDetailedDiagnosis(req.user) });
+    const detailed = hasDetailedDiagnosis(req.user);
+
+    // What the host agent saw when each recent incident began. Readings are kept for a day, so older incidents have none.
+    const agentServers = new Map(servers.filter((s) => wantsHostContext(s, detailed)).map((s) => [String(s._id), s]));
+    const recent = agentServers.size
+        ? rows.filter((r) => agentServers.has(String(r.serverId)) && Date.now() - new Date(r.startedAt).getTime() < RAW_HOST_READINGS_MS).slice(0, MAX_HOST_LOOKUPS)
+        : [];
+    const hosts = new Map(await Promise.all(recent.map(async (r) => [String(r._id), await hostContextFor({ serverId: r.serverId, at: r.startedAt })])));
+
+    const result = buildIncidentList(rows, servers, { status, days, page, limit, detailed, hosts });
 
     res.status(200).json({
         status: 'success',

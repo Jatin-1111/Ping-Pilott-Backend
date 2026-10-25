@@ -12,6 +12,7 @@
 // Pure functions (no database, no sockets), so every case can be tested on its own.
 
 import { diagnose } from './diagnosis.js';
+import { hostFindings, hostLooksNormal, normalNote } from './hostContext.js';
 
 /** @typedef {{ text: string, confidence: 'high'|'medium'|'low', evidence: string[] }} Cause */
 /** @typedef {{ step: string, kind: 'command'|'manual', command?: string }} Check */
@@ -320,7 +321,24 @@ const unique = (items, keyOf) => {
  * @returns {{ title: string, cause: string, action: string, failedPhase: string|null, causes: Cause[], checks: Check[] }|null}
  *   null when there is nothing to say (the same cases as `diagnose`)
  */
-export function diagnoseDetailed({ kind, statusCode, error, failedPhase, timings, evidence, url, type } = {}) {
+// Resource exhaustion explains a connection or response that failed from the server's side. It does not explain a
+// bad address, a certificate, or the server answering correctly with "no" (401, 403, 404, 429 and the like).
+const HOST_PHASES = ['connect', 'response', 'content'];
+const isClientError = (statusCode) => Number.isInteger(statusCode) && statusCode >= 400 && statusCode < 500;
+
+/** Causes, checks and a note from what the host agent saw around the failure (utils/hostContext.js) */
+function hostDetail({ host, failedPhase, statusCode }) {
+    if (!host || !HOST_PHASES.includes(failedPhase) || isClientError(statusCode)) return { causes: [], checks: [], note: null };
+
+    const found = hostFindings(host);
+    return {
+        causes: found.map((f) => cause(f.text, f.severe ? 'high' : 'medium', f.evidence)),
+        checks: found.map((f) => ({ step: f.check.step, kind: 'command', command: f.check.command })),
+        note: found.length === 0 && hostLooksNormal(host) ? normalNote(host) : null
+    };
+}
+
+export function diagnoseDetailed({ kind, statusCode, error, failedPhase, timings, evidence, url, type, host } = {}) {
     const base = diagnose({ kind, statusCode, error });
     if (!base) return null;
 
@@ -330,14 +348,16 @@ export function diagnoseDetailed({ kind, statusCode, error, failedPhase, timings
     const target = targetOf(url, type);
     const detail = build({ kind, statusCode, error, timings, evidence, target });
 
-    const causes = unique(detail.causes, (c) => c.text)
+    const fromHost = hostDetail({ host, failedPhase, statusCode });
+    // Host causes go first so that, at equal confidence, what the agent measured outranks what could only be guessed
+    const causes = unique([...fromHost.causes, ...detail.causes], (c) => c.text)
         .map((c, i) => ({ c, i }))
         .sort((a, b) => RANK[a.c.confidence] - RANK[b.c.confidence] || a.i - b.i)
         .map(({ c }) => c)
         .slice(0, MAX_CAUSES);
-    const checks = unique(detail.checks, (c) => c.command || c.step).slice(0, MAX_CHECKS);
+    const checks = unique([...detail.checks.slice(0, MAX_CHECKS - fromHost.checks.length), ...fromHost.checks], (c) => c.command || c.step).slice(0, MAX_CHECKS);
 
-    return { ...base, failedPhase, causes, checks };
+    return { ...base, failedPhase, causes, checks, ...(fromHost.note && { hostNote: fromHost.note }) };
 }
 
 export default { targetOf, diagnoseDetailed };
