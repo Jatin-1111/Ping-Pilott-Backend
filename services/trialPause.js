@@ -43,7 +43,7 @@ export async function pauseExpiredTrials({ servers, incidents, users, sendNotice
         // Claim it: only one scheduler process pauses a server
         const claimed = await servers.findOneAndUpdate(
             { _id: candidate._id, pausedAt: null },
-            { $set: { pausedAt: now, status: 'unknown', error: null, failureKind: null, responseTime: null, slowAlerted: false, slowStreak: 0, fastStreak: 0, nextCheckAt: NEVER } },
+            { $set: { pausedAt: now, status: 'unknown', error: null, failureKind: null, responseTime: null, slowAlerted: false, slowStreak: 0, fastStreak: 0, alertedStatus: null, statusChanges: [], flapHeldAt: null, nextCheckAt: NEVER } },
             { new: true }
         ).lean();
         if (!claimed) continue;

@@ -8,6 +8,7 @@ import { safeLookup, assertPublicHost, blockPrivateRedirect, hostFromTarget } fr
 import { maskCredentials } from '../utils/address.js';
 import { localParts, timeInWindow, timezoneOf } from '../utils/schedule.js';
 import { cleanTimings } from '../utils/timings.js';
+import { cleanFlap } from '../utils/flapDamping.js';
 
 // Webhooks go to addresses users typed in, so they get the same private-network protection as checks,
 // and redirects are not followed.
@@ -110,6 +111,7 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
         error: checkResult.error,
         slowStreak: checkResult.slowStreak,
         timings: checkResult.timings,
+        flap: checkResult.flap,
         alertTime: new Date().toISOString()
     };
 
@@ -140,6 +142,7 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
                     newStatus,
                     responseTime: checkResult.responseTime,
                     error: checkResult.error,
+                    ...(cleanFlap(checkResult.flap) ? { flap: cleanFlap(checkResult.flap) } : {}),
                     ...(checkResult.failureKind ? { failureKind: checkResult.failureKind } : {}),
                     ...(Number.isInteger(checkResult.statusCode) ? { statusCode: checkResult.statusCode } : {}),
                     ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {}),

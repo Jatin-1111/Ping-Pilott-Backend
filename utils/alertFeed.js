@@ -3,6 +3,7 @@
 // Pure functions (no database), so the message wording, the payload shape and the paging rules can be tested alone.
 
 import { describeDominantPhase } from './timings.js';
+import { describeFlap } from './flapDamping.js';
 
 export const DEFAULT_LIMIT = 50;
 export const MAX_LIMIT = 100;
@@ -23,12 +24,15 @@ const ms = (value) => Math.round(Number(value));
  */
 export function buildAlertMessage(type, checkResult = {}, server = {}) {
     const responseTime = Number(checkResult.responseTime) > 0 ? ms(checkResult.responseTime) : null;
+    // The alert that starts or ends a flap hold says so. The note is kept whole: it is the text that gets cut to fit.
+    const flapNote = describeFlap(checkResult.flap);
+    const withFlap = (text) => (flapNote ? `${text.slice(0, Math.max(0, MAX_MESSAGE - flapNote.length - 1))} ${flapNote}` : clip(text));
 
     if (type === 'server_down') {
-        return checkResult.error ? clip(checkResult.error) : 'The server did not respond.';
+        return withFlap(checkResult.error ? String(checkResult.error) : 'The server did not respond.');
     }
     if (type === 'server_recovery') {
-        return responseTime ? `Back online, responding in ${responseTime} ms.` : 'Back online.';
+        return withFlap(responseTime ? `Back online, responding in ${responseTime} ms.` : 'Back online.');
     }
     if (type === 'slow_response') {
         const threshold = server.monitoring?.alerts?.responseThreshold;

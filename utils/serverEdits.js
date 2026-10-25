@@ -36,6 +36,9 @@ export const addressChangeUpdates = () => ({
     slowAlerted: false,
     slowStreak: 0,
     fastStreak: 0,
+    alertedStatus: null,
+    statusChanges: [],
+    flapHeldAt: null,
     nextCheckAt: null
 });
 

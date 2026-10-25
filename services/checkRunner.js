@@ -28,7 +28,8 @@ export const confirmDelayMs = (env = process.env) => {
 
 /**
  * Check a server. A failure on a server that is not already known to be down (up, or never checked) is checked once
- * more after a short wait, and the second answer is the result, so one dropped request does not page anyone.
+ * more after a short wait, and the second answer is the result, so one dropped request does not page anyone. The same
+ * goes the other way: a server that was down and answers is checked once more before it counts as recovered.
  * @param {Object} server  needs the fields checkServerStatus reads, plus `status`
  * @param {Object} [options]  replaceable in tests
  * @returns {Promise<{ status, responseTime, error, slow, timings, loadSuspect? }>}
@@ -55,6 +56,18 @@ export async function runCheck(server, {
     };
 
     const result = await measure();
+
+    // A server that was down answering once is not yet "recovered": a flaky one answers now and then. Check again after
+    // the same wait, and believe the second answer, so one lucky request does not send a RECOVERED email that the next
+    // failure turns into a DOWN email.
+    if (result.status === 'up' && server.status === 'down' && delayMs > 0) {
+        await sleep(delayMs);
+        const second = await measure();
+        // The network may have gone during the wait: then a failure says nothing about the server
+        if (second.status === 'down' && !(await isEgressUp(5000))) throw new EgressDownError();
+        return second;
+    }
+
     if (result.status !== 'down') return result;
 
     // Is it them, or is it us? Asked before the confirmation wait so a dead network does not hold a worker slot for it

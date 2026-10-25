@@ -1,7 +1,9 @@
-// utils/alertDecision.js - pure rules for what a finished check should tell the user, and what to save about it
+﻿// utils/alertDecision.js - pure rules for what a finished check should tell the user, and what to save about it
 //
 // Down and recovery follow the status. A slow response is judged over several checks, not one: a single slow sample is
 // usually the network, and a site that hovers around its threshold used to send an alert every time it crossed.
+
+import { dampAlert, flapConfig } from './flapDamping.js';
 
 /** Slow checks in a row, counting only scheduled checks, before a slow alert is raised. Fewer for slower schedules. */
 export const slowChecksNeeded = (frequencyMinutes) => {
@@ -91,16 +93,23 @@ export const decideAlert = (previous, result, state = {}, { frequency, checkType
 /**
  * What to write for a finished check. Kept apart from the database code so the rules can be tested alone.
  * @param {Object} p
- * @param {Object} p.server       lean server doc: _id, status, slowAlerted, slowStreak, fastStreak, monitoring
+ * @param {Object} p.server       lean server doc: _id, status, slowAlerted, slowStreak, fastStreak, alertedStatus,
+ *                                statusChanges, flapHeldAt, monitoring
  * @param {Object} p.checkResult  { status, responseTime, error, slow }
  * @param {string} [p.checkType]  'automated' | 'manual' | 'batch'
  * @param {Date}   p.now
- * @returns {{ filter: Object, $set: Object, alertType: string|null, changed: boolean, slowStreak: number }}
+ * @param {Object} [p.flapSettings]  flapConfig(); replaceable in tests
+ * @returns {{ filter: Object, $set: Object, alertType: string|null, changed: boolean, slowStreak: number, flap: Object|null }}
+ *   `flap` is the note a down or recovery alert carries when it starts or ends a hold (utils/flapDamping.js).
  */
-export const planCheckUpdate = ({ server, checkResult, checkType = 'automated', now }) => {
+export const planCheckUpdate = ({ server, checkResult, checkType = 'automated', now, flapSettings = flapConfig() }) => {
     const previous = server.status;
     const changed = previous !== checkResult.status;
     const decision = decideAlert(previous, checkResult, server, { frequency: server.monitoring?.frequency, checkType });
+
+    // A server that keeps going up and down is held: its down and recovery alerts stop (utils/flapDamping.js)
+    const flap = dampAlert({ previous, status: checkResult.status, baseAlertType: decision.alertType, state: server, now, config: flapSettings });
+    const alertType = flap.alertType;
 
     const $set = {
         status: checkResult.status,
@@ -115,13 +124,21 @@ export const planCheckUpdate = ({ server, checkResult, checkType = 'automated', 
         $set.fastStreak = decision.fastStreak;
     }
     if (changed) $set.lastStatusChange = now;
+    // Only written when it changes: the damping state is not touched by an ordinary check
+    if (flap.touch) {
+        $set.alertedStatus = flap.alertedStatus;
+        $set.statusChanges = flap.statusChanges.map((t) => new Date(t));
+        $set.flapHeldAt = flap.flapHeldAt === null ? null : new Date(flap.flapHeldAt);
+    }
 
     // Compare-and-set: the write only applies if the server is still in the state this check was judged against
     const filter = { _id: server._id };
     if (changed) filter.status = previous;
-    else if (decision.alertType === 'slow_response') filter.slowAlerted = { $ne: true };
+    else if (alertType === 'slow_response') filter.slowAlerted = { $ne: true };
+    // The check that ends a hold writes only if the server is still held, so two racing checks send one alert
+    if (flap.release) filter.flapHeldAt = { $ne: null };
 
-    return { filter, $set, alertType: decision.alertType, changed, slowStreak: decision.slowStreak };
+    return { filter, $set, alertType, changed, slowStreak: decision.slowStreak, flap: flap.flap };
 };
 
 export default { decideAlert, planCheckUpdate, slowChecksNeeded, countsTowardSlowStreak, FAST_CHECKS_TO_CLOSE };

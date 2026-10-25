@@ -19,8 +19,9 @@ import { recordStatusChange } from './incidentService.js';
  * If two checks of the same server race, only one wins, and only the winner queues the alert.
  * An alert is therefore never sent for a status change that failed to save.
  *
- * @param {Object} server - lean server doc with: _id, name, status, slowAlerted, slowStreak, fastStreak, priority, monitoring,
- *                          contactEmails, contactPhones, uploadedBy
+ * @param {Object} server - lean server doc with: _id, name, status, slowAlerted, slowStreak, fastStreak, alertedStatus,
+ *                          statusChanges, flapHeldAt, priority, monitoring, contactEmails, contactPhones, uploadedBy
+ *                          (a path that does not select the flap fields would overwrite them with an empty history)
  * @param {Object} checkResult - { status, responseTime, error, slow }
  * @param {Object} [options]
  * @param {'automated'|'manual'|'batch'} [options.checkType] - only 'automated' (the scheduled worker) moves the slow-alert
@@ -30,7 +31,7 @@ import { recordStatusChange } from './incidentService.js';
 export async function applyCheckResult(server, checkResult, { checkType = 'automated' } = {}) {
     const now = new Date();
     const previous = server.status;
-    const { filter, $set, alertType, changed, slowStreak } = planCheckUpdate({ server, checkResult, checkType, now });
+    const { filter, $set, alertType, changed, slowStreak, flap } = planCheckUpdate({ server, checkResult, checkType, now });
 
     const result = await Server.updateOne(filter, { $set });
     const applied = result.matchedCount === 1;
@@ -43,8 +44,13 @@ export async function applyCheckResult(server, checkResult, { checkType = 'autom
 
     // The alert is saved before it is queued, so a queue that is down or an email provider that is slow cannot lose it
     if (alertType && applied) {
-        // A slow alert says how many checks in a row it took, not just the one that tipped it
-        const alertResult = alertType === 'slow_response' ? { ...checkResult, slowStreak } : checkResult;
+        // A slow alert says how many checks in a row it took, not just the one that tipped it. The alert that starts or
+        // ends a flap hold says so too: the same alert types, with the context in their text.
+        const alertResult = {
+            ...checkResult,
+            ...(alertType === 'slow_response' ? { slowStreak } : {}),
+            ...(flap ? { flap } : {})
+        };
         await enqueueAlert({ server, alertType, previous, checkResult: alertResult }, { model: PendingAlert, queue: { add: addAlertToQueue } });
     }
 

@@ -5,6 +5,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { runCheck, confirmDelayMs, SCHEDULED_CHECKS_ONLY } from '../services/checkRunner.js';
+import { EgressDownError } from '../services/egressProbe.js';
 
 const UP = { status: 'up', responseTime: 120, error: null, slow: false };
 const DOWN = { status: 'down', responseTime: null, error: 'Connection refused', slow: false };
@@ -53,6 +54,40 @@ test('a server that is already down is not re-checked: it stays down, no wait', 
     assert.equal((await runCheck({ status: 'down' }, h.options)).status, 'down');
     assert.equal(h.calls, 1);
     assert.deepEqual(h.waits, []);
+});
+
+test('a server that was down and answers is checked again before it counts as recovered', async () => {
+    const stays = harness(UP, UP);
+    const result = await runCheck({ status: 'down' }, stays.options);
+    assert.equal(result.status, 'up');
+    assert.equal(stays.calls, 2);
+    assert.deepEqual(stays.waits, [10000], 'the same wait as for a failure');
+});
+
+test('one lucky answer from a down server does not recover it: the second answer wins', async () => {
+    const flaky = harness(UP, DOWN);
+    const result = await runCheck({ status: 'down' }, flaky.options);
+    assert.equal(result.status, 'down', 'it stays down, so no RECOVERED email that the next failure would undo');
+    assert.equal(flaky.calls, 2);
+});
+
+test('recovery is not re-checked for a server that is up, was never checked, or when confirmation is off', async () => {
+    for (const status of ['up', 'unknown']) {
+        const h = harness(UP);
+        assert.equal((await runCheck({ status }, h.options)).status, 'up');
+        assert.equal(h.calls, 1, status);
+        assert.deepEqual(h.waits, []);
+    }
+    const off = harness(UP, DOWN);
+    assert.equal((await runCheck({ status: 'down' }, { ...off.options, delayMs: 0 })).status, 'up');
+    assert.equal(off.calls, 1);
+});
+
+test('if our own network goes during the recovery wait, a failure says nothing about the server', async () => {
+    const h = harness(UP, DOWN);
+    // the network is fine at the start and gone by the second look (the fresher 5 s question)
+    const options = { ...h.options, isEgressUp: async (maxAgeMs) => maxAgeMs !== 5000 };
+    await assert.rejects(runCheck({ status: 'down' }, options), EgressDownError);
 });
 
 test('a delay of 0 switches confirmation off', async () => {

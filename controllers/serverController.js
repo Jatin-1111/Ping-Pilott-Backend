@@ -832,6 +832,9 @@ export const checkServer = asyncHandler(async (req, res) => {
             slowAlerted: 1,
             slowStreak: 1,
             fastStreak: 1,
+            alertedStatus: 1,
+            statusChanges: 1,
+            flapHeldAt: 1,
             priority: 1,
             contactEmails: 1,
             contactPhones: 1
@@ -1258,7 +1261,7 @@ export const batchCheckServers = asyncHandler(async (req, res) => {
         const servers = await Server.find({
             _id: { $in: validIds },
             ...(isAdmin ? {} : { uploadedBy: userId })
-        }).select('name url type status lastChecked timezone monitoring uploadedBy uploadedPlan uploadedRole slowAlerted slowStreak fastStreak priority contactEmails contactPhones').lean();
+        }).select('name url type status lastChecked timezone monitoring uploadedBy uploadedPlan uploadedRole slowAlerted slowStreak fastStreak alertedStatus statusChanges flapHeldAt priority contactEmails contactPhones').lean();
 
         if (servers.length === 0) {
             return res.status(404).json({

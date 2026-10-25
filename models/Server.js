@@ -183,6 +183,22 @@ const serverSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    // Flap damping (utils/flapDamping.js). alertedStatus: the status of the last down or recovery alert raised, so a
+    // hold that ends knows whether the owner is behind. statusChanges: when it last changed between up and down, newest
+    // last, at most 10. flapHeldAt: set while its down and recovery alerts are held. Missing means none of this.
+    alertedStatus: {
+        type: String,
+        enum: ['up', 'down', null],
+        default: null
+    },
+    statusChanges: {
+        type: [Date],
+        default: []
+    },
+    flapHeldAt: {
+        type: Date,
+        default: null
+    },
     // The kind of failure behind `error` (utils/failures.js); null while the server is up
     failureKind: {
         type: String,

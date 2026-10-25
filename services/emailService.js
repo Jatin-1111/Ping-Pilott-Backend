@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import logger from '../utils/logger.js';
 import { maskCredentials } from '../utils/address.js';
 import { describeDominantPhase } from '../utils/timings.js';
+import { describeFlap } from '../utils/flapDamping.js';
 
 // Create a reusable transporter object
 let transporter = null;
@@ -123,6 +124,9 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
   const errorMessage = esc(server.error || 'Unknown error');
   // Which part of the response was slow, when one part was most of it (utils/timings.js)
   const slowWhere = alertType === 'slow_response' ? describeDominantPhase(server.timings, server.responseTime) : null;
+  // The alert that starts or ends a flap hold says so (utils/flapDamping.js)
+  const flapNote = alertType === 'server_down' || alertType === 'server_recovery' ? describeFlap(server.flap) : null;
+  const flapHtml = flapNote ? `<p>${esc(flapNote)}</p>` : '';
 
   let subject;
   let html;
@@ -140,6 +144,7 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
             <p>URL: ${serverUrl}</p>
             <p>Time of detection: ${currentTime}</p>
             <p>Error: ${errorMessage}</p>
+            ${flapHtml}
             <p>We'll notify you when the server is back online.</p>
             <p style="margin-top: 30px; font-size: 12px; color: #777;">
               This is an automated message from Ping Pilot monitoring.
@@ -161,6 +166,7 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
             <p>URL: ${serverUrl}</p>
             <p>Time of recovery: ${currentTime}</p>
             <p>Current response time: ${responseTime}</p>
+            ${flapHtml}
             <p style="margin-top: 30px; font-size: 12px; color: #777;">
               This is an automated message from Ping Pilot monitoring.
             </p>
