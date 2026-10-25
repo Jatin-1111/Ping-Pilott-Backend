@@ -209,6 +209,7 @@ const runTrialPause = () => pauseExpiredTrials({
             userId: server.uploadedBy,
             status: 'unknown',
             latency: null,
+            serverTime: null,
             error: null,
             lastChecked: server.lastChecked
         })).catch(() => {});

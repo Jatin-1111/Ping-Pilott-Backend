@@ -5,6 +5,7 @@ import { performance } from 'perf_hooks';
 import logger from '../utils/logger.js';
 import { TimedHttpAgent, TimedHttpsAgent, timedRequest, connectTimings } from '../utils/requestTiming.js';
 import { classifyFailure, failureOf, HttpStatusError, InvalidAddressError } from '../utils/failures.js';
+import { serverTimeOf } from '../utils/timings.js';
 import {
     safeLookup,
     assertPublicHost,
@@ -73,8 +74,10 @@ const parseTcpTarget = (target) => {
 /**
  * Check the status of a server
  * @param {Object} server - Server to check
- * @returns {Object} { status, responseTime, error, slow, timings, statusCode, failure }
+ * @returns {Object} { status, responseTime, error, slow, timings, serverTime, statusCode, failure }
  *   responseTime is only set for a successful check; a failure has no meaningful response time.
+ *   serverTime is the part of it that was the server's own (time to first byte minus the connect, which is one round
+ *   trip: see utils/timings.js), or null when it cannot be told. The rest, responseTime - serverTime, is the network's.
  *   failure is { kind, statusCode? } for a failed check (kind: see utils/failures.js) and null otherwise; `error` is
  *   still the sentence for the user. statusCode is the HTTP status the server answered with, when it answered.
  *   timings says where it went: { dns, connect, tls, ttfb, redirects } in ms (a TCP check has dns and connect only).
@@ -101,6 +104,7 @@ export const checkServerStatus = async (server) => {
             error: classified.message,
             slow: false,
             timings: null,
+            serverTime: null,
             statusCode: classified.statusCode,
             failure: failureOf(classified)
         };
@@ -116,6 +120,7 @@ export const checkServerStatus = async (server) => {
         error: slow ? `Slow response: ${responseTime}ms exceeds threshold of ${responseThreshold}ms` : null,
         slow,
         timings: measured.timings ?? null,
+        serverTime: serverTimeOf(measured.timings),
         statusCode: measured.status ?? null,
         failure: null
     };

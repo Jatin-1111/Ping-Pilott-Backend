@@ -214,7 +214,7 @@ export const getServerById = asyncHandler(async (req, res) => {
                 ServerCheck.find({ serverId: new mongoose.Types.ObjectId(serverId) })
                     .sort({ timestamp: -1 })
                     .limit(10)
-                    .select('status responseTime timestamp error failureKind statusCode timings')
+                    .select('status responseTime serverTime timestamp error failureKind statusCode timings')
                     .lean()
                     .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT)
                 : Promise.resolve([])
@@ -928,6 +928,8 @@ export const checkServer = asyncHandler(async (req, res) => {
                 check: {
                     status: checkResult.status,
                     responseTime: checkResult.responseTime,
+                    // the server's own part of it; the rest is the network's. null when it cannot be told
+                    serverTime: Number.isFinite(checkResult.serverTime) ? Math.round(checkResult.serverTime) : null,
                     error: checkResult.error,
                     timestamp: now,
                     localTime: now.toLocaleString('sv-SE', { timeZone: timezoneOf(server) }).replace('T', ' '),
@@ -1057,6 +1059,7 @@ export const getServerHistory = asyncHandler(async (req, res) => {
                         ups: { $sum: { $cond: [{ $eq: ['$status', 'up'] }, 1, 0] } },
                         downs: { $sum: { $cond: [{ $eq: ['$status', 'down'] }, 1, 0] } },
                         responseTime: { $avg: { $cond: [{ $eq: ['$status', 'up'] }, '$responseTime', null] } },
+                        serverTime: { $avg: { $cond: [{ $eq: ['$status', 'up'] }, '$serverTime', null] } },
                         timestamp: { $max: '$timestamp' },
                         error: { $max: { $cond: [{ $eq: ['$status', 'down'] }, '$error', null] } },
                         failureKind: { $max: { $cond: [{ $eq: ['$status', 'down'] }, '$failureKind', null] } },
@@ -1141,6 +1144,9 @@ export const getServerHistory = asyncHandler(async (req, res) => {
         const formattedChecks = checks.map(check => ({
             status: check.status,
             responseTime: Math.round(check.responseTime || 0),
+            // The server's own part of responseTime (the rest is the network's). Absent for checks that cannot tell:
+            // TCP checks, failures, and checks from before it was recorded. A bucket of several checks averages those that can.
+            ...(Number.isFinite(check.serverTime) && { serverTime: Math.round(check.serverTime) }),
             timestamp: check.timestamp,
             error: check.error,
             ...(check.failureKind && { failureKind: check.failureKind }),

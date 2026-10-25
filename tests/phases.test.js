@@ -18,7 +18,10 @@ import tls from 'node:tls';
 import mongoose from 'mongoose';
 import { checkServerStatus } from '../services/monitoringService.js';
 import { phaseTimings, connectTimings } from '../utils/requestTiming.js';
-import { cleanTimings, dominantPhase, describeDominantPhase } from '../utils/timings.js';
+import { cleanTimings, serverTimeOf, dominantPhase, describeDominantPhase } from '../utils/timings.js';
+import { checkExtras } from '../utils/checkRecord.js';
+import { planCheckUpdate } from '../utils/alertDecision.js';
+import Server from '../models/Server.js';
 import { buildAlertMessage } from '../utils/alertFeed.js';
 import { enqueueAlert } from '../services/alertOutbox.js';
 import ServerCheck from '../models/ServerCheck.js';
@@ -198,6 +201,79 @@ test('a TCP check reports dns and connect only, and a failed check has no timing
     const down = await checkServerStatus({ url: `127.0.0.1:${port}`, type: 'tcp', monitoring: {} });
     assert.equal(down.status, 'down');
     assert.equal(down.timings, null);
+});
+
+// ── server time: the true reading ──
+
+test('server time is the time to first byte minus the connect, which is one round trip', () => {
+    assert.equal(serverTimeOf({ dns: 4, connect: 40, tls: 80, ttfb: 300, redirects: 0 }), 260);
+    assert.equal(serverTimeOf({ connect: 0, ttfb: 25 }), 25, 'no distance to take out: all of it is the server');
+});
+
+test('the same server reads the same however far away the checker is', () => {
+    // 25 ms of the server's own time, seen from next door, from another continent, and from the far side of the world
+    const near = serverTimeOf({ dns: 2, connect: 1, tls: 2, ttfb: 26, redirects: 0 });
+    const far = serverTimeOf({ dns: 20, connect: 150, tls: 300, ttfb: 175, redirects: 0 });
+    const farthest = serverTimeOf({ dns: 60, connect: 340, tls: 680, ttfb: 365, redirects: 0 });
+    assert.deepEqual([near, far, farthest], [25, 25, 25]);
+});
+
+test('it is never negative, and is null when it cannot be told', () => {
+    assert.equal(serverTimeOf({ connect: 80, ttfb: 60 }), 0, 'a slow connect and a quick answer: not below zero');
+    assert.equal(serverTimeOf({ dns: 5, connect: 40 }), null, 'no response time: a TCP check');
+    assert.equal(serverTimeOf({ ttfb: 100 }), null, 'no connect to take out');
+    for (const nothing of [null, undefined, {}, 'x', { connect: 'a', ttfb: 'b' }]) assert.equal(serverTimeOf(nothing), null, String(nothing));
+});
+
+test('a real check reports the server\'s own time apart from the rest', async () => {
+    const result = await checkServerStatus(site(`http://127.0.0.1:${httpPort}/delay-150`));
+    assert.equal(result.status, 'up');
+    assert.equal(result.serverTime, Math.max(0, result.timings.ttfb - result.timings.connect));
+    assert.ok(result.serverTime >= 140 && result.serverTime < 400, `the server took 150 ms, got ${result.serverTime}`);
+    const network = result.responseTime - result.serverTime;
+    assert.ok(network >= 0 && network < 200, `on this machine the network is a few ms, got ${network}`);
+});
+
+test('after a redirect the server time is the page it ended on, not the sum of the pages', async () => {
+    const result = await checkServerStatus(site(`http://127.0.0.1:${httpPort}/redir`));
+    assert.equal(result.status, 'up');
+    assert.ok(result.serverTime >= 140 && result.serverTime < 230, `the final page took 150 ms, got ${result.serverTime}`);
+    assert.ok(result.responseTime >= 250, 'while the whole took the 100 ms redirect as well');
+});
+
+test('a TCP check and a failed check have no server time', async () => {
+    const tcp = net.createServer((socket) => socket.end());
+    await new Promise((resolve) => tcp.listen(0, '127.0.0.1', resolve));
+    const port = tcp.address().port;
+    assert.equal((await checkServerStatus({ url: `127.0.0.1:${port}`, type: 'tcp', monitoring: {} })).serverTime, null);
+
+    await new Promise((resolve) => tcp.close(resolve));
+    const down = await checkServerStatus({ url: `127.0.0.1:${port}`, type: 'tcp', monitoring: {} });
+    assert.equal(down.status, 'down');
+    assert.equal(down.serverTime, null);
+});
+
+test('it is saved with the check, and on the server, and cleared when the server is not up', () => {
+    assert.equal(checkExtras({ serverTime: 25.4 }).serverTime, 25);
+    assert.equal(checkExtras({ serverTime: 0 }).serverTime, 0, 'zero is a reading');
+    for (const none of [null, undefined, -1, 'x', NaN]) assert.equal('serverTime' in checkExtras({ serverTime: none }), false, String(none));
+
+    const NOW = new Date('2026-10-25T10:00:00Z');
+    const up = planCheckUpdate({ server: { _id: 's1', status: 'up', monitoring: { frequency: 5 } }, checkResult: { status: 'up', responseTime: 735, serverTime: 25, error: null, slow: false, failure: null }, now: NOW });
+    assert.equal(up.$set.serverTime, 25);
+    const down = planCheckUpdate({ server: { _id: 's1', status: 'up', monitoring: { frequency: 5 } }, checkResult: { status: 'down', responseTime: null, serverTime: null, error: 'x', slow: false, failure: { kind: 'other' } }, now: NOW });
+    assert.equal(down.$set.serverTime, null);
+    const older = planCheckUpdate({ server: { _id: 's1', status: 'up', monitoring: { frequency: 5 } }, checkResult: { status: 'up', responseTime: 100, error: null, slow: false, failure: null }, now: NOW });
+    assert.equal(older.$set.serverTime, null, 'a result without it clears the old one rather than keeping a stale reading');
+});
+
+test('a stored check and a server accept it', () => {
+    const id = new mongoose.Types.ObjectId();
+    const check = new ServerCheck({ serverId: id, status: 'up', responseTime: 735, serverTime: 25 });
+    assert.equal(check.validateSync(), undefined);
+    assert.equal(check.toObject().serverTime, 25);
+    assert.equal(new ServerCheck({ serverId: id, status: 'up' }).toObject().serverTime, undefined);
+    assert.equal(new Server({ name: 'a', url: 'a.com', uploadedBy: id }).serverTime, null);
 });
 
 // ── what is stored, shown and said ──

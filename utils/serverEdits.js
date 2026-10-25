@@ -33,6 +33,7 @@ export const addressChangeUpdates = () => ({
     error: null,
     failureKind: null,
     responseTime: null,
+    serverTime: null,
     slowAlerted: false,
     slowStreak: 0,
     fastStreak: 0,

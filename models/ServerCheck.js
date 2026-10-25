@@ -27,6 +27,9 @@ const serverCheckSchema = new mongoose.Schema({
     // invalid, other), and the HTTP status the server answered with, when it did. Older rows have neither.
     failureKind: String,
     statusCode: Number,
+    // How much of responseTime was the server's own time (time to first byte minus the connect: utils/timings.js).
+    // The rest is the network's. Only HTTP checks that answered have it; older rows do not.
+    serverTime: Number,
     // Where the response time went, in ms (utils/requestTiming.js). Only successful checks have it; a TCP check has
     // dns and connect only. Older rows have none.
     timings: {

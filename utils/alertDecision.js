@@ -114,6 +114,7 @@ export const planCheckUpdate = ({ server, checkResult, checkType = 'automated', 
     const $set = {
         status: checkResult.status,
         responseTime: checkResult.responseTime,
+        serverTime: Number.isFinite(checkResult.serverTime) ? Math.round(checkResult.serverTime) : null,
         error: checkResult.error,
         failureKind: checkResult.failure?.kind ?? null,
         lastChecked: now

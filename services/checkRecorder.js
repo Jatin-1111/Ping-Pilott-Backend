@@ -59,6 +59,7 @@ export async function applyCheckResult(server, checkResult, { checkType = 'autom
         userId: server.uploadedBy,
         status: checkResult.status || 'unknown',
         latency: checkResult.responseTime,
+        serverTime: Number.isFinite(checkResult.serverTime) ? Math.round(checkResult.serverTime) : null,
         error: checkResult.error,
         lastChecked: now
     }));

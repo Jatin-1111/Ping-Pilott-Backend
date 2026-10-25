@@ -179,6 +179,12 @@ const serverSchema = new mongoose.Schema({
         type: Number,
         default: null
     },
+    // The part of responseTime that was the server's own time; the rest, responseTime - serverTime, was the network's
+    // (utils/timings.js). null when it cannot be told (a TCP check, a failed check, a check from before this existed).
+    serverTime: {
+        type: Number,
+        default: null
+    },
     error: {
         type: String,
         default: null
