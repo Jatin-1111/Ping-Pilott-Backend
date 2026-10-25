@@ -11,6 +11,7 @@ import { cleanTimings } from '../utils/timings.js';
 import { cleanFlap } from '../utils/flapDamping.js';
 import { cleanCert } from '../utils/certExpiry.js';
 import { diagnose } from '../utils/diagnosis.js';
+import { chatRequest } from '../utils/chatWebhook.js';
 
 // Webhooks go to addresses users typed in, so they get the same private-network protection as checks,
 // and redirects are not followed.
@@ -57,6 +58,17 @@ const sendWebhookAlert = async (server, alertType, payload) => {
     if (!webhookUrl) return;
 
     logger.info(`Sending webhook for ${server.name} (${server._id}) to ${webhookLabel(webhookUrl)}`);
+
+    // Slack, Discord and Telegram addresses get that app's own message instead of the JSON below
+    const chat = chatRequest(alertType, server, payload, webhookUrl);
+    if (chat) {
+        await assertPublicHost(chat.url);
+        await webhookClient.post(chat.url, chat.body, {
+            headers: { 'Content-Type': 'application/json', 'User-Agent': 'PingPilott-Webhook-Bot/1.0' }
+        });
+        logger.info(`Chat alert sent successfully for ${server.name}`);
+        return;
+    }
 
     await assertPublicHost(webhookUrl);
 
