@@ -28,6 +28,7 @@ import supportRoutes from './routes/supportRoutes.js';
 import incidentRoutes from './routes/incidentRoutes.js';
 import alertRoutes from './routes/alertRoutes.js';
 import appRoutes from './routes/appRoutes.js';
+import statusPageRoutes, { publicStatusRouter } from './routes/statusPageRoutes.js';
 
 import { initCronJobs, getSchedulerStatus, getPipelineState } from './tasks/index.js';
 import { withTimeout } from './utils/timeout.js';
@@ -207,6 +208,8 @@ app.use('/api/servers', serverRoutes);
 app.use('/api/incidents', incidentRoutes);
 app.use('/api/alerts', alertRoutes);
 app.use('/api/app', appRoutes);
+app.use('/api/status-pages', statusPageRoutes);
+app.use('/api/public', publicStatusRouter);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/analytics', adminAnalyticsRoutes);

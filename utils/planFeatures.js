@@ -54,4 +54,22 @@ export function planFeatures(plan = 'free') {
     return { ...(FEATURES[tier] || FEATURES.free) };
 }
 
-export default { planFeatures };
+// Public status pages: how many a plan can have, and whether its pages carry the "Powered by Ping Pilott" footer.
+// Kept apart from FEATURES because these are looked up when needed and are not stored on the user.
+const STATUS_PAGES = {
+    free: { pages: 1, branded: true },
+    starter: { pages: 1, branded: true },
+    pro: { pages: 3, branded: false },
+    business: { pages: 10, branded: false }
+};
+
+/**
+ * @param {string} [plan]
+ * @returns {{ pages: number, branded: boolean }}  an unknown plan is treated as free
+ */
+export function statusPageAllowance(plan = 'free') {
+    const tier = String(plan).split('_')[0];
+    return { ...(STATUS_PAGES[tier] || STATUS_PAGES.free) };
+}
+
+export default { planFeatures, statusPageAllowance };

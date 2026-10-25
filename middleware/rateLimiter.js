@@ -101,3 +101,14 @@ export default {
     createUserRateLimiter,
     createRateLimiter
 };
+/**
+ * Public status pages. The web app's server fetches these on behalf of every visitor, so the requests of many people
+ * arrive from one address: the limit is per address and page, and high. Caching (a minute, in the handler and in the web
+ * app) is what keeps the load down; this only stops a flood against one page.
+ */
+export const publicStatusLimiter = createRateLimiter({
+    windowMs: 60 * 1000,
+    max: parseInt(process.env.PUBLIC_STATUS_RATE_LIMIT_MAX, 10) || 600,
+    keyGenerator: (req) => `${req.ip}:${String(req.params?.slug || '').toLowerCase()}`,
+    message: tooMany('Too many requests, please try again in a minute')
+});
