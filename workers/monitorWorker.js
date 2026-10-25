@@ -9,6 +9,7 @@ import logger from '../utils/logger.js';
 import { throttled, suppressedNote } from '../utils/logThrottle.js';
 import { startWorkerHeartbeat, createCheckCompletionRecorder } from '../utils/workerHealth.js';
 import { egressProbe } from '../services/egressProbe.js';
+import { describeThreadPool } from '../utils/threadPool.js';
 import { EGRESS_DOWN_KEY } from '../utils/healthKeys.js';
 import mongoose from 'mongoose';
 
@@ -165,3 +166,8 @@ if (!process.env.PP_WORKERS_EMBEDDED) {
 }
 
 logger.info(`🚀 Monitor Worker started - listening on queue: ${QUEUE_NAME}`);
+
+// Checks resolve hostnames on libuv's thread pool; say whether it is big enough (see utils/threadPool.js)
+const threadPool = describeThreadPool();
+if (threadPool.ok) logger.info(threadPool.message);
+else logger.warn(threadPool.message);

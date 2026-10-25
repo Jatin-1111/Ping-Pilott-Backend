@@ -91,8 +91,15 @@ export const safeLookup = (hostname, options, callback) => {
 /**
  * Throws PrivateTargetError if `target` is, or resolves to, a private address.
  * A name that does not resolve at all is not rejected here: the real check will report it as down.
+ *
+ * `resolve: false` skips the DNS lookup for a name and checks only what needs no lookup (IP literals, and names such as
+ * localhost). Checks use it: the connection itself resolves the name through `safeLookup`, which refuses a private
+ * answer, so a lookup here would be a second one for every check on a thread pool shared with every other lookup.
+ * Saving an address keeps the default, so the user gets the clear message at once.
+ * @param {string} target
+ * @param {{ resolve?: boolean, lookup?: Function }} [options]  `lookup` is replaceable in tests
  */
-export const assertPublicHost = async (target) => {
+export const assertPublicHost = async (target, { resolve = true, lookup = dns.promises.lookup } = {}) => {
     if (allowPrivateTargets()) return;
     const host = hostFromTarget(target);
     if (!host) return;
@@ -104,8 +111,9 @@ export const assertPublicHost = async (target) => {
     if (host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.internal') || host.endsWith('.local')) {
         throw new PrivateTargetError(host);
     }
+    if (!resolve) return;
     try {
-        const addresses = await dns.promises.lookup(host, { all: true });
+        const addresses = await lookup(host, { all: true });
         if (addresses.some((a) => isBlockedAddress(a.address))) throw new PrivateTargetError(host);
     } catch (err) {
         if (err instanceof PrivateTargetError) throw err;

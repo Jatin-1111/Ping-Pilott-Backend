@@ -142,8 +142,8 @@ export const checkTcpServer = async (url) => {
     if (!host || !Number.isInteger(port) || port < 1 || port > 65535) {
         throw new Error('Invalid address (expected host:port)');
     }
-    // IP literals skip DNS, so they need the explicit check; hostnames are covered by `lookup` below
-    await assertPublicHost(host);
+    // IP literals skip DNS, so they need the explicit check; hostnames are covered by `lookup` below (one lookup per check)
+    await assertPublicHost(host, { resolve: false });
 
     return new Promise((resolve, reject) => {
         const startedAt = performance.now();
@@ -206,8 +206,8 @@ export const checkHttpServer = async (url) => {
     const hasScheme = /^https?:\/\//i.test(url);
     const primary = hasScheme ? url : `https://${url}`;
 
-    // IP literals skip DNS, so they need the explicit check; hostnames are covered by the agent's `lookup`
-    await assertPublicHost(primary);
+    // IP literals skip DNS, so they need the explicit check; hostnames are covered by the agent's `lookup` (one lookup per check)
+    await assertPublicHost(primary, { resolve: false });
 
     try {
         return await attempt(primary);

@@ -1,3 +1,7 @@
+// Hostnames are resolved on libuv's thread pool (4 threads by default). Checks run 50 at a time, and a lookup for a dead
+// name holds a thread until the resolver gives up, so a bigger pool keeps healthy lookups from waiting behind it.
+const threadPool = { UV_THREADPOOL_SIZE: "16" };
+
 module.exports = {
     apps: [
         {
@@ -10,10 +14,12 @@ module.exports = {
             env: {
                 NODE_ENV: "development",
                 RUN_WORKERS: "false", // the worker apps below do the checking and alerting
+                ...threadPool,
             },
             env_production: {
                 NODE_ENV: "production",
                 RUN_WORKERS: "false",
+                ...threadPool,
             }
         },
         {
@@ -25,9 +31,11 @@ module.exports = {
             max_memory_restart: '1G',
             env: {
                 NODE_ENV: "development",
+                ...threadPool,
             },
             env_production: {
                 NODE_ENV: "production",
+                ...threadPool,
             }
         },
         {
