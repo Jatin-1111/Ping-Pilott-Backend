@@ -34,7 +34,10 @@ const recordFeed = async (pending, server) => {
         type: pending.alertType,
         serverName: server.name,
         serverUrl: maskCredentials(server.url),
-        message: buildAlertMessage(pending.alertType, checkResult, server)
+        message: buildAlertMessage(pending.alertType, checkResult, server),
+        // Only a down alert has a failure to explain
+        ...(pending.alertType === 'server_down' && checkResult.failureKind ? { failureKind: checkResult.failureKind } : {}),
+        ...(pending.alertType === 'server_down' && Number.isInteger(checkResult.statusCode) ? { statusCode: checkResult.statusCode } : {})
     });
 
     // The API process owns the sockets, so hand the alert over through Redis

@@ -4,6 +4,7 @@
 
 import { describeDominantPhase } from './timings.js';
 import { describeFlap } from './flapDamping.js';
+import { diagnose } from './diagnosis.js';
 
 export const DEFAULT_LIMIT = 50;
 export const MAX_LIMIT = 100;
@@ -50,8 +51,19 @@ export function buildAlertMessage(type, checkResult = {}, server = {}) {
 
 const iso = (date) => (date ? new Date(date).toISOString() : null);
 
+/**
+ * A down alert in plain words (utils/diagnosis.js), or null. A row saved before the failure kind was kept has only its
+ * message; when that starts "HTTP 502" the failure is read from it, anything else says nothing.
+ */
+const diagnosisOf = (doc) => {
+    if (doc.type !== 'server_down') return null;
+    const kind = doc.failureKind || (/^HTTP \d{3}\b/.test(doc.message || '') ? 'http' : null);
+    return diagnose({ kind, statusCode: doc.statusCode, error: doc.message });
+};
+
 /** The shape the app reads, both from GET /api/alerts and from the `alert:new` socket event */
 export function toAlertItem(doc) {
+    const diagnosis = diagnosisOf(doc);
     return {
         id: String(doc._id),
         serverId: String(doc.serverId),
@@ -61,6 +73,8 @@ export function toAlertItem(doc) {
         message: doc.message || null,
         createdAt: iso(doc.createdAt) || new Date().toISOString(),
         readAt: iso(doc.readAt),
+        // only when there is something to say, so an alert without one is the shape it always was
+        ...(diagnosis ? { diagnosis } : {}),
     };
 }
 

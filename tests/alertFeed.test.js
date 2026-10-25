@@ -65,7 +65,10 @@ test('an alert row becomes the shape the app reads', () => {
         message: 'HTTP 503',
         createdAt: '2026-10-24T09:41:00.000Z',
         readAt: null,
+        // "HTTP 503" is enough to explain a row saved before the failure kind was kept
+        diagnosis: item.diagnosis,
     });
+    assert.match(item.diagnosis.cause, /overloaded, in maintenance mode/);
     // the owner's id is never part of what is sent to a device
     assert.equal('userId' in item, false);
 });
@@ -76,6 +79,30 @@ test('rows written before the snapshot fields existed still render', () => {
     assert.equal(item.serverUrl, null);
     assert.equal(item.message, null);
     assert.equal(item.readAt, null);
+});
+
+test('a down alert carries its diagnosis, from the stored kind first and the message as a fallback', () => {
+    const base = { _id: ID_A, serverId: ID_B, type: 'server_down', createdAt: new Date('2026-10-24T09:41:00Z') };
+
+    const stored = toAlertItem({ ...base, message: 'Connection refused', failureKind: 'refused' });
+    assert.match(stored.diagnosis.title, /Nothing is accepting connections/);
+
+    const withStatus = toAlertItem({ ...base, message: 'HTTP 502: Bad Gateway', failureKind: 'http', statusCode: 502 });
+    assert.match(withStatus.diagnosis.title, /app behind it is not answering/);
+
+    // a stored kind wins over the wording of the message
+    assert.match(toAlertItem({ ...base, message: 'something', failureKind: 'dns' }).diagnosis.title, /domain name/);
+
+    // the flap note appended to a message does not hide the status at its start
+    assert.match(toAlertItem({ ...base, message: 'HTTP 504: Gateway Timeout It has been up and down a lot.' }).diagnosis.title, /took too long/);
+});
+
+test('an alert with nothing to explain has no diagnosis key at all', () => {
+    const base = { _id: ID_A, serverId: ID_B, createdAt: new Date('2026-10-24T09:41:00Z') };
+    assert.equal('diagnosis' in toAlertItem({ ...base, type: 'server_down', message: 'Something odd' }), false, 'no kind, no HTTP text');
+    assert.equal('diagnosis' in toAlertItem({ ...base, type: 'server_down', message: 'x', failureKind: 'other' }), false);
+    assert.equal('diagnosis' in toAlertItem({ ...base, type: 'server_recovery', message: 'HTTP 502', failureKind: 'http' }), false, 'only a down alert has a failure');
+    assert.equal('diagnosis' in toAlertItem({ ...base, type: 'slow_response', message: 'Responded in 2310 ms.' }), false);
 });
 
 // ---- query parsing ------------------------------------------------------------------------------------------

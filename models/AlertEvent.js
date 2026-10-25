@@ -36,6 +36,11 @@ const alertEventSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    // Why a down alert's check failed (utils/failures.js) and the HTTP status the server answered with, when it did.
+    // The feed turns them into the plain-words diagnosis when it is read (utils/diagnosis.js), so a change to the wording
+    // reaches old alerts too. Rows written before these existed have neither.
+    failureKind: String,
+    statusCode: Number,
     // null until the user has seen the alert in the app
     readAt: {
         type: Date,
