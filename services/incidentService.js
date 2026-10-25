@@ -36,6 +36,7 @@ export async function recordStatusChange(server, previous, checkResult, now = ne
                 userId: server.uploadedBy,
                 startedAt: now,
                 error: trimError(checkResult.error),
+                failureKind: checkResult.failure?.kind ?? null,
                 open: true
             });
         } else {
@@ -56,7 +57,7 @@ export async function recordStatusChange(server, previous, checkResult, now = ne
  */
 export async function reconcileOpenIncidents() {
     try {
-        const down = await Server.find({ status: 'down' }).select('_id uploadedBy lastStatusChange error').lean();
+        const down = await Server.find({ status: 'down' }).select('_id uploadedBy lastStatusChange error failureKind').lean();
         const downIds = down.map((s) => s._id);
 
         const open = downIds.length
@@ -73,6 +74,7 @@ export async function reconcileOpenIncidents() {
                     userId: server.uploadedBy,
                     startedAt: server.lastStatusChange || new Date(),
                     error: trimError(server.error),
+                    failureKind: server.failureKind ?? null,
                     open: true
                 });
                 opened += 1;

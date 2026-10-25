@@ -140,7 +140,7 @@ test('a scheduled slow check writes the counters, and the alert that opens it is
     assert.equal(plan.alertType, 'slow_response');
     assert.equal(plan.slowStreak, 3);
     assert.deepEqual(plan.$set, {
-        status: 'up', responseTime: 2000, error: 'Slow response', lastChecked: NOW,
+        status: 'up', responseTime: 2000, error: 'Slow response', failureKind: null, lastChecked: NOW,
         slowAlerted: true, slowStreak: 3, fastStreak: 0
     });
     assert.deepEqual(plan.filter, { _id: 's1', slowAlerted: { $ne: true } }, 'two racing checks cannot both open the alert');

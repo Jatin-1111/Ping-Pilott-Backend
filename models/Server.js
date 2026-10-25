@@ -183,6 +183,11 @@ const serverSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    // The kind of failure behind `error` (utils/failures.js); null while the server is up
+    failureKind: {
+        type: String,
+        default: null
+    },
     monitoring: {
         type: monitoringSchema,
         default: () => ({})

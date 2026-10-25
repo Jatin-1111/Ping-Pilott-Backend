@@ -9,6 +9,7 @@ import mongoose from 'mongoose';
 import { createServerSchema, updateServerSchema, formatZodIssues } from '../utils/validations.js';
 import { assertPublicHost } from '../utils/ssrfGuard.js';
 import { cleanTimings } from '../utils/timings.js';
+import { checkExtras } from '../utils/checkRecord.js';
 import { applyCheckResult } from '../services/checkRecorder.js';
 import { invalidateServerCache } from '../utils/cacheManager.js';
 import { checkPlanLimits } from '../services/planLimits.js';
@@ -213,7 +214,7 @@ export const getServerById = asyncHandler(async (req, res) => {
                 ServerCheck.find({ serverId: new mongoose.Types.ObjectId(serverId) })
                     .sort({ timestamp: -1 })
                     .limit(10)
-                    .select('status responseTime timestamp error timings')
+                    .select('status responseTime timestamp error failureKind statusCode timings')
                     .lean()
                     .maxTimeMS(PERFORMANCE_CONFIG.QUERY_TIMEOUT)
                 : Promise.resolve([])
@@ -896,7 +897,7 @@ export const checkServer = asyncHandler(async (req, res) => {
             status: checkResult.status,
             responseTime: checkResult.responseTime,
             error: checkResult.error,
-            ...(cleanTimings(checkResult.timings) && { timings: cleanTimings(checkResult.timings) }),
+            ...checkExtras(checkResult),
             timestamp: now,
             checkType: 'manual'
         });
@@ -1055,6 +1056,7 @@ export const getServerHistory = asyncHandler(async (req, res) => {
                         responseTime: { $avg: { $cond: [{ $eq: ['$status', 'up'] }, '$responseTime', null] } },
                         timestamp: { $max: '$timestamp' },
                         error: { $max: { $cond: [{ $eq: ['$status', 'down'] }, '$error', null] } },
+                        failureKind: { $max: { $cond: [{ $eq: ['$status', 'down'] }, '$failureKind', null] } },
                         count: { $sum: 1 }
                     }
                 },
@@ -1138,6 +1140,9 @@ export const getServerHistory = asyncHandler(async (req, res) => {
             responseTime: Math.round(check.responseTime || 0),
             timestamp: check.timestamp,
             error: check.error,
+            ...(check.failureKind && { failureKind: check.failureKind }),
+            // A bucket of several checks (long periods) has no single status code
+            ...(Number.isInteger(check.statusCode) && { statusCode: check.statusCode }),
             // Only single checks have a breakdown; a bucket of several (long periods) is an average of them
             ...(cleanTimings(check.timings) && { timings: cleanTimings(check.timings) }),
             ...(check.loadSuspect === true && { loadSuspect: true }),
@@ -1532,7 +1537,7 @@ const processServersBatched = async (servers, maxConcurrent, userId) => {
                     status: checkResult.status,
                     responseTime: checkResult.responseTime,
                     error: checkResult.error,
-                    ...(cleanTimings(checkResult.timings) && { timings: cleanTimings(checkResult.timings) }),
+                    ...checkExtras(checkResult),
                     timestamp: now,
                     checkType: 'batch'
                 });

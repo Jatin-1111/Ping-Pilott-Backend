@@ -10,7 +10,7 @@ import { throttled, suppressedNote } from '../utils/logThrottle.js';
 import { startWorkerHeartbeat, createCheckCompletionRecorder } from '../utils/workerHealth.js';
 import { egressProbe } from '../services/egressProbe.js';
 import { describeThreadPool } from '../utils/threadPool.js';
-import { cleanTimings } from '../utils/timings.js';
+import { checkExtras } from '../utils/checkRecord.js';
 import { loadMonitor, formatSummary, loopLagLimitMs } from '../services/loadMonitor.js';
 import { performance } from 'perf_hooks';
 import { EGRESS_DOWN_KEY } from '../utils/healthKeys.js';
@@ -88,15 +88,13 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
         const checkResult = await runCheck(server);
 
         const { now } = await applyCheckResult(server, checkResult, { checkType: 'automated' });
-        const timings = cleanTimings(checkResult.timings); // null (and not stored) for a failed check
 
         await addToBatch({
             serverId: new mongoose.Types.ObjectId(serverId),
             status: checkResult.status,
             responseTime: checkResult.responseTime,
             error: checkResult.error,
-            ...(timings && { timings }),
-            ...(checkResult.loadSuspect && { loadSuspect: true }),
+            ...checkExtras(checkResult), // timings, loadSuspect, failureKind, statusCode: only those that apply
             timestamp: now,
             checkType: 'automated'
         });

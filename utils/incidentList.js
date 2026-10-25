@@ -57,6 +57,7 @@ export function buildIncidentList(rows, servers, { status = 'all', days = DEFAUL
             // an ongoing incident has no final length yet: the page counts it up from startedAt
             durationMs: r.open ? null : Math.max(0, ms(r.endedAt) - ms(r.startedAt)),
             error: r.error || null,
+            failureKind: r.failureKind || null,
         };
     });
 

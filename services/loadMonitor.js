@@ -73,7 +73,8 @@ export function createLoadMonitor({ now = () => performance.now(), source = time
     let lag = null;            // { peek, read, stop }
     let timer = null;
     let buckets = [];          // { endedAt, maxLagMs }: the worst lag in each sampling period
-    let minute = { dns: [], lag: [], checks: 0, setAside: 0 };
+    const newMinute = () => ({ dns: [], lag: [], checks: 0, setAside: 0, failures: {} });
+    let minute = newMinute();
 
     /** Close the current sampling period. Called by the timer; tests call it by hand. */
     const sample = () => {
@@ -121,16 +122,19 @@ export function createLoadMonitor({ now = () => performance.now(), source = time
             const dns = Number(result?.timings?.dns);
             if (result?.timings && Number.isFinite(dns) && dns >= 0) minute.dns.push(dns);
             if (result?.loadSuspect) minute.setAside += 1;
+            const kind = result?.failure?.kind;
+            if (kind) minute.failures[kind] = (minute.failures[kind] || 0) + 1;
         },
 
         /** What happened since the last call, then start a new minute. null when no check finished. */
         summarize() {
             const done = minute;
-            minute = { dns: [], lag: [], checks: 0, setAside: 0 };
+            minute = newMinute();
             if (done.checks === 0) return null;
             return {
                 checks: done.checks,
                 setAside: done.setAside,
+                failures: Object.keys(done.failures).length ? done.failures : null,
                 dns: done.dns.length ? { p50: percentile(done.dns, 50), p95: percentile(done.dns, 95), max: Math.max(...done.dns) } : null,
                 lag: done.lag.length ? { p95: Math.round(percentile(done.lag, 95)), max: Math.round(Math.max(...done.lag)) } : null
             };
@@ -138,12 +142,18 @@ export function createLoadMonitor({ now = () => performance.now(), source = time
     };
 }
 
-/** "Checks, last minute: 118 (DNS p50 3 ms, p95 41 ms, max 220 ms; event-loop lag p95 4 ms, max 12 ms; 0 slow ones set aside)" */
+/**
+ * "Checks, last minute: 118 (DNS p50 3 ms, p95 41 ms, max 220 ms; event-loop lag p95 4 ms, max 12 ms; 0 slow ones set
+ * aside while the loop was busy; failed: timeout 5, dns 2)". The failures part is only there when something failed.
+ */
 export const formatSummary = (summary) => {
     if (!summary) return null;
     const dns = summary.dns ? `DNS p50 ${summary.dns.p50} ms, p95 ${summary.dns.p95} ms, max ${summary.dns.max} ms` : 'no DNS times';
     const lag = summary.lag ? `event-loop lag p95 ${summary.lag.p95} ms, max ${summary.lag.max} ms` : 'no loop lag samples';
-    return `Checks, last minute: ${summary.checks} (${dns}; ${lag}; ${summary.setAside} slow ${summary.setAside === 1 ? 'one' : 'ones'} set aside while the loop was busy)`;
+    const failed = summary.failures
+        ? `; failed: ${Object.entries(summary.failures).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([kind, n]) => `${kind} ${n}`).join(', ')}`
+        : '';
+    return `Checks, last minute: ${summary.checks} (${dns}; ${lag}; ${summary.setAside} slow ${summary.setAside === 1 ? 'one' : 'ones'} set aside while the loop was busy${failed})`;
 };
 
 export const loadMonitor = createLoadMonitor();

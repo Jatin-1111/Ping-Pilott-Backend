@@ -26,6 +26,9 @@ const pick = (checkResult = {}) => ({
     slow: Boolean(checkResult.slow),
     // Only a slow alert has it: how many checks in a row were over the threshold
     ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {}),
+    // Why a down alert fired (utils/failures.js), for the webhook payload
+    ...(checkResult.failure?.kind ? { failureKind: checkResult.failure.kind } : {}),
+    ...(Number.isInteger(checkResult.statusCode) ? { statusCode: checkResult.statusCode } : {}),
     // Where the time went, so a slow alert can say which part was slow
     ...(cleanTimings(checkResult.timings) ? { timings: cleanTimings(checkResult.timings) } : {})
 });

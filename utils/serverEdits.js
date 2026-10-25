@@ -31,6 +31,7 @@ export const normalizeUrl = (url) => {
 export const addressChangeUpdates = () => ({
     status: 'unknown',
     error: null,
+    failureKind: null,
     responseTime: null,
     slowAlerted: false,
     slowStreak: 0,

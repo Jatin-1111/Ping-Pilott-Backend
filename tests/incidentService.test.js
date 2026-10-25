@@ -47,6 +47,7 @@ test('going down opens an incident for the owner, starting now, with the error',
         userId: 'user1',
         startedAt: NOW,
         error: 'Request timed out',
+        failureKind: null,
         open: true,
     });
     assert.equal(model.calls.updateOne.length, 0);

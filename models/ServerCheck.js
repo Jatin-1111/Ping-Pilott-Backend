@@ -23,6 +23,10 @@ const serverCheckSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    // Why a failed check failed (utils/failures.js: dns, refused, reset, timeout, unreachable, tls, http, blocked,
+    // invalid, other), and the HTTP status the server answered with, when it did. Older rows have neither.
+    failureKind: String,
+    statusCode: Number,
     // Where the response time went, in ms (utils/requestTiming.js). Only successful checks have it; a TCP check has
     // dns and connect only. Older rows have none.
     timings: {

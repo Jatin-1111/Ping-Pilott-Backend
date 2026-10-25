@@ -106,6 +106,7 @@ export const planCheckUpdate = ({ server, checkResult, checkType = 'automated', 
         status: checkResult.status,
         responseTime: checkResult.responseTime,
         error: checkResult.error,
+        failureKind: checkResult.failure?.kind ?? null,
         lastChecked: now
     };
     if (decision.touchStreak) {

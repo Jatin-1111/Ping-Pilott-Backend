@@ -31,6 +31,11 @@ const incidentSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    // and its kind (utils/failures.js), so incidents can be told apart without reading the text
+    failureKind: {
+        type: String,
+        default: null
+    },
     // true only while the incident is ongoing. A flag rather than "endedAt is null" because a unique partial
     // index can match on it, which guarantees a server never has two ongoing incidents.
     open: {

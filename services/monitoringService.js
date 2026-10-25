@@ -4,12 +4,12 @@ import net from 'net';
 import { performance } from 'perf_hooks';
 import logger from '../utils/logger.js';
 import { TimedHttpAgent, TimedHttpsAgent, timedRequest, connectTimings } from '../utils/requestTiming.js';
+import { classifyFailure, failureOf, HttpStatusError, InvalidAddressError } from '../utils/failures.js';
 import {
     safeLookup,
     assertPublicHost,
     blockPrivateRedirect,
     hostFromTarget,
-    PrivateTargetError,
     allowPrivateTargets
 } from '../utils/ssrfGuard.js';
 
@@ -54,23 +54,6 @@ const BROWSER_HEADERS = {
     'Accept-Language': 'en-US,en;q=0.5'
 };
 
-/** Turn low-level errors into a short message a user can act on. */
-const describeError = (err) => {
-    if (err instanceof PrivateTargetError || err?.code === 'PRIVATE_TARGET') return err.message;
-    switch (err?.code) {
-        case 'ECONNREFUSED': return 'Connection refused';
-        case 'ECONNRESET': return 'Connection reset by the server';
-        case 'ENOTFOUND':
-        case 'EAI_AGAIN': return 'DNS lookup failed (host not found)';
-        case 'ETIMEDOUT':
-        case 'ECONNABORTED':
-        case 'ERR_CANCELED': return `Timed out after ${HTTP_TIMEOUT / 1000}s`;
-        case 'EHOSTUNREACH':
-        case 'ENETUNREACH': return 'Host unreachable';
-        default: return err?.message || 'Request failed';
-    }
-};
-
 /** Default ports for connection-style addresses such as postgres://host. */
 const SCHEME_PORTS = { postgres: 5432, postgresql: 5432, mysql: 3306, mongodb: 27017, redis: 6379, http: 80, https: 443 };
 
@@ -90,8 +73,10 @@ const parseTcpTarget = (target) => {
 /**
  * Check the status of a server
  * @param {Object} server - Server to check
- * @returns {Object} { status, responseTime, error, slow, timings }
+ * @returns {Object} { status, responseTime, error, slow, timings, statusCode, failure }
  *   responseTime is only set for a successful check; a failure has no meaningful response time.
+ *   failure is { kind, statusCode? } for a failed check (kind: see utils/failures.js) and null otherwise; `error` is
+ *   still the sentence for the user. statusCode is the HTTP status the server answered with, when it answered.
  *   timings says where it went: { dns, connect, tls, ttfb, redirects } in ms (a TCP check has dns and connect only).
  *   It is the time the request that succeeded took: DNS, connect, TLS and the wait for the response headers (and any
  *   redirects). The address safety check before it, and a HEAD that failed before the GET that worked, are not in it.
@@ -109,12 +94,15 @@ export const checkServerStatus = async (server) => {
             measured = await checkHttpServer(server.url);
         }
     } catch (err) {
+        const classified = classifyFailure(err, { timeoutSeconds: HTTP_TIMEOUT / 1000 });
         return {
             status: 'down',
             responseTime: null,
-            error: describeError(err),
+            error: classified.message,
             slow: false,
-            timings: null
+            timings: null,
+            statusCode: classified.statusCode,
+            failure: failureOf(classified)
         };
     }
 
@@ -127,7 +115,9 @@ export const checkServerStatus = async (server) => {
         responseTime,
         error: slow ? `Slow response: ${responseTime}ms exceeds threshold of ${responseThreshold}ms` : null,
         slow,
-        timings: measured.timings ?? null
+        timings: measured.timings ?? null,
+        statusCode: measured.status ?? null,
+        failure: null
     };
 };
 
@@ -140,7 +130,7 @@ export const checkTcpServer = async (url) => {
     const { host, port } = parseTcpTarget(url);
 
     if (!host || !Number.isInteger(port) || port < 1 || port > 65535) {
-        throw new Error('Invalid address (expected host:port)');
+        throw new InvalidAddressError();
     }
     // IP literals skip DNS, so they need the explicit check; hostnames are covered by `lookup` below (one lookup per check)
     await assertPublicHost(host, { resolve: false });
@@ -195,7 +185,7 @@ const attempt = async (targetUrl) => {
         return { status: get.response.status, method: 'GET', ms: get.ms, timings: get.timings };
     }
 
-    throw new Error(`HTTP ${get.response.status}${get.response.statusText ? `: ${get.response.statusText}` : ''}`);
+    throw new HttpStatusError(get.response.status, get.response.statusText);
 };
 
 /**

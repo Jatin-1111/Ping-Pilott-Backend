@@ -140,6 +140,8 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
                     newStatus,
                     responseTime: checkResult.responseTime,
                     error: checkResult.error,
+                    ...(checkResult.failureKind ? { failureKind: checkResult.failureKind } : {}),
+                    ...(Number.isInteger(checkResult.statusCode) ? { statusCode: checkResult.statusCode } : {}),
                     ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {}),
                     // A slow alert says where the time went; other alerts keep the payload they always had
                     ...(alertType === 'slow_response' && cleanTimings(checkResult.timings) ? { timings: cleanTimings(checkResult.timings) } : {})
