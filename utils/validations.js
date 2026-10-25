@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { isValidTimezone } from './schedule.js';
 import { containsCredentials } from './address.js';
 import { parseStatusSpec } from './statusSpec.js';
+import { KEYWORD_MODES, MAX_KEYWORD_LENGTH } from './keyword.js';
 
 const TIME = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -20,6 +21,11 @@ const monitoringShape = z.object({
         const parsed = parseStatusSpec(value);
         if (!parsed.ok) ctx.addIssue({ code: 'custom', message: parsed.error });
     }).optional(),
+    // The page must contain this text (mode 'present', the default) or must not ('absent'). null takes the check away.
+    keyword: z.object({
+        text: z.string().trim().min(1, 'The text to look for is required').max(MAX_KEYWORD_LENGTH, `Use at most ${MAX_KEYWORD_LENGTH} characters`),
+        mode: z.enum(KEYWORD_MODES).optional()
+    }).nullable().optional(),
     alerts: z.object({
         enabled: z.boolean().optional(),
         email: z.boolean().optional(),
@@ -49,6 +55,13 @@ const serverShape = {
     contactPhones: z.array(z.string().regex(/^\+?[\d\s-]{10,20}$/, "Invalid phone number"))
 };
 
+// A keyword check reads a web page, so it makes no sense for a plain TCP or database address
+const noKeywordOnSockets = (data, ctx) => {
+    if (data.monitoring?.keyword && (data.type === 'tcp' || data.type === 'database')) {
+        ctx.addIssue({ code: 'custom', path: ['monitoring', 'keyword'], message: 'A keyword check is for websites and APIs.' });
+    }
+};
+
 // Create: defaults apply here
 export const createServerSchema = z.object({
     ...serverShape,
@@ -59,10 +72,10 @@ export const createServerSchema = z.object({
     monitoring: serverShape.monitoring.optional().default({}),
     contactEmails: serverShape.contactEmails.optional().default([]),
     contactPhones: serverShape.contactPhones.optional().default([])
-});
+}).superRefine(noKeywordOnSockets);
 
 // Update: every field optional, no defaults, so only what was sent is validated and changed
-export const updateServerSchema = z.object(serverShape).partial();
+export const updateServerSchema = z.object(serverShape).partial().superRefine(noKeywordOnSockets);
 
 /** Zod 4 exposes problems as `issues` (there is no `errors`). */
 export const formatZodIssues = (error) =>

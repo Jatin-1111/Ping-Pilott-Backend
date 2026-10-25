@@ -4,7 +4,7 @@
 // numbers say "timeouts" or "DNS" instead of matching on text, and it is what tells a flaky network apart from a
 // refusing server when a pattern is worth looking at.
 
-export const FAILURE_KINDS = ['dns', 'refused', 'reset', 'timeout', 'unreachable', 'tls', 'http', 'blocked', 'invalid', 'other'];
+export const FAILURE_KINDS = ['dns', 'refused', 'reset', 'timeout', 'unreachable', 'tls', 'http', 'content', 'blocked', 'invalid', 'other'];
 
 // A login wall, a bot filter and a rate limit all answer while the site is alive. Say so, and say where to change it.
 const ANSWERED_HINT_CODES = new Set([401, 403, 429]);
@@ -18,6 +18,16 @@ export class HttpStatusError extends Error {
         super(`HTTP ${statusCode}${statusText ? `: ${statusText}` : ''}${hint}`);
         this.name = 'HttpStatusError';
         this.failureKind = 'http';
+        this.statusCode = statusCode;
+    }
+}
+
+/** The server answered with an accepted status, but the page failed the keyword check (utils/keyword.js) */
+export class ContentError extends Error {
+    constructor(message, statusCode) {
+        super(message);
+        this.name = 'ContentError';
+        this.failureKind = 'content';
         this.statusCode = statusCode;
     }
 }
@@ -49,6 +59,7 @@ const isTlsCode = (code) => typeof code === 'string' && (TLS_CODES.has(code) || 
  */
 export function classifyFailure(err, { timeoutSeconds = 10 } = {}) {
     if (err?.failureKind === 'http') return { kind: 'http', message: err.message, statusCode: Number.isInteger(err.statusCode) ? err.statusCode : null };
+    if (err?.failureKind === 'content') return { kind: 'content', message: err.message, statusCode: Number.isInteger(err.statusCode) ? err.statusCode : null };
     if (err?.failureKind === 'invalid') return { kind: 'invalid', message: err.message, statusCode: null };
     if (err?.code === 'PRIVATE_TARGET') return { kind: 'blocked', message: err.message, statusCode: null };
 
@@ -72,4 +83,4 @@ export const failureOf = (classified) => (classified
     ? { kind: classified.kind, ...(classified.statusCode ? { statusCode: classified.statusCode } : {}) }
     : null);
 
-export default { FAILURE_KINDS, HttpStatusError, InvalidAddressError, classifyFailure, failureOf };
+export default { FAILURE_KINDS, HttpStatusError, ContentError, InvalidAddressError, classifyFailure, failureOf };

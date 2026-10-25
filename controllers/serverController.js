@@ -506,7 +506,8 @@ export const updateServer = asyncHandler(async (req, res) => {
         const server = await Server.findById(serverId, {
             uploadedBy: 1,
             name: 1,
-            url: 1
+            url: 1,
+            type: 1 // a keyword cannot be added to a TCP or database server (see below)
         }).lean();
 
         if (!server) {
@@ -553,6 +554,16 @@ export const updateServer = asyncHandler(async (req, res) => {
         }
 
         const validatedData = validationResult.data;
+
+        // The schema can only see a type that is sent with it; a server that already is a TCP or database one cannot get a keyword
+        const effectiveType = validatedData.type || server.type;
+        if (validatedData.monitoring?.keyword && (effectiveType === 'tcp' || effectiveType === 'database')) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'A keyword check is for websites and APIs.',
+                code: 'KEYWORD_NOT_SUPPORTED'
+            });
+        }
 
         const planError = checkPlanLimits(req.user, validatedData.monitoring);
         if (planError) {

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { isValidTimezone } from '../utils/schedule.js';
 import { isValidStatusSpec } from '../utils/statusSpec.js';
+import { KEYWORD_MODES, MAX_KEYWORD_LENGTH } from '../utils/keyword.js';
 
 // Define a schema for the time window
 const timeWindowSchema = new mongoose.Schema({
@@ -46,6 +47,22 @@ const alertsSchema = new mongoose.Schema({
     }
 }, { _id: false });
 
+// Text a page must contain (or must not): a check that reads the page, for websites and APIs (utils/keyword.js)
+const keywordSchema = new mongoose.Schema({
+    text: {
+        type: String,
+        required: [true, 'The text to look for is required'],
+        trim: true,
+        minlength: [1, 'The text to look for is required'],
+        maxlength: [MAX_KEYWORD_LENGTH, `The text to look for is at most ${MAX_KEYWORD_LENGTH} characters`]
+    },
+    mode: {
+        type: String,
+        enum: KEYWORD_MODES,
+        default: 'present'
+    }
+}, { _id: false });
+
 // Define a schema for monitoring settings
 const monitoringSchema = new mongoose.Schema({
     frequency: {
@@ -84,6 +101,11 @@ const monitoringSchema = new mongoose.Schema({
             validator: (value) => isValidStatusSpec(value),
             message: 'Status codes must look like 200-399,401'
         }
+    },
+    // The page must contain this text (mode 'present') or must not ('absent'). Missing means no such check.
+    keyword: {
+        type: keywordSchema,
+        default: undefined
     }
 }, { _id: false });
 

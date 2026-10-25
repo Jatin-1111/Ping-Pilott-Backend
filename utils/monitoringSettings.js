@@ -4,6 +4,7 @@
 // one place, away from the controller, so a test can send every setting through them and see it come out.
 
 import { normalizeStatusSpec } from './statusSpec.js';
+import { cleanKeyword } from './keyword.js';
 
 /**
  * Build monitoring configuration for a new server
@@ -24,7 +25,8 @@ export const buildMonitoringConfig = (monitoring, userRole, trialEnd) => {
         },
         trialEndsAt: userRole === 'admin' ? null : trialEnd,
         // Only written when set: a server without it is checked the way every server always was
-        ...(monitoring.acceptedStatus ? { acceptedStatus: normalizeStatusSpec(monitoring.acceptedStatus) } : {})
+        ...(monitoring.acceptedStatus ? { acceptedStatus: normalizeStatusSpec(monitoring.acceptedStatus) } : {}),
+        ...(cleanKeyword(monitoring.keyword) ? { keyword: cleanKeyword(monitoring.keyword) } : {})
     };
 };
 
@@ -51,6 +53,11 @@ export const buildMonitoringUpdates = (monitoring, validated = monitoring) => {
     // Which status codes count as up. '' puts the server back on the default.
     if (validated?.acceptedStatus !== undefined) {
         updates['monitoring.acceptedStatus'] = normalizeStatusSpec(validated.acceptedStatus);
+    }
+
+    // The text the page must contain (or must not). null takes the check away.
+    if (validated?.keyword !== undefined) {
+        updates['monitoring.keyword'] = validated.keyword === null ? null : cleanKeyword(validated.keyword);
     }
 
     // Handle alerts

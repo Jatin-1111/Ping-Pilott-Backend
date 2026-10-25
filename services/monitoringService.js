@@ -4,7 +4,8 @@ import net from 'net';
 import { performance } from 'perf_hooks';
 import logger from '../utils/logger.js';
 import { TimedHttpAgent, TimedHttpsAgent, timedRequest, connectTimings } from '../utils/requestTiming.js';
-import { classifyFailure, failureOf, HttpStatusError, InvalidAddressError } from '../utils/failures.js';
+import { classifyFailure, failureOf, HttpStatusError, ContentError, InvalidAddressError } from '../utils/failures.js';
+import { cleanKeyword, describeKeywordFailure, findInBody } from '../utils/keyword.js';
 import { serverTimeOf } from '../utils/timings.js';
 import { DEFAULT_RANGES, acceptedRanges, statusAccepted } from '../utils/statusSpec.js';
 import {
@@ -96,7 +97,10 @@ export const checkServerStatus = async (server) => {
             measured = await checkTcpServer(server.url);
         } else {
             // Which statuses count as up is the owner's to set; unset means 200 to 399
-            measured = await checkHttpServer(server.url, { accepted: acceptedRanges(server.monitoring?.acceptedStatus) });
+            measured = await checkHttpServer(server.url, {
+                accepted: acceptedRanges(server.monitoring?.acceptedStatus),
+                keyword: cleanKeyword(server.monitoring?.keyword)
+            });
         }
     } catch (err) {
         const classified = classifyFailure(err, { timeoutSeconds: HTTP_TIMEOUT / 1000 });
@@ -170,8 +174,11 @@ export const checkTcpServer = async (url) => {
  * The time reported is the request that answered, not the HEAD that was turned away before it.
  * @returns {Promise<{ status: number, method: 'HEAD'|'GET', ms: number, timings: Object|null }>}
  */
-const attempt = async (targetUrl, { accepted = DEFAULT_RANGES } = {}) => {
+const attempt = async (targetUrl, { accepted = DEFAULT_RANGES, keyword = null, bodyTimeoutMs } = {}) => {
     const headers = { ...BROWSER_HEADERS };
+
+    // A keyword check needs the page itself, so it asks with GET and reads it (HEAD has no page)
+    if (keyword) return attemptWithKeyword(targetUrl, { headers, accepted, keyword, bodyTimeoutMs });
 
     let head = null;
     try {
@@ -196,9 +203,34 @@ const attempt = async (targetUrl, { accepted = DEFAULT_RANGES } = {}) => {
 };
 
 /**
+ * A check that also reads the page (utils/keyword.js). The status has to be an accepted one first; then the page is read,
+ * within a size limit and for as long as the check has left, and must (or must not) contain the text.
+ * The time reported is still the time to the response headers, like every check: reading the page is not part of it.
+ */
+const attemptWithKeyword = async (targetUrl, { headers, accepted, keyword, bodyTimeoutMs }) => {
+    const get = await timedRequest(() => monitoringAxios.get(targetUrl, { headers, responseType: 'stream' }));
+    const stream = get.response.data;
+
+    if (!statusAccepted(get.response.status, accepted)) {
+        stream.destroy();
+        throw new HttpStatusError(get.response.status, get.response.statusText);
+    }
+
+    const budget = bodyTimeoutMs ?? Math.max(1000, HTTP_TIMEOUT - get.ms);
+    const { found } = await findInBody(stream, keyword.text, { timeoutMs: budget });
+    if (keyword.mode === 'absent' ? found : !found) {
+        throw new ContentError(describeKeywordFailure(keyword), get.response.status);
+    }
+    return { status: get.response.status, method: 'GET', ms: get.ms, timings: get.timings };
+};
+
+/**
  * Check an HTTP/HTTPS server
  * @param {String} url - stored address; may or may not include a scheme
- * @param {{ accepted?: number[][] }} [options]  status ranges that count as up (utils/statusSpec.js); 200-399 by default
+ * @param {{ accepted?: number[][], keyword?: { text: string, mode: string }, bodyTimeoutMs?: number }} [options]
+ *   accepted: status ranges that count as up (utils/statusSpec.js), 200-399 by default.
+ *   keyword: text the page must contain (or must not), read within limits (utils/keyword.js).
+ *   bodyTimeoutMs: how long reading the page may take; what is left of the check's time by default (replaceable in tests).
  * @returns {Promise<{ status: number, method: string, ms: number, timings: Object|null }>} Resolves if the server answers with an accepted status, rejects otherwise
  */
 export const checkHttpServer = async (url, options = {}) => {
