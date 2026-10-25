@@ -1,4 +1,4 @@
-﻿// services/monitoringService.js - uptime checks with connection pooling, SSRF protection and honest errors
+// services/monitoringService.js - uptime checks with connection pooling, SSRF protection and honest errors
 import axios from 'axios';
 import net from 'net';
 import { performance } from 'perf_hooks';

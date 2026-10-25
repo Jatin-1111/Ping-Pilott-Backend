@@ -1,4 +1,4 @@
-﻿// utils/requestTiming.js - where the time of one request went: DNS, connect, TLS, waiting for the server
+// utils/requestTiming.js - where the time of one request went: DNS, connect, TLS, waiting for the server
 //
 // The agents note when each socket they create finishes each step. Which request a socket belongs to is carried by an
 // AsyncLocalStorage context, not by anything inside axios: whoever calls `timedRequest` gets back the sockets that were

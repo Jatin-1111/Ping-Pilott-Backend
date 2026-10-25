@@ -1,4 +1,4 @@
-﻿// utils/alertDecision.js - pure rules for what a finished check should tell the user, and what to save about it
+// utils/alertDecision.js - pure rules for what a finished check should tell the user, and what to save about it
 //
 // Down and recovery follow the status. A slow response is judged over several checks, not one: a single slow sample is
 // usually the network, and a site that hovers around its threshold used to send an alert every time it crossed.

@@ -1,4 +1,4 @@
-﻿// services/checkRunner.js - the one way a server is checked, whoever asked
+// services/checkRunner.js - the one way a server is checked, whoever asked
 //
 // The scheduled worker confirmed a first failure before acting on it; the "Check now" button and the batch check did
 // not, so one dropped packet during a manual check flipped the server to down and sent a DOWN email at once. All

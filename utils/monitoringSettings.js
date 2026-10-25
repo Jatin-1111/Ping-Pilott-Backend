@@ -1,4 +1,4 @@
-﻿// utils/monitoringSettings.js - how the monitoring settings a user sends become what is stored
+// utils/monitoringSettings.js - how the monitoring settings a user sends become what is stored
 //
 // Both routes copy the settings field by field, so a setting that is not listed here is silently dropped. They live in
 // one place, away from the controller, so a test can send every setting through them and see it come out.

@@ -1,4 +1,4 @@
-﻿// utils/flapDamping.js - a server that keeps going up and down should not send an email each time
+// utils/flapDamping.js - a server that keeps going up and down should not send an email each time
 //
 // Without this, a flaky site sends DOWN, RECOVERED, DOWN, RECOVERED, and the owner learns to ignore all of it.
 //
