@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { isValidTimezone } from '../utils/schedule.js';
+import { isValidStatusSpec } from '../utils/statusSpec.js';
 
 // Define a schema for the time window
 const timeWindowSchema = new mongoose.Schema({
@@ -73,6 +74,16 @@ const monitoringSchema = new mongoose.Schema({
     trialEndsAt: {
         type: Date,
         default: null
+    },
+    // The HTTP status codes that count as up, e.g. "200-399,401,403" (utils/statusSpec.js). Missing or '' means the
+    // default, 200-399.
+    acceptedStatus: {
+        type: String,
+        trim: true,
+        validate: {
+            validator: (value) => isValidStatusSpec(value),
+            message: 'Status codes must look like 200-399,401'
+        }
     }
 }, { _id: false });
 

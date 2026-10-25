@@ -6,10 +6,16 @@
 
 export const FAILURE_KINDS = ['dns', 'refused', 'reset', 'timeout', 'unreachable', 'tls', 'http', 'blocked', 'invalid', 'other'];
 
+// A login wall, a bot filter and a rate limit all answer while the site is alive. Say so, and say where to change it.
+const ANSWERED_HINT_CODES = new Set([401, 403, 429]);
+
 /** The server answered, but not with a status that counts as up */
 export class HttpStatusError extends Error {
     constructor(statusCode, statusText) {
-        super(`HTTP ${statusCode}${statusText ? `: ${statusText}` : ''}`);
+        const hint = ANSWERED_HINT_CODES.has(statusCode)
+            ? `. The server did answer. If that is expected, add ${statusCode} to the status codes that count as up in this server's settings.`
+            : '';
+        super(`HTTP ${statusCode}${statusText ? `: ${statusText}` : ''}${hint}`);
         this.name = 'HttpStatusError';
         this.failureKind = 'http';
         this.statusCode = statusCode;

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { isValidTimezone } from './schedule.js';
 import { containsCredentials } from './address.js';
+import { parseStatusSpec } from './statusSpec.js';
 
 const TIME = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -14,6 +15,11 @@ const monitoringShape = z.object({
         start: z.string().regex(TIME, "Invalid time format (HH:MM)"),
         end: z.string().regex(TIME, "Invalid time format (HH:MM)")
     })).optional(),
+    // The HTTP status codes that count as up, e.g. "200-399,401,403". '' puts the server back on the default (200-399).
+    acceptedStatus: z.string().superRefine((value, ctx) => {
+        const parsed = parseStatusSpec(value);
+        if (!parsed.ok) ctx.addIssue({ code: 'custom', message: parsed.error });
+    }).optional(),
     alerts: z.object({
         enabled: z.boolean().optional(),
         email: z.boolean().optional(),

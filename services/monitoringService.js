@@ -6,6 +6,7 @@ import logger from '../utils/logger.js';
 import { TimedHttpAgent, TimedHttpsAgent, timedRequest, connectTimings } from '../utils/requestTiming.js';
 import { classifyFailure, failureOf, HttpStatusError, InvalidAddressError } from '../utils/failures.js';
 import { serverTimeOf } from '../utils/timings.js';
+import { DEFAULT_RANGES, acceptedRanges, statusAccepted } from '../utils/statusSpec.js';
 import {
     safeLookup,
     assertPublicHost,
@@ -94,7 +95,8 @@ export const checkServerStatus = async (server) => {
         if (server.type === 'tcp' || server.type === 'database') {
             measured = await checkTcpServer(server.url);
         } else {
-            measured = await checkHttpServer(server.url);
+            // Which statuses count as up is the owner's to set; unset means 200 to 399
+            measured = await checkHttpServer(server.url, { accepted: acceptedRanges(server.monitoring?.acceptedStatus) });
         }
     } catch (err) {
         const classified = classifyFailure(err, { timeoutSeconds: HTTP_TIMEOUT / 1000 });
@@ -168,7 +170,7 @@ export const checkTcpServer = async (url) => {
  * The time reported is the request that answered, not the HEAD that was turned away before it.
  * @returns {Promise<{ status: number, method: 'HEAD'|'GET', ms: number, timings: Object|null }>}
  */
-const attempt = async (targetUrl) => {
+const attempt = async (targetUrl, { accepted = DEFAULT_RANGES } = {}) => {
     const headers = { ...BROWSER_HEADERS };
 
     let head = null;
@@ -179,14 +181,14 @@ const attempt = async (targetUrl) => {
         if (err.code !== 'ECONNRESET') throw err;
     }
 
-    if (head && head.response.status >= 200 && head.response.status < 400) {
+    if (head && statusAccepted(head.response.status, accepted)) {
         return { status: head.response.status, method: 'HEAD', ms: head.ms, timings: head.timings };
     }
 
     // The stream resolves when the headers arrive, which is when the clock stops
     const get = await timedRequest(() => monitoringAxios.get(targetUrl, { headers, responseType: 'stream' }));
     get.response.data.destroy(); // headers are enough
-    if (get.response.status >= 200 && get.response.status < 400) {
+    if (statusAccepted(get.response.status, accepted)) {
         return { status: get.response.status, method: 'GET', ms: get.ms, timings: get.timings };
     }
 
@@ -196,9 +198,10 @@ const attempt = async (targetUrl) => {
 /**
  * Check an HTTP/HTTPS server
  * @param {String} url - stored address; may or may not include a scheme
- * @returns {Promise<{ status: number, method: string, ms: number, timings: Object|null }>} Resolves if the server answers with a 2xx/3xx, rejects otherwise
+ * @param {{ accepted?: number[][] }} [options]  status ranges that count as up (utils/statusSpec.js); 200-399 by default
+ * @returns {Promise<{ status: number, method: string, ms: number, timings: Object|null }>} Resolves if the server answers with an accepted status, rejects otherwise
  */
-export const checkHttpServer = async (url) => {
+export const checkHttpServer = async (url, options = {}) => {
     const hasScheme = /^https?:\/\//i.test(url);
     const primary = hasScheme ? url : `https://${url}`;
 
@@ -206,14 +209,14 @@ export const checkHttpServer = async (url) => {
     await assertPublicHost(primary, { resolve: false });
 
     try {
-        return await attempt(primary);
+        return await attempt(primary, options);
     } catch (err) {
         // The address was saved without a scheme: https is tried first, then plain http for sites that have no TLS.
         // Only connection-level failures justify this; a real HTTP error from the https site is a real answer.
         const connectionLevel = ['ECONNREFUSED', 'ECONNRESET', 'EPROTO', 'ERR_SSL_WRONG_VERSION_NUMBER'].includes(err?.code);
         if (!hasScheme && connectionLevel) {
             try {
-                return await attempt(`http://${url}`);
+                return await attempt(`http://${url}`, options);
             } catch {
                 // fall through and report the original (https) failure
             }

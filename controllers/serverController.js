@@ -10,6 +10,7 @@ import { createServerSchema, updateServerSchema, formatZodIssues } from '../util
 import { assertPublicHost } from '../utils/ssrfGuard.js';
 import { cleanTimings } from '../utils/timings.js';
 import { checkExtras } from '../utils/checkRecord.js';
+import { buildMonitoringConfig, buildMonitoringUpdates } from '../utils/monitoringSettings.js';
 import { applyCheckResult } from '../services/checkRecorder.js';
 import { invalidateServerCache } from '../utils/cacheManager.js';
 import { checkPlanLimits } from '../services/planLimits.js';
@@ -614,7 +615,7 @@ export const updateServer = asyncHandler(async (req, res) => {
 
         // Handle nested monitoring updates efficiently
         if (monitoring) {
-            const monitoringUpdates = buildMonitoringUpdates(monitoring);
+            const monitoringUpdates = buildMonitoringUpdates(monitoring, validatedData.monitoring);
             Object.assign(updates, monitoringUpdates);
             logger.info('Monitoring updates processed', {
                 serverId,
@@ -1392,55 +1393,8 @@ const canServerBeMonitored = (server) => {
     return true;
 };
 
-/**
- * Build monitoring configuration
- */
-const buildMonitoringConfig = (monitoring, userRole, trialEnd) => {
-    return {
-        frequency: monitoring.frequency || 5,
-        daysOfWeek: monitoring.daysOfWeek || [0, 1, 2, 3, 4, 5, 6],
-        timeWindows: monitoring.timeWindows || [{ start: '00:00', end: '23:59' }],
-        alerts: {
-            enabled: monitoring.alerts?.enabled || false,
-            email: monitoring.alerts?.email || false,
-            phone: monitoring.alerts?.phone || false,
-            webhookUrl: monitoring.alerts?.webhookUrl || '',
-            responseThreshold: monitoring.alerts?.responseThreshold || 1000,
-            timeWindow: monitoring.alerts?.timeWindow || { start: '00:00', end: '23:59' }
-        },
-        trialEndsAt: userRole === 'admin' ? null : trialEnd
-    };
-};
-
-/**
- * Build monitoring updates for patch operations
- */
-const buildMonitoringUpdates = (monitoring) => {
-    const updates = {};
-
-    if (monitoring.frequency !== undefined) {
-        updates['monitoring.frequency'] = monitoring.frequency;
-        // A new interval takes effect at the next scheduler run instead of after the old one runs out
-        updates.nextCheckAt = null;
-    }
-    if (monitoring.daysOfWeek !== undefined) {
-        updates['monitoring.daysOfWeek'] = monitoring.daysOfWeek;
-    }
-    if (monitoring.timeWindows !== undefined) {
-        updates['monitoring.timeWindows'] = monitoring.timeWindows;
-    }
-
-    // Handle alerts
-    if (monitoring.alerts) {
-        Object.entries(monitoring.alerts).forEach(([key, value]) => {
-            if (value !== undefined) {
-                updates[`monitoring.alerts.${key}`] = value;
-            }
-        });
-    }
-
-    return updates;
-};
+// buildMonitoringConfig and buildMonitoringUpdates (how the settings a user sends are stored) are in
+// utils/monitoringSettings.js, so that a test can send every setting through them.
 
 /**
  * Sanitize email addresses
