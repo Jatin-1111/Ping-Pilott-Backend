@@ -20,7 +20,7 @@ export function checkPlanLimits(user, monitoring) {
     }
 
     if (monitoring.alerts?.webhookUrl && !features.webhookIntegrations) {
-        return 'Webhook alerts are included in the Business plan.';
+        return 'Webhook alerts need a paid plan. Upgrade to Starter or above.';
     }
 
     return null;

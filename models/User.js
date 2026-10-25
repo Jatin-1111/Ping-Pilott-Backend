@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { userCache } from '../utils/userCache.js';
 import logger from '../utils/logger.js';
+import { planFeatures } from '../utils/planFeatures.js';
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -59,7 +60,7 @@ const userSchema = new mongoose.Schema({
             enum: ['trial', 'active', 'expired', 'cancelled', 'unlimited'],
             default: function () {
                 // Set default status based on role
-                return this.role === 'admin' ? 'unlimited' : 'trial';
+                return this.role === 'admin' ? 'unlimited' : 'active'; // the free plan does not expire
             }
         },
         paymentId: String,
@@ -68,22 +69,14 @@ const userSchema = new mongoose.Schema({
                 type: Number,
                 default: function () {
                     if (this.role === 'admin') return -1;
-                    const plan = this.subscription?.plan || 'free';
-                    if (plan.startsWith('business')) return 100;
-                    if (plan.startsWith('pro')) return 30;
-                    if (plan.startsWith('starter')) return 10;
-                    return 1; // Free
+                    return planFeatures(this.subscription?.plan).maxServers;
                 }
             },
             minCheckFrequency: {
                 type: Number,
                 default: function () {
                     if (this.role === 'admin') return 1;
-                    const plan = this.subscription?.plan || 'free';
-                    if (plan.startsWith('business')) return 1; // 30s not supported by schema yet, sticking to 1m
-                    if (plan.startsWith('pro')) return 1;
-                    if (plan.startsWith('starter')) return 3;
-                    return 5; // Free
+                    return planFeatures(this.subscription?.plan).minCheckFrequency; // 30s is not supported by the schema yet
                 }
             },
             maxCheckFrequency: {
@@ -97,40 +90,35 @@ const userSchema = new mongoose.Schema({
                 type: Boolean,
                 default: function () {
                     if (this.role === 'admin') return true;
-                    const plan = this.subscription?.plan || 'free';
-                    return !plan.startsWith('starter') && plan !== 'free'; // Pro and Business have advanced alerts
+                    return planFeatures(this.subscription?.plan).advancedAlerts;
                 }
             },
             apiAccess: {
                 type: Boolean,
                 default: function () {
                     if (this.role === 'admin') return true;
-                    const plan = this.subscription?.plan || 'free';
-                    return plan.startsWith('business');
+                    return planFeatures(this.subscription?.plan).apiAccess;
                 }
             },
             prioritySupport: {
                 type: Boolean,
                 default: function () {
                     if (this.role === 'admin') return true;
-                    const plan = this.subscription?.plan || 'free';
-                    return plan.startsWith('business') || plan.startsWith('pro');
+                    return planFeatures(this.subscription?.plan).prioritySupport;
                 }
             },
             webhookIntegrations: {
                 type: Boolean,
                 default: function () {
                     if (this.role === 'admin') return true;
-                    const plan = this.subscription?.plan || 'free';
-                    return plan.startsWith('business');
+                    return planFeatures(this.subscription?.plan).webhookIntegrations;
                 }
             },
             historicalReporting: {
                 type: Boolean,
                 default: function () {
                     if (this.role === 'admin') return true;
-                    const plan = this.subscription?.plan || 'free';
-                    return plan !== 'free';
+                    return planFeatures(this.subscription?.plan).historicalReporting;
                 }
             },
             unlimitedMonitoring: {
@@ -206,40 +194,7 @@ userSchema.pre('save', function (next) {
     // Logic to enforce plan limits on save for non-admins could go here if we wanted strong consistency
     // based on the plan string.
     else if (this.isModified('subscription.plan')) {
-        const plan = this.subscription.plan;
-        if (plan.startsWith('business')) {
-            this.subscription.features.maxServers = 100;
-            this.subscription.features.minCheckFrequency = 1;
-            this.subscription.features.advancedAlerts = true;
-            this.subscription.features.apiAccess = true;
-            this.subscription.features.prioritySupport = true;
-            this.subscription.features.webhookIntegrations = true;
-            this.subscription.features.historicalReporting = true;
-        } else if (plan.startsWith('pro')) {
-            this.subscription.features.maxServers = 30;
-            this.subscription.features.minCheckFrequency = 1;
-            this.subscription.features.advancedAlerts = true;
-            this.subscription.features.apiAccess = false;
-            this.subscription.features.prioritySupport = true;
-            this.subscription.features.webhookIntegrations = false;
-            this.subscription.features.historicalReporting = true;
-        } else if (plan.startsWith('starter')) {
-            this.subscription.features.maxServers = 10;
-            this.subscription.features.minCheckFrequency = 3;
-            this.subscription.features.advancedAlerts = false;
-            this.subscription.features.apiAccess = false;
-            this.subscription.features.prioritySupport = false;
-            this.subscription.features.webhookIntegrations = false;
-            this.subscription.features.historicalReporting = true;
-        } else if (plan === 'free') {
-            this.subscription.features.maxServers = 1;
-            this.subscription.features.minCheckFrequency = 5;
-            this.subscription.features.advancedAlerts = false;
-            this.subscription.features.apiAccess = false;
-            this.subscription.features.prioritySupport = false;
-            this.subscription.features.webhookIntegrations = false;
-            this.subscription.features.historicalReporting = false;
-        }
+        Object.assign(this.subscription.features, planFeatures(this.subscription.plan));
     }
     next();
 });

@@ -34,7 +34,7 @@ export async function applyPlanChange(user, plan, options = {}) {
 
     user.subscription.plan = plan;
     user.subscription.startDate = now;
-    user.subscription.status = options.status || (plan === 'free' ? 'trial' : plan === 'admin' ? 'unlimited' : 'active');
+    user.subscription.status = options.status || (plan === 'admin' ? 'unlimited' : 'active');
     user.subscription.endDate = options.endDate !== undefined
         ? options.endDate
         : (DURATION_DAYS[billing] ? new Date(now.getTime() + DURATION_DAYS[billing] * 24 * 60 * 60 * 1000) : null);

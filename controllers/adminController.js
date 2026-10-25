@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import logger from '../utils/logger.js';
+import { planFeatures } from '../utils/planFeatures.js';
 
 /**
  * @desc    Create or promote a user to admin
@@ -156,16 +157,11 @@ export const revokeAdmin = asyncHandler(async (req, res) => {
 
     // Update subscription to free plan
     adminUser.subscription.plan = 'free';
-    adminUser.subscription.status = 'trial';
-    adminUser.subscription.features.maxServers = 1;
-    adminUser.subscription.features.minCheckFrequency = 5;
-    adminUser.subscription.features.maxCheckFrequency = 30;
-    adminUser.subscription.features.advancedAlerts = false;
-    adminUser.subscription.features.apiAccess = false;
-    adminUser.subscription.features.prioritySupport = false;
-    adminUser.subscription.features.webhookIntegrations = false;
-    adminUser.subscription.features.historicalReporting = false;
-    adminUser.subscription.features.unlimitedMonitoring = false;
+    adminUser.subscription.status = 'active';
+    Object.assign(adminUser.subscription.features, planFeatures('free'), {
+        maxCheckFrequency: 30,
+        unlimitedMonitoring: false
+    });
 
     // Save the updated user
     await adminUser.save();

@@ -390,10 +390,9 @@ export const createServer = asyncHandler(async (req, res) => {
             }
         }
 
-        // Calculate trial end for free users
-        const trialEnd = userPlan === 'free'
-            ? new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).getTime()
-            : null;
+        // The free plan does not expire, so no server gets a trial end. (The pause and "trial ended" code still reads
+        // trialEndsAt, which is why scripts/migrateFreePlan.js clears it on servers created under the old trial.)
+        const trialEnd = null;
 
         // Build optimized server document
         const serverData = {
