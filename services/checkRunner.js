@@ -1,4 +1,4 @@
-// services/checkRunner.js - the one way a server is checked, whoever asked
+﻿// services/checkRunner.js - the one way a server is checked, whoever asked
 //
 // The scheduled worker confirmed a first failure before acting on it; the "Check now" button and the batch check did
 // not, so one dropped packet during a manual check flipped the server to down and sent a DOWN email at once. All
@@ -6,9 +6,14 @@
 //
 // A failure is also only believed while this machine can reach the internet (services/egressProbe.js). Otherwise the
 // check throws EgressDownError and nothing is recorded: our outage must not look like every customer's outage.
+//
+// And a slow result is marked `loadSuspect` when this process's own event loop was stalled while it was measured
+// (services/loadMonitor.js): the time then says more about us than about the server.
 
+import { performance } from 'perf_hooks';
 import { checkServerStatus } from './monitoringService.js';
 import { egressProbe, EgressDownError } from './egressProbe.js';
+import { loadMonitor, loopLagLimitMs } from './loadMonitor.js';
 
 const DEFAULT_CONFIRM_DELAY_MS = 10000;
 
@@ -26,11 +31,30 @@ export const confirmDelayMs = (env = process.env) => {
  * more after a short wait, and the second answer is the result, so one dropped request does not page anyone.
  * @param {Object} server  needs the fields checkServerStatus reads, plus `status`
  * @param {Object} [options]  replaceable in tests
- * @returns {Promise<{ status, responseTime, error, slow }>}
+ * @returns {Promise<{ status, responseTime, error, slow, timings, loadSuspect? }>}
  * @throws {EgressDownError} when a check failed and the control targets cannot be reached either
  */
-export async function runCheck(server, { check = checkServerStatus, sleep = sleepFor, delayMs = confirmDelayMs(), isEgressUp = (maxAgeMs) => egressProbe.isUp(maxAgeMs) } = {}) {
-    const result = await check(server);
+export async function runCheck(server, {
+    check = checkServerStatus,
+    sleep = sleepFor,
+    delayMs = confirmDelayMs(),
+    isEgressUp = (maxAgeMs) => egressProbe.isUp(maxAgeMs),
+    clock = () => performance.now(),
+    lagSince = (since) => loadMonitor.lagSince(since),
+    lagLimitMs = loopLagLimitMs()
+} = {}) {
+    // One check, marked if it was slow while this process was stalled. Only a slow result can have been made worse by
+    // that: a fast one was not, and a failure is confirmed by the second attempt and the egress probe instead.
+    const measure = async () => {
+        const startedAt = clock();
+        const result = await check(server);
+        if (lagLimitMs > 0 && result.status === 'up' && result.slow && lagSince(startedAt) >= lagLimitMs) {
+            return { ...result, loadSuspect: true };
+        }
+        return result;
+    };
+
+    const result = await measure();
     if (result.status !== 'down') return result;
 
     // Is it them, or is it us? Asked before the confirmation wait so a dead network does not hold a worker slot for it
@@ -38,7 +62,7 @@ export async function runCheck(server, { check = checkServerStatus, sleep = slee
 
     if (server.status !== 'down' && delayMs > 0) {
         await sleep(delayMs);
-        const second = await check(server);
+        const second = await measure();
         // The network may have gone during the wait: ask again, with a fresher answer
         if (second.status === 'down' && !(await isEgressUp(5000))) throw new EgressDownError();
         return second;

@@ -11,6 +11,8 @@ import { startWorkerHeartbeat, createCheckCompletionRecorder } from '../utils/wo
 import { egressProbe } from '../services/egressProbe.js';
 import { describeThreadPool } from '../utils/threadPool.js';
 import { cleanTimings } from '../utils/timings.js';
+import { loadMonitor, formatSummary, loopLagLimitMs } from '../services/loadMonitor.js';
+import { performance } from 'perf_hooks';
 import { EGRESS_DOWN_KEY } from '../utils/healthKeys.js';
 import mongoose from 'mongoose';
 
@@ -55,6 +57,7 @@ async function addToBatch(checkDoc) {
 export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
     const { serverId } = job.data;
     const startTime = Date.now();
+    const startedAtMonotonic = performance.now();
 
     // scheduledFor is the scheduler tick; jobs queued by older versions only have the time they were added
     const queuedAt = job.data.scheduledFor || job.timestamp;
@@ -93,9 +96,18 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
             responseTime: checkResult.responseTime,
             error: checkResult.error,
             ...(timings && { timings }),
+            ...(checkResult.loadSuspect && { loadSuspect: true }),
             timestamp: now,
             checkType: 'automated'
         });
+
+        loadMonitor.recordCheck(checkResult);
+        if (checkResult.loadSuspect) {
+            // The time says more about this worker than about the server, so it did not count toward a slow alert
+            throttled('slow-sample-set-aside', 60 * 1000, (n) => {
+                logger.warn(`A slow check was set aside because this worker's event loop was stalled (${loadMonitor.lagSince(startedAtMonotonic)} ms late). It is running more checks than it keeps up with: add worker instances or lower MONITOR_CONCURRENCY${suppressedNote(n, 60 * 1000)}`);
+            });
+        }
 
         // /health uses this to tell "checks are being queued" from "checks are being done"
         markCheckCompleted();
@@ -145,8 +157,19 @@ egressProbe.setReporter((up) => {
 // Say "alive" every 15 s for /health and the container healthcheck; the key expires if this process stops
 const heartbeat = startWorkerHeartbeat({ redis: redisConnection, role: 'monitor', isRunning: () => monitorWorker.isRunning() });
 
+// Watch this process's own event loop, so a slow check measured during a stall can be set aside (services/loadMonitor.js),
+// and say once a minute how DNS and the loop are doing
+loadMonitor.start();
+const summaryTimer = setInterval(() => {
+    const line = formatSummary(loadMonitor.summarize());
+    if (line) logger.info(line);
+}, 60 * 1000);
+summaryTimer.unref?.();
+
 monitorWorker.on('closing', async () => {
     heartbeat.stop();
+    clearInterval(summaryTimer);
+    loadMonitor.stop();
     logger.info('Worker closing, writing remaining check history...');
     clearTimeout(batchTimer);
     await executeBatch();
@@ -174,3 +197,8 @@ logger.info(`🚀 Monitor Worker started - listening on queue: ${QUEUE_NAME}`);
 const threadPool = describeThreadPool();
 if (threadPool.ok) logger.info(threadPool.message);
 else logger.warn(threadPool.message);
+
+const lagLimit = loopLagLimitMs();
+logger.info(lagLimit > 0
+    ? `Slow checks measured while the event loop is more than ${lagLimit} ms late are set aside (LOOP_LAG_SUSPECT_MS)`
+    : 'Event-loop guard is off (LOOP_LAG_SUSPECT_MS=0)');

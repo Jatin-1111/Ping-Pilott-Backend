@@ -32,6 +32,9 @@ const serverCheckSchema = new mongoose.Schema({
         ttfb: Number,
         redirects: Number
     },
+    // True when this check was slow while the checking process's own event loop was stalled, so the time is not
+    // trusted: it is shown, but never counted toward a slow alert (services/loadMonitor.js). Absent otherwise.
+    loadSuspect: Boolean,
     timestamp: {
         type: Date,
         default: Date.now

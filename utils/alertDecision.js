@@ -31,9 +31,11 @@ export const countsTowardSlowStreak = (checkType = 'automated') => checkType ===
  *  unknown -> up     : nothing  (the first check is not a recovery)
  *  up and slow       : one "slow" alert once enough scheduled checks in a row were slow
  *  up and quick      : an open slow alert closes after FAST_CHECKS_TO_CLOSE quick checks in a row (no message)
+ *  slow, but measured while our own event loop was stalled (`loadSuspect`): counts as neither slow nor quick. The time
+ *                      says more about this process than about the server, so it is set aside.
  *
  * @param {string} previous  the server's status before this check
- * @param {Object} result    { status, slow }
+ * @param {Object} result    { status, slow, loadSuspect }
  * @param {Object} [state]   { slowAlerted, slowStreak, fastStreak } as saved on the server
  * @param {Object} [options] { frequency (minutes), checkType: 'automated' | 'manual' | 'batch' }
  * @returns {{ alertType: string|null, slowAlerted: boolean, slowStreak: number, fastStreak: number, touchStreak: boolean }}
@@ -41,6 +43,7 @@ export const countsTowardSlowStreak = (checkType = 'automated') => checkType ===
  */
 export const decideAlert = (previous, result, state = {}, { frequency, checkType = 'automated' } = {}) => {
     const scheduled = countsTowardSlowStreak(checkType);
+    const setAside = result.slow === true && result.loadSuspect === true;
     let slowAlerted = state.slowAlerted === true;
     let slowStreak = count(state.slowStreak);
     let fastStreak = count(state.fastStreak);
@@ -51,7 +54,7 @@ export const decideAlert = (previous, result, state = {}, { frequency, checkType
         else if (result.status === 'up' && previous === 'down') alertType = 'server_recovery';
 
         // A new status starts a new streak. This check is the first sample of it when it is a scheduled "up".
-        const firstSample = result.status === 'up' && scheduled;
+        const firstSample = result.status === 'up' && scheduled && !setAside;
         return {
             alertType,
             slowAlerted: false,
@@ -65,7 +68,7 @@ export const decideAlert = (previous, result, state = {}, { frequency, checkType
         return { alertType: null, slowAlerted: false, slowStreak: 0, fastStreak: 0, touchStreak: true };
     }
 
-    if (!scheduled) {
+    if (!scheduled || setAside) {
         return { alertType: null, slowAlerted, slowStreak, fastStreak, touchStreak: false };
     }
 

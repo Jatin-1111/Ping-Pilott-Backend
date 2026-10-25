@@ -1140,6 +1140,7 @@ export const getServerHistory = asyncHandler(async (req, res) => {
             error: check.error,
             // Only single checks have a breakdown; a bucket of several (long periods) is an average of them
             ...(cleanTimings(check.timings) && { timings: cleanTimings(check.timings) }),
+            ...(check.loadSuspect === true && { loadSuspect: true }),
             ...(check.count && { sampledFrom: check.count })
         }));
 
