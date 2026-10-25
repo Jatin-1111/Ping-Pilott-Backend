@@ -7,6 +7,7 @@ import https from 'https';
 import { safeLookup, assertPublicHost, blockPrivateRedirect, hostFromTarget } from '../utils/ssrfGuard.js';
 import { maskCredentials } from '../utils/address.js';
 import { localParts, timeInWindow, timezoneOf } from '../utils/schedule.js';
+import { cleanTimings } from '../utils/timings.js';
 
 // Webhooks go to addresses users typed in, so they get the same private-network protection as checks,
 // and redirects are not followed.
@@ -108,6 +109,7 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
         responseTime: checkResult.responseTime,
         error: checkResult.error,
         slowStreak: checkResult.slowStreak,
+        timings: checkResult.timings,
         alertTime: new Date().toISOString()
     };
 
@@ -138,7 +140,9 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
                     newStatus,
                     responseTime: checkResult.responseTime,
                     error: checkResult.error,
-                    ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {})
+                    ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {}),
+                    // A slow alert says where the time went; other alerts keep the payload they always had
+                    ...(alertType === 'slow_response' && cleanTimings(checkResult.timings) ? { timings: cleanTimings(checkResult.timings) } : {})
                 });
                 result.webhook = true;
             } catch (error) {

@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import logger from '../utils/logger.js';
 import { maskCredentials } from '../utils/address.js';
+import { describeDominantPhase } from '../utils/timings.js';
 
 // Create a reusable transporter object
 let transporter = null;
@@ -120,6 +121,8 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
   const responseTime = server.responseTime ? `${server.responseTime}ms` : 'Unknown';
   const responseThreshold = server.monitoring?.alerts?.responseThreshold || 1000;
   const errorMessage = esc(server.error || 'Unknown error');
+  // Which part of the response was slow, when one part was most of it (utils/timings.js)
+  const slowWhere = alertType === 'slow_response' ? describeDominantPhase(server.timings, server.responseTime) : null;
 
   let subject;
   let html;
@@ -179,6 +182,7 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
             <p>Time of detection: ${currentTime}</p>
             <p>Current response time: ${responseTime} (threshold: ${responseThreshold}ms)</p>
             ${Number(server.slowStreak) > 1 ? `<p>This was slower than the threshold on ${Number(server.slowStreak)} checks in a row.</p>` : ''}
+            ${slowWhere ? `<p>${esc(slowWhere)}</p>` : ''}
             <p style="margin-top: 30px; font-size: 12px; color: #777;">
               This is an automated message from Ping Pilot monitoring.
             </p>

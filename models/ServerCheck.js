@@ -23,6 +23,15 @@ const serverCheckSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    // Where the response time went, in ms (utils/requestTiming.js). Only successful checks have it; a TCP check has
+    // dns and connect only. Older rows have none.
+    timings: {
+        dns: Number,
+        connect: Number,
+        tls: Number,
+        ttfb: Number,
+        redirects: Number
+    },
     timestamp: {
         type: Date,
         default: Date.now

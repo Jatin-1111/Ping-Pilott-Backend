@@ -9,6 +9,7 @@
 
 import logger from '../utils/logger.js';
 import { shouldSendAlert } from './alertService.js';
+import { cleanTimings } from '../utils/timings.js';
 
 /** A job has had this long to finish all its attempts (about 7 minutes at most), so a later one is safe to add */
 export const REQUEUE_AFTER_MS = 15 * 60 * 1000;
@@ -24,7 +25,9 @@ const pick = (checkResult = {}) => ({
     error: checkResult.error ?? null,
     slow: Boolean(checkResult.slow),
     // Only a slow alert has it: how many checks in a row were over the threshold
-    ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {})
+    ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {}),
+    // Where the time went, so a slow alert can say which part was slow
+    ...(cleanTimings(checkResult.timings) ? { timings: cleanTimings(checkResult.timings) } : {})
 });
 
 /** Add a job for one pending alert. Never throws: a queue that is down is the case this exists for. */

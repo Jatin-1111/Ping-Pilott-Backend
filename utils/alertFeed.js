@@ -2,6 +2,8 @@
 //
 // Pure functions (no database), so the message wording, the payload shape and the paging rules can be tested alone.
 
+import { describeDominantPhase } from './timings.js';
+
 export const DEFAULT_LIMIT = 50;
 export const MAX_LIMIT = 100;
 export const ALERT_CHANNEL = 'alert-events';
@@ -31,9 +33,13 @@ export function buildAlertMessage(type, checkResult = {}, server = {}) {
     if (type === 'slow_response') {
         const threshold = server.monitoring?.alerts?.responseThreshold;
         const streak = Number(checkResult.slowStreak);
-        if (responseTime && threshold && streak > 1) return `Slower than your ${threshold} ms limit for ${streak} checks in a row, latest ${responseTime} ms.`;
-        if (responseTime && threshold) return `Responded in ${responseTime} ms, above your ${threshold} ms limit.`;
-        return responseTime ? `Responded in ${responseTime} ms.` : 'The server is responding slowly.';
+        // Which part was slow, when one part was most of it (utils/timings.js)
+        const where = describeDominantPhase(checkResult.timings, responseTime);
+        const withWhere = (text) => clip(where ? `${text} ${where}` : text);
+
+        if (responseTime && threshold && streak > 1) return withWhere(`Slower than your ${threshold} ms limit for ${streak} checks in a row, latest ${responseTime} ms.`);
+        if (responseTime && threshold) return withWhere(`Responded in ${responseTime} ms, above your ${threshold} ms limit.`);
+        return responseTime ? withWhere(`Responded in ${responseTime} ms.`) : 'The server is responding slowly.';
     }
     return null;
 }
