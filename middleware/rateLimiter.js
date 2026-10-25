@@ -1,4 +1,5 @@
 import rateLimit from 'express-rate-limit';
+import { parseToken, bearerToken } from '../utils/agentToken.js';
 
 /**
  * Create a rate limiter middleware
@@ -70,6 +71,43 @@ export const tokenLimiter = createRateLimiter({
 });
 
 /**
+ * Host agents. Each sends once a minute (a few snapshots at once after an outage), so the limit is per token, not per
+ * address: many agents on one network must not use each other's allowance. A request with no usable token falls back to
+ * the address, with a limit low enough to make guessing tokens pointless.
+ */
+export const agentLimiter = createRateLimiter({
+    windowMs: 60 * 1000,
+    max: 12,
+    keyGenerator: (req) => {
+        const token = parseToken(bearerToken(req.headers.authorization));
+        return token ? `agent:${token.tokenId}` : `ip:${req.ip}`;
+    },
+    message: { status: 'error', message: 'Too many snapshots, slow down', code: 'RATE_LIMITED' }
+});
+
+/**
+ * Failed agent sign-ins, per address. The limiter above gives every token id its own allowance, so a stream of made-up
+ * tokens would never run out of it: this one counts only the requests that were refused, and a working agent is never
+ * counted. 30 a minute is plenty for a mistyped token on a few machines and nothing for guessing.
+ */
+export const agentGuessLimiter = createRateLimiter({
+    windowMs: 60 * 1000,
+    max: 30,
+    skipSuccessfulRequests: true,
+    message: { status: 'error', message: 'Too many refused requests, check the agent token', code: 'RATE_LIMITED' }
+});
+
+/**
+ * The installer script people download to set up an agent. Cheap to serve and fetched once per install, so the limit is
+ * only there to stop a flood.
+ */
+export const installLimiter = createRateLimiter({
+    windowMs: 60 * 1000,
+    max: 60,
+    message: { status: 'error', message: 'Too many requests, please try again shortly', code: 'RATE_LIMITED' }
+});
+
+/**
  * User-specific limiter based on user ID
  * Use this for routes that should be limited per user, not per IP
  */
@@ -98,6 +136,9 @@ export default {
     authLimiter,
     emailLimiter,
     tokenLimiter,
+    agentLimiter,
+    agentGuessLimiter,
+    installLimiter,
     createUserRateLimiter,
     createRateLimiter
 };

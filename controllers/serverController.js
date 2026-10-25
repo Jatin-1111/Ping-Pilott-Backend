@@ -21,6 +21,8 @@ import { isWithinCheckSchedule, timezoneOf } from '../utils/schedule.js';
 import { getCachedData, setCachedData, dedupedFetch } from '../utils/cacheManager.js';
 import { CACHE_STRATEGIES } from '../config/performance.js';
 import Incident from '../models/Incident.js';
+import HostMetric from '../models/HostMetric.js';
+import HostMetric5m from '../models/HostMetric5m.js';
 
 /** The diagnosis and failure detail of a server that is down, from what its last failing check stored */
 const failureViewOf = (server, evidence, detailed) => failureView({
@@ -793,7 +795,9 @@ export const deleteServer = asyncHandler(async (req, res) => {
         const [deleteResult] = await Promise.all([
             Server.deleteOne({ _id: serverId }),
             ServerCheck.deleteMany({ serverId }), // Cleanup all associated checks
-            Incident.deleteMany({ serverId })
+            Incident.deleteMany({ serverId }),
+            HostMetric.deleteMany({ serverId }), // and what its host agent sent
+            HostMetric5m.deleteMany({ serverId })
         ]);
 
         if (deleteResult.deletedCount === 0) {

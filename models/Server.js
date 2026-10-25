@@ -280,6 +280,22 @@ const serverSchema = new mongoose.Schema({
         default: null,
         select: false
     },
+    // The host agent on this server (utils/agentToken.js, utils/hostMetrics.js). The token id and hash are never in a
+    // server's fields unless asked for: with them out of every other read, no list or detail response can carry them.
+    agent: {
+        type: new mongoose.Schema({
+            enabled: { type: Boolean, default: false },
+            tokenId: { type: String, select: false },
+            tokenHash: { type: String, select: false },
+            createdAt: Date,
+            lastSeenAt: Date,
+            version: String,
+            hostname: String,
+            os: String,
+            arch: String
+        }, { _id: false }),
+        default: undefined
+    },
     monitoring: {
         type: monitoringSchema,
         default: () => ({})
@@ -324,6 +340,8 @@ serverSchema.index({ pausedAt: 1, 'monitoring.trialEndsAt': 1 });
 serverSchema.index({ uploadedAt: -1 });
 // Compound index for check scheduler (find by status + sort by lastChecked/calc)
 serverSchema.index({ status: 1, lastChecked: 1 });
+// An agent finds its server by the id in its token; only servers with an agent are in the index
+serverSchema.index({ 'agent.tokenId': 1 }, { unique: true, partialFilterExpression: { 'agent.tokenId': { $type: 'string' } } });
 
 // Create and export the model
 const Server = mongoose.model('Server', serverSchema);

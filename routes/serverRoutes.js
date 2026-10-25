@@ -3,6 +3,8 @@ import { body, param, query } from 'express-validator';
 import serverController from '../controllers/serverController.js';
 import { protect, authorize } from '../middleware/auth.js';
 import validate from '../middleware/validator.js';
+import hostAgentController from '../controllers/hostAgentController.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
 const router = express.Router();
 
@@ -36,6 +38,13 @@ router.post('/', [
     body('contactPhones.*').optional().matches(/^\d{10,15}$/).withMessage('Phone must be 10 to 15 digits'),
     validate
 ], serverController.createServer);
+
+// Host agent: turn it on (the token is in this response only), replace the token, turn it off
+router.post('/:id/agent', [param('id').isMongoId().withMessage('Invalid server ID'), validate], asyncHandler(hostAgentController.enable));
+router.post('/:id/agent/rotate', [param('id').isMongoId().withMessage('Invalid server ID'), validate], asyncHandler(hostAgentController.rotate));
+router.delete('/:id/agent', [param('id').isMongoId().withMessage('Invalid server ID'), validate], asyncHandler(hostAgentController.disable));
+
+router.get('/:id/metrics', [param('id').isMongoId().withMessage('Invalid server ID'), validate], asyncHandler(hostAgentController.metrics));
 
 // Get server by ID
 router.get('/:id', [

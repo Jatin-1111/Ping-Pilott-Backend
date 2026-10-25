@@ -1,0 +1,2 @@
+# The agent installer is served as-is to be piped into sh on Linux: a CRLF checkout would break it
+assets/install.sh text eol=lf

@@ -8,6 +8,8 @@ import ServerCheck from '../models/ServerCheck.js';
 import SupportTicket from '../models/SupportTicket.js';
 import { invalidateServerCache } from '../utils/cacheManager.js';
 import Incident from '../models/Incident.js';
+import HostMetric from '../models/HostMetric.js';
+import HostMetric5m from '../models/HostMetric5m.js';
 
 /** Remove a user's servers (so monitoring stops first), their check history and their tickets. */
 export async function purgeUserData(userId) {
@@ -18,6 +20,9 @@ export async function purgeUserData(userId) {
     await Server.deleteMany({ uploadedBy: userId });
     if (serverIds.length > 0) {
         await ServerCheck.deleteMany({ serverId: { $in: serverIds } });
+        // what their host agents sent, raw and rolled up
+        await HostMetric.deleteMany({ serverId: { $in: serverIds } });
+        await HostMetric5m.deleteMany({ serverId: { $in: serverIds } });
     }
     await Incident.deleteMany({ userId });
     await SupportTicket.deleteMany({ userId: String(userId) });

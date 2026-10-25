@@ -87,4 +87,23 @@ export function hasDetailedDiagnosis(user) {
     return DETAILED_DIAGNOSIS[tier] === true;
 }
 
-export default { planFeatures, statusPageAllowance, hasDetailedDiagnosis };
+// Host metrics (the agent on a server): paid plans, and how many servers on each can have one. Enough to matter to a
+// small team, few enough that storage and ingest stay predictable. Looked up by plan, like the two above.
+const HOST_METRICS = {
+    free: { enabled: false, maxServers: 0 },
+    starter: { enabled: true, maxServers: 3 },
+    pro: { enabled: true, maxServers: 15 },
+    business: { enabled: true, maxServers: 60 }
+};
+
+/**
+ * @param {{ role?: string, subscription?: { plan?: string } }|null|undefined} user
+ * @returns {{ enabled: boolean, maxServers: number }}  admins are not capped; an unknown plan is treated as free
+ */
+export function hostMetricsAllowance(user) {
+    if (user?.role === 'admin') return { enabled: true, maxServers: Number.MAX_SAFE_INTEGER };
+    const tier = String(user?.subscription?.plan || 'free').split('_')[0];
+    return { ...(HOST_METRICS[tier] || HOST_METRICS.free) };
+}
+
+export default { planFeatures, statusPageAllowance, hasDetailedDiagnosis, hostMetricsAllowance };

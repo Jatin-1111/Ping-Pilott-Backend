@@ -16,11 +16,13 @@ import { connectDB } from './config/db.js';
 import logger from './utils/logger.js';
 import errorMiddleware from './middleware/error.js';
 import { performanceMonitoring } from './middleware/performanceMonitoring.js';
-import { apiLimiter } from './middleware/rateLimiter.js';
+import { apiLimiter, installLimiter } from './middleware/rateLimiter.js';
 
 // Import routes
 import authRoutes from './routes/authRoutes.js';
 import serverRoutes from './routes/serverRoutes.js';
+import agentRoutes from './routes/agentRoutes.js';
+import installHandler from './routes/installRoute.js';
 import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import adminAnalyticsRoutes from './routes/adminAnalyticsRoutes.js';
@@ -200,6 +202,11 @@ app.get('/health/monitoring', async (req, res) => {
 });
 
 // API routes
+// Host agents sign in with a token and have their own limit per token, so they come before the per-address one
+app.use('/api/agent', agentRoutes);
+// The script that installs the agent: `curl -fsSL <this address>/install.sh | sudo sh`
+app.get('/install.sh', installLimiter, installHandler);
+
 // Flood protection for everything under /api (auth routes add stricter limits of their own)
 app.use('/api', apiLimiter);
 

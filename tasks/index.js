@@ -22,6 +22,8 @@ import Server from '../models/Server.js';
 import Incident from '../models/Incident.js';
 import User from '../models/User.js';
 import { pauseExpiredTrials } from '../services/trialPause.js';
+import { runHostRollup, catchUpHostRollup } from './hostRollup.js';
+import { hostMetricsEnabled } from '../utils/hostMetrics.js';
 import { sendTrialEndedEmail } from '../services/emailService.js';
 import { invalidateServerCache } from '../utils/cacheManager.js';
 
@@ -84,6 +86,8 @@ export const initCronJobs = async () => {
         jobQueue.add('dataRetention', () => dataRetention.runDataRetention(CONFIG.RETENTION_DAYS), 2, { timeoutMs: 30 * 60 * 1000 });
         jobQueue.add('requeueAlerts', () => requeueUndelivered({ model: PendingAlert, queue: { add: addAlertToQueue } }), 1, { timeoutMs: 2 * 60 * 1000 });
         jobQueue.add('pauseExpiredTrials', runTrialPause, 2, { timeoutMs: 5 * 60 * 1000 });
+        jobQueue.add('hostRollup', runHostRollup, 2, { timeoutMs: 4 * 60 * 1000 });
+        jobQueue.add('hostRollupCatchUp', catchUpHostRollup, 2, { timeoutMs: 30 * 60 * 1000 });
 
         // Log system info
         await logSystemInfo();
@@ -95,6 +99,9 @@ export const initCronJobs = async () => {
 
         // Free trials that ended: pause the server and tell the owner, once
         startTrialPause();
+
+        // Host metrics: roll raw snapshots into 5-minute rows (only while the feature is on)
+        if (hostMetricsEnabled()) startHostRollup();
 
         // Midnight cleanup
         startMidnightCleanup();
@@ -222,6 +229,21 @@ const startTrialPause = () => {
             await jobQueue.execute('pauseExpiredTrials');
         } catch (error) {
             logger.error(`Trial pause failed: ${error.message}`);
+        }
+    });
+};
+
+/**
+ * Host metrics rollup - a minute after every 5-minute boundary, so the bucket that just ended is complete.
+ * On start, whatever a restart or a gap missed is filled in first (in the background: it can take a moment).
+ */
+const startHostRollup = () => {
+    jobQueue.execute('hostRollupCatchUp').catch((error) => logger.error(`Host metrics catch-up failed: ${error.message}`));
+    cron.schedule('1-59/5 * * * *', async () => {
+        try {
+            await jobQueue.execute('hostRollup');
+        } catch (error) {
+            logger.error(`Host metrics rollup failed: ${error.message}`);
         }
     });
 };
