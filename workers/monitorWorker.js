@@ -71,7 +71,7 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
         }
 
         const server = await Server.findById(serverId)
-            .select('name url type timezone monitoring status lastChecked uploadedBy contactEmails contactPhones priority slowAlerted')
+            .select('name url type timezone monitoring status lastChecked uploadedBy contactEmails contactPhones priority slowAlerted slowStreak fastStreak')
             .lean();
 
         if (!server) {
@@ -82,7 +82,7 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
         // A first failure is confirmed before it is acted on (see services/checkRunner.js)
         const checkResult = await runCheck(server);
 
-        const { now } = await applyCheckResult(server, checkResult);
+        const { now } = await applyCheckResult(server, checkResult, { checkType: 'automated' });
 
         await addToBatch({
             serverId: new mongoose.Types.ObjectId(serverId),

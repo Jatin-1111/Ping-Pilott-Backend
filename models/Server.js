@@ -165,6 +165,16 @@ const serverSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    // Scheduled checks in a row that were over the threshold (slowStreak) or back under it (fastStreak). A slow alert
+    // opens after several slow ones and closes after a few quick ones (utils/alertDecision.js). Missing means 0.
+    slowStreak: {
+        type: Number,
+        default: 0
+    },
+    fastStreak: {
+        type: Number,
+        default: 0
+    },
     responseTime: {
         type: Number,
         default: null

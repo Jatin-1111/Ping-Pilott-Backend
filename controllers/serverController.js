@@ -828,6 +828,8 @@ export const checkServer = asyncHandler(async (req, res) => {
             uploadedPlan: 1,
             uploadedRole: 1,
             slowAlerted: 1,
+            slowStreak: 1,
+            fastStreak: 1,
             priority: 1,
             contactEmails: 1,
             contactPhones: 1
@@ -886,7 +888,7 @@ export const checkServer = asyncHandler(async (req, res) => {
         const checkDuration = Date.now() - checkStartTime;
 
         // Save it, alert if it matters, and publish it for live clients (same path as scheduled checks)
-        const { now } = await applyCheckResult(server, checkResult);
+        const { now } = await applyCheckResult(server, checkResult, { checkType: 'manual' });
 
         await ServerCheck.create({
             serverId: new mongoose.Types.ObjectId(serverId),
@@ -1246,7 +1248,7 @@ export const batchCheckServers = asyncHandler(async (req, res) => {
         const servers = await Server.find({
             _id: { $in: validIds },
             ...(isAdmin ? {} : { uploadedBy: userId })
-        }).select('name url type status lastChecked timezone monitoring uploadedBy uploadedPlan uploadedRole slowAlerted priority contactEmails contactPhones').lean();
+        }).select('name url type status lastChecked timezone monitoring uploadedBy uploadedPlan uploadedRole slowAlerted slowStreak fastStreak priority contactEmails contactPhones').lean();
 
         if (servers.length === 0) {
             return res.status(404).json({
@@ -1518,7 +1520,7 @@ const processServersBatched = async (servers, maxConcurrent, userId) => {
                 const checkResult = await runCheck(server);
                 const checkDuration = Date.now() - checkStartTime;
 
-                const { now } = await applyCheckResult(server, checkResult);
+                const { now } = await applyCheckResult(server, checkResult, { checkType: 'batch' });
 
                 await ServerCheck.create({
                     serverId: server._id,

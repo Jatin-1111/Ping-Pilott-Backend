@@ -107,6 +107,7 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
         url: maskCredentials(server.url),
         responseTime: checkResult.responseTime,
         error: checkResult.error,
+        slowStreak: checkResult.slowStreak,
         alertTime: new Date().toISOString()
     };
 
@@ -136,7 +137,8 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
                     oldStatus,
                     newStatus,
                     responseTime: checkResult.responseTime,
-                    error: checkResult.error
+                    error: checkResult.error,
+                    ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {})
                 });
                 result.webhook = true;
             } catch (error) {

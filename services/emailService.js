@@ -178,6 +178,7 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
             <p>URL: ${serverUrl}</p>
             <p>Time of detection: ${currentTime}</p>
             <p>Current response time: ${responseTime} (threshold: ${responseThreshold}ms)</p>
+            ${Number(server.slowStreak) > 1 ? `<p>This was slower than the threshold on ${Number(server.slowStreak)} checks in a row.</p>` : ''}
             <p style="margin-top: 30px; font-size: 12px; color: #777;">
               This is an automated message from Ping Pilot monitoring.
             </p>

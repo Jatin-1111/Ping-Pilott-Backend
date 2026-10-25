@@ -30,6 +30,8 @@ export function buildAlertMessage(type, checkResult = {}, server = {}) {
     }
     if (type === 'slow_response') {
         const threshold = server.monitoring?.alerts?.responseThreshold;
+        const streak = Number(checkResult.slowStreak);
+        if (responseTime && threshold && streak > 1) return `Slower than your ${threshold} ms limit for ${streak} checks in a row, latest ${responseTime} ms.`;
         if (responseTime && threshold) return `Responded in ${responseTime} ms, above your ${threshold} ms limit.`;
         return responseTime ? `Responded in ${responseTime} ms.` : 'The server is responding slowly.';
     }

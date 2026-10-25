@@ -8,7 +8,7 @@ import { addAlertToQueue } from '../queues/alertQueue.js';
 import PendingAlert from '../models/PendingAlert.js';
 import { enqueueAlert } from './alertOutbox.js';
 import { redisConnection } from '../config/redis.js';
-import { decideAlert } from '../utils/alertDecision.js';
+import { planCheckUpdate } from '../utils/alertDecision.js';
 import { invalidateServerCache } from '../utils/cacheManager.js';
 import { recordStatusChange } from './incidentService.js';
 
@@ -19,30 +19,18 @@ import { recordStatusChange } from './incidentService.js';
  * If two checks of the same server race, only one wins, and only the winner queues the alert.
  * An alert is therefore never sent for a status change that failed to save.
  *
- * @param {Object} server - lean server doc with: _id, name, status, slowAlerted, priority, monitoring,
+ * @param {Object} server - lean server doc with: _id, name, status, slowAlerted, slowStreak, fastStreak, priority, monitoring,
  *                          contactEmails, contactPhones, uploadedBy
  * @param {Object} checkResult - { status, responseTime, error, slow }
+ * @param {Object} [options]
+ * @param {'automated'|'manual'|'batch'} [options.checkType] - only 'automated' (the scheduled worker) moves the slow-alert
+ *   counters, so a person pressing "Check now" cannot open or close a slow alert
  * @returns {{ now: Date, changed: boolean, previous: string, applied: boolean }}
  */
-export async function applyCheckResult(server, checkResult) {
+export async function applyCheckResult(server, checkResult, { checkType = 'automated' } = {}) {
     const now = new Date();
     const previous = server.status;
-    const changed = previous !== checkResult.status;
-    const alertType = decideAlert(previous, checkResult, server.slowAlerted === true);
-
-    const $set = {
-        status: checkResult.status,
-        responseTime: checkResult.responseTime,
-        error: checkResult.error,
-        lastChecked: now,
-        // an open slow-alert stays open while the server stays slow, and closes when it speeds up or goes down
-        slowAlerted: checkResult.status === 'up' && !!checkResult.slow
-    };
-    if (changed) $set.lastStatusChange = now;
-
-    const filter = { _id: server._id };
-    if (changed) filter.status = previous;
-    else if (alertType === 'slow_response') filter.slowAlerted = { $ne: true };
+    const { filter, $set, alertType, changed, slowStreak } = planCheckUpdate({ server, checkResult, checkType, now });
 
     const result = await Server.updateOne(filter, { $set });
     const applied = result.matchedCount === 1;
@@ -55,7 +43,9 @@ export async function applyCheckResult(server, checkResult) {
 
     // The alert is saved before it is queued, so a queue that is down or an email provider that is slow cannot lose it
     if (alertType && applied) {
-        await enqueueAlert({ server, alertType, previous, checkResult }, { model: PendingAlert, queue: { add: addAlertToQueue } });
+        // A slow alert says how many checks in a row it took, not just the one that tipped it
+        const alertResult = alertType === 'slow_response' ? { ...checkResult, slowStreak } : checkResult;
+        await enqueueAlert({ server, alertType, previous, checkResult: alertResult }, { model: PendingAlert, queue: { add: addAlertToQueue } });
     }
 
     redisConnection.publish('monitor-updates', JSON.stringify({

@@ -33,7 +33,7 @@ test('normalizeUrl keeps its earlier rules: https dropped, trailing slash droppe
 });
 
 test('an address change resets the status, the response and the schedule slot', () => {
-    assert.deepEqual(addressChangeUpdates(), { status: 'unknown', error: null, responseTime: null, slowAlerted: false, nextCheckAt: null });
+    assert.deepEqual(addressChangeUpdates(), { status: 'unknown', error: null, responseTime: null, slowAlerted: false, slowStreak: 0, fastStreak: 0, nextCheckAt: null });
 });
 
 const NOW = new Date('2026-10-24T12:00:00Z');

@@ -22,7 +22,9 @@ const pick = (checkResult = {}) => ({
     status: checkResult.status,
     responseTime: checkResult.responseTime ?? null,
     error: checkResult.error ?? null,
-    slow: Boolean(checkResult.slow)
+    slow: Boolean(checkResult.slow),
+    // Only a slow alert has it: how many checks in a row were over the threshold
+    ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {})
 });
 
 /** Add a job for one pending alert. Never throws: a queue that is down is the case this exists for. */
