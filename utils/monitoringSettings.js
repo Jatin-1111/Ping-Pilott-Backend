@@ -60,6 +60,19 @@ export const buildMonitoringUpdates = (monitoring, validated = monitoring) => {
         updates['monitoring.keyword'] = validated.keyword === null ? null : cleanKeyword(validated.keyword);
     }
 
+    // Limits for the host agent's alerts. Each number is saved on its own, so changing the CPU limit leaves the memory one
+    // (and the defaults for anything never set) as they were.
+    const host = validated?.hostAlerts;
+    if (host) {
+        if (host.enabled !== undefined) updates['monitoring.hostAlerts.enabled'] = host.enabled;
+        for (const metric of ['cpu', 'memory', 'disk']) {
+            for (const field of ['percent', 'minutes']) {
+                if (host[metric]?.[field] !== undefined) updates[`monitoring.hostAlerts.${metric}.${field}`] = host[metric][field];
+            }
+        }
+        if (host.missing?.minutes !== undefined) updates['monitoring.hostAlerts.missing.minutes'] = host.missing.minutes;
+    }
+
     // Handle alerts
     if (monitoring.alerts) {
         Object.entries(monitoring.alerts).forEach(([key, value]) => {

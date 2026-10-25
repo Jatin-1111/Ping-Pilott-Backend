@@ -22,7 +22,7 @@ const owners = new Map();
 
 const defaults = {
     findServer: (tokenId) => Server.findOne({ 'agent.tokenId': tokenId })
-        .select('agent.enabled agent.tokenId agent.tokenHash uploadedBy name')
+        .select('agent.enabled agent.tokenId agent.tokenHash agent.lastSeenAt agent.alerts agent.alertsRev uploadedBy name url status priority timezone monitoring contactEmails')
         .lean(),
     findOwner: async (id) => {
         const key = String(id);

@@ -3,8 +3,15 @@ import { isValidTimezone } from './schedule.js';
 import { containsCredentials } from './address.js';
 import { parseStatusSpec } from './statusSpec.js';
 import { KEYWORD_MODES, MAX_KEYWORD_LENGTH } from './keyword.js';
+import { LIMITS } from './hostAlerts.js';
 
 const TIME = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+
+// A usage limit for the host agent's alerts: how high, and for how many minutes (0: at once)
+const hostLimit = () => z.object({
+    percent: z.number().int().min(LIMITS.percent[0]).max(LIMITS.percent[1]).optional(),
+    minutes: z.number().int().min(LIMITS.minutes[0]).max(LIMITS.minutes[1]).optional()
+});
 
 // Field rules, written once and with NO defaults.
 // Defaults belong to "create" only: on an update, a field that was not sent must stay untouched.
@@ -26,6 +33,15 @@ const monitoringShape = z.object({
         text: z.string().trim().min(1, 'The text to look for is required').max(MAX_KEYWORD_LENGTH, `Use at most ${MAX_KEYWORD_LENGTH} characters`),
         mode: z.enum(KEYWORD_MODES).optional()
     }).nullable().optional(),
+    // When the host agent's numbers are worth an alert (utils/hostAlerts.js). Every part is optional: what is left out keeps
+    // its default, and what was saved stays as it was.
+    hostAlerts: z.object({
+        enabled: z.boolean().optional(),
+        cpu: hostLimit().optional(),
+        memory: hostLimit().optional(),
+        disk: hostLimit().optional(),
+        missing: z.object({ minutes: z.number().int().min(LIMITS.missingMinutes[0]).max(LIMITS.missingMinutes[1]).optional() }).optional()
+    }).optional(),
     alerts: z.object({
         enabled: z.boolean().optional(),
         email: z.boolean().optional(),

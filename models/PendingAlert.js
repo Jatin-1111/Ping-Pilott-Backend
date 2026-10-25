@@ -20,7 +20,7 @@ const pendingAlertSchema = new mongoose.Schema({
     alertType: {
         type: String,
         // cert_expiring goes by email and webhook only: the in-app feed and the mobile app do not know it
-        enum: ['server_down', 'server_recovery', 'slow_response', 'cert_expiring'],
+        enum: ['server_down', 'server_recovery', 'slow_response', 'cert_expiring', 'host_cpu_high', 'host_memory_high', 'host_disk_high', 'host_metrics_missing'],
         required: true
     },
     oldStatus: String,

@@ -23,6 +23,7 @@ import Incident from '../models/Incident.js';
 import User from '../models/User.js';
 import { pauseExpiredTrials } from '../services/trialPause.js';
 import { runHostRollup, catchUpHostRollup } from './hostRollup.js';
+import { runHostMissingSweep } from './hostMissing.js';
 import { hostMetricsEnabled } from '../utils/hostMetrics.js';
 import { sendTrialEndedEmail } from '../services/emailService.js';
 import { invalidateServerCache } from '../utils/cacheManager.js';
@@ -88,6 +89,7 @@ export const initCronJobs = async () => {
         jobQueue.add('pauseExpiredTrials', runTrialPause, 2, { timeoutMs: 5 * 60 * 1000 });
         jobQueue.add('hostRollup', runHostRollup, 2, { timeoutMs: 4 * 60 * 1000 });
         jobQueue.add('hostRollupCatchUp', catchUpHostRollup, 2, { timeoutMs: 30 * 60 * 1000 });
+        jobQueue.add('hostMissing', runHostMissingSweep, 1, { timeoutMs: 2 * 60 * 1000 });
 
         // Log system info
         await logSystemInfo();
@@ -100,8 +102,11 @@ export const initCronJobs = async () => {
         // Free trials that ended: pause the server and tell the owner, once
         startTrialPause();
 
-        // Host metrics: roll raw snapshots into 5-minute rows (only while the feature is on)
-        if (hostMetricsEnabled()) startHostRollup();
+        // Host metrics: roll raw snapshots into 5-minute rows, and notice agents that went quiet (only while the feature is on)
+        if (hostMetricsEnabled()) {
+            startHostRollup();
+            startHostMissing();
+        }
 
         // Midnight cleanup
         startMidnightCleanup();
@@ -244,6 +249,20 @@ const startHostRollup = () => {
             await jobQueue.execute('hostRollup');
         } catch (error) {
             logger.error(`Host metrics rollup failed: ${error.message}`);
+        }
+    });
+};
+
+/**
+ * Host agents that went quiet - every minute. A silent agent sends nothing to react to, so this looks for it
+ * (tasks/hostMissing.js).
+ */
+const startHostMissing = () => {
+    cron.schedule('* * * * *', async () => {
+        try {
+            await jobQueue.execute('hostMissing');
+        } catch (error) {
+            logger.error(`Host agent check failed: ${error.message}`);
         }
     });
 };

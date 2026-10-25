@@ -11,6 +11,7 @@ import mongoose from 'mongoose';
 import User from '../models/User.js';
 import Server from '../models/Server.js';
 import logger from '../utils/logger.js';
+import { HOST_TYPES } from '../utils/alertFeed.js';
 import { requireEmailVerification } from '../utils/emailVerification.js';
 
 let io;
@@ -119,7 +120,8 @@ export function broadcastAlert(userId, alert) {
     }
     if (!userId) return;
 
-    io.to(`user:${userId}`).emit('alert:new', alert);
+    // The newer (host) alert types have their own event, so an app that does not know them never receives one
+    io.to(`user:${userId}`).emit(HOST_TYPES.includes(alert?.type) ? 'alert:host' : 'alert:new', alert);
 }
 
 /**

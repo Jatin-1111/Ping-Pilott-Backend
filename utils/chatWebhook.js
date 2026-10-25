@@ -19,6 +19,7 @@ import { describeDominantPhase } from './timings.js';
 import { describeFlap } from './flapDamping.js';
 import { cleanCert } from './certExpiry.js';
 import { diagnose } from './diagnosis.js';
+import { isHostAlert, hostAlertText } from './hostAlerts.js';
 
 const SLACK_HOSTS = new Set(['hooks.slack.com', 'hooks.slack-gov.com']);
 const DISCORD_HOSTS = new Set(['discord.com', 'discordapp.com', 'ptb.discord.com', 'canary.discord.com']);
@@ -108,6 +109,11 @@ export function describeAlert(alertType, server, payload = {}) {
             : `\u{1F512} The security certificate for ${name} is about to expire`;
         if (cert) lines.push(`Expires: ${cert.expiresAt.slice(0, 10)}`);
         lines.push('Renew it before then, or visitors will see a security warning.');
+    } else if (isHostAlert(alertType)) {
+        // CPU, memory or disk over its limit, or an agent gone quiet, and the end of each (utils/hostAlerts.js)
+        const text = hostAlertText({ type: alertType, host: payload.host, serverName: name });
+        title = `${text?.tone === 'ok' ? '\u2705' : '\u26A0\uFE0F'} ${text?.title ?? `${name}: host alert`}`;
+        if (text) lines.push(...text.lines);
     } else {
         title = `${name}: status update`;
     }

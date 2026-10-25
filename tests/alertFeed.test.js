@@ -4,7 +4,7 @@
 
 import test, { mock } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildAlertMessage, toAlertItem, parseAlertQuery, DEFAULT_LIMIT, MAX_LIMIT } from '../utils/alertFeed.js';
+import { buildAlertMessage, toAlertItem, parseAlertQuery, DEFAULT_LIMIT, MAX_LIMIT, CLASSIC_TYPES } from '../utils/alertFeed.js';
 import AlertEvent from '../models/AlertEvent.js';
 import { getAlerts, markAlertRead, markAllAlertsRead } from '../controllers/alertController.js';
 
@@ -181,7 +181,8 @@ test('the feed is always the signed-in users, newest first, with an unread count
     assert.equal(res.statusCode, 200);
     assert.equal(calls.filter.userId, USER);
     assert.deepEqual(calls.filter._id, { $gt: ID_A });
-    assert.deepEqual(calls.countFilter, { userId: USER, readAt: null });
+    // an app that did not ask for the host types is only ever sent the three it knows, in the unread count too
+    assert.deepEqual(calls.countFilter, { userId: USER, readAt: null, type: { $in: CLASSIC_TYPES } });
     assert.equal(res.body.data.unreadCount, 3);
     assert.equal(res.body.data.alerts.length, 1);
     assert.equal(res.body.data.alerts[0].id, ID_B);
@@ -196,7 +197,7 @@ test('with no paging parameters the feed has no id condition', async (t) => {
     t.mock.method(AlertEvent, 'countDocuments', async () => 0);
 
     await run(getAlerts, { user: { _id: USER }, query: {} });
-    assert.deepEqual(filter, { userId: USER });
+    assert.deepEqual(filter, { userId: USER, type: { $in: CLASSIC_TYPES } });
 });
 
 test('marking an alert read only touches the users own, still-unread alert', async (t) => {

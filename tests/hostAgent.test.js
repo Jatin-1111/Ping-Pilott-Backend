@@ -30,8 +30,11 @@ const owners = {
 // a server id has to look like one (24 hex characters), so tests name servers and these turn the names into ids
 const id = (name) => crypto.createHash('md5').update(String(name)).digest('hex').slice(0, 24);
 
-const world = { servers: [], points: [], rollups: [], flag: true, now: NOW };
-const reset = () => { world.servers = []; world.points = []; world.rollups = []; world.flag = true; world.now = NOW; };
+const world = { servers: [], points: [], rollups: [], flag: true, now: NOW, alerts: [], saves: 0, canAlert: true, failNextSave: false };
+const reset = () => {
+    world.servers = []; world.points = []; world.rollups = []; world.flag = true; world.now = NOW;
+    world.alerts = []; world.saves = 0; world.canAlert = true; world.failNextSave = false;
+};
 const addServer = (name, owner, agent) => { const s = { _id: id(name), name: `Server ${name}`, uploadedBy: owner._id, ...(agent ? { agent } : {}) }; world.servers.push(s); return s; };
 const withAgent = (name, owner, extra = {}) => {
     const t = generateToken();
@@ -75,6 +78,18 @@ const controller = createHostAgentController({
         .filter((r) => String(r.serverId) === String(serverId) && r.bucket >= from).sort((a, b) => a.bucket - b.bucket),
     readLatest: async (serverId) => world.points.filter((p) => String(p.serverId) === String(serverId)).sort((a, b) => b.timestamp - a.timestamp)[0] ?? null,
     forgetCache: async () => {},
+    // the alert side: the state is saved only if nobody has saved it since it was read, like the real save
+    saveReading: async (serverId, set, rev) => {
+        world.saves += 1;
+        if (world.failNextSave) { world.failNextSave = false; return false; }
+        const s = byId(serverId);
+        if ((s.agent?.alertsRev ?? null) !== (rev ?? null)) return false;
+        apply(s, { $set: set });
+        s.agent.alertsRev = (s.agent.alertsRev ?? 0) + 1;
+        return true;
+    },
+    shouldSend: () => world.canAlert,
+    enqueueAlert: async (args) => { world.alerts.push(args); },
     now: () => world.now
 });
 
@@ -510,6 +525,143 @@ test('turning the agent off also deletes the rolled-up rows, and the page goes b
     assert.deepEqual(world.points.map((p) => p.serverId), [id('s2')]);
     const after = (await json(await metrics('s1', 'pro'))).body.data;
     assert.deepEqual([after.agent.status, after.series, after.latest], ['off', [], null]);
+});
+
+// ── alerts, from the readings an agent sends ──
+
+const sendAt = (token, minutesAgo, cpuPercent = 97, extra = {}) => send(token, payload([snapshot({
+    ts: new Date(NOW - minutesAgo * 60000).toISOString(), cpu: { percent: cpuPercent, cores: 2 }, ...extra
+})]));
+const raised = () => world.alerts.map((a) => [a.alertType, a.checkResult.host.recovered]);
+
+test('CPU over the limit for five minutes raises one alert, however many readings follow', async () => {
+    reset();
+    const token = withAgent('s1', owners.pro);
+    for (const ago of [14, 13, 12, 11, 10, 9, 8, 7, 6]) assert.equal((await sendAt(token, ago)).status, 200);
+    assert.deepEqual(raised(), [['host_cpu_high', false]]);
+    const [alert] = world.alerts;
+    assert.equal(alert.checkResult.host.value, 97);
+    assert.equal(alert.checkResult.host.threshold, 90);
+    assert.equal(alert.checkResult.host.minutes, 5);
+    assert.equal(String(alert.server._id), id('s1'));
+    assert.equal(alert.server.uploadedBy, owners.pro._id);
+    assert.equal(world.saves, 9);
+    assert.equal(byId('s1').agent.alerts.cpu.alerted, true);
+});
+
+test('when it comes back down it raises one more, which says it is the end', async () => {
+    reset();
+    const token = withAgent('s1', owners.pro);
+    for (const ago of [14, 13, 12, 11, 10, 9]) await sendAt(token, ago);
+    for (const ago of [8, 7]) await sendAt(token, ago, 20);
+    assert.deepEqual(raised(), [['host_cpu_high', false], ['host_cpu_high', true]]);
+    assert.equal(world.alerts[1].checkResult.host.lasted, 1);
+    assert.equal(byId('s1').agent.alerts.cpu.alerted, false);
+});
+
+test('a spike shorter than the limit raises nothing', async () => {
+    reset();
+    const token = withAgent('s1', owners.pro);
+    for (const [ago, cpu] of [[10, 99], [9, 99], [8, 99], [7, 10], [6, 10]]) await sendAt(token, ago, cpu);
+    assert.deepEqual(world.alerts, []);
+});
+
+test('the owner\'s own limits are used, over the defaults', async () => {
+    reset();
+    const token = withAgent('s1', owners.pro);
+    byId('s1').monitoring = { hostAlerts: { cpu: { percent: 50, minutes: 0 } } };
+    await sendAt(token, 1, 60);
+    assert.deepEqual(raised(), [['host_cpu_high', false]]);
+    assert.equal(world.alerts[0].checkResult.host.threshold, 50);
+});
+
+test('with host alerts switched off nothing is raised', async () => {
+    reset();
+    const token = withAgent('s1', owners.pro);
+    byId('s1').monitoring = { hostAlerts: { enabled: false } };
+    for (const ago of [14, 13, 12, 11, 10, 9, 8]) await sendAt(token, ago);
+    assert.deepEqual(world.alerts, []);
+});
+
+test('memory and disk are judged too, each with its own alert', async () => {
+    reset();
+    const token = withAgent('s1', owners.pro);
+    const full = { mem: { total: 4 * GB, used: Math.round(3.8 * GB) }, disks: [{ mount: '/data', total: 100 * GB, used: 96 * GB }] };
+    for (const ago of [14, 13, 12, 11, 10, 9]) await sendAt(token, ago, 10, full);
+    assert.deepEqual(raised().map(([type]) => type).sort(), ['host_disk_high', 'host_memory_high']);
+    const disk = world.alerts.find((a) => a.alertType === 'host_disk_high');
+    assert.equal(disk.checkResult.host.mount, '/data');
+});
+
+test('when the owner cannot be told right now, nothing is raised and nothing is used up', async () => {
+    reset();
+    const token = withAgent('s1', owners.pro);
+    world.canAlert = false;
+    for (const ago of [14, 13, 12, 11, 10, 9, 8]) await sendAt(token, ago);
+    assert.deepEqual(world.alerts, []);
+    assert.equal(byId('s1').agent.alerts.cpu.alerted, false);
+    world.canAlert = true;
+    await sendAt(token, 7);
+    assert.deepEqual(raised(), [['host_cpu_high', false]], 'told at the first reading after they can be');
+});
+
+test('two readings judged at once cannot both raise the alert: the one that loses the save raises nothing', async () => {
+    reset();
+    const token = withAgent('s1', owners.pro);
+    for (const ago of [14, 13, 12, 11, 10]) await sendAt(token, ago);
+    world.failNextSave = true; // the reading that would complete the five minutes loses the race
+    const lost = await sendAt(token, 9);
+    assert.equal(lost.status, 200, 'the agent is still told it arrived');
+    assert.deepEqual(world.alerts, [], 'and it raised nothing');
+    assert.equal(world.points.length, 6, 'what it sent is stored');
+    await sendAt(token, 8); // the next reading judges from the state that is saved
+    assert.deepEqual(raised(), [['host_cpu_high', false]], 'and the alert is raised once, one reading later');
+});
+
+test('a problem with the alert side never makes the agent send the same readings again', async () => {
+    reset();
+    const token = withAgent('s1', owners.pro);
+    const broken = createHostAgentController({
+        ...deps,
+        insertPoints: async (docs) => { world.points.push(...docs); },
+        touchServer: async (serverId, set) => apply(byId(serverId), { $set: set }),
+        saveReading: async () => { throw new Error('the database is busy'); },
+        shouldSend: () => true,
+        enqueueAlert: async () => {},
+        now: () => world.now
+    });
+    const app = express();
+    app.use(express.json({ limit: '10kb' }));
+    app.post('/m', createAgentAuth(deps), asyncHandler(broken.ingest));
+    const s = await new Promise((resolve) => { const l = app.listen(0, '127.0.0.1', () => resolve(l)); });
+    try {
+        const res = await fetch(`http://127.0.0.1:${s.address().port}/m`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(payload()) });
+        assert.equal(res.status, 200);
+        assert.equal(world.points.length, 1);
+        assert.ok(byId('s1').agent.lastSeenAt, 'it is still recorded as seen');
+    } finally {
+        await new Promise((resolve) => s.close(resolve));
+    }
+});
+
+test('an agent reporting again after a "no data" alert says so, once', async () => {
+    reset();
+    const token = withAgent('s1', owners.pro);
+    byId('s1').agent.alerts = { missing: { alerted: true, alertedAt: NOW - 8 * 60000, since: NOW - 12 * 60000 } };
+    await sendAt(token, 0, 10);
+    await sendAt(token, 0, 10);
+    assert.deepEqual(raised(), [['host_metrics_missing', true]]);
+    assert.equal(world.alerts[0].checkResult.host.minutes, 12);
+    assert.equal(byId('s1').agent.alerts.missing.alerted, false);
+});
+
+test('a reading with nothing wrong in it changes no alert state beyond remembering what it saw', async () => {
+    reset();
+    const token = withAgent('s1', owners.pro);
+    await sendAt(token, 1, 10);
+    assert.deepEqual(world.alerts, []);
+    assert.equal(byId('s1').agent.alerts.cpu.alerted, false);
+    assert.equal(byId('s1').agent.alerts.cpu.since, null);
 });
 
 // Last: it uses up this address's allowance for refused requests, which would hold back the tests after it

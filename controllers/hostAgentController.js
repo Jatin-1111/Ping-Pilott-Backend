@@ -13,6 +13,8 @@ import HostMetric5m from '../models/HostMetric5m.js';
 import { generateToken } from '../utils/agentToken.js';
 import { parseIngest, hostMetricsEnabled, INTERVAL_SECONDS, MIN_AGENT_VERSION, apiBaseOf, installCommands } from '../utils/hostMetrics.js';
 import { hostMetricsAllowance } from '../utils/planFeatures.js';
+import { hostAlertSettings, evaluateSnapshots } from '../utils/hostAlerts.js';
+import { shouldSendAlert } from '../services/alertService.js';
 import { PERIODS, DEFAULT_PERIOD, pointFromRaw, longRangePoints, tailStart, latestOf, agentStatus, mountsOf } from '../utils/hostSeries.js';
 import logger from '../utils/logger.js';
 
@@ -21,6 +23,21 @@ const fail = (res, status, message, code, extra = {}) => res.status(status).json
 const defaults = {
     insertPoints: (docs) => HostMetric.insertMany(docs, { ordered: false }),
     touchServer: (id, set) => Server.updateOne({ _id: id }, { $set: set }),
+    // Save the reading's effects and the alert state together, but only if nobody has saved the state since it was read
+    // (agent.alertsRev counts the saves): two readings that arrive together cannot both raise the same alert.
+    saveReading: async (id, set, rev) => {
+        const result = await Server.updateOne({ _id: id, 'agent.alertsRev': rev ?? null }, { $set: set, $inc: { 'agent.alertsRev': 1 } });
+        return result.matchedCount === 1;
+    },
+    // Is the owner to be told right now (alerts on, inside their alert hours)
+    shouldSend: shouldSendAlert,
+    // Loaded when needed: the queue opens a Redis connection as soon as it is imported
+    enqueueAlert: async (args) => {
+        const [{ enqueueAlert }, { default: PendingAlert }, { addAlertToQueue }] = await Promise.all([
+            import('../services/alertOutbox.js'), import('../models/PendingAlert.js'), import('../queues/alertQueue.js')
+        ]);
+        return enqueueAlert(args, { model: PendingAlert, queue: { add: addAlertToQueue } });
+    },
     findOwner: (id) => User.findById(id).select('role subscription.plan').lean(),
     findServer: (id) => Server.findById(id).select('uploadedBy name agent').lean(),
     countAgents: (ownerId, exceptId) => Server.countDocuments({ uploadedBy: ownerId, 'agent.enabled': true, _id: { $ne: exceptId } }),
@@ -51,18 +68,44 @@ export function createHostAgentController(deps = {}) {
         if (!parsed.ok) return fail(res, 422, 'The snapshot is not in the expected format', 'INVALID_PAYLOAD', { issues: parsed.issues });
 
         const { server } = req.agent;
+        const seen = { 'agent.lastSeenAt': new Date(d.now()) };
+        const { name, os, arch, agentVersion } = parsed.host;
+        if (name) seen['agent.hostname'] = name;
+        if (os) seen['agent.os'] = os;
+        if (arch) seen['agent.arch'] = arch;
+        if (agentVersion) seen['agent.version'] = agentVersion;
+
         try {
             await d.insertPoints(parsed.points.map((point) => ({ ...point, serverId: server._id })));
-            const seen = { 'agent.lastSeenAt': new Date(d.now()) };
-            const { name, os, arch, agentVersion } = parsed.host;
-            if (name) seen['agent.hostname'] = name;
-            if (os) seen['agent.os'] = os;
-            if (arch) seen['agent.arch'] = arch;
-            if (agentVersion) seen['agent.version'] = agentVersion;
-            await d.touchServer(server._id, seen);
         } catch (err) {
             logger.error(`Could not store host metrics for ${server.name || server._id}: ${err.message}`);
             return fail(res, 500, 'Could not store the snapshot, try again shortly', 'SERVER_ERROR');
+        }
+
+        // The readings are stored. What follows (judging them against the limits, telling the owner) must not make the agent
+        // send them again, so a problem there is logged and the agent is still told they arrived.
+        try {
+            const previousSeenAt = server.agent?.lastSeenAt ? new Date(server.agent.lastSeenAt).getTime() : null;
+            const { state, events } = evaluateSnapshots({
+                settings: hostAlertSettings(server.monitoring?.hostAlerts),
+                state: server.agent?.alerts,
+                points: parsed.points,
+                previousSeenAt,
+                canAlert: d.shouldSend(server)
+            });
+            const saved = await d.saveReading(server._id, { ...seen, 'agent.alerts': state }, server.agent?.alertsRev);
+            if (saved) {
+                for (const event of events) {
+                    await d.enqueueAlert({ server, alertType: event.type, previous: server.status, checkResult: { status: server.status, host: event } });
+                }
+            } else {
+                // Another reading moved the state on first and is judging the same stretch. Raise nothing from this one:
+                // what it saw is stored, and the next reading judges from the state that won.
+                await d.touchServer(server._id, seen);
+            }
+        } catch (err) {
+            logger.error(`Could not judge the host metrics of ${server.name || server._id}: ${err.message}`);
+            try { await d.touchServer(server._id, seen); } catch { /* the next reading will say it was seen */ }
         }
 
         // Nothing is said about what was stored: the agent only needs to know it arrived, and when to come back

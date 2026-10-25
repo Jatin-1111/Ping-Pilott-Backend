@@ -52,6 +52,20 @@ const alertsSchema = new mongoose.Schema({
     }
 }, { _id: false });
 
+// When a host's numbers are worth an alert (utils/hostAlerts.js). Any part left out takes its default, so a server that never
+// saved these has alerts at 90% for 5 minutes. null for a part is not allowed: that is what leaving it out is for.
+const limitSchema = new mongoose.Schema({
+    percent: { type: Number, min: 1, max: 100 },
+    minutes: { type: Number, min: 0, max: 60 }
+}, { _id: false });
+const hostAlertsSchema = new mongoose.Schema({
+    enabled: Boolean,
+    cpu: { type: limitSchema, default: undefined },
+    memory: { type: limitSchema, default: undefined },
+    disk: { type: limitSchema, default: undefined },
+    missing: { type: new mongoose.Schema({ minutes: { type: Number, min: 2, max: 60 } }, { _id: false }), default: undefined }
+}, { _id: false });
+
 // Text a page must contain (or must not): a check that reads the page, for websites and APIs (utils/keyword.js)
 const keywordSchema = new mongoose.Schema({
     text: {
@@ -110,6 +124,11 @@ const monitoringSchema = new mongoose.Schema({
     // The page must contain this text (mode 'present') or must not ('absent'). Missing means no such check.
     keyword: {
         type: keywordSchema,
+        default: undefined
+    },
+    // Limits for the host agent's alerts: CPU, memory and disk usage, and an agent that goes quiet (utils/hostAlerts.js)
+    hostAlerts: {
+        type: hostAlertsSchema,
         default: undefined
     }
 }, { _id: false });
@@ -292,7 +311,12 @@ const serverSchema = new mongoose.Schema({
             version: String,
             hostname: String,
             os: String,
-            arch: String
+            arch: String,
+            // Where each alert is: since when a value has been over its limit, and which alerts are open (utils/hostAlerts.js).
+            // Plain data. alertsRev counts its saves: two readings arriving together cannot both raise the same alert,
+            // because a save only applies if nobody saved since this one was read.
+            alerts: mongoose.Schema.Types.Mixed,
+            alertsRev: Number
         }, { _id: false }),
         default: undefined
     },
@@ -342,6 +366,8 @@ serverSchema.index({ uploadedAt: -1 });
 serverSchema.index({ status: 1, lastChecked: 1 });
 // An agent finds its server by the id in its token; only servers with an agent are in the index
 serverSchema.index({ 'agent.tokenId': 1 }, { unique: true, partialFilterExpression: { 'agent.tokenId': { $type: 'string' } } });
+// The sweep for agents that went quiet: servers with an agent, by when it was last heard from
+serverSchema.index({ 'agent.lastSeenAt': 1 }, { partialFilterExpression: { 'agent.enabled': true } });
 
 // Create and export the model
 const Server = mongoose.model('Server', serverSchema);

@@ -20,7 +20,8 @@ const alertEventSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['server_down', 'server_recovery', 'slow_response'],
+        // The host_ types are for app versions that know them: the feed leaves them out unless asked (utils/alertFeed.js)
+        enum: ['server_down', 'server_recovery', 'slow_response', 'host_cpu_high', 'host_memory_high', 'host_disk_high', 'host_metrics_missing'],
         required: true
     },
     // Snapshot at the time of the alert. Older rows (written before the mobile app existed) don't have these.
@@ -41,6 +42,9 @@ const alertEventSchema = new mongoose.Schema({
     // reaches old alerts too. Rows written before these existed have neither.
     failureKind: String,
     statusCode: Number,
+    // A host alert (utils/hostAlerts.js): which number it is about, and whether this is the end of it
+    metric: String,
+    recovered: Boolean,
     // null until the user has seen the alert in the app
     readAt: {
         type: Date,

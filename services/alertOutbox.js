@@ -12,6 +12,7 @@ import { shouldSendAlert } from './alertService.js';
 import { cleanTimings } from '../utils/timings.js';
 import { cleanFlap } from '../utils/flapDamping.js';
 import { cleanCert } from '../utils/certExpiry.js';
+import { cleanHostAlert } from '../utils/hostAlerts.js';
 
 /** A job has had this long to finish all its attempts (about 7 minutes at most), so a later one is safe to add */
 export const REQUEUE_AFTER_MS = 15 * 60 * 1000;
@@ -36,7 +37,9 @@ const pick = (checkResult = {}) => ({
     ...(checkResult.failure?.kind ? { failureKind: checkResult.failure.kind } : {}),
     ...(Number.isInteger(checkResult.statusCode) ? { statusCode: checkResult.statusCode } : {}),
     // Where the time went, so a slow alert can say which part was slow
-    ...(cleanTimings(checkResult.timings) ? { timings: cleanTimings(checkResult.timings) } : {})
+    ...(cleanTimings(checkResult.timings) ? { timings: cleanTimings(checkResult.timings) } : {}),
+    // A host alert: which number, how high, for how long, and what is using it (utils/hostAlerts.js)
+    ...(cleanHostAlert(checkResult.host) ? { host: cleanHostAlert(checkResult.host) } : {})
 });
 
 /** Add a job for one pending alert. Never throws: a queue that is down is the case this exists for. */

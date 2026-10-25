@@ -12,6 +12,7 @@ import { cleanFlap } from '../utils/flapDamping.js';
 import { cleanCert } from '../utils/certExpiry.js';
 import { diagnose } from '../utils/diagnosis.js';
 import { chatRequest } from '../utils/chatWebhook.js';
+import { isHostAlert, cleanHostAlert, hostAlertText } from '../utils/hostAlerts.js';
 
 // Webhooks go to addresses users typed in, so they get the same private-network protection as checks,
 // and redirects are not followed.
@@ -129,6 +130,7 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
         timings: checkResult.timings,
         flap: checkResult.flap,
         cert: checkResult.cert,
+        host: checkResult.host,
         alertTime: new Date().toISOString()
     };
 
@@ -171,6 +173,10 @@ export const sendAlertChannels = async (server, alertType, checkResult, done = {
                     // A down alert also says it in plain words; the fields above are unchanged
                     ...(downDiagnosis ? { diagnosis: downDiagnosis } : {}),
                     ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {}),
+                    // A host alert carries its numbers and says it in words; for the other alerts nothing changes
+                    ...(isHostAlert(alertType) && cleanHostAlert(checkResult.host)
+                        ? { host: cleanHostAlert(checkResult.host), message: hostAlertText({ type: alertType, host: checkResult.host, serverName: server.name })?.message }
+                        : {}),
                     // A slow alert says where the time went; other alerts keep the payload they always had
                     ...(alertType === 'slow_response' && cleanTimings(checkResult.timings) ? { timings: cleanTimings(checkResult.timings) } : {})
                 });

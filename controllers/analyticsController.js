@@ -14,6 +14,7 @@ import User from '../models/User.js';
 import Server from '../models/Server.js';
 import ServerCheck from '../models/ServerCheck.js';
 import AlertEvent from '../models/AlertEvent.js';
+import { countAlertsByKind } from '../utils/alertFeed.js';
 import { SCHEDULED_CHECKS_ONLY } from '../services/checkRunner.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { getCachedData, setCachedData } from '../utils/cacheManager.js';
@@ -156,13 +157,7 @@ const getAlertsByTypeOptimized = async (startDate, endDate) => {
         { $group: { _id: '$type', value: { $sum: 1 } } }
     ]).option({ maxTimeMS: QUERY_TIMEOUT });
 
-    const labels = { server_down: 'Server down', server_recovery: 'Recovered', slow_response: 'Slow response' };
-    const counts = Object.fromEntries(Object.values(labels).map((label) => [label, 0]));
-    results.forEach((item) => {
-        if (labels[item._id]) counts[labels[item._id]] = item.value;
-    });
-
-    return Object.entries(counts).map(([name, value]) => ({ name, value }));
+    return countAlertsByKind(results);
 };
 
 /** Average response time of successful checks, bucketed by hour (week, month) or month (year) */

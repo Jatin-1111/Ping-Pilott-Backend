@@ -12,6 +12,7 @@ import { maskCredentials } from '../utils/address.js';
 import { sendAlertChannels } from '../services/alertService.js';
 import { deliverAlert } from '../services/alertDelivery.js';
 import { ALERT_CHANNEL, buildAlertMessage, toAlertItem } from '../utils/alertFeed.js';
+import { isHostAlert } from '../utils/hostAlerts.js';
 import Server from '../models/Server.js';
 import AlertEvent from '../models/AlertEvent.js';
 import PendingAlert from '../models/PendingAlert.js';
@@ -37,7 +38,9 @@ const recordFeed = async (pending, server) => {
         message: buildAlertMessage(pending.alertType, checkResult, server),
         // Only a down alert has a failure to explain
         ...(pending.alertType === 'server_down' && checkResult.failureKind ? { failureKind: checkResult.failureKind } : {}),
-        ...(pending.alertType === 'server_down' && Number.isInteger(checkResult.statusCode) ? { statusCode: checkResult.statusCode } : {})
+        ...(pending.alertType === 'server_down' && Number.isInteger(checkResult.statusCode) ? { statusCode: checkResult.statusCode } : {}),
+        // A host alert: which number, and whether this is its end
+        ...(isHostAlert(pending.alertType) && checkResult.host ? { metric: checkResult.host.metric, recovered: checkResult.host.recovered === true } : {})
     });
 
     // The API process owns the sockets, so hand the alert over through Redis

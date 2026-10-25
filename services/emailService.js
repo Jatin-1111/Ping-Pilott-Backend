@@ -5,6 +5,7 @@ import { describeDominantPhase } from '../utils/timings.js';
 import { describeFlap } from '../utils/flapDamping.js';
 import { cleanCert } from '../utils/certExpiry.js';
 import { diagnose } from '../utils/diagnosis.js';
+import { isHostAlert, hostAlertText } from '../utils/hostAlerts.js';
 
 // Create a reusable transporter object
 let transporter = null;
@@ -139,6 +140,34 @@ export const getAlertEmailContent = (server, alertType, oldStatus, newStatus) =>
   // The alert that starts or ends a flap hold says so (utils/flapDamping.js)
   const flapNote = alertType === 'server_down' || alertType === 'server_recovery' ? describeFlap(server.flap) : null;
   const flapHtml = flapNote ? `<p>${esc(flapNote)}</p>` : '';
+
+  // CPU, memory or disk over its limit, or an agent gone quiet, and the end of each (utils/hostAlerts.js). One layout for all
+  // of them: the words come from hostAlertText, so the email, the chat message and the app say the same thing.
+  if (isHostAlert(alertType)) {
+    const text = hostAlertText({ type: alertType, host: server.host, serverName: server.name });
+    if (text) {
+      const colour = text.tone === 'ok' ? '#4CAF50' : '#ff9800';
+      return {
+        subject: text.subject,
+        html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background-color: ${colour}; color: white; padding: 15px; text-align: center;">
+            <h1 style="margin: 0;">${esc(text.title)}</h1>
+          </div>
+          <div style="padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9;">
+            ${text.lines.map((line) => `<p>${esc(line)}</p>`).join('\n            ')}
+            <p>Server: <strong>${serverName}</strong></p>
+            <p>URL: ${serverUrl}</p>
+            <p>Time: ${currentTime}</p>
+            <p style="margin-top: 30px; font-size: 12px; color: #777;">
+              This is an automated message from Ping Pilot monitoring. You can change these limits in the server's alert settings.
+            </p>
+          </div>
+        </div>
+      `
+      };
+    }
+  }
 
   let subject;
   let html;
