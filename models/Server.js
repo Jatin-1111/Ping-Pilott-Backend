@@ -41,6 +41,11 @@ const alertsSchema = new mongoose.Schema({
         default: 1000,
         min: [100, 'Threshold must be at least 100ms']
     },
+    // Warn (by email and webhook) when the site's certificate is about to expire (utils/certExpiry.js). On unless turned off.
+    certExpiry: {
+        type: Boolean,
+        default: true
+    },
     timeWindow: {
         type: timeWindowSchema,
         default: () => ({ start: '00:00', end: '23:59' })
@@ -236,6 +241,16 @@ const serverSchema = new mongoose.Schema({
     },
     flapHeldAt: {
         type: Date,
+        default: null
+    },
+    // When the certificate the site presented expires, as of the last check that saw one. certAlertedDays is the step
+    // (14, 7, 3, 1, or 0 once expired) the owner was last warned about, so each step is told once (utils/certExpiry.js).
+    certExpiresAt: {
+        type: Date,
+        default: null
+    },
+    certAlertedDays: {
+        type: Number,
         default: null
     },
     // The kind of failure behind `error` (utils/failures.js); null while the server is up

@@ -11,6 +11,7 @@ import logger from '../utils/logger.js';
 import { shouldSendAlert } from './alertService.js';
 import { cleanTimings } from '../utils/timings.js';
 import { cleanFlap } from '../utils/flapDamping.js';
+import { cleanCert } from '../utils/certExpiry.js';
 
 /** A job has had this long to finish all its attempts (about 7 minutes at most), so a later one is safe to add */
 export const REQUEUE_AFTER_MS = 15 * 60 * 1000;
@@ -27,6 +28,8 @@ const pick = (checkResult = {}) => ({
     slow: Boolean(checkResult.slow),
     // Only a slow alert has it: how many checks in a row were over the threshold
     ...(Number.isFinite(checkResult.slowStreak) ? { slowStreak: checkResult.slowStreak } : {}),
+    // A certificate warning's details: when it expires, the days left, the step (utils/certExpiry.js)
+    ...(cleanCert(checkResult.cert) ? { cert: cleanCert(checkResult.cert) } : {}),
     // The note on the alert that starts or ends a flap hold (utils/flapDamping.js)
     ...(cleanFlap(checkResult.flap) ? { flap: cleanFlap(checkResult.flap) } : {}),
     // Why a down alert fired (utils/failures.js), for the webhook payload

@@ -76,7 +76,7 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
         }
 
         const server = await Server.findById(serverId)
-            .select('name url type timezone monitoring status lastChecked uploadedBy contactEmails contactPhones priority slowAlerted slowStreak fastStreak alertedStatus statusChanges flapHeldAt')
+            .select('name url type timezone monitoring status lastChecked uploadedBy contactEmails contactPhones priority slowAlerted slowStreak fastStreak alertedStatus statusChanges flapHeldAt certAlertedDays')
             .lean();
 
         if (!server) {

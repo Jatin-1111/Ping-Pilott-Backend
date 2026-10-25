@@ -40,6 +40,8 @@ export const addressChangeUpdates = () => ({
     alertedStatus: null,
     statusChanges: [],
     flapHeldAt: null,
+    certExpiresAt: null,
+    certAlertedDays: null,
     nextCheckAt: null
 });
 

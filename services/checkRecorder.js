@@ -7,6 +7,8 @@ import Server from '../models/Server.js';
 import { addAlertToQueue } from '../queues/alertQueue.js';
 import PendingAlert from '../models/PendingAlert.js';
 import { enqueueAlert } from './alertOutbox.js';
+import { raiseCertAlert } from './certAlert.js';
+import { shouldSendAlert } from './alertService.js';
 import { redisConnection } from '../config/redis.js';
 import { planCheckUpdate } from '../utils/alertDecision.js';
 import { invalidateServerCache } from '../utils/cacheManager.js';
@@ -53,6 +55,14 @@ export async function applyCheckResult(server, checkResult, { checkType = 'autom
         };
         await enqueueAlert({ server, alertType, previous, checkResult: alertResult }, { model: PendingAlert, queue: { add: addAlertToQueue } });
     }
+
+    // A certificate close to expiry is told to the owner once per step. It never changes the server's status, and a
+    // problem here must not stop the check from being saved (raiseCertAlert does not throw).
+    await raiseCertAlert({ server, checkResult, now }, {
+        updateOne: (filter, update) => Server.updateOne(filter, update),
+        enqueue: (args) => enqueueAlert(args, { model: PendingAlert, queue: { add: addAlertToQueue } }),
+        shouldSend: shouldSendAlert
+    });
 
     redisConnection.publish('monitor-updates', JSON.stringify({
         serverId: server._id,

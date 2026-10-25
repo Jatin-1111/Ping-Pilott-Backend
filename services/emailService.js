@@ -3,6 +3,7 @@ import logger from '../utils/logger.js';
 import { maskCredentials } from '../utils/address.js';
 import { describeDominantPhase } from '../utils/timings.js';
 import { describeFlap } from '../utils/flapDamping.js';
+import { cleanCert } from '../utils/certExpiry.js';
 
 // Create a reusable transporter object
 let transporter = null;
@@ -115,7 +116,7 @@ export const sendAlertEmail = async (server, alertType, oldStatus, newStatus) =>
  * @param {String} newStatus - New status
  * @returns {Object} Email subject and HTML content
  */
-const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
+export const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
   const serverName = esc(server.name);
   const serverUrl = esc(server.url);
   const currentTime = new Date().toLocaleString();
@@ -196,6 +197,40 @@ const getAlertEmailContent = (server, alertType, oldStatus, newStatus) => {
         </div>
       `;
       break;
+
+    case 'cert_expiring': {
+      // The site's certificate is about to expire, or has (utils/certExpiry.js). It never changes whether the site is up.
+      const cert = cleanCert(server.cert);
+      const expired = cert?.level === 0;
+      const days = cert ? cert.daysLeft : 0;
+      const dayWord = `${days} day${days === 1 ? '' : 's'}`;
+      const when = esc(cert ? new Date(cert.expiresAt).toUTCString() : 'an unknown date');
+      subject = expired
+        ? `🚨 ALERT: The certificate for ${server.name} has expired`
+        : `⚠️ WARNING: The certificate for ${server.name} expires in ${dayWord}`;
+      html = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background-color: ${expired ? '#f44336' : '#ff9800'}; color: white; padding: 15px; text-align: center;">
+            <h1 style="margin: 0;">Certificate ${expired ? 'Expired' : 'Expiring'}</h1>
+          </div>
+          <div style="padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9;">
+            <p>The security certificate of <strong>${serverName}</strong> ${expired
+              ? '<strong style="color: red;">has expired</strong>'
+              : `expires in <strong style="color: orange;">${dayWord}</strong>`}.</p>
+            <p>URL: ${serverUrl}</p>
+            <p>${expired ? 'Expired' : 'Expires'}: ${when}</p>
+            <p>${expired
+              ? 'Visitors\' browsers now warn them that the site is not secure.'
+              : 'Once it expires, visitors\' browsers will warn them that the site is not secure. Renew it before then.'}</p>
+            <p>Ping Pilot still checks the site as before: this does not mark it down.</p>
+            <p style="margin-top: 30px; font-size: 12px; color: #777;">
+              This is an automated message from Ping Pilot monitoring.
+            </p>
+          </div>
+        </div>
+      `;
+      break;
+    }
 
     default:
       subject = `🔔 NOTIFICATION: ${server.name} status update`;

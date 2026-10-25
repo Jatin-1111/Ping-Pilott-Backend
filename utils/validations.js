@@ -35,6 +35,8 @@ const monitoringShape = z.object({
             z.string().url("Invalid URL format").refine((u) => /^https?:\/\//i.test(u), "Webhook must be an http(s) URL")
         ]).optional(),
         responseThreshold: z.number().int().min(10).optional(),
+        // Warn when the certificate is about to expire (by email and webhook). On unless set to false.
+        certExpiry: z.boolean().optional(),
         timeWindow: z.object({
             start: z.string().optional(),
             end: z.string().optional()

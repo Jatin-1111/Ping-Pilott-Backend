@@ -38,6 +38,10 @@ const httpsAgent = new TimedHttpsAgent({
     maxSockets: 100,
     timeout: HTTP_TIMEOUT,
     rejectUnauthorized: false,
+    // Every check does a full TLS handshake. The agent otherwise caches the session per host and resumes it on the next
+    // connection: a resumed handshake is shorter (so the TLS time would depend on whether the last check was recent), and
+    // it does not present the server's certificate again, so its expiry could not be read.
+    maxCachedSessions: 0,
     lookup: safeLookup
 });
 
@@ -50,6 +54,9 @@ const monitoringAxios = axios.create({
     beforeRedirect: blockPrivateRedirect,
     validateStatus: () => true // judge the status ourselves; never throw on 4xx/5xx
 });
+
+/** A time in ms since 1970 as a Date, or null when there is none */
+const asDate = (ms) => (Number.isFinite(ms) ? new Date(ms) : null);
 
 const BROWSER_HEADERS = {
     'User-Agent': 'Mozilla/5.0 (compatible; PingPilott/1.0; +https://pingpilott.com)',
@@ -76,7 +83,9 @@ const parseTcpTarget = (target) => {
 /**
  * Check the status of a server
  * @param {Object} server - Server to check
- * @returns {Object} { status, responseTime, error, slow, timings, serverTime, statusCode, failure }
+ * @returns {Object} { status, responseTime, error, slow, timings, serverTime, certExpiresAt, statusCode, failure }
+ *   certExpiresAt is when the certificate the site presented expires (a Date), or null: plain HTTP, TCP, or no answer
+ *   at all. It is the certificate of the page the check ended on. It is reported for failures too.
  *   responseTime is only set for a successful check; a failure has no meaningful response time.
  *   serverTime is the part of it that was the server's own (time to first byte minus the connect, which is one round
  *   trip: see utils/timings.js), or null when it cannot be told. The rest, responseTime - serverTime, is the network's.
@@ -111,6 +120,8 @@ export const checkServerStatus = async (server) => {
             slow: false,
             timings: null,
             serverTime: null,
+            // a site that answers with an error over TLS still has a certificate that is running out
+            certExpiresAt: asDate(err?.certExpiresAt),
             statusCode: classified.statusCode,
             failure: failureOf(classified)
         };
@@ -127,6 +138,7 @@ export const checkServerStatus = async (server) => {
         slow,
         timings: measured.timings ?? null,
         serverTime: serverTimeOf(measured.timings),
+        certExpiresAt: asDate(measured.certExpiresAt),
         statusCode: measured.status ?? null,
         failure: null
     };
@@ -189,17 +201,17 @@ const attempt = async (targetUrl, { accepted = DEFAULT_RANGES, keyword = null, b
     }
 
     if (head && statusAccepted(head.response.status, accepted)) {
-        return { status: head.response.status, method: 'HEAD', ms: head.ms, timings: head.timings };
+        return { status: head.response.status, method: 'HEAD', ms: head.ms, timings: head.timings, certExpiresAt: head.certExpiresAt };
     }
 
     // The stream resolves when the headers arrive, which is when the clock stops
     const get = await timedRequest(() => monitoringAxios.get(targetUrl, { headers, responseType: 'stream' }));
     get.response.data.destroy(); // headers are enough
     if (statusAccepted(get.response.status, accepted)) {
-        return { status: get.response.status, method: 'GET', ms: get.ms, timings: get.timings };
+        return { status: get.response.status, method: 'GET', ms: get.ms, timings: get.timings, certExpiresAt: get.certExpiresAt };
     }
 
-    throw new HttpStatusError(get.response.status, get.response.statusText);
+    throw Object.assign(new HttpStatusError(get.response.status, get.response.statusText), { certExpiresAt: get.certExpiresAt });
 };
 
 /**
@@ -213,15 +225,15 @@ const attemptWithKeyword = async (targetUrl, { headers, accepted, keyword, bodyT
 
     if (!statusAccepted(get.response.status, accepted)) {
         stream.destroy();
-        throw new HttpStatusError(get.response.status, get.response.statusText);
+        throw Object.assign(new HttpStatusError(get.response.status, get.response.statusText), { certExpiresAt: get.certExpiresAt });
     }
 
     const budget = bodyTimeoutMs ?? Math.max(1000, HTTP_TIMEOUT - get.ms);
     const { found } = await findInBody(stream, keyword.text, { timeoutMs: budget });
     if (keyword.mode === 'absent' ? found : !found) {
-        throw new ContentError(describeKeywordFailure(keyword), get.response.status);
+        throw Object.assign(new ContentError(describeKeywordFailure(keyword), get.response.status), { certExpiresAt: get.certExpiresAt });
     }
-    return { status: get.response.status, method: 'GET', ms: get.ms, timings: get.timings };
+    return { status: get.response.status, method: 'GET', ms: get.ms, timings: get.timings, certExpiresAt: get.certExpiresAt };
 };
 
 /**

@@ -16,12 +16,22 @@ const context = new AsyncLocalStorage();
 const track = (socket) => {
     const ctx = context.getStore();
     if (!ctx || !socket) return socket;
-    const hop = { startedAt: performance.now(), lookupAt: null, connectAt: null, secureAt: null };
+    const hop = { startedAt: performance.now(), lookupAt: null, connectAt: null, secureAt: null, certExpiresAt: null };
     ctx.hops.push(hop);
     // 'lookup' only fires for a name: an IP address skips DNS
     socket.once('lookup', () => { hop.lookupAt = performance.now(); });
     socket.once('connect', () => { hop.connectAt = performance.now(); });
-    socket.once('secureConnect', () => { hop.secureAt = performance.now(); });
+    socket.once('secureConnect', () => {
+        hop.secureAt = performance.now();
+        // The certificate the server presented: its expiry comes free with the handshake (utils/certExpiry.js)
+        try {
+            const validTo = socket.getPeerCertificate?.()?.valid_to;
+            const expires = validTo ? Date.parse(validTo) : NaN;
+            if (Number.isFinite(expires)) hop.certExpiresAt = expires;
+        } catch {
+            // a certificate that cannot be read is no certificate
+        }
+    });
     return socket;
 };
 
@@ -41,17 +51,20 @@ export class TimedHttpsAgent extends https.Agent {
  * Time one request. The clock starts when `send` is called and stops when it settles (for HTTP: when the response
  * headers have arrived).
  * @param {() => Promise<any>} send  makes the request
- * @returns {Promise<{ response: any, ms: number, timings: Object|null }>}  rejects when `send` does
+ * @returns {Promise<{ response: any, ms: number, timings: Object|null, certExpiresAt: number|null }>}  rejects when `send` does.
+ *   certExpiresAt is when the certificate of the last hop expires (ms since 1970), null without TLS or a readable one.
  */
 export async function timedRequest(send) {
     const ctx = { hops: [] };
     const startedAt = performance.now();
     const response = await context.run(ctx, send);
     const endedAt = performance.now();
+    const last = ctx.hops[ctx.hops.length - 1];
     return {
         response,
         ms: Math.round(endedAt - startedAt),
-        timings: phaseTimings(ctx.hops[ctx.hops.length - 1], startedAt, endedAt)
+        timings: phaseTimings(last, startedAt, endedAt),
+        certExpiresAt: last?.certExpiresAt ?? null
     };
 }
 

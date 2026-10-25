@@ -34,11 +34,17 @@ export async function deliverAlert(pending, deps) {
     const errors = [];
 
     if (!done.recorded) {
-        try {
-            await deps.recordFeed(pending, alertServer);
+        if (pending.alertType === 'cert_expiring') {
+            // A certificate warning goes by email and webhook only: the in-app feed and the mobile app do not know this
+            // type yet, and a type they do not know shows up there as a notification with no title.
             done.recorded = true;
-        } catch (err) {
-            errors.push(err);
+        } else {
+            try {
+                await deps.recordFeed(pending, alertServer);
+                done.recorded = true;
+            } catch (err) {
+                errors.push(err);
+            }
         }
     }
 

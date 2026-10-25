@@ -125,6 +125,10 @@ export const planCheckUpdate = ({ server, checkResult, checkType = 'automated', 
         $set.fastStreak = decision.fastStreak;
     }
     if (changed) $set.lastStatusChange = now;
+    // The certificate's expiry as last seen. Only when a check saw one: a failure or plain HTTP says nothing about it.
+    if (checkResult.certExpiresAt instanceof Date && Number.isFinite(checkResult.certExpiresAt.getTime())) {
+        $set.certExpiresAt = checkResult.certExpiresAt;
+    }
     // Only written when it changes: the damping state is not touched by an ordinary check
     if (flap.touch) {
         $set.alertedStatus = flap.alertedStatus;
