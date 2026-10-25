@@ -131,6 +131,11 @@ const BY_KIND = {
         cause: 'No response came before the time limit. The server may be overloaded or stuck, or a network or firewall problem is blocking the way.',
         action: 'Check server load (CPU, memory, database) and that the machine is online and reachable.'
     },
+    no_response: {
+        title: 'The server accepted the connection, then never answered',
+        cause: 'Something is listening, but it did not reply before the time limit. The application is likely stuck, overloaded, or waiting on a slow database or another service.',
+        action: 'Check application load and logs, slow database queries and any external service the page waits for.'
+    },
     unreachable: {
         title: 'The server cannot be reached',
         cause: 'There is no network route to the server. The machine may be offline, or there is a network or routing problem at the host.',

@@ -4,7 +4,8 @@
 // numbers say "timeouts" or "DNS" instead of matching on text, and it is what tells a flaky network apart from a
 // refusing server when a pattern is worth looking at.
 
-export const FAILURE_KINDS = ['dns', 'refused', 'reset', 'timeout', 'unreachable', 'tls', 'http', 'content', 'blocked', 'invalid', 'other'];
+// timeout: never got a connection in time. no_response: connected (and through TLS), then nothing came back in time.
+export const FAILURE_KINDS = ['dns', 'refused', 'reset', 'timeout', 'no_response', 'unreachable', 'tls', 'http', 'content', 'blocked', 'invalid', 'other'];
 
 // A login wall, a bot filter and a rate limit all answer while the site is alive. Say so, and say where to change it.
 const ANSWERED_HINT_CODES = new Set([401, 403, 429]);
@@ -71,7 +72,11 @@ export function classifyFailure(err, { timeoutSeconds = 10 } = {}) {
         case 'EAI_AGAIN': return result('dns', 'DNS lookup failed (host not found)');
         case 'ETIMEDOUT':
         case 'ECONNABORTED':
-        case 'ERR_CANCELED': return result('timeout', `Timed out after ${timeoutSeconds}s`);
+        case 'ERR_CANCELED':
+            // utils/requestTiming.js marks an error when the connection was up before it timed out
+            return err.reachedServer === true
+                ? result('no_response', `Connected, but no response after ${timeoutSeconds}s`)
+                : result('timeout', `Timed out after ${timeoutSeconds}s`);
         case 'EHOSTUNREACH':
         case 'ENETUNREACH': return result('unreachable', 'Host unreachable');
         default: return result(isTlsCode(err?.code) ? 'tls' : 'other', err?.message || 'Request failed');

@@ -16,7 +16,8 @@ const context = new AsyncLocalStorage();
 const track = (socket) => {
     const ctx = context.getStore();
     if (!ctx || !socket) return socket;
-    const hop = { startedAt: performance.now(), lookupAt: null, connectAt: null, secureAt: null, certExpiresAt: null };
+    // `secure`: this socket still owes a TLS handshake once it is connected (only a TLS socket can read a certificate)
+    const hop = { startedAt: performance.now(), lookupAt: null, connectAt: null, secureAt: null, certExpiresAt: null, secure: typeof socket.getPeerCertificate === 'function' };
     ctx.hops.push(hop);
     // 'lookup' only fires for a name: an IP address skips DNS
     socket.once('lookup', () => { hop.lookupAt = performance.now(); });
@@ -48,6 +49,12 @@ export class TimedHttpsAgent extends https.Agent {
 }
 
 /**
+ * Did the last hop get as far as being able to send the request: connected, and through the TLS handshake if there is one?
+ * A request that fails after that was heard by the server (or something in front of it) and not answered.
+ */
+export const reachedServer = (hop) => Boolean(hop && hop.connectAt != null && (!hop.secure || hop.secureAt != null));
+
+/**
  * Time one request. The clock starts when `send` is called and stops when it settles (for HTTP: when the response
  * headers have arrived).
  * @param {() => Promise<any>} send  makes the request
@@ -57,7 +64,14 @@ export class TimedHttpsAgent extends https.Agent {
 export async function timedRequest(send) {
     const ctx = { hops: [] };
     const startedAt = performance.now();
-    const response = await context.run(ctx, send);
+    let response;
+    try {
+        response = await context.run(ctx, send);
+    } catch (err) {
+        // Say how far the connection got, so a timeout can be told apart: never connected, or connected and not answered
+        if (err && typeof err === 'object') err.reachedServer = reachedServer(ctx.hops[ctx.hops.length - 1]);
+        throw err;
+    }
     const endedAt = performance.now();
     const last = ctx.hops[ctx.hops.length - 1];
     return {
