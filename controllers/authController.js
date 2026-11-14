@@ -397,7 +397,7 @@ export const refreshToken = asyncHandler(async (req, res) => {
     // A refresh token is accepted once. Showing a spent one again, after the retry leeway, ends the whole sign-in.
     let family;
     try {
-        ({ family } = await sessions.consume(decoded));
+        ({ family } = await sessions.consume(decoded, presented));
     } catch (error) {
         if (!(error instanceof SessionError)) throw error;
         logger.warn(`Refresh refused (${error.code}) for user ${decoded.id}`);

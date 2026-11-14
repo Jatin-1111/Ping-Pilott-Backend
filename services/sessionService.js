@@ -9,7 +9,8 @@
 //  - a token shown again after a short leeway (a retry whose answer was lost is fine) is a copy: the whole family is revoked;
 //  - logout revokes the family, logout-everywhere also raises the user's tokenVersion, which every access token carries
 //    (`tv`) and every request checks, so all access tokens of that user stop working at once;
-//  - tokens issued before this change have no jti: each is accepted once and replaced by a tracked one, so nobody is signed out.
+//  - tokens issued before this change have no jti: each gets a record the first time it is shown, then follows the same rules
+//    (accepted once, replaced by a tracked one), so nobody is signed out by the change.
 
 import crypto from 'node:crypto';
 import jwt from 'jsonwebtoken';
@@ -75,19 +76,34 @@ export function createSessionService({
 
     /**
      * Spend a refresh token. Returns the family the next token belongs to, or throws SessionError.
-     * @param {Object} decoded  the claims from verifyRefresh
+     * @param {Object} decoded    the claims from verifyRefresh
+     * @param {string} presented  the token as it came in (needed only for tokens issued before sessions were tracked)
      */
-    async function consume(decoded) {
-        // issued before sessions were tracked: accept this once and start a family for it
-        if (!decoded.jti) return { family: randomId(), legacy: true };
+    async function consume(decoded, presented) {
+        let id = decoded.jti;
+
+        // Issued before sessions were tracked: it has no record, so give it one, named after a hash of the token. From here it
+        // is handled like any other: accepted once, and a copy shown later ends the sign-in it started.
+        if (!id) {
+            id = `legacy:${crypto.createHash('sha256').update(String(presented)).digest('hex')}`;
+            try {
+                await RefreshToken.updateOne(
+                    { _id: id },
+                    { $setOnInsert: { userId: String(decoded.id), family: randomId(), usedAt: null, revokedAt: null, expiresAt: new Date(decoded.exp * 1000) } },
+                    { upsert: true }
+                );
+            } catch (error) {
+                if (error?.code !== 11000) throw error; // two requests made it at once: the record exists now
+            }
+        }
 
         const spent = await RefreshToken.findOneAndUpdate(
-            { _id: decoded.jti, usedAt: null, revokedAt: null },
+            { _id: id, usedAt: null, revokedAt: null },
             { $set: { usedAt: new Date(now()) } }
         );
-        if (spent) return { family: spent.family };
+        if (spent) return { family: spent.family, legacy: !decoded.jti };
 
-        const record = await RefreshToken.findById(decoded.jti).lean();
+        const record = await RefreshToken.findById(id).lean();
         if (!record) throw new SessionError('UNKNOWN', 'Invalid refresh token');
         if (record.revokedAt) throw new SessionError('REVOKED', 'Invalid refresh token');
 

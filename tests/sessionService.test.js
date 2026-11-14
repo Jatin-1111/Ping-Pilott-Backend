@@ -17,6 +17,10 @@ function fakeRefreshModel() {
     return {
         docs,
         async create(doc) { docs.set(doc._id, { usedAt: null, revokedAt: null, ...doc }); },
+        async updateOne(filter, update, options) {
+            if (docs.has(filter._id)) return; // $setOnInsert changes nothing when the record exists
+            if (options?.upsert) docs.set(filter._id, { _id: filter._id, ...update.$setOnInsert });
+        },
         async findOneAndUpdate(filter, update) {
             const doc = [...docs.values()].find((d) => matches(d, filter));
             if (!doc) return null;
@@ -122,15 +126,39 @@ test('a token signed with the wrong secret or expired is refused', async () => {
     assert.throws(() => service.verifyRefresh(expired), (err) => err.code === 'INVALID');
 });
 
-test('a token issued before sessions were tracked is accepted once and replaced by a tracked one', async () => {
+test('a token issued before sessions were tracked is accepted and replaced by a tracked one', async () => {
     const { model, service } = setup();
     const legacy = jwt.sign({ id: 'user-1' }, SECRETS.refresh, { expiresIn: '7d' }); // no jti, no tv
     const decoded = service.verifyRefresh(legacy);
-    const { family, legacy: isLegacy } = await service.consume(decoded);
+    const { family, legacy: isLegacy } = await service.consume(decoded, legacy);
     assert.equal(isLegacy, true);
     const next = await service.issue(user, family);
-    assert.equal(model.docs.size, 1);
+    assert.equal(model.docs.size, 2); // the legacy token's record and the new tracked token
     assert.ok(service.verifyRefresh(next.refreshToken).jti);
+});
+
+test('a copy of a token from before sessions were tracked is caught like any other', async () => {
+    const { clock, service } = setup();
+    const legacy = jwt.sign({ id: 'user-1' }, SECRETS.refresh, { expiresIn: '7d' });
+    const decoded = service.verifyRefresh(legacy);
+    const { family } = await service.consume(decoded, legacy);
+    const newest = await service.issue(user, family);
+
+    clock.advance(3000);
+    assert.equal((await service.consume(decoded, legacy)).replay, true); // a retry just after
+    clock.advance(60_000);
+    await assert.rejects(service.consume(decoded, legacy), (err) => err.code === 'REUSED');
+    // and the sign-in it started is over, including the token the real owner holds now
+    await assert.rejects(service.consume(service.verifyRefresh(newest.refreshToken)), (err) => err.code === 'REVOKED');
+});
+
+test('two different legacy tokens do not share a record', async () => {
+    const { service } = setup();
+    const a = jwt.sign({ id: 'user-1', jti: undefined, n: 1 }, SECRETS.refresh, { expiresIn: '7d' });
+    const b = jwt.sign({ id: 'user-1', n: 2 }, SECRETS.refresh, { expiresIn: '7d' });
+    const fa = (await service.consume(service.verifyRefresh(a), a)).family;
+    const fb = (await service.consume(service.verifyRefresh(b), b)).family;
+    assert.notEqual(fa, fb);
 });
 
 test('logout revokes the sign-in and is quiet about tokens that are already dead', async () => {
