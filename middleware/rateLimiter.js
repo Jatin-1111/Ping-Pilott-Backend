@@ -49,7 +49,7 @@ const createRateLimiter = ({ name, ...options } = {}) => {
 };
 
 const WINDOW_15_MIN = 15 * 60 * 1000;
-const tooMany = (message) => ({ status: 'error', message });
+const tooMany = (message) => ({ status: 'error', message, code: 'RATE_LIMITED' });
 const emailKey = (req) => `${req.ip}:${String(req.body?.email || '').toLowerCase().trim()}`;
 
 /**
@@ -134,6 +134,19 @@ export const emailLimiter = createRateLimiter({
     windowMs: 60 * 60 * 1000,
     max: 5,
     keyGenerator: emailKey,
+    message: tooMany('We already sent several emails to this address. Please wait an hour before asking again')
+});
+
+/**
+ * The limit above is per client AND address, so one inbox can still be flooded from many clients (5 an hour each). This one
+ * counts per address across every client: 10 an hour (EMAIL_ADDRESS_LIMIT_PER_HOUR). The cost: someone who keeps asking for an
+ * address can use it up and delay that owner's next reset or verification mail until the hour is over.
+ */
+export const emailAddressLimiter = createRateLimiter({
+    name: 'emailAddress',
+    windowMs: 60 * 60 * 1000,
+    max: parseInt(process.env.EMAIL_ADDRESS_LIMIT_PER_HOUR, 10) || 10,
+    keyGenerator: (req) => String(req.body?.email || '').toLowerCase().trim() || `ip:${req.ip}`,
     message: tooMany('We already sent several emails to this address. Please wait an hour before asking again')
 });
 
@@ -243,6 +256,7 @@ export default {
     loginFailureIpLimiter,
     loginFailureAccountLimiter,
     emailLimiter,
+    emailAddressLimiter,
     tokenLimiter,
     agentLimiter,
     agentGuessLimiter,

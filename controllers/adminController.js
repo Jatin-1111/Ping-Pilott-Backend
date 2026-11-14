@@ -3,6 +3,8 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import logger from '../utils/logger.js';
 import { planFeatures } from '../utils/planFeatures.js';
 import { userChanged } from '../utils/userEvents.js';
+import { passwordProblem } from '../utils/passwordPolicy.js';
+import { validationBody } from '../utils/apiError.js';
 
 /**
  * @desc    Create or promote a user to admin
@@ -48,6 +50,12 @@ export const createAdmin = asyncHandler(async (req, res) => {
                 status: 'error',
                 message: 'Email and password are required to create a new admin',
             });
+        }
+
+        // An admin's password has to meet the same rules as anyone's (utils/passwordPolicy.js)
+        const passwordIssue = passwordProblem(password);
+        if (passwordIssue) {
+            return res.status(400).json(validationBody([{ field: 'password', message: passwordIssue }]));
         }
 
         // Check if user with this email already exists

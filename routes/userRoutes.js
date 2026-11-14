@@ -3,6 +3,7 @@ import { body, param } from 'express-validator';
 import userController from '../controllers/userController.js';
 import { protect, authorize } from '../middleware/auth.js';
 import validate from '../middleware/validator.js';
+import { passwordRule } from '../utils/passwordPolicy.js';
 import { PLAN_IDS } from '../services/planService.js';
 
 const router = express.Router();
@@ -21,7 +22,7 @@ router.delete('/me', userController.deleteMyAccount);
 
 router.patch('/change-password', [
     body('currentPassword').exists().withMessage('Current password is required'),
-    body('newPassword').isLength({ min: 6 }).withMessage('New password must be at least 6 characters long'),
+    body('newPassword').custom(passwordRule),
     validate
 ], userController.changePassword);
 

@@ -3,8 +3,9 @@ import { body } from 'express-validator';
 import authController from '../controllers/authController.js';
 import { protect } from '../middleware/auth.js';
 import validate from '../middleware/validator.js';
+import { passwordRule } from '../utils/passwordPolicy.js';
 import {
-    authLimiter, emailLimiter, tokenLimiter, registerLimiter, loginIpLimiter, loginFailureIpLimiter, loginFailureAccountLimiter
+    authLimiter, emailLimiter, emailAddressLimiter, tokenLimiter, registerLimiter, loginIpLimiter, loginFailureIpLimiter, loginFailureAccountLimiter
 } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
@@ -13,7 +14,7 @@ const router = express.Router();
 // a password hash); authLimiter counts only failures, per address and email.
 router.post('/register', registerLimiter, authLimiter, [
     body('email').isEmail().withMessage('Please provide a valid email'),
-    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+    body('password').custom(passwordRule),
     validate
 ], authController.register);
 
@@ -26,13 +27,13 @@ router.post('/login', loginIpLimiter, loginFailureIpLimiter, authLimiter, loginF
 // Email verification routes
 router.get('/verify-email', tokenLimiter, authController.verifyEmail); // links e-mailed before the POST form existed
 router.post('/verify-email', tokenLimiter, authController.verifyEmail);
-router.post('/resend-verification', emailLimiter, [
+router.post('/resend-verification', emailLimiter, emailAddressLimiter, [
     body('email').isEmail().withMessage('Please provide a valid email'),
     validate
 ], authController.resendVerification);
 
 // Password reset routes
-router.post('/forgot-password', emailLimiter, [
+router.post('/forgot-password', emailLimiter, emailAddressLimiter, [
     body('email').isEmail().withMessage('Please provide a valid email'),
     validate
 ], authController.forgotPassword);
@@ -40,7 +41,7 @@ router.post('/forgot-password', emailLimiter, [
 router.post('/reset-password', tokenLimiter, [
     body('token').exists().withMessage('Token is required'),
     body('userId').exists().withMessage('User ID is required'),
-    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+    body('password').custom(passwordRule),
     validate
 ], authController.resetPassword);
 

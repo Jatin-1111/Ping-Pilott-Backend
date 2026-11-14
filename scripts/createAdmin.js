@@ -10,6 +10,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 import mongoose from 'mongoose';
 import User from '../models/User.js';
+import { passwordProblem } from '../utils/passwordPolicy.js';
 import readline from 'readline';
 
 // Create readline interface for user input
@@ -32,7 +33,7 @@ const createAdmin = async () => {
 
         // Get admin details from user
         const email = await question('Enter admin email: ');
-        const password = await question('Enter admin password (min 6 characters): ');
+        const password = await question('Enter admin password (at least 8 characters, not a common one): ');
         const displayName = await question('Enter admin display name (optional): ');
 
         // Validate input
@@ -40,8 +41,9 @@ const createAdmin = async () => {
             throw new Error('Invalid email address');
         }
 
-        if (!password || password.length < 6) {
-            throw new Error('Password must be at least 6 characters');
+        const passwordIssue = passwordProblem(password);
+        if (passwordIssue) {
+            throw new Error(passwordIssue);
         }
 
         // Check if user already exists
