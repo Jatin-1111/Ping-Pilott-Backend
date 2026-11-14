@@ -24,6 +24,11 @@ import Incident from '../models/Incident.js';
 import HostMetric from '../models/HostMetric.js';
 import { hostContextFor, wantsHostContext } from '../services/hostContext.js';
 import HostMetric5m from '../models/HostMetric5m.js';
+import Lock from '../models/Lock.js';
+import { createLocker } from '../utils/userLock.js';
+
+// Taken around "check for a duplicate, count the user's servers, insert" so parallel creates cannot all pass the limit
+const serverCreateLock = createLocker({ model: Lock });
 
 /** The diagnosis and failure detail of a server that is down, from what its last failing check stored */
 const failureViewOf = (server, evidence, detailed, host = null) => failureView({
@@ -392,75 +397,88 @@ export const createServer = asyncHandler(async (req, res) => {
         await assertPublicHost(normalizedUrl);
         if (monitoring?.alerts?.webhookUrl) await assertPublicHost(monitoring.alerts.webhookUrl);
 
-        // Check for duplicate URL for this user
-        const existingServer = await Server.findOne({
-            uploadedBy: userId,
-            url: normalizedUrl
-        }, { _id: 1 }).lean();
-
-        if (existingServer) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'A server with this URL already exists in your account',
-                code: 'DUPLICATE_URL'
-            });
-        }
-
-        // Check server limits for non-admin users
-        if (userRole !== 'admin') {
-            const maxServers = req.user.subscription?.features?.maxServers || 1;
-
-            if (maxServers > 0) { // -1 means unlimited
-                const userServerCount = await Server.countDocuments({ uploadedBy: userId });
-
-                if (userServerCount >= maxServers) {
-                    return res.status(400).json({
-                        status: 'error',
-                        message: `Server limit reached. Your ${userPlan} plan allows ${maxServers} server${maxServers > 1 ? 's' : ''}.`,
-                        code: 'SERVER_LIMIT_REACHED',
-                        data: {
-                            current: userServerCount,
-                            limit: maxServers,
-                            plan: userPlan
-                        }
-                    });
-                }
-            }
-        }
-
         // The free plan does not expire, so no server gets a trial end. (The pause and "trial ended" code still reads
         // trialEndsAt, which is why scripts/migrateFreePlan.js clears it on servers created under the old trial.)
         const trialEnd = null;
 
-        // Build optimized server document
-        const serverData = {
-            name: name.trim(),
-            url: normalizedUrl,
-            type,
-            description: description.trim(),
-            timezone: validationResult.data.timezone || process.env.TIMEZONE || 'UTC',
-            uploadedBy: userId,
-            uploadedAt: new Date(),
-            uploadedRole: userRole,
-            uploadedPlan: userPlan,
-            status: 'unknown',
-            monitoring: {
-                ...buildMonitoringConfig(monitoring, userRole, trialEnd), // Keep existing monitoring config logic
-                alerts: {
-                    ...monitoring?.alerts,
-                    // Email alerts are on unless the user turned them off. (They used to be forced on for
-                    // free and starter users, so unticking the box had no effect.)
-                    email: monitoring?.alerts?.email ?? true,
-                    phone: isPremium ? (monitoring?.alerts?.phone ?? false) : false // Only premium get phone
-                }
-            },
-            contactEmails: sanitizeEmails(contactEmails),
-            contactPhones: sanitizePhones(contactPhones),
-            priority: priority || 'medium' // Set default priority if not provided
-        };
+        // The duplicate check, the plan-limit count and the insert run one request at a time per user (utils/userLock.js).
+        // As separate steps, parallel requests all counted the same servers and all passed: 12 creates on a plan that
+        // allows 5 all succeeded. The work inside returns either a reply to send or the server it created.
+        const outcome = await serverCreateLock.withLock(`server-create:${userId}`, async () => {
+            // Check for duplicate URL for this user
+            const existingServer = await Server.findOne({
+                uploadedBy: userId,
+                url: normalizedUrl
+            }, { _id: 1 }).lean();
 
-        // Create server
-        const server = await Server.create(serverData);
+            if (existingServer) {
+                return {
+                    reply: [400, {
+                        status: 'error',
+                        message: 'A server with this URL already exists in your account',
+                        code: 'DUPLICATE_URL'
+                    }]
+                };
+            }
+
+            // Check server limits for non-admin users
+            if (userRole !== 'admin') {
+                const maxServers = req.user.subscription?.features?.maxServers || 1;
+
+                if (maxServers > 0) { // -1 means unlimited
+                    const userServerCount = await Server.countDocuments({ uploadedBy: userId });
+
+                    if (userServerCount >= maxServers) {
+                        return {
+                            reply: [400, {
+                                status: 'error',
+                                message: `Server limit reached. Your ${userPlan} plan allows ${maxServers} server${maxServers > 1 ? 's' : ''}.`,
+                                code: 'SERVER_LIMIT_REACHED',
+                                data: {
+                                    current: userServerCount,
+                                    limit: maxServers,
+                                    plan: userPlan
+                                }
+                            }]
+                        };
+                    }
+                }
+            }
+
+            // Build optimized server document
+            const serverData = {
+                name: name.trim(),
+                url: normalizedUrl,
+                type,
+                description: description.trim(),
+                timezone: validationResult.data.timezone || process.env.TIMEZONE || 'UTC',
+                uploadedBy: userId,
+                uploadedAt: new Date(),
+                uploadedRole: userRole,
+                uploadedPlan: userPlan,
+                status: 'unknown',
+                monitoring: {
+                    ...buildMonitoringConfig(monitoring, userRole, trialEnd), // Keep existing monitoring config logic
+                    alerts: {
+                        ...monitoring?.alerts,
+                        // Email alerts are on unless the user turned them off. (They used to be forced on for
+                        // free and starter users, so unticking the box had no effect.)
+                        email: monitoring?.alerts?.email ?? true,
+                        phone: isPremium ? (monitoring?.alerts?.phone ?? false) : false // Only premium get phone
+                    }
+                },
+                contactEmails: sanitizeEmails(contactEmails),
+                contactPhones: sanitizePhones(contactPhones),
+                priority: priority || 'medium' // Set default priority if not provided
+            };
+
+            // Create server
+            return { server: await Server.create(serverData) };
+        });
+
+        if (outcome.reply) return res.status(outcome.reply[0]).json(outcome.reply[1]);
+
+        const { server } = outcome;
         await invalidateServerCache(userId);
 
         logger.info(`Server created: ${server.name} (${server._id}) by user ${userId}`, {
@@ -491,6 +509,15 @@ export const createServer = asyncHandler(async (req, res) => {
             requestBody: { name, url, type },
             stack: error.stack
         });
+
+        // Another create for this account held the lock for the whole wait (a few seconds): ask the client to retry
+        if (error.code === 'LOCK_BUSY') {
+            return res.status(429).json({
+                status: 'error',
+                message: 'Another change to your monitors is still in progress. Try again in a moment.',
+                code: 'BUSY'
+            });
+        }
 
         if (error.code === 'PRIVATE_TARGET') {
             return res.status(400).json({
