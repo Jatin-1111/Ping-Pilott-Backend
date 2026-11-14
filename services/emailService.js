@@ -391,7 +391,7 @@ export const sendPasswordResetEmail = async (user, resetToken) => {
               </a>
             </div>
             <p>If you didn't request this, please ignore this email. Your password will remain unchanged.</p>
-            <p>This link will expire in 24 hours.</p>
+            <p>This link will expire in 1 hour.</p>
             <p>Best regards,<br>Team Ping Pilot</p>
           </div>
         </div>

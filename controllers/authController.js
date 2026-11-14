@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { newEmailToken, hashToken, tokenMatches } from '../utils/tokenHash.js';
 import User, { burnPasswordCheck } from '../models/User.js';
 import RefreshToken from '../models/RefreshToken.js';
 import logger from '../utils/logger.js';
@@ -31,8 +31,8 @@ export const register = asyncHandler(async (req, res) => {
 
     const verificationRequired = requireEmailVerification();
 
-    // Generate verification token
-    const verificationToken = uuidv4();
+    // Generate verification token: the e-mail carries it, the database keeps only its hash
+    const verificationToken = newEmailToken();
     const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
     // Create user
@@ -40,7 +40,9 @@ export const register = asyncHandler(async (req, res) => {
         email,
         password,
         displayName: name || '',
-        ...(verificationRequired ? { verificationToken, verificationTokenExpiry } : { emailVerified: true }),
+        ...(verificationRequired
+            ? { verificationToken: hashToken(verificationToken), verificationTokenExpiry }
+            : { emailVerified: true }),
     });
 
     if (!verificationRequired) {
@@ -159,7 +161,9 @@ export const login = asyncHandler(async (req, res) => {
  * @access  Public
  */
 export const verifyEmail = asyncHandler(async (req, res) => {
-    const { token, userId } = req.query;
+    // POST (token in the body) is what the web app sends now: a link that changes state when it is merely fetched is opened
+    // by mail scanners and previews, and the token ends up in URLs that get logged. GET stays for links already e-mailed.
+    const { token, userId } = req.method === 'POST' ? req.body : req.query;
 
     // Check if token and userId are provided
     if (!token || !userId) {
@@ -188,7 +192,7 @@ export const verifyEmail = asyncHandler(async (req, res) => {
     }
 
     // Check if token matches
-    if (user.verificationToken !== token) {
+    if (!tokenMatches(user.verificationToken, token)) {
         return res.status(400).json({
             status: 'error',
             message: 'Invalid verification token',
@@ -249,11 +253,11 @@ export const resendVerification = asyncHandler(async (req, res) => {
     }
 
     // Generate new verification token
-    const verificationToken = uuidv4();
+    const verificationToken = newEmailToken();
     const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
-    // Update user with new token
-    user.verificationToken = verificationToken;
+    // Update user with new token (hash only)
+    user.verificationToken = hashToken(verificationToken);
     user.verificationTokenExpiry = verificationTokenExpiry;
     await user.save();
 
@@ -284,11 +288,12 @@ export const forgotPassword = asyncHandler(async (req, res) => {
     }
 
     // Generate reset token
-    const resetToken = uuidv4();
-    const resetTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+    // The link works for an hour (it used to be 24): a reset link in an inbox is as good as the password while it is valid
+    const resetToken = newEmailToken();
+    const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
-    // Update user with reset token
-    user.resetToken = resetToken;
+    // Update user with reset token (hash only)
+    user.resetToken = hashToken(resetToken);
     user.resetTokenExpiry = resetTokenExpiry;
     await user.save();
 
@@ -329,7 +334,7 @@ export const resetPassword = asyncHandler(async (req, res) => {
     }
 
     // Check if token matches
-    if (user.resetToken !== token) {
+    if (!tokenMatches(user.resetToken, token)) {
         return res.status(400).json({
             status: 'error',
             message: 'Invalid reset token',

@@ -1,7 +1,7 @@
 import User from '../models/User.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendVerificationEmail } from '../services/emailService.js';
-import { v4 as uuidv4 } from 'uuid';
+import { newEmailToken, hashToken } from '../utils/tokenHash.js';
 import logger from '../utils/logger.js';
 import { applyPlanChange } from '../services/planService.js';
 import { purgeUserData } from '../services/accountCleanup.js';
@@ -113,9 +113,9 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
             // Verification is switched off: nothing to confirm, so the new address takes effect now
             updates.email = wanted;
         } else {
-            const verificationToken = uuidv4();
+            const verificationToken = newEmailToken();
             updates.pendingEmail = wanted;
-            updates.verificationToken = verificationToken;
+            updates.verificationToken = hashToken(verificationToken); // the e-mail carries the token, the database its hash
             updates.verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
             emailChangePending = true;
 

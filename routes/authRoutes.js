@@ -24,7 +24,8 @@ router.post('/login', loginIpLimiter, loginFailureIpLimiter, authLimiter, loginF
 ], authController.login);
 
 // Email verification routes
-router.get('/verify-email', tokenLimiter, authController.verifyEmail);
+router.get('/verify-email', tokenLimiter, authController.verifyEmail); // links e-mailed before the POST form existed
+router.post('/verify-email', tokenLimiter, authController.verifyEmail);
 router.post('/resend-verification', emailLimiter, [
     body('email').isEmail().withMessage('Please provide a valid email'),
     validate
