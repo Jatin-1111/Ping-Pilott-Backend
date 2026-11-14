@@ -3,6 +3,7 @@
 import { redisConnection } from '../config/redis.js';
 import logger from './logger.js';
 import { CACHE_STRATEGIES } from '../config/performance.js';
+import { createServerListCache } from './serverListCache.js';
 
 /**
  * Delete every key matching a pattern. Uses SCAN (incremental) instead of KEYS, which blocks Redis
@@ -32,17 +33,21 @@ async function deleteByPattern(pattern) {
     return removed;
 }
 
+// A user's cached server lists live under a per-user version number (utils/serverListCache.js): invalidating is one INCR
+// instead of a SCAN over every key in Redis, which ran on every status change and every edit.
+const serverListCache = createServerListCache({ redis: redisConnection, withTimeout, timeoutMs: CACHE_TIMEOUT_MS });
+
+/** The key to cache this user's server list under, or null when Redis does not answer (then skip the cache) */
+export const serverListCacheKey = (userId, query) => serverListCache.key(userId, query);
+
 /**
  * Invalidate the cached server lists of a user. Call it after anything that changes what that user's
  * list shows: a server added, edited, deleted, checked, or its status changing.
- * (Cache keys are `api:servers:<userId>:<query>`; the old pattern never matched them, and nothing called it,
- * so a server you had just added was missing from the list for up to 30 seconds.)
  * @param {string} userId - owner of the servers
  */
 export async function invalidateServerCache(userId) {
     try {
-        const removed = await withTimeout(deleteByPattern(`api:servers:${userId}:*`), 2000);
-        if (removed > 0) logger.debug(`Invalidated ${removed} cache keys for user ${userId}`);
+        await serverListCache.invalidate(userId);
     } catch (error) {
         logger.error(`Error invalidating cache: ${error.message}`);
     }

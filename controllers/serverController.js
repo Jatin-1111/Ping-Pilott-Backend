@@ -18,7 +18,7 @@ import { applyCheckResult } from '../services/checkRecorder.js';
 import { invalidateServerCache } from '../utils/cacheManager.js';
 import { checkPlanLimits } from '../services/planLimits.js';
 import { isWithinCheckSchedule, timezoneOf } from '../utils/schedule.js';
-import { getCachedData, setCachedData, dedupedFetch } from '../utils/cacheManager.js';
+import { getCachedData, setCachedData, dedupedFetch, serverListCacheKey } from '../utils/cacheManager.js';
 import { CACHE_STRATEGIES } from '../config/performance.js';
 import Incident from '../models/Incident.js';
 import HostMetric from '../models/HostMetric.js';
@@ -68,12 +68,13 @@ export const getServers = asyncHandler(async (req, res) => {
     const showAll = isAdmin && req.query.admin === 'true';
     const userId = req.user.id;
 
-    // Redis Cache Key Generation
-    const cacheKey = `api:servers:${userId}:${JSON.stringify(req.query)}`;
+    // Redis cache key: the user, their list version (raised on every change, so invalidating is one command) and the query
+    // reduced to the parameters the list reads. null when Redis does not answer: the cache is skipped.
+    const cacheKey = await serverListCacheKey(userId, req.query);
 
     try {
         // 1. Try Cache with new utility
-        const cachedData = await getCachedData(cacheKey);
+        const cachedData = cacheKey ? await getCachedData(cacheKey) : null;
         if (cachedData) {
             // Add cache meta header
             cachedData.meta.cached = true;
@@ -85,8 +86,10 @@ export const getServers = asyncHandler(async (req, res) => {
         const filter = showAll ? {} : { uploadedBy: userId };
 
         // Search optimization - only add complex $or when actually needed
-        if (req.query.search?.trim()) {
-            const searchTerm = req.query.search.trim();
+        // (a non-string value, e.g. ?search[a]=1, is ignored: calling .trim() on it used to answer 500)
+        const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
+        if (search) {
+            const searchTerm = search;
             const searchRegex = new RegExp(searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
             filter.$or = [
                 { name: searchRegex },
@@ -200,7 +203,7 @@ export const getServers = asyncHandler(async (req, res) => {
         };
 
         // 2. Set Cache with tiered TTL (30 seconds for server lists)
-        await setCachedData(cacheKey, responseData, CACHE_STRATEGIES.serverList);
+        if (cacheKey) await setCachedData(cacheKey, responseData, CACHE_STRATEGIES.serverList);
 
         res.status(200).json(responseData);
 
