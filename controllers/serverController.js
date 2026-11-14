@@ -8,6 +8,7 @@ import logger from '../utils/logger.js';
 import mongoose from 'mongoose';
 import { createServerSchema, updateServerSchema, formatZodIssues } from '../utils/validations.js';
 import { assertPublicHost } from '../utils/ssrfGuard.js';
+import { targetProblem } from '../utils/address.js';
 import { cleanTimings } from '../utils/timings.js';
 import { diagnose } from '../utils/diagnosis.js';
 import { failureView } from '../utils/failureDetail.js';
@@ -634,6 +635,19 @@ export const updateServer = asyncHandler(async (req, res) => {
                 message: 'A keyword check is for websites and APIs.',
                 code: 'KEYWORD_NOT_SUPPORTED'
             });
+        }
+
+        // The schema checks the address only when the type comes with it; otherwise check it against the stored type
+        if (validatedData.url !== undefined && validatedData.type === undefined) {
+            const problem = targetProblem(server.type, validatedData.url);
+            if (problem) {
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'Validation error',
+                    code: 'VALIDATION_ERROR',
+                    errors: [{ field: 'url', message: problem }]
+                });
+            }
         }
 
         const planError = checkPlanLimits(req.user, validatedData.monitoring);

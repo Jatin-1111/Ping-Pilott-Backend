@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { isValidTimezone } from './schedule.js';
-import { containsCredentials } from './address.js';
+import { containsCredentials, targetProblem } from './address.js';
 import { parseStatusSpec } from './statusSpec.js';
 import { KEYWORD_MODES, MAX_KEYWORD_LENGTH } from './keyword.js';
 import { LIMITS } from './hostAlerts.js';
@@ -50,7 +50,8 @@ const monitoringShape = z.object({
             z.literal(''),
             z.string().url("Invalid URL format").refine((u) => /^https?:\/\//i.test(u), "Webhook must be an http(s) URL")
         ]).optional(),
-        responseThreshold: z.number().int().min(10).optional(),
+        // 100 ms: the rule the route used to enforce before the schema saw the request (the schema's own said 10)
+        responseThreshold: z.number().int().min(100, 'Response threshold must be at least 100 ms').optional(),
         // Warn when the certificate is about to expire (by email and webhook). On unless set to false.
         certExpiry: z.boolean().optional(),
         timeWindow: z.object({
@@ -61,8 +62,8 @@ const monitoringShape = z.object({
 });
 
 const serverShape = {
-    name: z.string().min(1, "Name is required").max(100),
-    url: z.string().min(3, "URL is required") // Basic length check, robust check via normalization later
+    name: z.string().trim().min(1, "Name is required").max(100),
+    url: z.string().trim().min(3, "URL is required") // Basic length check, robust check via normalization later
         .refine((value) => !containsCredentials(value), 'Remove the username and password from the address. They would be stored and shown in alert emails and feeds.'),
     type: z.enum(['website', 'api', 'tcp', 'database']),
     description: z.string().max(500),
@@ -80,6 +81,14 @@ const noKeywordOnSockets = (data, ctx) => {
     }
 };
 
+// The address has to be an address of the right kind for the type (utils/address.js): http(s) for websites and APIs, host and a
+// real port for TCP and databases. An update that does not send the type is checked by the controller against the stored one.
+const validTarget = (data, ctx) => {
+    if (data.url === undefined || data.type === undefined) return;
+    const problem = targetProblem(data.type, data.url);
+    if (problem) ctx.addIssue({ code: 'custom', path: ['url'], message: problem });
+};
+
 // Create: defaults apply here
 export const createServerSchema = z.object({
     ...serverShape,
@@ -90,10 +99,10 @@ export const createServerSchema = z.object({
     monitoring: serverShape.monitoring.optional().default({}),
     contactEmails: serverShape.contactEmails.optional().default([]),
     contactPhones: serverShape.contactPhones.optional().default([])
-}).superRefine(noKeywordOnSockets);
+}).superRefine(noKeywordOnSockets).superRefine(validTarget);
 
 // Update: every field optional, no defaults, so only what was sent is validated and changed
-export const updateServerSchema = z.object(serverShape).partial().superRefine(noKeywordOnSockets);
+export const updateServerSchema = z.object(serverShape).partial().superRefine(noKeywordOnSockets).superRefine(validTarget);
 
 /** Zod 4 exposes problems as `issues` (there is no `errors`). */
 export const formatZodIssues = (error) =>

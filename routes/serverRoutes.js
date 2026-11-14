@@ -14,30 +14,8 @@ router.use(protect);
 // Get all servers
 router.get('/', serverController.getServers);
 
-// Create new server
-router.post('/', [
-    body('name').trim().not().isEmpty().withMessage('Server name is required'),
-    body('url').trim().not().isEmpty().withMessage('URL is required'),
-    body('type').optional().isIn(['website', 'api', 'tcp', 'database']).withMessage('Invalid server type'),
-    body('description').optional().trim(),
-    body('monitoring').optional().isObject().withMessage('Monitoring must be an object'),
-    body('monitoring.frequency').optional().isInt({ min: 1, max: 60 }).withMessage('Frequency must be between 1 and 60 minutes'),
-    body('monitoring.daysOfWeek').optional().isArray().withMessage('Days of week must be an array'),
-    body('monitoring.daysOfWeek.*').optional().isInt({ min: 0, max: 6 }).withMessage('Days must be between 0 (Sunday) and 6 (Saturday)'),
-    body('monitoring.timeWindows').optional().isArray().withMessage('Time windows must be an array'),
-    body('monitoring.timeWindows.*.start').optional().matches(/^([01]\d|2[0-3]):([0-5]\d)$/).withMessage('Start time must be in format HH:MM'),
-    body('monitoring.timeWindows.*.end').optional().matches(/^([01]\d|2[0-3]):([0-5]\d)$/).withMessage('End time must be in format HH:MM'),
-    body('monitoring.alerts').optional().isObject().withMessage('Alerts must be an object'),
-    body('monitoring.alerts.enabled').optional().isBoolean().withMessage('Enabled must be a boolean'),
-    body('monitoring.alerts.email').optional().isBoolean().withMessage('Email alert must be a boolean'),
-    body('monitoring.alerts.phone').optional().isBoolean().withMessage('Phone alert must be a boolean'),
-    body('monitoring.alerts.responseThreshold').optional().isInt({ min: 100 }).withMessage('Response threshold must be at least 100ms'),
-    body('contactEmails').optional().isArray().withMessage('Contact emails must be an array'),
-    body('contactEmails.*').optional().isEmail().withMessage('Invalid email format'),
-    body('contactPhones').optional().isArray().withMessage('Contact phones must be an array'),
-    body('contactPhones.*').optional().matches(/^\d{10,15}$/).withMessage('Phone must be 10 to 15 digits'),
-    validate
-], serverController.createServer);
+// Create new server (the body is validated by the Zod schema in the controller, see the note on PATCH below)
+router.post('/', serverController.createServer);
 
 // Host agent: turn it on (the token is in this response only), replace the token, turn it off
 router.post('/:id/agent', [param('id').isMongoId().withMessage('Invalid server ID'), validate], asyncHandler(hostAgentController.enable));
@@ -52,29 +30,11 @@ router.get('/:id', [
     validate
 ], serverController.getServerById);
 
-// Update server
+// Update server. The body is validated by the Zod schema in the controller (utils/validations.js), the one place the rules
+// live: this route used to repeat them with express-validator, with different phone and threshold rules, and its trim()
+// turned a number into a string before the schema saw it.
 router.patch('/:id', [
     param('id').isMongoId().withMessage('Invalid server ID'),
-    body('name').optional().trim().not().isEmpty().withMessage('Server name cannot be empty'),
-    body('url').optional().trim().not().isEmpty().withMessage('URL cannot be empty'),
-    body('type').optional().isIn(['website', 'api', 'tcp', 'database']).withMessage('Invalid server type'),
-    body('description').optional().trim(),
-    body('monitoring').optional().isObject().withMessage('Monitoring must be an object'),
-    body('monitoring.frequency').optional().isInt({ min: 1, max: 60 }).withMessage('Frequency must be between 1 and 60 minutes'),
-    body('monitoring.daysOfWeek').optional().isArray().withMessage('Days of week must be an array'),
-    body('monitoring.daysOfWeek.*').optional().isInt({ min: 0, max: 6 }).withMessage('Days must be between 0 (Sunday) and 6 (Saturday)'),
-    body('monitoring.timeWindows').optional().isArray().withMessage('Time windows must be an array'),
-    body('monitoring.timeWindows.*.start').optional().matches(/^([01]\d|2[0-3]):([0-5]\d)$/).withMessage('Start time must be in format HH:MM'),
-    body('monitoring.timeWindows.*.end').optional().matches(/^([01]\d|2[0-3]):([0-5]\d)$/).withMessage('End time must be in format HH:MM'),
-    body('monitoring.alerts').optional().isObject().withMessage('Alerts must be an object'),
-    body('monitoring.alerts.enabled').optional().isBoolean().withMessage('Enabled must be a boolean'),
-    body('monitoring.alerts.email').optional().isBoolean().withMessage('Email alert must be a boolean'),
-    body('monitoring.alerts.phone').optional().isBoolean().withMessage('Phone alert must be a boolean'),
-    body('monitoring.alerts.responseThreshold').optional().isInt({ min: 100 }).withMessage('Response threshold must be at least 100ms'),
-    body('contactEmails').optional().isArray().withMessage('Contact emails must be an array'),
-    body('contactEmails.*').optional().isEmail().withMessage('Invalid email format'),
-    body('contactPhones').optional().isArray().withMessage('Contact phones must be an array'),
-    body('contactPhones.*').optional().matches(/^\d{10,15}$/).withMessage('Phone must be 10 to 15 digits'),
     validate
 ], serverController.updateServer);
 
