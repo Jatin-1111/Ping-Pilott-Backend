@@ -51,6 +51,25 @@ export const authLimiter = createRateLimiter({
 });
 
 /**
+ * Every password hash costs CPU (about 80 ms), and authLimiter above does not count the ones that succeed, so on its own it
+ * does not limit sign-ups or logins into accounts the caller owns. These two count EVERY attempt from an address.
+ *
+ * Sign-up: 10 accounts per hour per address. Login: 100 per 15 minutes per address, generous because a whole office can
+ * share one address and each person signs in about once a day. Both can be raised with an environment variable.
+ */
+export const registerLimiter = createRateLimiter({
+    windowMs: 60 * 60 * 1000,
+    max: parseInt(process.env.REGISTER_RATE_LIMIT_MAX, 10) || 10,
+    message: tooMany('Too many accounts created from this address. Please try again later')
+});
+
+export const loginIpLimiter = createRateLimiter({
+    windowMs: WINDOW_15_MIN,
+    max: parseInt(process.env.LOGIN_IP_RATE_LIMIT_MAX, 10) || 100,
+    message: tooMany('Too many sign-in attempts from this address. Please try again in 15 minutes')
+});
+
+/**
  * Endpoints that send an email (verification, password reset). Stops them being used to flood
  * someone's inbox or burn the SMTP quota: 5 per hour per address.
  */
@@ -134,6 +153,8 @@ export const createUserRateLimiter = (options = {}) => {
 export default {
     apiLimiter,
     authLimiter,
+    registerLimiter,
+    loginIpLimiter,
     emailLimiter,
     tokenLimiter,
     agentLimiter,

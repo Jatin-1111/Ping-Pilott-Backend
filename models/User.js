@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+// Native bcrypt: hashing runs on libuv's thread pool. The pure-JavaScript bcryptjs ran on the event loop, so a handful of
+// logins at once (about 80 ms of CPU each) stalled every other request, and the workers when they run in the API process.
+// Hashes made by bcryptjs ($2a$) verify with this unchanged.
+import bcrypt from 'bcrypt';
 import { userCache } from '../utils/userCache.js';
 import logger from '../utils/logger.js';
 import { planFeatures } from '../utils/planFeatures.js';
@@ -168,8 +171,7 @@ userSchema.pre('save', async function (next) {
     // (a brand new account has no earlier sessions to cut off)
     if (!this.isNew) this.passwordChangedAt = new Date();
     try {
-        const salt = await bcrypt.genSalt(passwordRounds());
-        this.password = await bcrypt.hash(this.password, salt);
+        this.password = await bcrypt.hash(this.password, passwordRounds());
         next();
     } catch (error) {
         next(error);

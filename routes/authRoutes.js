@@ -3,18 +3,19 @@ import { body } from 'express-validator';
 import authController from '../controllers/authController.js';
 import { protect } from '../middleware/auth.js';
 import validate from '../middleware/validator.js';
-import { authLimiter, emailLimiter, tokenLimiter } from '../middleware/rateLimiter.js';
+import { authLimiter, emailLimiter, tokenLimiter, registerLimiter, loginIpLimiter } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
 
-// Registration and login routes
-router.post('/register', authLimiter, [
+// Registration and login routes. registerLimiter and loginIpLimiter count every attempt from an address (each one costs
+// a password hash); authLimiter counts only failures, per address and email.
+router.post('/register', registerLimiter, authLimiter, [
     body('email').isEmail().withMessage('Please provide a valid email'),
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
     validate
 ], authController.register);
 
-router.post('/login', authLimiter, [
+router.post('/login', loginIpLimiter, authLimiter, [
     body('email').isEmail().withMessage('Please provide a valid email'),
     body('password').exists().withMessage('Password is required'),
     validate
