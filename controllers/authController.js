@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import User from '../models/User.js';
+import User, { burnPasswordCheck } from '../models/User.js';
 import RefreshToken from '../models/RefreshToken.js';
 import logger from '../utils/logger.js';
 import { sendVerificationEmail, sendPasswordResetEmail } from '../services/emailService.js';
@@ -96,8 +96,9 @@ export const login = asyncHandler(async (req, res) => {
     // Find user
     const user = await User.findOne({ email }).select('+password');
 
-    // Check if user exists
+    // Check if user exists. An unknown address does a throwaway hash first so it takes as long as a wrong password.
     if (!user) {
+        await burnPasswordCheck(password);
         return res.status(401).json({
             status: 'error',
             message: 'Invalid credentials',

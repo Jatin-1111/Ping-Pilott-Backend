@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import mongoose from 'mongoose';
 // Native bcrypt: hashing runs on libuv's thread pool. The pure-JavaScript bcryptjs ran on the event loop, so a handful of
 // logins at once (about 80 ms of CPU each) stalled every other request, and the workers when they run in the API process.
@@ -171,6 +172,16 @@ const userSchema = new mongoose.Schema({
 // bcrypt work factor. Each step doubles the time a hash takes, and sign-in and sign-up pay it once.
 // 10 is the lowest value current guidance accepts; 12 made both take over two seconds on a small server.
 export const passwordRounds = () => Math.min(14, Math.max(10, parseInt(process.env.BCRYPT_ROUNDS, 10) || 10));
+
+// Sign-in for an address that has no account used to answer in about 4 ms against about 76 ms for a real account with a wrong
+// password, so the response time told anyone which addresses are registered. Hashing a throwaway password for the unknown
+// case costs the same as a real check and makes the two indistinguishable.
+let throwawayHash = null;
+export async function burnPasswordCheck(password) {
+    throwawayHash ??= bcrypt.hash(crypto.randomUUID(), passwordRounds());
+    await bcrypt.compare(String(password), await throwawayHash);
+    return false;
+}
 
 // Hash password before saving
 userSchema.pre('save', async function (next) {
