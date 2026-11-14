@@ -57,6 +57,8 @@ import { redisConnection } from './config/redis.js';
 import { reconcileOpenIncidents } from './services/incidentService.js';
 import { USER_CHANGED_CHANNEL, handleUserChangedMessage } from './utils/userEvents.js';
 import { parseTrustProxy } from './utils/trustProxy.js';
+import { errorBody } from './utils/apiError.js';
+import { noStore } from './middleware/noStore.js';
 import { emailVerificationNotice } from './utils/emailVerification.js';
 
 const httpServer = createServer(app);
@@ -208,6 +210,8 @@ app.get('/health/monitoring', async (req, res) => {
 });
 
 // API routes
+// Nothing under /api is for a browser or a shared cache to keep (a handler that wants caching sets its own header)
+app.use('/api', noStore);
 // Host agents sign in with a token and have their own limit per token, so they come before the per-address one
 app.use('/api/agent', agentRoutes);
 // The script that installs the agent: `curl -fsSL <this address>/install.sh | sudo sh`
@@ -230,10 +234,7 @@ app.use('/api/support', supportRoutes);
 
 // Handle 404 routes
 app.use('*', (req, res) => {
-    res.status(404).json({
-        status: 'error',
-        message: `Can't find ${req.originalUrl} on this server`,
-    });
+    res.status(404).json(errorBody(`Can't find ${req.originalUrl} on this server`, 'NOT_FOUND'));
 });
 
 // Global error handler

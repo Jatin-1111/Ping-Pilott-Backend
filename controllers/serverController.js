@@ -9,6 +9,7 @@ import mongoose from 'mongoose';
 import { createServerSchema, updateServerSchema, formatZodIssues } from '../utils/validations.js';
 import { assertPublicHost } from '../utils/ssrfGuard.js';
 import { targetProblem } from '../utils/address.js';
+import { validationBody } from '../utils/apiError.js';
 import { cleanTimings } from '../utils/timings.js';
 import { diagnose } from '../utils/diagnosis.js';
 import { failureView } from '../utils/failureDetail.js';
@@ -358,12 +359,7 @@ export const createServer = asyncHandler(async (req, res) => {
         const validationResult = createServerSchema.safeParse(req.body);
 
         if (!validationResult.success) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Validation error',
-                code: 'VALIDATION_ERROR',
-                errors: formatZodIssues(validationResult.error)
-            });
+            return res.status(400).json(validationBody(formatZodIssues(validationResult.error)));
         }
 
         const {
@@ -617,12 +613,7 @@ export const updateServer = asyncHandler(async (req, res) => {
         const validationResult = updateServerSchema.safeParse(req.body);
 
         if (!validationResult.success) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Validation error',
-                code: 'VALIDATION_ERROR',
-                errors: formatZodIssues(validationResult.error)
-            });
+            return res.status(400).json(validationBody(formatZodIssues(validationResult.error)));
         }
 
         const validatedData = validationResult.data;
@@ -641,12 +632,7 @@ export const updateServer = asyncHandler(async (req, res) => {
         if (validatedData.url !== undefined && validatedData.type === undefined) {
             const problem = targetProblem(server.type, validatedData.url);
             if (problem) {
-                return res.status(400).json({
-                    status: 'error',
-                    message: 'Validation error',
-                    code: 'VALIDATION_ERROR',
-                    errors: [{ field: 'url', message: problem }]
-                });
+                return res.status(400).json(validationBody([{ field: 'url', message: problem }]));
             }
         }
 

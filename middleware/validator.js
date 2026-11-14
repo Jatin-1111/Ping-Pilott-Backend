@@ -1,4 +1,5 @@
 import { validationResult } from 'express-validator';
+import { validationBody } from '../utils/apiError.js';
 
 /**
  * Validation middleware
@@ -13,11 +14,8 @@ const validate = (req, res, next) => {
             message: error.msg
         }));
 
-        return res.status(400).json({
-            status: 'error',
-            message: 'Validation error',
-            errors: errorMessages
-        });
+        // message is the first problem in words a person can act on (clients show it); errors lists them all
+        return res.status(400).json(validationBody(errorMessages));
     }
 
     next();

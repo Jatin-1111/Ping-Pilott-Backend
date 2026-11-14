@@ -5,6 +5,7 @@ import logger from '../utils/logger.js';
 import { requireEmailVerification } from '../utils/emailVerification.js';
 import { userCache } from '../utils/userCache.js';
 import { checkSessionClaims } from '../utils/sessionClaims.js';
+import { throttled, suppressedNote } from '../utils/logThrottle.js';
 
 /**
  * Protect routes - authentication middleware
@@ -23,6 +24,7 @@ export const protect = asyncHandler(async (req, res, next) => {
     if (!token) {
         return res.status(401).json({
             status: 'error',
+            code: 'UNAUTHORIZED',
             message: 'Not authorized to access this route',
         });
     }
@@ -49,6 +51,7 @@ export const protect = asyncHandler(async (req, res, next) => {
         if (!user) {
             return res.status(401).json({
                 status: 'error',
+                code: 'USER_NOT_FOUND',
                 message: 'User not found',
             });
         }
@@ -76,10 +79,16 @@ export const protect = asyncHandler(async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        logger.error(`Auth error: ${error.message}`);
+        // An expired, malformed or wrong-secret token is ordinary traffic (every signed-out tab, every scanner), not a server
+        // error: it used to be one error line per request, which buried the real ones and let anyone fill error.log.
+        // Said at most once a minute, as a warning, with a count of what was held back.
+        throttled('auth-rejected-token', 60 * 1000, (held) =>
+            logger.warn(`Requests with a bad or expired token are being refused${suppressedNote(held, 60 * 1000)}: ${error.message}`)
+        );
 
         return res.status(401).json({
             status: 'error',
+            code: 'UNAUTHORIZED',
             message: 'Not authorized to access this route',
         });
     }
@@ -95,6 +104,7 @@ export const authorize = (...roles) => {
         if (!req.user) {
             return res.status(401).json({
                 status: 'error',
+                code: 'UNAUTHORIZED',
                 message: 'Not authorized to access this route',
             });
         }
@@ -102,6 +112,7 @@ export const authorize = (...roles) => {
         if (!roles.includes(req.user.role)) {
             return res.status(403).json({
                 status: 'error',
+                code: 'FORBIDDEN',
                 message: `Role ${req.user.role} is not authorized to access this route`,
             });
         }
