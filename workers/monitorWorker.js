@@ -15,6 +15,7 @@ import { loadMonitor, formatSummary, loopLagLimitMs } from '../services/loadMoni
 import { performance } from 'perf_hooks';
 import { EGRESS_DOWN_KEY } from '../utils/healthKeys.js';
 import mongoose from 'mongoose';
+import { poolSize } from '../config/db.js';
 
 const QUEUE_NAME = 'monitor-server-queue';
 
@@ -72,7 +73,7 @@ export const monitorWorker = new Worker(QUEUE_NAME, async (job) => {
 
     try {
         if (mongoose.connection.readyState === 0) {
-            await mongoose.connect(process.env.MONGO_URI);
+            await mongoose.connect(process.env.MONGO_URI, { maxPoolSize: poolSize() });
         }
 
         const server = await Server.findById(serverId)

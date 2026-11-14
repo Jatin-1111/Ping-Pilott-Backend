@@ -17,9 +17,10 @@ import Server from '../models/Server.js';
 import AlertEvent from '../models/AlertEvent.js';
 import PendingAlert from '../models/PendingAlert.js';
 import mongoose from 'mongoose';
+import { poolSize } from '../config/db.js';
 
 const ensureMongo = async () => {
-    if (mongoose.connection.readyState === 0) await mongoose.connect(process.env.MONGO_URI);
+    if (mongoose.connection.readyState === 0) await mongoose.connect(process.env.MONGO_URI, { maxPoolSize: poolSize() });
 };
 
 /**

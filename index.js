@@ -57,6 +57,7 @@ import { redisConnection } from './config/redis.js';
 import { reconcileOpenIncidents } from './services/incidentService.js';
 import { USER_CHANGED_CHANNEL, handleUserChangedMessage } from './utils/userEvents.js';
 import { parseTrustProxy } from './utils/trustProxy.js';
+import { emailVerificationNotice } from './utils/emailVerification.js';
 
 const httpServer = createServer(app);
 // Render's proxy keeps connections open for about a minute. Node closes idle ones after 5 seconds by default, which
@@ -281,6 +282,9 @@ redisSubscriber.on('message', (channel, message) => {
 // Start server
 const server = httpServer.listen(PORT, () => {
     logger.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+
+    const verificationNotice = emailVerificationNotice();
+    if (verificationNotice) logger.warn(verificationNotice);
 
     // Initialize cron jobs after server starts. With RUN_SCHEDULER=false the scheduler is its own process
     // (workers/scheduler.js), which is what lets this API run as more than one instance: the cron jobs must run once, not

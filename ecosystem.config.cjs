@@ -37,9 +37,11 @@ module.exports = {
             max_memory_restart: '512M',
             env: {
                 NODE_ENV: "development",
+                MONGO_MAX_POOL_SIZE: "10", // one cron job at a time; every process's pool counts against the cluster's limit
             },
             env_production: {
                 NODE_ENV: "production",
+                MONGO_MAX_POOL_SIZE: "10",
             }
         },
         {
@@ -68,9 +70,11 @@ module.exports = {
             max_memory_restart: '512M',
             env: {
                 NODE_ENV: "development",
+                MONGO_MAX_POOL_SIZE: "10", // a few concurrent alert jobs
             },
             env_production: {
                 NODE_ENV: "production",
+                MONGO_MAX_POOL_SIZE: "10",
             }
         }
     ]

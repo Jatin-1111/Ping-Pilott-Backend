@@ -2,11 +2,22 @@ import mongoose from 'mongoose';
 import logger from '../utils/logger.js';
 
 /**
+ * How many connections ONE process may open to MongoDB (MONGO_MAX_POOL_SIZE, default 50).
+ * The cluster's connection limit is shared by every process that connects: the API, each monitor worker, the alert worker and
+ * the scheduler. At 100 each, three to five processes asked for 300 to 500, which is the whole limit of the smallest shared
+ * Atlas tiers. Size the total, not each pool: processes x pool must stay well under the cluster's limit.
+ */
+export const poolSize = (env = process.env) => {
+    const n = parseInt(env.MONGO_MAX_POOL_SIZE, 10);
+    return Number.isInteger(n) && n > 0 ? n : 50;
+};
+
+/**
  * MongoDB connection options
  */
 const mongoOptions = {
     // Connection pooling settings
-    maxPoolSize: 100,  // Default: 5
+    maxPoolSize: poolSize(),
     minPoolSize: 5,    // Default: 0
     socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
     family: 4,         // Use IPv4, skip trying IPv6
