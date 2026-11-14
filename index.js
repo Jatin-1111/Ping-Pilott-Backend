@@ -56,6 +56,7 @@ import mongoose from 'mongoose';
 import { redisConnection } from './config/redis.js';
 import { reconcileOpenIncidents } from './services/incidentService.js';
 import { USER_CHANGED_CHANNEL, handleUserChangedMessage } from './utils/userEvents.js';
+import { parseTrustProxy } from './utils/trustProxy.js';
 
 const httpServer = createServer(app);
 // Render's proxy keeps connections open for about a minute. Node closes idle ones after 5 seconds by default, which
@@ -104,9 +105,12 @@ function logRetentionState() {
         .catch((err) => logger.warn(`Retention check could not run: ${err.message}`));
 }
 
-// Behind nginx (docker-compose) every request arrives from the proxy's address. Trusting one proxy hop
-// makes req.ip the real client, which the rate limiters depend on. Set TRUST_PROXY=0 when not behind a proxy.
-app.set('trust proxy', parseInt(process.env.TRUST_PROXY ?? '1', 10));
+// Behind nginx (docker-compose) every request arrives from the proxy's address, so X-Forwarded-For has to be believed for
+// req.ip (which the rate limiters key on) to be the real client. TRUST_PROXY=1 trusts one hop, which is right behind a
+// platform proxy such as Render's. Where the API port could also be reached directly, name the proxy instead
+// (docker-compose.yml sets TRUST_PROXY=uniquelocal): with a hop count a direct client picks its own req.ip.
+// TRUST_PROXY=0 when not behind a proxy. See utils/trustProxy.js.
+app.set('trust proxy', parseTrustProxy(process.env.TRUST_PROXY));
 
 // Middleware
 // Only our own frontends may call the API from a browser. Requests with no Origin (curl, server-to-server,

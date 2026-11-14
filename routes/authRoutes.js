@@ -3,7 +3,9 @@ import { body } from 'express-validator';
 import authController from '../controllers/authController.js';
 import { protect } from '../middleware/auth.js';
 import validate from '../middleware/validator.js';
-import { authLimiter, emailLimiter, tokenLimiter, registerLimiter, loginIpLimiter } from '../middleware/rateLimiter.js';
+import {
+    authLimiter, emailLimiter, tokenLimiter, registerLimiter, loginIpLimiter, loginFailureIpLimiter, loginFailureAccountLimiter
+} from '../middleware/rateLimiter.js';
 
 const router = express.Router();
 
@@ -15,7 +17,7 @@ router.post('/register', registerLimiter, authLimiter, [
     validate
 ], authController.register);
 
-router.post('/login', loginIpLimiter, authLimiter, [
+router.post('/login', loginIpLimiter, loginFailureIpLimiter, authLimiter, loginFailureAccountLimiter, [
     body('email').isEmail().withMessage('Please provide a valid email'),
     body('password').exists().withMessage('Password is required'),
     validate

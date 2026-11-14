@@ -70,6 +70,32 @@ export const loginIpLimiter = createRateLimiter({
 });
 
 /**
+ * Failed sign-ins, counted two more ways. authLimiter above keys on address AND email, so it only slows guessing at one
+ * account from one address: trying one common password against thousands of different emails from one address, or
+ * guessing at one account from thousands of addresses, never reached its limit.
+ *
+ *  - per address, across all emails: 30 failures per 15 minutes (one address spraying many accounts)
+ *  - per account, across all addresses: 30 failures per hour (many addresses at one account). The cost is that someone who
+ *    keeps failing against an address can lock it out for the hour; the owner can still get in through password reset.
+ *
+ * Only failures count (skipSuccessfulRequests), so normal sign-ins never use this up.
+ */
+export const loginFailureIpLimiter = createRateLimiter({
+    windowMs: WINDOW_15_MIN,
+    max: parseInt(process.env.AUTH_IP_FAILURE_MAX, 10) || 30,
+    skipSuccessfulRequests: true,
+    message: tooMany('Too many failed sign-ins from this address. Please try again in 15 minutes')
+});
+
+export const loginFailureAccountLimiter = createRateLimiter({
+    windowMs: 60 * 60 * 1000,
+    max: parseInt(process.env.AUTH_ACCOUNT_FAILURE_MAX, 10) || 30,
+    keyGenerator: (req) => String(req.body?.email || '').toLowerCase().trim() || `ip:${req.ip}`,
+    skipSuccessfulRequests: true,
+    message: tooMany('Too many failed sign-ins for this account. Please try again later or reset your password')
+});
+
+/**
  * Endpoints that send an email (verification, password reset). Stops them being used to flood
  * someone's inbox or burn the SMTP quota: 5 per hour per address.
  */
@@ -155,6 +181,8 @@ export default {
     authLimiter,
     registerLimiter,
     loginIpLimiter,
+    loginFailureIpLimiter,
+    loginFailureAccountLimiter,
     emailLimiter,
     tokenLimiter,
     agentLimiter,

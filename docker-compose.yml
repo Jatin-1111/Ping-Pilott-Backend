@@ -23,8 +23,12 @@ services:
       - PORT=5000
       - REDIS_URL=redis://redis:6379
       - RUN_WORKERS=false # monitor-worker and alert-worker below do this
+      # nginx reaches the API over the Docker network, so only private addresses are believed as the proxy. A hop count
+      # would let anyone who reaches port 5000 directly choose their own client address (and so dodge every rate limit).
+      - TRUST_PROXY=uniquelocal
     ports:
-      - "5000:5000"
+      # Loopback only: nginx does not need a published port (it uses backend:5000 on the Docker network)
+      - "127.0.0.1:5000:5000"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:5000/health"]
       interval: 30s
