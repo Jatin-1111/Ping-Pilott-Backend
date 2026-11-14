@@ -176,7 +176,28 @@ export const createUserRateLimiter = (options = {}) => {
     });
 };
 
+/**
+ * Support. Every ticket e-mails the admins and every reply e-mails the other side, and nothing limited either, so one account
+ * could send hundreds of mails a minute (mail quota, sender reputation). Per signed-in user; staff replying are not limited.
+ * Defaults: 5 new tickets and 30 replies per hour.
+ */
+export const supportTicketLimiter = createUserRateLimiter({
+    windowMs: 60 * 60 * 1000,
+    max: parseInt(process.env.SUPPORT_TICKETS_PER_HOUR, 10) || 5,
+    skip: (req) => req.user?.role === 'admin',
+    message: tooMany('You have opened several tickets recently. Please wait before opening another, or reply to an existing ticket')
+});
+
+export const supportReplyLimiter = createUserRateLimiter({
+    windowMs: 60 * 60 * 1000,
+    max: parseInt(process.env.SUPPORT_REPLIES_PER_HOUR, 10) || 30,
+    skip: (req) => req.user?.role === 'admin',
+    message: tooMany('You have sent many replies recently. Please wait a while before replying again')
+});
+
 export default {
+    supportTicketLimiter,
+    supportReplyLimiter,
     apiLimiter,
     authLimiter,
     registerLimiter,

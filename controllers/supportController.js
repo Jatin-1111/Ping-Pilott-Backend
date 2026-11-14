@@ -1,8 +1,20 @@
 // controllers/supportController.js
 import SupportTicket from '../models/SupportTicket.js';
+import User from '../models/User.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import logger from '../utils/logger.js';
+import { ticketIsFull } from '../utils/ticketLimits.js';
 import { sendSupportNotificationEmail, sendResponseNotificationEmail } from '../services/emailService.js';
+
+/** Mail the other side of a reply: the customer when staff replied, the admins when the customer did */
+async function notifyOtherParty(ticket, fromAdmin, replier) {
+    if (fromAdmin) {
+        const owner = await User.findById(ticket.userId);
+        await sendResponseNotificationEmail(ticket, owner, false);
+    } else {
+        await sendResponseNotificationEmail(ticket, replier, true);
+    }
+}
 
 /**
  * @desc    Create a new support ticket
@@ -27,13 +39,11 @@ export const createTicket = asyncHandler(async (req, res) => {
         priority
     });
 
-    // Send notification to admins
-    try {
-        await sendSupportNotificationEmail(ticket, req.user);
-    } catch (error) {
-        logger.error(`Failed to send support notification: ${error.message}`);
-        // Continue with ticket creation even if email fails
-    }
+    // Tell the admins in the background. The ticket is saved already; waiting for the mail server held this request for as
+    // long as it took (the mail timeouts add up to about 50 s), and a failed mail must not fail the ticket.
+    sendSupportNotificationEmail(ticket, req.user).catch((error) =>
+        logger.error(`Failed to send support notification: ${error.message}`)
+    );
 
     res.status(201).json({
         status: 'success',
@@ -142,6 +152,15 @@ export const addResponse = asyncHandler(async (req, res) => {
         });
     }
 
+    // Replies live inside the ticket document, so a customer cannot keep adding them for ever
+    if (ticketIsFull(ticket, isAdmin)) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'This ticket has reached its reply limit. Open a new ticket if you still need help.',
+            code: 'TICKET_FULL'
+        });
+    }
+
     // Add response
     ticket.responses.push({
         message,
@@ -159,19 +178,10 @@ export const addResponse = asyncHandler(async (req, res) => {
 
     await ticket.save();
 
-    // Notify the other party
-    try {
-        if (isAdmin) {
-            // Notify user of admin response
-            await sendResponseNotificationEmail(ticket, await import('../models/User.js').then(m => m.default.findById(ticket.userId)), false);
-        } else {
-            // Notify admin of user response
-            await sendResponseNotificationEmail(ticket, req.user, true);
-        }
-    } catch (error) {
-        logger.error(`Failed to send response notification: ${error.message}`);
-        // Continue even if notification fails
-    }
+    // Notify the other party in the background (see createTicket)
+    notifyOtherParty(ticket, isAdmin, req.user).catch((error) =>
+        logger.error(`Failed to send response notification: ${error.message}`)
+    );
 
     res.status(200).json({
         status: 'success',
