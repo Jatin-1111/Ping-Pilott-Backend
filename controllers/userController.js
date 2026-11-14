@@ -6,6 +6,7 @@ import logger from '../utils/logger.js';
 import { applyPlanChange } from '../services/planService.js';
 import { purgeUserData } from '../services/accountCleanup.js';
 import { requireEmailVerification } from '../utils/emailVerification.js';
+import { userChanged } from '../utils/userEvents.js';
 
 /**
  * @desc    Get all users
@@ -167,6 +168,7 @@ export const changePassword = asyncHandler(async (req, res) => {
     // Update password
     user.password = newPassword;
     await user.save();
+    await userChanged(user._id); // close sockets opened with the old password's tokens, on every API process
 
     res.status(200).json({
         status: 'success',
@@ -201,6 +203,7 @@ export const deleteMyAccount = asyncHandler(async (req, res) => {
         });
     }
 
+    await userChanged(user._id);
     logger.info(`User deleted own account: ${user.email} (${user._id}), ${servers} server(s) removed`);
 
     res.status(200).json({
@@ -234,7 +237,9 @@ export const updateUser = asyncHandler(async (req, res) => {
         user.email = email;
     }
 
+    let roleChanged = false;
     if (role && role !== user.role) {
+        roleChanged = true;
         // An admin who demotes themselves locks themselves out of the admin area
         if (String(user._id) === String(req.user._id) && role !== 'admin') {
             return res.status(400).json({ status: 'error', message: 'You cannot remove your own admin access' });
@@ -257,6 +262,9 @@ export const updateUser = asyncHandler(async (req, res) => {
         if (subscription?.endDate !== undefined) user.subscription.endDate = subscription.endDate;
         await user.save();
     }
+
+    // A demoted admin must stop receiving every user's live updates: close their sockets so they reconnect as they are now
+    if (roleChanged) await userChanged(user._id);
 
     res.status(200).json({
         status: 'success',
@@ -290,6 +298,7 @@ export const deleteUser = asyncHandler(async (req, res) => {
 
     // Their servers must not keep being checked (and emailed about) after the account is gone
     const { servers } = await purgeUserData(user._id);
+    await userChanged(user._id);
     logger.info(`Admin ${req.user.email} deleted user ${user.email} and ${servers} server(s)`);
 
     res.status(200).json({

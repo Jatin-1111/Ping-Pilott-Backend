@@ -45,6 +45,12 @@ const userSchema = new mongoose.Schema({
     },
     // Set whenever the password changes; tokens issued before it are no longer accepted
     passwordChangedAt: Date,
+    // Raised by "sign out everywhere": access and refresh tokens carry the version they were issued under and stop working
+    // when it no longer matches (utils/sessionClaims.js). Accounts made before this field existed read as 0.
+    tokenVersion: {
+        type: Number,
+        default: 0
+    },
     resetToken: String,
     resetTokenExpiry: Date,
     subscription: {
@@ -154,6 +160,7 @@ const userSchema = new mongoose.Schema({
             delete ret.resetToken;
             delete ret.resetTokenExpiry;
             delete ret.passwordChangedAt;
+            delete ret.tokenVersion;
             delete ret.__v;
             return ret;
         }

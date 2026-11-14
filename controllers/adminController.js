@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import logger from '../utils/logger.js';
 import { planFeatures } from '../utils/planFeatures.js';
+import { userChanged } from '../utils/userEvents.js';
 
 /**
  * @desc    Create or promote a user to admin
@@ -165,6 +166,7 @@ export const revokeAdmin = asyncHandler(async (req, res) => {
 
     // Save the updated user
     await adminUser.save();
+    await userChanged(adminUser._id); // leave the admins room: close their sockets so they reconnect as a normal user
 
     logger.info(`Admin privileges revoked from ${adminUser.email} by ${req.user.email}`);
 

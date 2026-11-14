@@ -55,6 +55,7 @@ import { Redis } from 'ioredis';
 import mongoose from 'mongoose';
 import { redisConnection } from './config/redis.js';
 import { reconcileOpenIncidents } from './services/incidentService.js';
+import { USER_CHANGED_CHANNEL, handleUserChangedMessage } from './utils/userEvents.js';
 
 const httpServer = createServer(app);
 // Render's proxy keeps connections open for about a minute. Node closes idle ones after 5 seconds by default, which
@@ -242,16 +243,19 @@ const redisSubscriber = new Redis(process.env.REDIS_URL || {
     // No maxRetriesPerRequest null needed here as it's not BullMQ
 });
 
-redisSubscriber.subscribe('monitor-updates', ALERT_CHANNEL, (err, count) => {
+redisSubscriber.subscribe('monitor-updates', ALERT_CHANNEL, USER_CHANGED_CHANNEL, (err, count) => {
     if (err) {
         logger.error('Failed to subscribe to the live update channels: %s', err.message);
     } else {
-        logger.info(`📢 Subscribed to monitor-updates and ${ALERT_CHANNEL} channels. Count: ${count}`);
+        logger.info(`📢 Subscribed to monitor-updates, ${ALERT_CHANNEL} and ${USER_CHANGED_CHANNEL} channels. Count: ${count}`);
     }
 });
 
 redisSubscriber.on('message', (channel, message) => {
-    if (channel === 'monitor-updates') {
+    if (channel === USER_CHANGED_CHANNEL) {
+        // another API process changed an account (password, role, deletion, sign-out everywhere)
+        handleUserChangedMessage(message);
+    } else if (channel === 'monitor-updates') {
         try {
             const updateData = JSON.parse(message);
             // logger.debug(`Received update for server ${updateData.serverId}`);

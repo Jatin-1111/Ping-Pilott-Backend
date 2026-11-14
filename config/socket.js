@@ -13,8 +13,19 @@ import Server from '../models/Server.js';
 import logger from '../utils/logger.js';
 import { HOST_TYPES } from '../utils/alertFeed.js';
 import { requireEmailVerification } from '../utils/emailVerification.js';
+import { checkSessionClaims } from '../utils/sessionClaims.js';
 
 let io;
+
+/**
+ * Close every open socket of a user. Sockets are authenticated once, at connect, and join their rooms then, so after a
+ * password change, a role change or a deletion the only way to end what the old state allowed is to disconnect. Clients
+ * reconnect with their current token and get rooms for what they are now (utils/userEvents.js calls this).
+ */
+export function disconnectUserSockets(userId) {
+    if (!io) return;
+    io.in(`user:${userId}`).disconnectSockets(true);
+}
 
 /**
  * Initialize Socket.IO
@@ -39,8 +50,12 @@ export function initializeSocket(httpServer) {
             if (!token) return next(new Error('Not authorized'));
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            const user = await User.findById(decoded.id).select('role emailVerified');
+            const user = await User.findById(decoded.id).select('role emailVerified passwordChangedAt tokenVersion');
             if (!user || (requireEmailVerification() && !user.emailVerified)) return next(new Error('Not authorized'));
+
+            // The same rule the REST middleware applies: a token from before a password change or "sign out everywhere"
+            // is refused here too (the socket used to accept tokens that REST had already refused)
+            if (checkSessionClaims(user, decoded)) return next(new Error('Not authorized'));
 
             socket.data.userId = String(user._id);
             socket.data.role = user.role;
@@ -149,4 +164,4 @@ export function getIO() {
     return io;
 }
 
-export default { initializeSocket, broadcastServerUpdate, broadcastAlert, broadcastGlobal, getIO };
+export default { initializeSocket, broadcastServerUpdate, broadcastAlert, broadcastGlobal, disconnectUserSockets, getIO };

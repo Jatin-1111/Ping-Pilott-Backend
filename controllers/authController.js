@@ -1,24 +1,16 @@
-import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import User from '../models/User.js';
+import RefreshToken from '../models/RefreshToken.js';
 import logger from '../utils/logger.js';
 import { sendVerificationEmail, sendPasswordResetEmail } from '../services/emailService.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { requireEmailVerification } from '../utils/emailVerification.js';
+import { createSessionService, SessionError } from '../services/sessionService.js';
+import { checkSessionClaims } from '../utils/sessionClaims.js';
+import { userChanged } from '../utils/userEvents.js';
 
-// Generate JWT token
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN || '1d',
-    });
-};
-
-// Generate refresh token
-const generateRefreshToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, {
-        expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
-    });
-};
+// Access + refresh tokens, the record of each refresh token, and ending sessions (services/sessionService.js)
+const sessions = createSessionService({ RefreshToken });
 
 /**
  * @desc    Register a new user
@@ -53,8 +45,7 @@ export const register = asyncHandler(async (req, res) => {
 
     if (!verificationRequired) {
         // No email step: the account is ready, so sign the new user in straight away
-        const token = generateToken(user._id);
-        const refreshToken = generateRefreshToken(user._id);
+        const { token, refreshToken } = await sessions.issue(user);
         user.password = undefined;
 
         return res.status(201).json({
@@ -145,8 +136,7 @@ export const login = asyncHandler(async (req, res) => {
     }
 
     // Generate tokens
-    const token = generateToken(user._id);
-    const refreshToken = generateRefreshToken(user._id);
+    const { token, refreshToken } = await sessions.issue(user);
 
     // Remove password from response
     user.password = undefined;
@@ -358,6 +348,7 @@ export const resetPassword = asyncHandler(async (req, res) => {
     user.resetToken = undefined;
     user.resetTokenExpiry = undefined;
     await user.save();
+    await userChanged(user._id); // close sockets opened with the old password's tokens
 
     res.status(200).json({
         status: 'success',
@@ -371,59 +362,73 @@ export const resetPassword = asyncHandler(async (req, res) => {
  * @access  Public
  */
 export const refreshToken = asyncHandler(async (req, res) => {
-    const { refreshToken } = req.body;
+    const { refreshToken: presented } = req.body;
 
-    if (!refreshToken) {
+    if (!presented) {
         return res.status(400).json({
             status: 'error',
             message: 'Refresh token is required',
         });
     }
 
+    const refuse = (message = 'Invalid refresh token') => res.status(401).json({ status: 'error', message });
+
+    let decoded;
     try {
-        // Verify refresh token
-        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-
-        // Find user
-        const user = await User.findById(decoded.id);
-        if (!user) {
-            return res.status(401).json({
-                status: 'error',
-                message: 'Invalid refresh token',
-            });
-        }
-
-        // Same rules as a normal request: unverified accounts and sessions older than a password change
-        // cannot be extended
-        const passwordChangedSession = user.passwordChangedAt &&
-            decoded.iat < Math.floor(user.passwordChangedAt.getTime() / 1000);
-        if ((requireEmailVerification() && !user.emailVerified) || passwordChangedSession) {
-            return res.status(401).json({
-                status: 'error',
-                message: 'Invalid refresh token',
-            });
-        }
-
-        // Generate new tokens
-        const token = generateToken(user._id);
-        const newRefreshToken = generateRefreshToken(user._id);
-
-        res.status(200).json({
-            status: 'success',
-            message: 'Token refreshed successfully',
-            data: {
-                token,
-                refreshToken: newRefreshToken,
-            },
-        });
+        decoded = sessions.verifyRefresh(presented);
     } catch (error) {
-        logger.error(`Error refreshing token: ${error.message}`);
-
-        return res.status(401).json({
-            status: 'error',
-            message: 'Invalid or expired refresh token',
-        });
+        logger.warn(`Refresh refused: ${error.message}`);
+        return refuse('Invalid or expired refresh token');
     }
+
+    const user = await User.findById(decoded.id);
+    if (!user) return refuse();
+
+    // Same rules as a normal request: unverified accounts and sessions ended by a password change or "sign out
+    // everywhere" cannot be extended
+    if ((requireEmailVerification() && !user.emailVerified) || checkSessionClaims(user, decoded)) return refuse();
+
+    // A refresh token is accepted once. Showing a spent one again, after the retry leeway, ends the whole sign-in.
+    let family;
+    try {
+        ({ family } = await sessions.consume(decoded));
+    } catch (error) {
+        if (!(error instanceof SessionError)) throw error;
+        logger.warn(`Refresh refused (${error.code}) for user ${decoded.id}`);
+        return refuse();
+    }
+
+    const tokens = await sessions.issue(user, family);
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Token refreshed successfully',
+        data: tokens,
+    });
+});
+
+/**
+ * @desc    Sign out this device: end the sign-in the refresh token belongs to
+ * @route   POST /api/auth/logout
+ * @access  Public (the refresh token is the credential, so this works after the access token expired)
+ */
+export const logout = asyncHandler(async (req, res) => {
+    const presented = req.body?.refreshToken;
+    // Always the same answer: a token that is already dead or unknown is simply already signed out
+    if (typeof presented === 'string' && presented) await sessions.logout(presented);
+    res.status(200).json({ status: 'success', message: 'Signed out' });
+});
+
+/**
+ * @desc    Sign out everywhere: every refresh token and every access token of this user stops working
+ * @route   POST /api/auth/logout-all
+ * @access  Private
+ */
+export const logoutAll = asyncHandler(async (req, res) => {
+    await User.updateOne({ _id: req.user._id }, { $inc: { tokenVersion: 1 } });
+    await sessions.revokeUser(req.user._id);
+    await userChanged(req.user._id); // other API processes forget the user and close its sockets
+    res.status(200).json({ status: 'success', message: 'Signed out on every device' });
 });
 
 /**
@@ -449,5 +454,7 @@ export default {
     forgotPassword,
     resetPassword,
     refreshToken,
+    logout,
+    logoutAll,
     getCurrentUser,
 };

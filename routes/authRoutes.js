@@ -47,6 +47,10 @@ router.post('/refresh-token', tokenLimiter, [
     validate
 ], authController.refreshToken);
 
+// Sign out this device (the refresh token is the credential, so this works after the access token expired), or every device
+router.post('/logout', tokenLimiter, authController.logout);
+router.post('/logout-all', protect, authController.logoutAll);
+
 // Get current user - protected route
 router.get('/me', protect, authController.getCurrentUser);
 

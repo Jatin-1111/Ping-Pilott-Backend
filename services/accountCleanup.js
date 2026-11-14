@@ -10,6 +10,7 @@ import { invalidateServerCache } from '../utils/cacheManager.js';
 import Incident from '../models/Incident.js';
 import HostMetric from '../models/HostMetric.js';
 import HostMetric5m from '../models/HostMetric5m.js';
+import RefreshToken from '../models/RefreshToken.js';
 
 /** Remove a user's servers (so monitoring stops first), their check history and their tickets. */
 export async function purgeUserData(userId) {
@@ -26,6 +27,7 @@ export async function purgeUserData(userId) {
     }
     await Incident.deleteMany({ userId });
     await SupportTicket.deleteMany({ userId: String(userId) });
+    await RefreshToken.deleteMany({ userId }); // their sign-ins end with the account
     await invalidateServerCache(String(userId));
 
     return { servers: serverIds.length };
