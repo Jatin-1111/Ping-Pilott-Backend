@@ -1,12 +1,35 @@
 import rateLimit from 'express-rate-limit';
 import { parseToken, bearerToken } from '../utils/agentToken.js';
 
+// Where the counters live. By default in this process, which is right for one API instance. With more than one, every limit
+// is multiplied by the number of instances, and all counters reset on each deploy. RATE_LIMIT_STORE=redis keeps them in Redis,
+// shared by every instance. Redis is only loaded when asked for, so nothing connects to it just by importing this file.
+const redisParts = process.env.RATE_LIMIT_STORE === 'redis'
+    ? await Promise.all([import('rate-limit-redis'), import('../config/redis.js'), import('../utils/timeout.js')])
+    : null;
+
+/** The store options for the limiter called `name`: nothing (memory) or a Redis store with its own key prefix */
+function storeFor(name) {
+    if (!name) throw new Error('A rate limiter needs a name (it is the Redis key prefix when RATE_LIMIT_STORE=redis)');
+    if (!redisParts) return {};
+    const [{ RedisStore }, { redisConnection }, { withTimeout }] = redisParts;
+    return {
+        store: new RedisStore({
+            prefix: `pp:rl:${name}:`,
+            // Redis commands wait for ever while it is down, so each call is limited: 300 ms, and longer for loading the script
+            sendCommand: (...args) => withTimeout(redisConnection.call(...args), String(args[0]).toUpperCase() === 'SCRIPT' ? 10000 : 300, 'Rate limit store')
+        }),
+        // A Redis problem must not lock everyone out of signing in: let the request through (the store error is logged)
+        passOnStoreError: true
+    };
+}
+
 /**
  * Create a rate limiter middleware
- * @param {Object} options - Rate limiter options
+ * @param {Object} options - Rate limiter options; `name` is required and unique per limiter
  * @returns {Function} Rate limiter middleware
  */
-const createRateLimiter = (options = {}) => {
+const createRateLimiter = ({ name, ...options } = {}) => {
     const defaultOptions = {
         windowMs: 15 * 60 * 1000, // 15 minutes
         max: 100, // Limit each IP to 100 requests per window
@@ -20,6 +43,7 @@ const createRateLimiter = (options = {}) => {
 
     return rateLimit({
         ...defaultOptions,
+        ...storeFor(name),
         ...options,
     });
 };
@@ -33,6 +57,7 @@ const emailKey = (req) => `${req.ip}:${String(req.body?.email || '').toLowerCase
  * an office IP. It exists to stop floods, not to meter normal use.
  */
 export const apiLimiter = createRateLimiter({
+    name: 'api',
     windowMs: 60 * 1000,
     max: parseInt(process.env.RATE_LIMIT_MAX, 10) || 300,
     message: tooMany('Too many requests, please slow down and try again in a minute')
@@ -43,6 +68,7 @@ export const apiLimiter = createRateLimiter({
  * everyone behind the same IP, and a successful login does not count against the limit.
  */
 export const authLimiter = createRateLimiter({
+    name: 'auth',
     windowMs: WINDOW_15_MIN,
     max: parseInt(process.env.AUTH_RATE_LIMIT_MAX, 10) || 10,
     keyGenerator: emailKey,
@@ -58,12 +84,14 @@ export const authLimiter = createRateLimiter({
  * share one address and each person signs in about once a day. Both can be raised with an environment variable.
  */
 export const registerLimiter = createRateLimiter({
+    name: 'register',
     windowMs: 60 * 60 * 1000,
     max: parseInt(process.env.REGISTER_RATE_LIMIT_MAX, 10) || 10,
     message: tooMany('Too many accounts created from this address. Please try again later')
 });
 
 export const loginIpLimiter = createRateLimiter({
+    name: 'loginIp',
     windowMs: WINDOW_15_MIN,
     max: parseInt(process.env.LOGIN_IP_RATE_LIMIT_MAX, 10) || 100,
     message: tooMany('Too many sign-in attempts from this address. Please try again in 15 minutes')
@@ -81,6 +109,7 @@ export const loginIpLimiter = createRateLimiter({
  * Only failures count (skipSuccessfulRequests), so normal sign-ins never use this up.
  */
 export const loginFailureIpLimiter = createRateLimiter({
+    name: 'loginFailureIp',
     windowMs: WINDOW_15_MIN,
     max: parseInt(process.env.AUTH_IP_FAILURE_MAX, 10) || 30,
     skipSuccessfulRequests: true,
@@ -88,6 +117,7 @@ export const loginFailureIpLimiter = createRateLimiter({
 });
 
 export const loginFailureAccountLimiter = createRateLimiter({
+    name: 'loginFailureAccount',
     windowMs: 60 * 60 * 1000,
     max: parseInt(process.env.AUTH_ACCOUNT_FAILURE_MAX, 10) || 30,
     keyGenerator: (req) => String(req.body?.email || '').toLowerCase().trim() || `ip:${req.ip}`,
@@ -100,6 +130,7 @@ export const loginFailureAccountLimiter = createRateLimiter({
  * someone's inbox or burn the SMTP quota: 5 per hour per address.
  */
 export const emailLimiter = createRateLimiter({
+    name: 'email',
     windowMs: 60 * 60 * 1000,
     max: 5,
     keyGenerator: emailKey,
@@ -110,6 +141,7 @@ export const emailLimiter = createRateLimiter({
  * Token endpoints (verify email, reset password, refresh): per IP, to stop token guessing.
  */
 export const tokenLimiter = createRateLimiter({
+    name: 'token',
     windowMs: WINDOW_15_MIN,
     max: 30,
     message: tooMany('Too many attempts, please try again later')
@@ -121,6 +153,7 @@ export const tokenLimiter = createRateLimiter({
  * the address, with a limit low enough to make guessing tokens pointless.
  */
 export const agentLimiter = createRateLimiter({
+    name: 'agent',
     windowMs: 60 * 1000,
     max: 12,
     keyGenerator: (req) => {
@@ -136,6 +169,7 @@ export const agentLimiter = createRateLimiter({
  * counted. 30 a minute is plenty for a mistyped token on a few machines and nothing for guessing.
  */
 export const agentGuessLimiter = createRateLimiter({
+    name: 'agentGuess',
     windowMs: 60 * 1000,
     max: 30,
     skipSuccessfulRequests: true,
@@ -147,6 +181,7 @@ export const agentGuessLimiter = createRateLimiter({
  * only there to stop a flood.
  */
 export const installLimiter = createRateLimiter({
+    name: 'install',
     windowMs: 60 * 1000,
     max: 60,
     message: { status: 'error', message: 'Too many requests, please try again shortly', code: 'RATE_LIMITED' }
@@ -156,7 +191,7 @@ export const installLimiter = createRateLimiter({
  * User-specific limiter based on user ID
  * Use this for routes that should be limited per user, not per IP
  */
-export const createUserRateLimiter = (options = {}) => {
+export const createUserRateLimiter = ({ name, ...options } = {}) => {
     const defaultOptions = {
         windowMs: 15 * 60 * 1000,
         max: 100,
@@ -172,6 +207,7 @@ export const createUserRateLimiter = (options = {}) => {
 
     return rateLimit({
         ...defaultOptions,
+        ...storeFor(name),
         ...options
     });
 };
@@ -182,6 +218,7 @@ export const createUserRateLimiter = (options = {}) => {
  * Defaults: 5 new tickets and 30 replies per hour.
  */
 export const supportTicketLimiter = createUserRateLimiter({
+    name: 'supportTicket',
     windowMs: 60 * 60 * 1000,
     max: parseInt(process.env.SUPPORT_TICKETS_PER_HOUR, 10) || 5,
     skip: (req) => req.user?.role === 'admin',
@@ -189,6 +226,7 @@ export const supportTicketLimiter = createUserRateLimiter({
 });
 
 export const supportReplyLimiter = createUserRateLimiter({
+    name: 'supportReply',
     windowMs: 60 * 60 * 1000,
     max: parseInt(process.env.SUPPORT_REPLIES_PER_HOUR, 10) || 30,
     skip: (req) => req.user?.role === 'admin',
@@ -218,6 +256,7 @@ export default {
  * app) is what keeps the load down; this only stops a flood against one page.
  */
 export const publicStatusLimiter = createRateLimiter({
+    name: 'publicStatus',
     windowMs: 60 * 1000,
     max: parseInt(process.env.PUBLIC_STATUS_RATE_LIMIT_MAX, 10) || 600,
     keyGenerator: (req) => `${req.ip}:${String(req.params?.slug || '').toLowerCase()}`,

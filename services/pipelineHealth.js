@@ -4,7 +4,7 @@
 // about whether anything takes them off, so a dead worker left every light green while no server was checked.
 // This answers the real question: workers alive, and a check completed since one was queued.
 
-import { readWorkerState } from '../utils/workerHealth.js';
+import { readWorkerState, countSchedulers } from '../utils/workerHealth.js';
 
 /** Work was queued this long ago and no check has finished since: the workers are not doing their job */
 export const NO_COMPLETION_MS = 5 * 60 * 1000;
@@ -30,20 +30,24 @@ export const resetDispatches = () => { dispatches = []; };
  *   ok        monitoring is running
  *   starting  something is missing but the process only just started
  *   degraded  something is wrong
- * Reasons: scheduler-stalled, egress-down, no-monitor-worker, no-alert-worker, checks-not-completing, cannot-read-state
+ * Reasons: scheduler-stalled, no-scheduler, egress-down, no-monitor-worker, no-alert-worker, checks-not-completing, cannot-read-state
  * @param {Object} p
  * @param {number} p.now
  * @param {number} p.startedAt                 when this process started
  * @param {'ok'|'stalled'|'starting'} p.schedulerStatus
+ * @param {number} [p.schedulers]              only when the scheduler runs in its own process: how many have a live heartbeat
  * @param {number|null} p.monitorWorkers       how many monitor workers have a live heartbeat (null: unknown)
  * @param {number|null} p.alertWorkers
  * @param {number|null} p.lastCheckCompletedAt epoch ms of the last finished check, or null
  * @param {number[]} p.dispatches              epoch ms of recent cycles that queued checks
  */
-export function evaluatePipeline({ now = Date.now(), startedAt = 0, schedulerStatus, monitorWorkers, alertWorkers, lastCheckCompletedAt, egressDown = false, dispatches: queued = [] }) {
+export function evaluatePipeline({ now = Date.now(), startedAt = 0, schedulerStatus, schedulers, monitorWorkers, alertWorkers, lastCheckCompletedAt, egressDown = false, dispatches: queued = [] }) {
     const reasons = [];
 
     if (schedulerStatus === 'stalled') reasons.push('scheduler-stalled');
+    // The scheduler runs in its own process (this API has RUN_SCHEDULER=false) and none has a live heartbeat. The scheduler
+    // stops beating when its own watchdog says it stalled, so this also covers a scheduler that is running but stuck.
+    if (schedulers === 0) reasons.push('no-scheduler');
     // A worker could not reach the control targets lately: its checks are being skipped, not recorded (egressProbe.js)
     if (egressDown) reasons.push('egress-down');
 
@@ -70,9 +74,10 @@ let cached = null;
 
 /**
  * The live answer for this process. Reads Redis, so it is cached for a few seconds: /health is public and polled.
- * @param {{ redis, schedulerStatus: string, startedAt: number, now?: number }} p
+ * @param {{ redis, schedulerStatus: string, startedAt: number, now?: number, externalScheduler?: boolean }} p
+ *   externalScheduler: true when the scheduler is not in this process (RUN_SCHEDULER=false), so its heartbeat is looked for
  */
-export async function getPipelineHealth({ redis, schedulerStatus, startedAt, now = Date.now() }) {
+export async function getPipelineHealth({ redis, schedulerStatus, startedAt, now = Date.now(), externalScheduler = false }) {
     if (cached && now - cached.at < CACHE_MS) return cached.value;
 
     let state = { monitorWorkers: null, alertWorkers: null, lastCheckCompletedAt: null, egressDown: false };
@@ -82,7 +87,16 @@ export async function getPipelineHealth({ redis, schedulerStatus, startedAt, now
         // evaluatePipeline reports it as cannot-read-state
     }
 
-    const value = evaluatePipeline({ now, startedAt, schedulerStatus, ...state, dispatches: recentDispatches(now) });
+    let schedulers;
+    if (externalScheduler) {
+        try {
+            schedulers = await countSchedulers(redis);
+        } catch {
+            // unknown: say nothing about it (an unreadable Redis is already reported as cannot-read-state)
+        }
+    }
+
+    const value = evaluatePipeline({ now, startedAt, schedulerStatus, schedulers, ...state, dispatches: recentDispatches(now) });
     cached = { at: now, value };
     return value;
 }

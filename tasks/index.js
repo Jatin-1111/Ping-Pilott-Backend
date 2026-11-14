@@ -53,7 +53,9 @@ const processStartedAt = Date.now();
 export const getPipelineState = () => getPipelineHealth({
     redis: redisConnection,
     schedulerStatus: getSchedulerStatus(),
-    startedAt: processStartedAt
+    startedAt: processStartedAt,
+    // With RUN_SCHEDULER=false the scheduler is another process (workers/scheduler.js); its heartbeat shows it is there
+    externalScheduler: process.env.RUN_SCHEDULER === 'false'
 });
 
 /**

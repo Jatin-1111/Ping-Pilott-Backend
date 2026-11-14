@@ -92,4 +92,12 @@ export async function readWorkerState(redis, timeoutMs = REDIS_TIMEOUT_MS) {
     })(), timeoutMs, 'Reading worker state');
 }
 
-export default { startWorkerHeartbeat, createCheckCompletionRecorder, readWorkerState, BEAT_INTERVAL_MS, BEAT_TTL_SECONDS };
+/**
+ * How many scheduler processes have a live heartbeat. Only asked when the API runs without its own scheduler
+ * (RUN_SCHEDULER=false), where this is the only way for it to know the scheduler exists. Throws when Redis cannot be read in time.
+ */
+export async function countSchedulers(redis, timeoutMs = REDIS_TIMEOUT_MS) {
+    return withTimeout(countKeys(redis, beatPattern('scheduler')), timeoutMs, 'Reading scheduler state');
+}
+
+export default { startWorkerHeartbeat, createCheckCompletionRecorder, readWorkerState, countSchedulers, BEAT_INTERVAL_MS, BEAT_TTL_SECONDS };

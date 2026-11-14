@@ -282,8 +282,14 @@ redisSubscriber.on('message', (channel, message) => {
 const server = httpServer.listen(PORT, () => {
     logger.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 
-    // Initialize cron jobs after server starts
-    initCronJobs();
+    // Initialize cron jobs after server starts. With RUN_SCHEDULER=false the scheduler is its own process
+    // (workers/scheduler.js), which is what lets this API run as more than one instance: the cron jobs must run once, not
+    // once per instance. The default (true) keeps single-process hosting working unchanged.
+    if (process.env.RUN_SCHEDULER === 'false') {
+        logger.info('RUN_SCHEDULER=false: the scheduler runs in its own process (workers/scheduler.js), not in this API');
+    } else {
+        initCronJobs();
+    }
 });
 
 // Enhanced graceful shutdown

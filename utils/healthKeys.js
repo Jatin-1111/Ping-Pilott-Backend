@@ -11,8 +11,8 @@ export const LAST_CHECK_KEY = `${HEALTH_PREFIX}last-check-completed`;
 /** Exists while a worker cannot reach the internet (set with a 2 minute expiry by each failed probe) */
 export const EGRESS_DOWN_KEY = `${HEALTH_PREFIX}egress-down`;
 
-/** 'monitor' or 'alert' */
-export const ROLES = ['monitor', 'alert'];
+/** 'monitor', 'alert', or 'scheduler' (the scheduler's own process, when the API runs with RUN_SCHEDULER=false) */
+export const ROLES = ['monitor', 'alert', 'scheduler'];
 
 export const instanceId = () => `${os.hostname()}:${process.pid}`;
 

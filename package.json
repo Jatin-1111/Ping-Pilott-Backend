@@ -9,6 +9,7 @@
     "dev": "nodemon index.js",
     "worker": "node workers/monitorWorker.js",
     "alert-worker": "node workers/alertWorker.js",
+    "scheduler": "node workers/scheduler.js",
     "workers": "concurrently \"npm run worker\" \"npm run alert-worker\"",
     "test": "node --test"
   },
@@ -39,6 +40,7 @@
     "morgan": "^1.10.0",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.16",
+    "rate-limit-redis": "4.3.1",
     "socket.io": "^4.8.1",
     "uuid": "^13.0.0",
     "winston": "^3.17.0",
