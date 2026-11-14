@@ -179,79 +179,8 @@ export const revokeAdmin = asyncHandler(async (req, res) => {
     });
 });
 
-/**
- * @desc    Create initial admin (first-time setup)
- * @route   POST /api/admin/initial-setup
- * @access  Public (one-time use)
- */
-export const initialSetup = asyncHandler(async (req, res) => {
-    const { email, password, displayName, setupToken } = req.body;
-
-    // Verify setup token (should match environment variable)
-    if (!setupToken || setupToken !== process.env.ADMIN_SETUP_TOKEN) {
-        return res.status(401).json({
-            status: 'error',
-            message: 'Invalid setup token',
-        });
-    }
-
-    // Check if any admin already exists
-    const existingAdmin = await User.findOne({ role: 'admin' });
-    if (existingAdmin) {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Initial setup has already been completed',
-        });
-    }
-
-    // Check if required fields are provided
-    if (!email || !password) {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Email and password are required',
-        });
-    }
-
-    // Check if user with this email already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Email already in use',
-        });
-    }
-
-    // Create the first admin user
-    const adminUser = await User.create({
-        email,
-        password,
-        displayName: displayName || '',
-        role: 'admin',
-        emailVerified: true, // Auto-verify admin accounts
-        subscription: {
-            plan: 'admin',
-            status: 'unlimited'
-            // Features auto-set by model hook
-        }
-    });
-
-    // Remove password from response
-    adminUser.password = undefined;
-
-    logger.info(`Initial admin user ${email} created during system setup`);
-
-    res.status(201).json({
-        status: 'success',
-        message: 'Initial admin setup completed successfully',
-        data: {
-            user: adminUser,
-        },
-    });
-});
-
 export default {
     createAdmin,
     listAdmins,
     revokeAdmin,
-    initialSetup,
 };

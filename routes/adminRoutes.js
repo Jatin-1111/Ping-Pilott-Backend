@@ -1,11 +1,12 @@
 import express from 'express';
-import { createAdmin, listAdmins, revokeAdmin, initialSetup } from '../controllers/adminController.js';
+import { createAdmin, listAdmins, revokeAdmin } from '../controllers/adminController.js';
 import { protect, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Public route for initial setup (first-time admin creation)
-router.post('/initial-setup', initialSetup);
+// There is no public route that creates the first admin. The old POST /initial-setup was open to anyone holding a setup
+// token (which had been committed to git history), had no limiter, and two concurrent calls created two admins. Create the
+// first admin with the command line instead: `node scripts/createAdmin.js`.
 
 // Protected admin routes - use your existing middleware
 router.post('/create', protect, authorize('admin'), createAdmin);
