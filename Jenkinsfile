@@ -23,7 +23,8 @@ pipeline {
         stage('Install Dependencies') {
             agent {
                 docker {
-                    image 'node:18-alpine'
+                    // Same Node as the Dockerfile (18 reached end of life in April 2025; the image ran 20)
+                    image 'node:24-alpine'
                     reuseNode true
                 }
             }
@@ -31,7 +32,36 @@ pipeline {
                 sh 'npm ci'
             }
         }
-        
+
+        // The tests need no database or Redis. A failing test stops the pipeline before an image is built or pushed.
+        stage('Test') {
+            agent {
+                docker {
+                    image 'node:24-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh 'npm test'
+            }
+        }
+
+        // Known-vulnerable production dependencies. Marks the build unstable instead of failing it: a new advisory in
+        // a package nobody touched should be seen, not block an unrelated fix.
+        stage('Dependency audit') {
+            agent {
+                docker {
+                    image 'node:24-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    sh 'npm audit --omit=dev --audit-level=high'
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t ping-pilot:${BUILD_NUMBER} .'

@@ -1,4 +1,6 @@
-FROM node:20-alpine
+# Node 20 reached end of life on 30 April 2026; 24 is the current LTS (and what the tests run on). bcrypt ships a musl
+# build for it, so nothing is compiled here. Floating tag on purpose: pin it by digest if you have a way to bump digests.
+FROM node:24-alpine
 
 WORKDIR /app
 
